@@ -2,6 +2,74 @@
  "_note": "由 src/build_structures.py 从 events.json 生成。支撑关系取自 sources.book。",
  "sources": [
   {
+   "id": "src_2",
+   "full": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
+   "short": "抗战纪念网",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "1931年9月",
+   "supports": [
+    "evt_1931_mgzsw_xuanyan",
+    "evt_1931_jiangqiao_kangzhan",
+    "evt_1932_jinxi_gujia",
+    "evt_1932_wangdelin_jiuguojun",
+    "evt_1932_huanren_tangjuwu",
+    "evt_1933_mgzsw_gaominzhong",
+    "evt_1934_yangjingyu_zongzhihuibu",
+    "evt_1934_zhaoshangzhi_hadong",
+    "evt_1934_diyijun_chengli",
+    "evt_1935_disanjun_chengli",
+    "evt_1935_diwujun_chengli",
+    "evt_1935_bayi_xuanyan",
+    "evt_1936_tongyi_jianzhi",
+    "evt_1936_gejun_chengli",
+    "evt_1937_youjizhan",
+    "evt_1938_liujie_zhidian",
+    "evt_1939_nanman_huiyi",
+    "evt_1940_yangjingyu_xunguo",
+    "evt_1941_wangyachen_xisheng",
+    "evt_1941_zhaoshangzhi_xiaobudui",
+    "evt_1942_zhaoshangzhi_xisheng",
+    "evt_1942_jiaodaolv_chengli",
+    "evt_1944_yanxi",
+    "evt_1945_riben_touxiang",
+    "evt_1932_yiyongjun_dingsheng",
+    "evt_1931_zgzy_jueyi",
+    "evt_1931_dengtiemei_ziweijun",
+    "evt_1932_jilin_ziweijun",
+    "evt_1932_haerbin_shishou",
+    "evt_1932_weiman_chengli",
+    "evt_1932_qiangfeng_fujji",
+    "evt_1932_panshi_yiyongjun",
+    "evt_1932_bayan_youjidui",
+    "evt_1932_pingdingshan",
+    "evt_1932_yangjingyu_panshi",
+    "evt_1933_126_zhishixin",
+    "evt_1933_yitianuzhu",
+    "evt_1933_dyj_dulishi",
+    "evt_1933_zhuhe_youjidui",
+    "evt_1934_tulongshan",
+    "evt_1934_tongzhangrong_xisheng",
+    "evt_1935_lihongguang_xisheng",
+    "evt_1935_dierjun_chengli",
+    "evt_1935_zhao_yiman",
+    "evt_1936_yijun_xizheng",
+    "evt_1936_xiayunjie_xisheng",
+    "evt_1936_wangdetai_xisheng",
+    "evt_1937_songtieyan_xisheng",
+    "evt_1937_bingtangzi",
+    "evt_1938_shier_lieshi",
+    "evt_1938_chengbin_toudi",
+    "evt_1938_banv_toujiang"
+   ],
+   "weight": 0.7,
+   "count": 52,
+   "exclusive": 27,
+   "share": 0.788,
+   "exclusive_share": 0.409,
+   "single_point": false
+  },
+  {
    "id": "src_1",
    "full": "辽宁日报《大事记》",
    "short": "辽宁日报",
@@ -50,49 +118,8 @@
    "weight": 0.7,
    "count": 37,
    "exclusive": 10,
-   "share": 0.949,
-   "exclusive_share": 0.256,
-   "single_point": false
-  },
-  {
-   "id": "src_2",
-   "full": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
-   "short": "抗战纪念网",
-   "reliability": "B",
-   "reliability_cn": "学术著作/权威报道",
-   "page": "1931年9月",
-   "supports": [
-    "evt_1931_mgzsw_xuanyan",
-    "evt_1931_jiangqiao_kangzhan",
-    "evt_1932_jinxi_gujia",
-    "evt_1932_wangdelin_jiuguojun",
-    "evt_1932_huanren_tangjuwu",
-    "evt_1933_mgzsw_gaominzhong",
-    "evt_1934_yangjingyu_zongzhihuibu",
-    "evt_1934_zhaoshangzhi_hadong",
-    "evt_1934_diyijun_chengli",
-    "evt_1935_disanjun_chengli",
-    "evt_1935_diwujun_chengli",
-    "evt_1935_bayi_xuanyan",
-    "evt_1936_tongyi_jianzhi",
-    "evt_1936_gejun_chengli",
-    "evt_1937_youjizhan",
-    "evt_1938_liujie_zhidian",
-    "evt_1939_nanman_huiyi",
-    "evt_1940_yangjingyu_xunguo",
-    "evt_1941_wangyachen_xisheng",
-    "evt_1941_zhaoshangzhi_xiaobudui",
-    "evt_1942_zhaoshangzhi_xisheng",
-    "evt_1942_jiaodaolv_chengli",
-    "evt_1944_yanxi",
-    "evt_1945_riben_touxiang",
-    "evt_1932_yiyongjun_dingsheng"
-   ],
-   "weight": 0.7,
-   "count": 25,
-   "exclusive": 0,
-   "share": 0.641,
-   "exclusive_share": 0.0,
+   "share": 0.561,
+   "exclusive_share": 0.152,
    "single_point": false
   },
   {
@@ -110,7 +137,7 @@
    "weight": 0.7,
    "count": 3,
    "exclusive": 0,
-   "share": 0.077,
+   "share": 0.045,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -129,7 +156,7 @@
    "weight": 0.7,
    "count": 3,
    "exclusive": 0,
-   "share": 0.077,
+   "share": 0.045,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -146,7 +173,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -163,7 +190,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -180,7 +207,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -197,7 +224,7 @@
    "weight": 0.45,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -214,7 +241,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -231,7 +258,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -248,7 +275,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -265,7 +292,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -282,7 +309,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -299,7 +326,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -316,7 +343,7 @@
    "weight": 0.7,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   },
@@ -333,7 +360,7 @@
    "weight": 0.45,
    "count": 1,
    "exclusive": 0,
-   "share": 0.026,
+   "share": 0.015,
    "exclusive_share": 0.0,
    "single_point": false
   }
@@ -2166,162 +2193,1229 @@
      "reliability": "B"
     }
    ]
+  },
+  {
+   "id": "evt_1931_zgzy_jueyi",
+   "claim": "中共中央作出《关于日本帝国主义强占满洲的决议》，这是九一八事变后中共中央最早的系统性决议之一。",
+   "year": 1931,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1931年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1931年9月",
+     "quote": "22日中共中央作出《关于日本帝国主义强占满洲的决议》。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1931_dengtiemei_ziweijun",
+   "claim": "邓铁梅在凤城小汤沟建立东北民众自卫军，为东北民众自发抗日的代表性起点。",
+   "year": 1931,
+   "precision": "month",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1931年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1931年10月",
+     "quote": "本月初邓铁梅在凤城小汤沟建立抗日武装 东北民众自卫军 。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_jilin_ziweijun",
+   "claim": "以李杜为总司令的吉林自卫军成立，成为吉林抗日武装的主力。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年1月",
+     "quote": "31日 以李杜为总司令的吉林自卫军成立。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_haerbin_shishou",
+   "claim": "哈尔滨失守，吉林自卫军外围作战失败。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年2月",
+     "quote": "5日 哈尔滨失守。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_weiman_chengli",
+   "claim": "伪满洲国成立，傀儡政权发表“建国宣言”，东北沦陷进入新阶段。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年3月",
+     "quote": "1日 伪 建国宣言 发表，傀儡政权伪满洲国成立。9日，清废帝溥仪就任伪国执政。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_qiangfeng_fujji",
+   "claim": "李延禄率救国军补充团在宁安县墙缝一带伏击日军上田支队，为镜泊湖连环战的首役。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "战斗",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年3月",
+     "quote": "18日 李延禄率救国军补充团在宁安县墙缝一带伏击日军上田支队。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_panshi_yiyongjun",
+   "claim": "在中共磐石中心县委领导下，磐石工农反日义勇军正式成立，为南满游击队的基干。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年5月",
+     "quote": "4日 在中共磐石中心县委领导下，磐石工农反日义勇军正式成立。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_bayan_youjidui",
+   "claim": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式成立，张甲洲任总指挥；赵尚志后到该部工作。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年5月",
+     "quote": "16日 东北工农义勇军江北骑兵独立师 (巴彦游击队)正式成立，张甲洲任总指挥。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_pingdingshan",
+   "claim": "日军驻抚顺守备队、宪兵队制造平顶山惨案，屠杀和平居民3000余人。",
+   "year": 1932,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [
+    {
+     "value": 3000,
+     "unit": "人",
+     "source": "抗日战争纪念网《东北抗联大事记》",
+     "qualifier": "约数（3000余人）",
+     "name": "被害人数"
+    }
+   ],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年9月",
+     "quote": "16日 日军驻抚顺守备队、宪兵队制造 平顶山惨案 ，屠杀和平居民 3000余人。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1932_yangjingyu_panshi",
+   "claim": "中共满洲省委派杨靖宇到南满磐石巡视工作，将磐石游击队改编为中国工农红军第三十二军南满游击总队。",
+   "year": 1932,
+   "precision": "month",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "杨靖宇"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1932年11月",
+     "quote": "△中共满洲省委派杨靖宇到南满磐石巡视工作，根据省委指示将磐石游击队( 五洋 队)改编为 中国工农红军第三十二军南满游击总队 。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1933_126_zhishixin",
+   "claim": "中共驻共产国际代表团发出《一·二六指示信》，提出与各种抗日武装建立统一战线，是东北抗日策略的转折点。",
+   "year": 1933,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1933年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1933年1月",
+     "quote": "26日 中共驻共产国际代表团以中共中央名义发出《给满洲各级党部及全体党员的信 论满洲的状况和我们党的任务》(即 一。二六 指示信)。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1933_yitianuzhu",
+   "claim": "日军间岛辎重队日共党员伊田助男以汽车载十万发子弹送交反日游击队，未找到游击队后留下遗书自尽。",
+   "year": 1933,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [
+    {
+     "value": 100000,
+     "unit": "发",
+     "source": "抗日战争纪念网《东北抗联大事记》",
+     "qualifier": "十万发（原文表述）",
+     "name": "子弹"
+    }
+   ],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1933年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1933年3月",
+     "quote": "△日军间岛辎重队中的伊田助男(日共党员)用汽车载十万发子弹送给反日游击队。由于未找到游击队，最后遗书自尽。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1933_dyj_dulishi",
+   "claim": "南满游击队在磐石玻璃河套改编为东北人民革命军第一军独立师，杨靖宇任师长兼政委。",
+   "year": 1933,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "杨靖宇"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1933年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1933年9月",
+     "quote": "18日 中国红军第三十二军南满游击队在磐石玻璃河套改编为东北人民革命军第一军独立师，杨靖宇任师长兼政委。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1933_zhuhe_youjidui",
+   "claim": "珠河东北反日游击队在中东路南三股流宣告成立，赵尚志任队长，为第三军的前身。",
+   "year": 1933,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "赵尚志"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1933年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1933年10月",
+     "quote": "10日 珠河东北反日游击队在中东路南三股流宣告成立，赵尚志任队长。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1934_tulongshan",
+   "claim": "依兰土龙山农民反抗日伪缴枪收地举行暴动，击毙日军联队长饭冢朝吾大佐，随后整编为东北民众救国军（谢文东为总司令）。",
+   "year": 1934,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [
+    {
+     "value": 1,
+     "unit": "人",
+     "source": "抗日战争纪念网《东北抗联大事记》",
+     "qualifier": "饭冢朝吾，关东军第十师团第六十三联队长",
+     "name": "击毙日军大佐"
+    }
+   ],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1934年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1934年3月",
+     "quote": "9日 依兰土龙山农民为反抗日伪统治举行武装暴动，占领太平镇伪警 / 10日 土龙山农民武装击毙前来镇压的关东军第十师团第六十三联队长饭冢朝吾大佐和伪警察大队长盖文义。 / 12日 土龙山农民暴动武装在半截河子召开整编会议，组成 东北民众救国军 ，谢文东为总司令。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1934_tongzhangrong_xisheng",
+   "claim": "中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+   "year": 1934,
+   "precision": "day",
+   "place": "",
+   "event_type": "牺牲",
+   "persons": [
+    "童长荣"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1934年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1934年4月",
+     "quote": "21日 中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1935_lihongguang_xisheng",
+   "claim": "第一军第一师师长李红光在兴京与日军交战中负重伤，次日牺牲。",
+   "year": 1935,
+   "precision": "day",
+   "place": "",
+   "event_type": "牺牲",
+   "persons": [
+    "李红光"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1935年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1935年5月",
+     "quote": "11日 第一军第一师长李红光在兴京与日军交战中负重伤，次日牺牲。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1935_dierjun_chengli",
+   "claim": "东北人民革命军第二军发表成立宣言，王德泰任军长，魏拯民任政治委员。",
+   "year": 1935,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "王德泰",
+    "魏拯民"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1935年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1935年5月",
+     "quote": "30日 东北人民革命军第二军发表成立宣言，二军军长王德泰，政治委员魏拯民。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1935_zhao_yiman",
+   "claim": "第三军二团政治部主任赵一曼在战斗中身负重伤被俘，1936年8月2日英勇就义。",
+   "year": 1935,
+   "precision": "day",
+   "place": "",
+   "event_type": "被捕",
+   "persons": [
+    "赵一曼"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1935年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1935年11月",
+     "quote": "15日 第三军第二团政治部主任、珠河中心县委特派员赵一曼在战斗中身负重伤，后在养伤期间被俘。1936年8月2日英勇就义。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1936_yijun_xizheng",
+   "claim": "第一军第一师自和尚帽子出发向辽西远征，7月15日在本溪摩天岭与日军激战获胜，师参谋长李敏焕牺牲；西征部队后为敌所阻陆续回师。",
+   "year": 1936,
+   "precision": "day",
+   "place": "",
+   "event_type": "转移",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1936年6月",
+     "quote": "28日 第一军第一师开始向辽西远征。 / 7月15日 第一军第一师西征部队在本溪县摩天岭与驻连山关日军激战，战斗中一师参谋长李敏焕不幸牺牲。 / 7月8日 第一军第一师西征军在岫岩县姜家堡子一带为敌军所阻，西征部队陆续回师。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1936_xiayunjie_xisheng",
+   "claim": "第六军军长夏云杰率队在汤原西北活动时遭敌伏击身受重伤，26日牺牲。",
+   "year": 1936,
+   "precision": "day",
+   "place": "",
+   "event_type": "牺牲",
+   "persons": [
+    "夏云杰"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1936年11月",
+     "quote": "23日 第六军军长夏云杰率队在汤原西北活动时，遭敌伏击，身受重伤， 26日牺牲。戴鸿滨代理六军军长。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1936_wangdetai_xisheng",
+   "claim": "第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时遭敌袭击，壮烈牺牲，魏拯民继任军长。",
+   "year": 1936,
+   "precision": "month",
+   "place": "",
+   "event_type": "牺牲",
+   "persons": [
+    "王德泰",
+    "魏拯民"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1936年11月",
+     "quote": "本月 第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时，遭敌袭击，壮烈牺牲，魏拯民继任军长。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1937_songtieyan_xisheng",
+   "claim": "第一军第一师建立在本溪县和尚帽子的密营遭日伪军包围，战斗中一军政治部主任宋铁岩壮烈牺牲。",
+   "year": 1937,
+   "precision": "day",
+   "place": "",
+   "event_type": "牺牲",
+   "persons": [
+    "宋铁岩"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1937年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1937年1月",
+     "quote": "11日 第一军第一师建立在本溪县和尚帽子的密营遭日伪军包围。战斗中，一军政治部主任宋铁岩壮烈牺牲。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1937_bingtangzi",
+   "claim": "赵尚志率第三军西征部队在通北冰趟子设伏，重创日伪军。",
+   "year": 1937,
+   "precision": "day",
+   "place": "",
+   "event_type": "战斗",
+   "persons": [
+    "赵尚志"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1937年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1937年3月",
+     "quote": "7日 赵尚志率第三军西征部队在通北冰趟子设伏重创敌军。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1938_shier_lieshi",
+   "claim": "留守五军后方密营的五军三师八团一连在宝清县小孤山与敌军激战，12名战士壮烈牺牲。此战后小孤山被命名为“十二烈士山”。",
+   "year": 1938,
+   "precision": "day",
+   "place": "",
+   "event_type": "战斗",
+   "persons": [],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [
+    {
+     "value": 12,
+     "unit": "人",
+     "source": "抗日战争纪念网《东北抗联大事记》",
+     "qualifier": "五军三师八团一连",
+     "name": "牺牲"
+    }
+   ],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1938年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1938年3月",
+     "quote": "18日 留守五军后方密营的五军三师八团一连在宝清县境的小孤山与敌军激战，12名战土壮烈牺牲。此战后小孤山被第二路军总部命名为 十二烈士山 。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1938_chengbin_toudi",
+   "claim": "第一军一师师长程斌在本溪挟迫本部投敌，第一路军遭受最严重的内部损失。",
+   "year": 1938,
+   "precision": "day",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "程斌"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1938年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1938年6月",
+     "quote": "29日 第一军一师师长程斌，在本溪县挟迫本部投敌。",
+     "reliability": "B"
+    }
+   ]
+  },
+  {
+   "id": "evt_1938_banv_toujiang",
+   "claim": "第五军一师西征部队回返途中，在乌斯浑河渡口与敌遭遇，妇女团指导员冷云等8名女战士弹尽后投江殉国，史称“八女投江”。",
+   "year": 1938,
+   "precision": "month",
+   "place": "",
+   "event_type": "其他",
+   "persons": [
+    "冷云"
+   ],
+   "supports": [
+    "抗战纪念网"
+   ],
+   "load": 0.7,
+   "conflict_group": null,
+   "measures": [
+    {
+     "value": 8,
+     "unit": "人",
+     "source": "抗日战争纪念网《东北抗联大事记》",
+     "qualifier": "妇女团冷云等8人",
+     "name": "牺牲"
+    }
+   ],
+   "prov": {
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1938年全文（对位入库）"
+    ],
+    "indep": 0,
+    "deriv": 0,
+    "not_searched": [
+     "《东北抗日联军史》纸本",
+     "地方志数据库"
+    ]
+   },
+   "sources": [
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1938年10月",
+     "quote": "本月中旬 第五军一师西征部队向刁翎地区返回途中，在牡丹江支流乌斯浑河渡口与敌遭遇，妇女团冷云等8人壮烈殉国。是为著名的 八女投江 。",
+     "reliability": "B"
+    }
+   ]
   }
  ],
  "resilience": [
   {
+   "source": "抗战纪念网",
+   "full": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
+   "removed": 52,
+   "surviving": 39,
+   "collapse_rate": 0.409
+  },
+  {
    "source": "辽宁日报",
    "full": "辽宁日报《大事记》",
    "removed": 37,
-   "surviving": 29,
-   "collapse_rate": 0.256
-  },
-  {
-   "source": "抗战纪念网",
-   "full": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
-   "removed": 25,
-   "surviving": 39,
-   "collapse_rate": 0.0
+   "surviving": 56,
+   "collapse_rate": 0.152
   },
   {
    "source": "中国军网",
    "full": "中国军网《【追寻先烈足迹】为救国而捐躯的民族英雄邓铁梅》",
    "removed": 3,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "国图",
    "full": "国家图书馆《抗联简史》（引孔令波《军事历史》1986年第4期）",
    "removed": 3,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "黑龙江省文化和旅游厅",
    "full": "黑龙江省文化和旅游厅《文物会说话——守护龙江文脉》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "东北烈士纪念馆馆藏说明",
    "full": "东北烈士纪念馆馆藏说明（东北抗联博物馆）",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "黑龙江省档案馆",
    "full": "黑龙江省档案馆《义勇军进行曲的奏响》专题",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "察哈尔抗战遗址展陈",
    "full": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "中央档案馆",
    "full": "中央档案馆《东北人民抗击日本帝国主义侵略档案文献网上展览》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "央视网",
    "full": "央视网《为抗日牺牲的他们，在绝笔中留下最后的嘱托》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
    "full": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "赵尚志馆",
    "full": "赵尚志纪念馆《大事年表》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "南京大屠杀馆",
    "full": "侵华日军南京大屠杀遇难同胞纪念馆《抗日将领赵尚志生命的最后时刻》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "彭施鲁",
    "full": "彭施鲁《东北抗日联军和苏联远东军关系回顾》（载《中共党史资料》）",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "人民日报",
    "full": "人民日报《弘扬历久弥新的东北抗联精神》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   },
   {
    "source": "莆田博物馆",
    "full": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
    "removed": 1,
-   "surviving": 39,
+   "surviving": 66,
    "collapse_rate": 0.0
   }
  ],
  "year_series": [
   {
    "year": 1931,
-   "n": 5,
-   "avg_load": 0.98
+   "n": 7,
+   "avg_load": 0.9
   },
   {
    "year": 1932,
-   "n": 6,
-   "avg_load": 1.59
+   "n": 14,
+   "avg_load": 1.08
   },
   {
    "year": 1933,
-   "n": 4,
-   "avg_load": 1.16
+   "n": 8,
+   "avg_load": 0.93
   },
   {
    "year": 1934,
-   "n": 7,
-   "avg_load": 1.2
+   "n": 9,
+   "avg_load": 1.09
   },
   {
    "year": 1935,
-   "n": 3,
-   "avg_load": 1.4
+   "n": 6,
+   "avg_load": 1.05
   },
   {
    "year": 1936,
-   "n": 3,
-   "avg_load": 1.63
+   "n": 6,
+   "avg_load": 1.17
   },
   {
    "year": 1937,
-   "n": 1,
-   "avg_load": 1.4
+   "n": 3,
+   "avg_load": 0.93
   },
   {
    "year": 1938,
-   "n": 1,
-   "avg_load": 1.4
+   "n": 4,
+   "avg_load": 0.88
   },
   {
    "year": 1939,
@@ -2360,15 +3454,15 @@
   }
  ],
  "stats": {
-  "conclusions": 39,
+  "conclusions": 66,
   "sources": 16,
-  "single_support": 10,
-  "single_support_rate": 0.256,
-  "no_primary_source": 39,
-  "top_source_share": 0.949,
-  "top_exclusive_share": 0.256,
+  "single_support": 37,
+  "single_support_rate": 0.561,
+  "no_primary_source": 66,
+  "top_source_share": 0.788,
+  "top_exclusive_share": 0.409,
   "critical_sources": 0,
-  "deep_searched": 20,
+  "deep_searched": 47,
   "shallow_searched": 19,
   "unsearched": 0
  }
