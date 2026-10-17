@@ -49,10 +49,10 @@ window.__MIYING_STRUCT__ = {
    ],
    "weight": 0.7,
    "count": 37,
-   "exclusive": 22,
+   "exclusive": 10,
    "share": 0.949,
-   "exclusive_share": 0.564,
-   "single_point": true
+   "exclusive_share": 0.256,
+   "single_point": false
   },
   {
    "id": "src_2",
@@ -67,26 +67,36 @@ window.__MIYING_STRUCT__ = {
     "evt_1932_jinxi_gujia",
     "evt_1932_wangdelin_jiuguojun",
     "evt_1932_huanren_tangjuwu",
+    "evt_1933_mgzsw_gaominzhong",
     "evt_1934_yangjingyu_zongzhihuibu",
     "evt_1934_zhaoshangzhi_hadong",
     "evt_1934_diyijun_chengli",
     "evt_1935_disanjun_chengli",
     "evt_1935_diwujun_chengli",
     "evt_1935_bayi_xuanyan",
+    "evt_1936_tongyi_jianzhi",
+    "evt_1936_gejun_chengli",
+    "evt_1937_youjizhan",
+    "evt_1938_liujie_zhidian",
+    "evt_1939_nanman_huiyi",
     "evt_1940_yangjingyu_xunguo",
+    "evt_1941_wangyachen_xisheng",
+    "evt_1941_zhaoshangzhi_xiaobudui",
     "evt_1942_zhaoshangzhi_xisheng",
     "evt_1942_jiaodaolv_chengli",
+    "evt_1944_yanxi",
+    "evt_1945_riben_touxiang",
     "evt_1932_yiyongjun_dingsheng"
    ],
    "weight": 0.7,
-   "count": 15,
+   "count": 25,
    "exclusive": 0,
-   "share": 0.385,
+   "share": 0.641,
    "exclusive_share": 0.0,
    "single_point": false
   },
   {
-   "id": "src_3",
+   "id": "src_8",
    "full": "中国军网《【追寻先烈足迹】为救国而捐躯的民族英雄邓铁梅》",
    "short": "中国军网",
    "reliability": "B",
@@ -105,7 +115,7 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_8",
+   "id": "src_14",
    "full": "国家图书馆《抗联简史》（引孔令波《军事历史》1986年第4期）",
    "short": "国图",
    "reliability": "B",
@@ -124,7 +134,92 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
+   "id": "src_3",
+   "full": "黑龙江省文化和旅游厅《文物会说话——守护龙江文脉》",
+   "short": "黑龙江省文化和旅游厅",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "2025-08-30",
+   "supports": [
+    "evt_1932_mgzsw_gaoshu"
+   ],
+   "weight": 0.7,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
    "id": "src_4",
+   "full": "东北烈士纪念馆馆藏说明（东北抗联博物馆）",
+   "short": "东北烈士纪念馆馆藏说明",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "藏品条目",
+   "supports": [
+    "evt_1932_mgzsw_gaoshu"
+   ],
+   "weight": 0.7,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
+   "id": "src_5",
+   "full": "黑龙江省档案馆《义勇军进行曲的奏响》专题",
+   "short": "黑龙江省档案馆",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "2025-09-20",
+   "supports": [
+    "evt_1932_mgzsw_gaoshu"
+   ],
+   "weight": 0.7,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
+   "id": "src_6",
+   "full": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）",
+   "short": "察哈尔抗战遗址展陈",
+   "reliability": "C",
+   "reliability_cn": "回忆录/展陈说明",
+   "page": "遗址认定材料（经百科条目转引）",
+   "supports": [
+    "evt_1933_duolun_shoufu"
+   ],
+   "weight": 0.45,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
+   "id": "src_7",
+   "full": "中央档案馆《东北人民抗击日本帝国主义侵略档案文献网上展览》",
+   "short": "中央档案馆",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "2020-08-27（微信发布）",
+   "supports": [
+    "evt_1933_mgzsw_gaominzhong"
+   ],
+   "weight": 0.7,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
+   "id": "src_9",
    "full": "央视网《为抗日牺牲的他们，在绝笔中留下最后的嘱托》",
    "short": "央视网",
    "reliability": "B",
@@ -141,7 +236,24 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_5",
+   "id": "src_10",
+   "full": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+   "short": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+   "reliability": "B",
+   "reliability_cn": "学术著作/权威报道",
+   "page": "2025-07-31",
+   "supports": [
+    "evt_1936_tongyi_jianzhi"
+   ],
+   "weight": 0.7,
+   "count": 1,
+   "exclusive": 0,
+   "share": 0.026,
+   "exclusive_share": 0.0,
+   "single_point": false
+  },
+  {
+   "id": "src_11",
    "full": "赵尚志纪念馆《大事年表》",
    "short": "赵尚志馆",
    "reliability": "B",
@@ -158,7 +270,7 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_6",
+   "id": "src_12",
    "full": "侵华日军南京大屠杀遇难同胞纪念馆《抗日将领赵尚志生命的最后时刻》",
    "short": "南京大屠杀馆",
    "reliability": "B",
@@ -175,7 +287,7 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_7",
+   "id": "src_13",
    "full": "彭施鲁《东北抗日联军和苏联远东军关系回顾》（载《中共党史资料》）",
    "short": "彭施鲁",
    "reliability": "B",
@@ -192,7 +304,7 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_9",
+   "id": "src_15",
    "full": "人民日报《弘扬历久弥新的东北抗联精神》",
    "short": "人民日报",
    "reliability": "B",
@@ -209,7 +321,7 @@ window.__MIYING_STRUCT__ = {
    "single_point": false
   },
   {
-   "id": "src_10",
+   "id": "src_16",
    "full": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
    "short": "莆田博物馆",
    "reliability": "C",
@@ -535,19 +647,25 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "黑龙江省文化和旅游厅",
+    "东北烈士纪念馆馆藏说明",
+    "黑龙江省档案馆"
    ],
-   "load": 0.7,
+   "load": 2.8,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1932年（全文抓取）",
+     "告满洲各地义勇军书 1932年3月31日"
+    ],
     "indep": 0,
-    "deriv": 0,
+    "deriv": 2,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "中央档案馆纸本原件（未开放线上检索）"
     ]
    },
    "sources": [
@@ -556,6 +674,27 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "3月31日：中共满洲省委发表《告满洲各地义勇军书》。",
+     "reliability": "B"
+    },
+    {
+     "book": "黑龙江省文化和旅游厅《文物会说话——守护龙江文脉》",
+     "short": "黑龙江省文化和旅游厅",
+     "page": "2025-08-30",
+     "quote": "1932年3月31日，中共满洲省委印发《告满洲各地义勇军书》，鼓舞义勇军团结劳苦群众，坚决与日本侵略者战斗。在党的号召下，义勇军迅速壮大，半年多就发展到30多万人，遍布东北93个市县。",
+     "reliability": "B"
+    },
+    {
+     "book": "东北烈士纪念馆馆藏说明（东北抗联博物馆）",
+     "short": "东北烈士纪念馆馆藏说明",
+     "page": "藏品条目",
+     "quote": "《告满洲各地义勇军书》为黄褐色薄纸，1页……刻印时间在标题下面，写的是“1931年3月31日”。因行文内写的是1931年九一八事变后日本帝国主义已侵占东北三省，故以上时间显然是笔误，应为“1932年3月31日”。",
+     "reliability": "B"
+    },
+    {
+     "book": "黑龙江省档案馆《义勇军进行曲的奏响》专题",
+     "short": "黑龙江省档案馆",
+     "page": "2025-09-20",
+     "quote": "自1931年起中共满洲省委发表《告满洲各地义勇军书》《为反对日本帝国主义进攻热河华北举行援助义勇军运动周的决议》……",
      "reliability": "B"
     }
    ]
@@ -623,13 +762,17 @@ window.__MIYING_STRUCT__ = {
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1932年（全文抓取）",
+     "东北民众抗日救国会 义勇军 统一改编 军区 1932年"
+    ],
     "indep": 0,
-    "deriv": 0,
+    "deriv": 3,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《东北民众抗日救国会会刊》纸本（未获取）",
+     "辽宁地方志数据库"
     ]
    },
    "sources": [
@@ -657,13 +800,16 @@ window.__MIYING_STRUCT__ = {
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1933年（全文抓取）",
+     "1933年2月 热河保卫战 爆发"
+    ],
     "indep": 0,
-    "deriv": 0,
+    "deriv": 4,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "中国人民抗日战争纪念馆馆藏专题展（线上未开放）"
     ]
    },
    "sources": [
@@ -691,13 +837,16 @@ window.__MIYING_STRUCT__ = {
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1933年（全文抓取）",
+     "1933年3月 长城抗战 爆发"
+    ],
     "indep": 0,
-    "deriv": 0,
+    "deriv": 4,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《长城抗战史》纸本"
     ]
    },
    "sources": [
@@ -719,19 +868,24 @@ window.__MIYING_STRUCT__ = {
    "event_type": "战斗",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "察哈尔抗战遗址展陈"
    ],
-   "load": 0.7,
+   "load": 1.15,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1933年（全文抓取）",
+     "1933年7月12日 吉鸿昌 抗日同盟军 收复多伦"
+    ],
     "indep": 0,
-    "deriv": 0,
+    "deriv": 4,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《吉鸿昌传》纸本",
+     "内蒙古自治区地方志"
     ]
    },
    "sources": [
@@ -741,6 +895,13 @@ window.__MIYING_STRUCT__ = {
      "page": "2025-09-18",
      "quote": "6月：抗日同盟军收复多伦等地。",
      "reliability": "B"
+    },
+    {
+     "book": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）",
+     "short": "察哈尔抗战遗址展陈",
+     "page": "遗址认定材料（经百科条目转引）",
+     "quote": "1933年7月12日，察哈尔民众抗日同盟军收复多伦……遗址包含察哈尔抗日同盟军收复多伦指挥部（察哈尔抗战纪念馆）、吉鸿昌将军演讲台、同盟军收复多伦战斗旧址等核心组成部分。",
+     "reliability": "C"
     }
    ]
   },
@@ -753,19 +914,24 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "中央档案馆",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 2.1,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
-    "indep": 0,
-    "deriv": 0,
+    "depth": "deep",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1933年（全文抓取）",
+     "为反对日本强盗围剿东北义勇军告东北民众书"
+    ],
+    "indep": 1,
+    "deriv": 2,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "中央档案馆纸本原件"
     ]
    },
    "sources": [
@@ -774,6 +940,20 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "7月：中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》，号召东北抗日武装坚持抗战。",
+     "reliability": "B"
+    },
+    {
+     "book": "中央档案馆《东北人民抗击日本帝国主义侵略档案文献网上展览》",
+     "short": "中央档案馆",
+     "page": "2020-08-27（微信发布）",
+     "quote": "1933年7月11日，中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。(中央档案馆提供)",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗日联军1933年大事记》",
+     "short": "抗战纪念网",
+     "page": "2017-08-05",
+     "quote": "11日 中共满洲省委发表《为反对日本强盗“围剿”东北义勇军告东北民众书》。",
      "reliability": "B"
     }
    ]
@@ -982,13 +1162,17 @@ window.__MIYING_STRUCT__ = {
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
-    "indep": 0,
-    "deriv": 0,
+    "depth": "shallow",
+    "probes": 2,
+    "queries": [
+     "东北抗联大事记 1934年（全文抓取）",
+     "杨靖宇 桓仁 收编山林队 1934年7月"
+    ],
+    "indep": 1,
+    "deriv": 3,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "本溪地方志",
+     "《杨靖宇年谱》纸本"
     ]
    },
    "sources": [
@@ -1225,19 +1409,23 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网",
+    "本溪县人民政府“铭记历史 缅怀先烈”专栏"
    ],
-   "load": 0.7,
+   "load": 2.1,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "宣言原件（中央档案馆）"
     ]
    },
    "sources": [
@@ -1246,6 +1434,20 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月20日：《东北抗日联军统一军队建制宣言》发表。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1936年2月",
+     "quote": "20日 《东北抗日联军统一军队建制宣言》发表。",
+     "reliability": "B"
+    },
+    {
+     "book": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+     "short": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+     "page": "2025-07-31",
+     "quote": "1936年2月20日，中国共产党领导的东北人民革命军共同发表《东北抗日联军统一军队建制宣言》，宣布东北人民革命军“一律改组军队建制为东北抗日联军”。",
      "reliability": "B"
     }
    ]
@@ -1259,19 +1461,22 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "各军成立宣言原件"
     ]
    },
    "sources": [
@@ -1280,6 +1485,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1936年春：东北抗日联军各军陆续成立，收编大量抗日义勇军余部。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1936年2月",
+     "quote": "本月上旬 东北人民革命军第二军在安图县迷魂阵召开领导干部会议，决定改编为东北抗日联军第二军，王德泰任军长，魏拯民任政委。",
      "reliability": "B"
     }
    ]
@@ -1293,19 +1505,22 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1937年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《东北抗日联军史》纸本"
     ]
    },
    "sources": [
@@ -1314,6 +1529,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1937年：东北抗联各部在东北坚持游击战，配合全国抗战。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1937年7月",
+     "quote": "18日 北满抗联总司令部发出紧急通知，号召北满人民积极行动起来，配合全国抗战。",
      "reliability": "B"
     }
    ]
@@ -1327,19 +1549,22 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1938年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "六中全会慰问电原件（《中共中央文件选集》）"
     ]
    },
    "sources": [
@@ -1348,6 +1573,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "11月：中共六届六中全会致电慰问东北抗日联军和义勇军。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1938年11月",
+     "quote": "5日 中国共产党扩大的六届六中全会向以杨靖宇为代表的东北抗日联军，义勇军和全体东北同胞发出慰问电。",
      "reliability": "B"
     }
    ]
@@ -1361,19 +1593,22 @@ window.__MIYING_STRUCT__ = {
    "event_type": "会议",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1939年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《周保中日记》纸本"
     ]
    },
    "sources": [
@@ -1382,6 +1617,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "10月：中共南满省委和东北抗日联军第一路军主要领导干部会议召开，研究对敌斗争策略，决定把部队化整为零，实行分散游击，伺机歼敌。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1939年10月",
+     "quote": "1日 中共南满省委和第一路军主要领导人在桦甸头道溜河举行会议研究对敌斗争策略。",
      "reliability": "B"
     }
    ]
@@ -1454,19 +1696,22 @@ window.__MIYING_STRUCT__ = {
     "张忠喜"
    ],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1941年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "五常县烈士陵园展陈（线上未开放）"
     ]
    },
    "sources": [
@@ -1475,6 +1720,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1月：东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1941年1月",
+     "quote": "29日第十军军长汪雅臣、副军长张忠喜在五常县石头亮子与敌战斗中壮烈牺牲。",
      "reliability": "B"
     }
    ]
@@ -1490,19 +1742,22 @@ window.__MIYING_STRUCT__ = {
     "赵尚志"
    ],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1941年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《赵尚志传》纸本"
     ]
    },
    "sources": [
@@ -1511,6 +1766,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "10月：赵尚志率小部队在萝北、汤原、鹤立一带活动。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1941年10月",
+     "quote": "本月 赵尚志率由5人组成的小部队由苏联返回萝北、汤原、鹤立一带活动。",
      "reliability": "B"
     }
    ]
@@ -1664,13 +1926,15 @@ window.__MIYING_STRUCT__ = {
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1943年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "《周保中日记》纸本"
     ]
    },
    "sources": [
@@ -1692,19 +1956,22 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1944年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "教导旅老兵口述（未采）"
     ]
    },
    "sources": [
@@ -1713,6 +1980,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "12月：东北抗日联军教导旅在野营驻地附近进行实战军事演习。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1944年12月",
+     "quote": "本月 抗联教导旅在训练营地进行一个多月的军事演习。",
      "reliability": "B"
     }
    ]
@@ -1726,20 +2000,21 @@ window.__MIYING_STRUCT__ = {
    "event_type": "其他",
    "persons": [],
    "supports": [
-    "辽宁日报"
+    "辽宁日报",
+    "抗战纪念网"
    ],
-   "load": 0.7,
+   "load": 1.4,
    "conflict_group": null,
    "measures": [],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "deep",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1945年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
-    "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
-    ]
+    "not_searched": []
    },
    "sources": [
     {
@@ -1747,6 +2022,13 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "8月15日：日本宣布无条件投降。",
+     "reliability": "B"
+    },
+    {
+     "book": "抗日战争纪念网《东北抗联大事记》",
+     "short": "抗战纪念网",
+     "page": "1945年8月",
+     "quote": "15日 日本天皇宣布无条件投降，并颁发停战诏书。",
      "reliability": "B"
     }
    ]
@@ -1782,13 +2064,16 @@ window.__MIYING_STRUCT__ = {
     }
    ],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1936年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "孔令波《东北抗日联军史》纸本",
+     "《军事历史》1986年第4期原文"
     ]
    },
    "sources": [
@@ -1847,13 +2132,15 @@ window.__MIYING_STRUCT__ = {
     }
    ],
    "prov": {
-    "depth": "none",
-    "probes": 0,
-    "queries": [],
+    "depth": "shallow",
+    "probes": 1,
+    "queries": [
+     "东北抗联大事记 1932年（全文抓取）"
+    ],
     "indep": 0,
     "deriv": 0,
     "not_searched": [
-     "本条尚未逐条检索 —— 不冒充已检索"
+     "孔令波《东北抗日义勇军人数考》纸本原文"
     ]
    },
    "sources": [
@@ -1886,13 +2173,13 @@ window.__MIYING_STRUCT__ = {
    "source": "辽宁日报",
    "full": "辽宁日报《大事记》",
    "removed": 37,
-   "surviving": 17,
-   "collapse_rate": 0.564
+   "surviving": 29,
+   "collapse_rate": 0.256
   },
   {
    "source": "抗战纪念网",
    "full": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
-   "removed": 15,
+   "removed": 25,
    "surviving": 39,
    "collapse_rate": 0.0
   },
@@ -1911,8 +2198,50 @@ window.__MIYING_STRUCT__ = {
    "collapse_rate": 0.0
   },
   {
+   "source": "黑龙江省文化和旅游厅",
+   "full": "黑龙江省文化和旅游厅《文物会说话——守护龙江文脉》",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
+   "source": "东北烈士纪念馆馆藏说明",
+   "full": "东北烈士纪念馆馆藏说明（东北抗联博物馆）",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
+   "source": "黑龙江省档案馆",
+   "full": "黑龙江省档案馆《义勇军进行曲的奏响》专题",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
+   "source": "察哈尔抗战遗址展陈",
+   "full": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
+   "source": "中央档案馆",
+   "full": "中央档案馆《东北人民抗击日本帝国主义侵略档案文献网上展览》",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
    "source": "央视网",
    "full": "央视网《为抗日牺牲的他们，在绝笔中留下最后的嘱托》",
+   "removed": 1,
+   "surviving": 39,
+   "collapse_rate": 0.0
+  },
+  {
+   "source": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+   "full": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
    "removed": 1,
    "surviving": 39,
    "collapse_rate": 0.0
@@ -1962,12 +2291,12 @@ window.__MIYING_STRUCT__ = {
   {
    "year": 1932,
    "n": 6,
-   "avg_load": 1.24
+   "avg_load": 1.59
   },
   {
    "year": 1933,
    "n": 4,
-   "avg_load": 0.7
+   "avg_load": 1.16
   },
   {
    "year": 1934,
@@ -1982,22 +2311,22 @@ window.__MIYING_STRUCT__ = {
   {
    "year": 1936,
    "n": 3,
-   "avg_load": 0.93
+   "avg_load": 1.63
   },
   {
    "year": 1937,
    "n": 1,
-   "avg_load": 0.7
+   "avg_load": 1.4
   },
   {
    "year": 1938,
    "n": 1,
-   "avg_load": 0.7
+   "avg_load": 1.4
   },
   {
    "year": 1939,
    "n": 1,
-   "avg_load": 0.7
+   "avg_load": 1.4
   },
   {
    "year": 1940,
@@ -2007,7 +2336,7 @@ window.__MIYING_STRUCT__ = {
   {
    "year": 1941,
    "n": 2,
-   "avg_load": 0.7
+   "avg_load": 1.4
   },
   {
    "year": 1942,
@@ -2022,25 +2351,25 @@ window.__MIYING_STRUCT__ = {
   {
    "year": 1944,
    "n": 1,
-   "avg_load": 0.7
+   "avg_load": 1.4
   },
   {
    "year": 1945,
    "n": 1,
-   "avg_load": 0.7
+   "avg_load": 1.4
   }
  ],
  "stats": {
   "conclusions": 39,
-  "sources": 10,
-  "single_support": 22,
-  "single_support_rate": 0.564,
+  "sources": 16,
+  "single_support": 10,
+  "single_support_rate": 0.256,
   "no_primary_source": 39,
   "top_source_share": 0.949,
-  "top_exclusive_share": 0.564,
-  "critical_sources": 1,
-  "deep_searched": 9,
-  "shallow_searched": 11,
-  "unsearched": 19
+  "top_exclusive_share": 0.256,
+  "critical_sources": 0,
+  "deep_searched": 20,
+  "shallow_searched": 19,
+  "unsearched": 0
  }
 };

@@ -70,6 +70,23 @@
   ],
   "date_variants": [
     {
+      "event_id": "evt_1933_duolun_shoufu",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 41,
+      "a": {
+        "value": "1933-06-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1933-07-12",
+        "precision": "day",
+        "source": "察哈尔抗战遗址展陈（经百科转引）"
+      },
+      "severity": "high"
+    },
+    {
       "event_id": "evt_1934_zhaoshangzhi_hadong",
       "field": "date.start",
       "kind": "precision",
@@ -87,6 +104,23 @@
       "severity": "low"
     },
     {
+      "event_id": "evt_1941_wangyachen_xisheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 28,
+      "a": {
+        "value": "1941-01-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1941-01-29",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
       "event_id": "evt_1934_yangjingyu_zongzhihuibu",
       "field": "date.start",
       "kind": "precision",
@@ -98,6 +132,57 @@
       },
       "b": {
         "value": "1934-02-21",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1933_mgzsw_gaominzhong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 10,
+      "a": {
+        "value": "1933-07-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1933-07-11",
+        "precision": "day",
+        "source": "中央档案馆档案文献网上展览"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1933_mgzsw_gaominzhong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 10,
+      "a": {
+        "value": "1933-07-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1933-07-11",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗日联军1933年大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1938_liujie_zhidian",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 4,
+      "a": {
+        "value": "1938-11-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1938-11-05",
         "precision": "day",
         "source": "抗日战争纪念网《东北抗联大事记》"
       },
@@ -129,13 +214,13 @@
     "evt_1931_gelin_gaibian": 0.7,
     "evt_1932_jinxi_gujia": 0.78,
     "evt_1932_wangdelin_jiuguojun": 0.78,
-    "evt_1932_mgzsw_gaoshu": 0.7,
+    "evt_1932_mgzsw_gaoshu": 0.94,
     "evt_1932_huanren_tangjuwu": 0.78,
     "evt_1932_junqu_gaibian": 0.7,
     "evt_1933_rehe_baoweizhan": 0.7,
     "evt_1933_changcheng_kangzhan": 0.7,
-    "evt_1933_duolun_shoufu": 0.7,
-    "evt_1933_mgzsw_gaominzhong": 0.7,
+    "evt_1933_duolun_shoufu": 0.78,
+    "evt_1933_mgzsw_gaominzhong": 0.86,
     "evt_1934_yangjingyu_zongzhihuibu": 0.78,
     "evt_1934_gaoxingya_xisheng": 0.7,
     "evt_1934_dengtiemei_beibu": 0.86,
@@ -146,19 +231,19 @@
     "evt_1935_disanjun_chengli": 0.78,
     "evt_1935_diwujun_chengli": 0.78,
     "evt_1935_bayi_xuanyan": 0.78,
-    "evt_1936_tongyi_jianzhi": 0.7,
-    "evt_1936_gejun_chengli": 0.7,
-    "evt_1937_youjizhan": 0.7,
-    "evt_1938_liujie_zhidian": 0.7,
-    "evt_1939_nanman_huiyi": 0.7,
+    "evt_1936_tongyi_jianzhi": 0.86,
+    "evt_1936_gejun_chengli": 0.78,
+    "evt_1937_youjizhan": 0.78,
+    "evt_1938_liujie_zhidian": 0.78,
+    "evt_1939_nanman_huiyi": 0.78,
     "evt_1940_yangjingyu_xunguo": 0.86,
-    "evt_1941_wangyachen_xisheng": 0.7,
-    "evt_1941_zhaoshangzhi_xiaobudui": 0.7,
+    "evt_1941_wangyachen_xisheng": 0.78,
+    "evt_1941_zhaoshangzhi_xiaobudui": 0.78,
     "evt_1942_zhaoshangzhi_xisheng": 0.94,
     "evt_1942_jiaodaolv_chengli": 0.94,
     "evt_1943_hulin_raohe": 0.7,
-    "evt_1944_yanxi": 0.7,
-    "evt_1945_riben_touxiang": 0.7,
+    "evt_1944_yanxi": 0.78,
+    "evt_1945_riben_touxiang": 0.78,
     "evt_1936_kanglian_dingsheng": 0.66,
     "evt_1932_yiyongjun_dingsheng": 0.74
   }

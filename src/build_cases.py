@@ -400,8 +400,15 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
     subject = ("、".join(ev.get("persons") or [])
                or "、".join(ev.get("units") or [])
                or "该事件")
-    act = {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕",
-           "会议": "开会", "转移": "转移", "密营建立": "建立密营"}.get(et, "成立")
+    # 文书/宣言类事件没有人物与部队，主体从摘要里的书名号提取——
+    # 否则会写成「该事件成立于何时」，案名不知所云。
+    m_doc = re.search(r"《([^》]+)》", ev.get("summary") or "")
+    if m_doc:
+        subject = f"《{m_doc.group(1)}》"
+        act = "发表"
+    else:
+        act = {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕",
+               "会议": "开会", "转移": "转移", "密营建立": "建立密营"}.get(et, "成立")
 
     srcs = [{
         "book": s.get("book"), "short": short_src(s.get("book")),

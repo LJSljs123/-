@@ -136,6 +136,126 @@ window.__MIYING_CASES__ = {
    "id": "case_kl_002",
    "case_no": "KL-002",
    "kind": "settled",
+   "title": "《告满洲各地义勇军书》发表于何时",
+   "claim_text": "《告满洲各地义勇军书》于1932年发表",
+   "event_id": "evt_1932_mgzsw_gaoshu",
+   "predicate": "发表时间",
+   "unit": null,
+   "values": [],
+   "summary": "中共满洲省委发表《告满洲各地义勇军书》。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "命题拆成 4 个原子断言。本次有 4 条独立来源可比对。"
+     ],
+     "assertions": [
+      {
+       "k": "主体",
+       "v": "《告满洲各地义勇军书》",
+       "state": "确定"
+      },
+      {
+       "k": "时点",
+       "v": "1932年（4 条来源均记此年）",
+       "state": "确定"
+      },
+      {
+       "k": "月日",
+       "v": "3月31日",
+       "state": "确定"
+      },
+      {
+       "k": "地点",
+       "v": "原文未载地点",
+       "state": "缺失"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内共 4 条记载，均指向同一事件。原文逐字照录。"
+     ],
+     "evidence": [
+      {
+       "book": "辽宁日报《大事记》",
+       "short": "辽宁日报",
+       "page": "2025-09-18",
+       "quote": "3月31日：中共满洲省委发表《告满洲各地义勇军书》。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "黑龙江省文化和旅游厅《文物会说话——守护龙江文脉》",
+       "short": "黑龙江省文化和旅游厅",
+       "page": "2025-08-30",
+       "quote": "1932年3月31日，中共满洲省委印发《告满洲各地义勇军书》，鼓舞义勇军团结劳苦群众，坚决与日本侵略者战斗。在党的号召下，义勇军迅速壮大，半年多就发展到30多万人，遍布东北93个市县。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "东北烈士纪念馆馆藏说明（东北抗联博物馆）",
+       "short": "东北烈士纪念馆馆藏说明",
+       "page": "藏品条目",
+       "quote": "《告满洲各地义勇军书》为黄褐色薄纸，1页……刻印时间在标题下面，写的是“1931年3月31日”。因行文内写的是1931年九一八事变后日本帝国主义已侵占东北三省，故以上时间显然是笔误，应为“1932年3月31日”。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "黑龙江省档案馆《义勇军进行曲的奏响》专题",
+       "short": "黑龙江省档案馆",
+       "page": "2025-09-20",
+       "quote": "自1931年起中共满洲省委发表《告满洲各地义勇军书》《为反对日本帝国主义进攻热河华北举行援助义勇军运动周的决议》……",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "质证",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R3",
+       "name": "库内无一手档案",
+       "severity": "medium",
+       "text": "4 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-002",
+     "status": "settled",
+     "status_cn": "可以定谳",
+     "missing": [],
+     "conservative": "4 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "high_count": 0
+    }
+   ]
+  },
+  {
+   "id": "case_kl_003",
+   "case_no": "KL-003",
+   "kind": "settled",
    "title": "赵尚志牺牲于何时",
    "claim_text": "赵尚志于1942年牺牲",
    "event_id": "evt_1942_zhaoshangzhi_xisheng",
@@ -243,7 +363,7 @@ window.__MIYING_CASES__ = {
     {
      "kind": "register",
      "agent": "存疑",
-     "case_no": "KL-002",
+     "case_no": "KL-003",
      "status": "settled",
      "status_cn": "可以定谳",
      "missing": [],
@@ -253,16 +373,16 @@ window.__MIYING_CASES__ = {
    ]
   },
   {
-   "id": "case_kl_003",
-   "case_no": "KL-003",
+   "id": "case_kl_004",
+   "case_no": "KL-004",
    "kind": "settled",
-   "title": "邓铁梅被捕于何时",
-   "claim_text": "邓铁梅于1934年被捕",
-   "event_id": "evt_1934_dengtiemei_beibu",
-   "predicate": "被捕时间",
+   "title": "《为反对日本强盗围剿东北义勇军告东北民众书》发表于何时",
+   "claim_text": "《为反对日本强盗围剿东北义勇军告东北民众书》于1933年发表",
+   "event_id": "evt_1933_mgzsw_gaominzhong",
+   "predicate": "发表时间",
    "unit": null,
    "values": [],
-   "summary": "东北民众自卫军司令邓铁梅被捕，9月牺牲。",
+   "summary": "中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。",
    "steps": [
     {
      "kind": "decompose",
@@ -273,18 +393,18 @@ window.__MIYING_CASES__ = {
      "assertions": [
       {
        "k": "主体",
-       "v": "邓铁梅",
+       "v": "《为反对日本强盗围剿东北义勇军告东北民众书》",
        "state": "确定"
       },
       {
        "k": "时点",
-       "v": "1934年（3 条来源均记此年）",
+       "v": "1933年（3 条来源均记此年）",
        "state": "确定"
       },
       {
        "k": "月日",
-       "v": "5月／未载具体时间",
-       "state": "较粗"
+       "v": "7月11日",
+       "state": "确定"
       },
       {
        "k": "地点",
@@ -304,7 +424,7 @@ window.__MIYING_CASES__ = {
        "book": "辽宁日报《大事记》",
        "short": "辽宁日报",
        "page": "2025-09-18",
-       "quote": "5月：东北民众自卫军司令邓铁梅被捕，9月牺牲。",
+       "quote": "7月：中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》，号召东北抗日武装坚持抗战。",
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -312,10 +432,10 @@ window.__MIYING_CASES__ = {
        "is_primary": false
       },
       {
-       "book": "中国军网《【追寻先烈足迹】为救国而捐躯的民族英雄邓铁梅》",
-       "short": "中国军网",
-       "page": "2020-09-16",
-       "quote": "邓铁梅正式创建了辽东地区第一支民众抗日武装——东北民众自卫军，邓铁梅任司令。",
+       "book": "中央档案馆《东北人民抗击日本帝国主义侵略档案文献网上展览》",
+       "short": "中央档案馆",
+       "page": "2020-08-27（微信发布）",
+       "quote": "1933年7月11日，中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。(中央档案馆提供)",
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -323,127 +443,10 @@ window.__MIYING_CASES__ = {
        "is_primary": false
       },
       {
-       "book": "央视网《为抗日牺牲的他们，在绝笔中留下最后的嘱托》",
-       "short": "央视网",
-       "page": "2025-04-03",
-       "quote": "1934年5月，东北民众自卫军总司令邓铁梅被捕，9月牺牲。面对艰难局面，苗可秀毅然接过东北民众自卫军的大旗继续战斗。",
-       "reliability": "B",
-       "reliability_cn": "学术著作/权威报道",
-       "value": null,
-       "unit": null,
-       "is_primary": false
-      }
-     ],
-     "side": []
-    },
-    {
-     "kind": "examine",
-     "agent": "质证",
-     "lines": [],
-     "challenges": [
-      {
-       "code": "R8",
-       "name": "时间精度不一致",
-       "severity": "medium",
-       "text": "3 条来源对年份没有分歧，但月日停在不同的精度上：「5月」(辽宁日报)、「未载具体时间」(中国军网)、「5月」(央视网)。这不是矛盾，是粗细不同——粗的让位于细的，但细的一方仍需第二家佐证。"
-      },
-      {
-       "code": "R3",
-       "name": "库内无一手档案",
-       "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
-      }
-     ]
-    },
-    {
-     "kind": "register",
-     "agent": "存疑",
-     "case_no": "KL-003",
-     "status": "settled",
-     "status_cn": "可以定谳 · 限于月",
-     "missing": [
-      "日层面的分歧需原始档案或命令原件才能消除"
-     ],
-     "conservative": "3 条独立来源对「1934年」没有分歧，这一点可以定谳。月日层面各方精度不一或日子对不上，系统不在该层面下结论——定谳是有范围的，超出范围的部分仍是悬案。",
-     "high_count": 0
-    }
-   ]
-  },
-  {
-   "id": "case_kl_004",
-   "case_no": "KL-004",
-   "kind": "settled",
-   "title": "杨靖宇牺牲于何时",
-   "claim_text": "杨靖宇于1940年牺牲",
-   "event_id": "evt_1940_yangjingyu_xunguo",
-   "predicate": "牺牲时间",
-   "unit": null,
-   "values": [],
-   "summary": "东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
-   "steps": [
-    {
-     "kind": "decompose",
-     "agent": "拆解",
-     "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
-     ],
-     "assertions": [
-      {
-       "k": "主体",
-       "v": "杨靖宇",
-       "state": "确定"
-      },
-      {
-       "k": "时点",
-       "v": "1940年（3 条来源均记此年）",
-       "state": "确定"
-      },
-      {
-       "k": "月日",
-       "v": "2月23日",
-       "state": "确定"
-      },
-      {
-       "k": "地点",
-       "v": "吉林省靖宇县（县级精度）",
-       "state": "较粗"
-      }
-     ]
-    },
-    {
-     "kind": "retrieve",
-     "agent": "辑录",
-     "lines": [
-      "库内共 3 条记载，均指向同一事件。原文逐字照录。"
-     ],
-     "evidence": [
-      {
-       "book": "辽宁日报《大事记》",
-       "short": "辽宁日报",
-       "page": "2025-09-18",
-       "quote": "2月23日：东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
-       "reliability": "B",
-       "reliability_cn": "学术著作/权威报道",
-       "value": null,
-       "unit": null,
-       "is_primary": false
-      },
-      {
-       "book": "抗日战争纪念网《东北抗联大事记》",
+       "book": "抗日战争纪念网《东北抗日联军1933年大事记》",
        "short": "抗日战争纪念网",
-       "page": "1940年2月",
-       "quote": "2月23日　杨靖宇于濛江县保安村三道崴子与敌战斗中壮烈殉国。",
-       "reliability": "B",
-       "reliability_cn": "学术著作/权威报道",
-       "value": null,
-       "unit": null,
-       "is_primary": false
-      },
-      {
-       "book": "中国军网《1940年2月23日，抗日民族英雄杨靖宇殉国》",
-       "short": "中国军网",
-       "page": "2017-02-23",
-       "quote": "他以难以想象的毅力，坚持和敌人进行顽强斗争，直至弹尽，于1940年2月23日在吉林濛江三道崴子壮烈牺牲。",
+       "page": "2017-08-05",
+       "quote": "11日 中共满洲省委发表《为反对日本强盗“围剿”东北义勇军告东北民众书》。",
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -473,7 +476,7 @@ window.__MIYING_CASES__ = {
      "status": "settled",
      "status_cn": "可以定谳",
      "missing": [],
-     "conservative": "3 条独立来源对「1940年」没有分歧，这一点可以定谳。",
+     "conservative": "3 条独立来源对「1933年」没有分歧，这一点可以定谳。",
      "high_count": 0
     }
    ]
@@ -840,96 +843,6 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-007",
-     "status": "insufficient",
-     "status_cn": "库内证据不足",
-     "missing": [
-      "需补第二条独立来源（须不同于「辽宁日报」）"
-     ],
-     "conservative": "本条记载时点只到月、原文未载地点，但库内无第二条独立记载可比对。系统登记为「证据不足」，而不是「存疑」——前者说的是本库，后者说的是历史。",
-     "high_count": 0
-    }
-   ]
-  },
-  {
-   "id": "case_kl_008",
-   "case_no": "KL-008",
-   "kind": "single",
-   "title": "汪雅臣、张忠喜：孤证怎么处置",
-   "claim_text": "东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
-   "event_id": "evt_1941_wangyachen_xisheng",
-   "predicate": null,
-   "unit": null,
-   "values": [],
-   "summary": "东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
-   "steps": [
-    {
-     "kind": "decompose",
-     "agent": "拆解",
-     "lines": [
-      "命题拆成 3 个原子断言。库内只有 1 条来源可供比对。"
-     ],
-     "assertions": [
-      {
-       "k": "主体",
-       "v": "汪雅臣、张忠喜",
-       "state": "确定"
-      },
-      {
-       "k": "时点",
-       "v": "1941年1月（仅到月）",
-       "state": "较粗"
-      },
-      {
-       "k": "地点",
-       "v": "原文未载地点",
-       "state": "缺失"
-      }
-     ]
-    },
-    {
-     "kind": "retrieve",
-     "agent": "辑录",
-     "lines": [
-      "库内共 1 条记载。原文逐字照录，未作改写。"
-     ],
-     "evidence": [
-      {
-       "book": "辽宁日报《大事记》",
-       "short": "辽宁日报",
-       "page": "2025-09-18",
-       "quote": "1月：东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
-       "reliability": "B",
-       "reliability_cn": "学术著作/权威报道",
-       "value": null,
-       "unit": null,
-       "is_primary": false
-      }
-     ],
-     "side": []
-    },
-    {
-     "kind": "examine",
-     "agent": "质证",
-     "lines": [],
-     "challenges": [
-      {
-       "code": "R5",
-       "name": "孤证",
-       "severity": "medium",
-       "text": "库内只有一条记载，无法做独立互证。但请注意：这不等于史实存疑，只说明本库还没收录第二个来源。这两件事必须分开说。"
-      },
-      {
-       "code": "R3",
-       "name": "库内无一手档案",
-       "severity": "medium",
-       "text": "唯一来源属转述性质。它能证明「有人这样写过」，不足以单独支撑一条定谳结论。"
-      }
-     ]
-    },
-    {
-     "kind": "register",
-     "agent": "存疑",
-     "case_no": "KL-008",
      "status": "insufficient",
      "status_cn": "库内证据不足",
      "missing": [
