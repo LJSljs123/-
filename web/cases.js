@@ -531,7 +531,8 @@ window.__MIYING_CASES__ = {
      "kind": "retrieve",
      "agent": "辑录",
      "lines": [
-      "库内共 2 条记载，其中 2 条给出具体数字。以下原文逐字照录，未作改写。"
+      "库内共 2 条记载，其中 2 条给出具体数字。以下原文逐字照录，未作改写。",
+      "另有 1 条旁证不在本条事件下，但提到了同一主体的人数——它们决定了「鼎盛」这个时点到底指哪一年。"
      ],
      "evidence": [
       {
@@ -557,7 +558,15 @@ window.__MIYING_CASES__ = {
        "is_primary": false
       }
      ],
-     "side": []
+     "side": [
+      {
+       "book": "新华社《八女投江：乌斯浑河畔的绝唱》",
+       "short": "新华社",
+       "quote": "1938年10月的一天，东北抗日联军第2路军西征回师队伍在牡丹江地区乌斯浑河渡口与日伪军千余人遭遇。",
+       "year": "1938",
+       "event": "第五军一师西征部队回返途中，在乌斯浑河渡口与敌遭遇，妇女团指导员冷云等8名女战士弹尽后投江殉国，史称“八女投江”。"
+      }
+     ]
     },
     {
      "kind": "examine",
@@ -767,96 +776,6 @@ window.__MIYING_CASES__ = {
    "id": "case_kl_007",
    "case_no": "KL-007",
    "kind": "single",
-   "title": "王德泰、魏拯民：孤证怎么处置",
-   "claim_text": "第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时遭敌袭击，壮烈牺牲，魏拯民继任军长。",
-   "event_id": "evt_1936_wangdetai_xisheng",
-   "predicate": null,
-   "unit": null,
-   "values": [],
-   "summary": "第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时遭敌袭击，壮烈牺牲，魏拯民继任军长。",
-   "steps": [
-    {
-     "kind": "decompose",
-     "agent": "拆解",
-     "lines": [
-      "命题拆成 3 个原子断言。库内只有 1 条来源可供比对。"
-     ],
-     "assertions": [
-      {
-       "k": "主体",
-       "v": "王德泰、魏拯民",
-       "state": "确定"
-      },
-      {
-       "k": "时点",
-       "v": "1936年11月（仅到月）",
-       "state": "较粗"
-      },
-      {
-       "k": "地点",
-       "v": "原文未载地点",
-       "state": "缺失"
-      }
-     ]
-    },
-    {
-     "kind": "retrieve",
-     "agent": "辑录",
-     "lines": [
-      "库内共 1 条记载。原文逐字照录，未作改写。"
-     ],
-     "evidence": [
-      {
-       "book": "抗日战争纪念网《东北抗联大事记》",
-       "short": "抗日战争纪念网",
-       "page": "1936年11月",
-       "quote": "本月 第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时，遭敌袭击，壮烈牺牲，魏拯民继任军长。",
-       "reliability": "B",
-       "reliability_cn": "学术著作/权威报道",
-       "value": null,
-       "unit": null,
-       "is_primary": false
-      }
-     ],
-     "side": []
-    },
-    {
-     "kind": "examine",
-     "agent": "质证",
-     "lines": [],
-     "challenges": [
-      {
-       "code": "R5",
-       "name": "孤证",
-       "severity": "medium",
-       "text": "库内只有一条记载，无法做独立互证。但请注意：这不等于史实存疑，只说明本库还没收录第二个来源。这两件事必须分开说。"
-      },
-      {
-       "code": "R3",
-       "name": "库内无一手档案",
-       "severity": "medium",
-       "text": "唯一来源属转述性质。它能证明「有人这样写过」，不足以单独支撑一条定谳结论。"
-      }
-     ]
-    },
-    {
-     "kind": "register",
-     "agent": "存疑",
-     "case_no": "KL-007",
-     "status": "insufficient",
-     "status_cn": "库内证据不足",
-     "missing": [
-      "需补第二条独立来源（须不同于「抗日战争纪念网」）"
-     ],
-     "conservative": "本条记载时点只到月、原文未载地点，但库内无第二条独立记载可比对。系统登记为「证据不足」，而不是「存疑」——前者说的是本库，后者说的是历史。",
-     "high_count": 0
-    }
-   ]
-  },
-  {
-   "id": "case_kl_008",
-   "case_no": "KL-008",
-   "kind": "single",
    "title": "高兴亚：孤证怎么处置",
    "claim_text": "辽宁救国军旅长高兴亚牺牲。",
    "event_id": "evt_1934_gaoxingya_xisheng",
@@ -932,7 +851,7 @@ window.__MIYING_CASES__ = {
     {
      "kind": "register",
      "agent": "存疑",
-     "case_no": "KL-008",
+     "case_no": "KL-007",
      "status": "insufficient",
      "status_cn": "库内证据不足",
      "missing": [

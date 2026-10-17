@@ -87,6 +87,40 @@
       "severity": "high"
     },
     {
+      "event_id": "evt_1934_tongzhangrong_xisheng",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 31,
+      "a": {
+        "value": "1934-04-21",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1934-03-21",
+        "precision": "day",
+        "source": "国防部《童长荣》"
+      },
+      "severity": "high"
+    },
+    {
+      "event_id": "evt_1934_tongzhangrong_xisheng",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 31,
+      "a": {
+        "value": "1934-04-21",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1934-03-21",
+        "precision": "day",
+        "source": "杨靖宇烈士陵园暨东北抗日联军纪念馆《童长荣》"
+      },
+      "severity": "high"
+    },
+    {
       "event_id": "evt_1934_zhaoshangzhi_hadong",
       "field": "date.start",
       "kind": "precision",
@@ -121,6 +155,23 @@
       "severity": "low"
     },
     {
+      "event_id": "evt_1936_yijun_xizheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 27,
+      "a": {
+        "value": "1936-06-28",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》（出发日）"
+      },
+      "b": {
+        "value": "1936-06",
+        "precision": "month",
+        "source": "中国军网《李敏焕》（6月中旬出发）"
+      },
+      "severity": "low"
+    },
+    {
       "event_id": "evt_1934_yangjingyu_zongzhihuibu",
       "field": "date.start",
       "kind": "precision",
@@ -134,6 +185,23 @@
         "value": "1934-02-21",
         "precision": "day",
         "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1935_zhao_yiman",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 14,
+      "a": {
+        "value": "1935-11-15",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》（被俘日）"
+      },
+      "b": {
+        "value": "1935-11",
+        "precision": "month",
+        "source": "退役军人事务部《山河坐标》（被俘月）"
       },
       "severity": "low"
     },
@@ -172,6 +240,91 @@
       "severity": "low"
     },
     {
+      "event_id": "evt_1933_zhuhe_youjidui",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 9,
+      "a": {
+        "value": "1933-10-10",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1933-10",
+        "precision": "month",
+        "source": "人民网-党史频道《中共抗战英烈：赵尚志》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1936_wangdetai_xisheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 6,
+      "a": {
+        "value": "1936-11",
+        "precision": "month",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1936-11-07",
+        "precision": "day",
+        "source": "国家图书馆《王德泰》（引《东北抗日联军名录》）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1937_bingtangzi",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 6,
+      "a": {
+        "value": "1937-03-07",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1937-03",
+        "precision": "month",
+        "source": "北安市人民政府（3月初）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1937_bingtangzi",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 6,
+      "a": {
+        "value": "1937-03-07",
+        "precision": "day",
+        "source": "百家号《山河铭记 抗联记忆》（战况日）"
+      },
+      "b": {
+        "value": "1937-03",
+        "precision": "month",
+        "source": "北安市人民政府（3月初）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1932_qiangfeng_fujji",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 5,
+      "a": {
+        "value": "1932-03-18",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1932-03-13",
+        "precision": "day",
+        "source": "团结网《镜泊湖连环战的历史考证》"
+      },
+      "severity": "mid"
+    },
+    {
       "event_id": "evt_1938_liujie_zhidian",
       "field": "date.start",
       "kind": "precision",
@@ -189,6 +342,23 @@
       "severity": "low"
     },
     {
+      "event_id": "evt_1932_panshi_yiyongjun",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 3,
+      "a": {
+        "value": "1932-05-04",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1932-05",
+        "precision": "month",
+        "source": "吉林省地方志编纂委员会《杨靖宇对统一战线策略的探索与实践》"
+      },
+      "severity": "low"
+    },
+    {
       "event_id": "evt_1932_huanren_tangjuwu",
       "field": "date.start",
       "kind": "conflict",
@@ -202,6 +372,91 @@
         "value": "1932-04-23",
         "precision": "day",
         "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_tulongshan",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 2,
+      "a": {
+        "value": "1934-03-08",
+        "precision": "day",
+        "source": "中国军网《景振卿》（暴动集会日）"
+      },
+      "b": {
+        "value": "1934-03-10",
+        "precision": "day",
+        "source": "中国军网《景振卿》（白家沟伏击击毙饭冢日）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1938_chengbin_toudi",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 2,
+      "a": {
+        "value": "1938-06-29",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1938-07",
+        "precision": "month",
+        "source": "百家号《当年残害杨靖宇将军的叛徒》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_tulongshan",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 1,
+      "a": {
+        "value": "1934-03-09",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1934-03-08",
+        "precision": "day",
+        "source": "中国军网《景振卿》（暴动集会日）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_tulongshan",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 1,
+      "a": {
+        "value": "1934-03-09",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1934-03-10",
+        "precision": "day",
+        "source": "中国军网《景振卿》（白家沟伏击击毙饭冢日）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1935_lihongguang_xisheng",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 1,
+      "a": {
+        "value": "1935-05-11",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》（负伤日）"
+      },
+      "b": {
+        "value": "1935-05-12",
+        "precision": "day",
+        "source": "杨靖宇烈士陵园暨东北抗日联军纪念馆《李红光》（牺牲日）"
       },
       "severity": "low"
     }
@@ -246,32 +501,32 @@
     "evt_1945_riben_touxiang": 0.78,
     "evt_1936_kanglian_dingsheng": 0.66,
     "evt_1932_yiyongjun_dingsheng": 0.74,
-    "evt_1931_zgzy_jueyi": 0.7,
-    "evt_1931_dengtiemei_ziweijun": 0.7,
-    "evt_1932_jilin_ziweijun": 0.7,
-    "evt_1932_haerbin_shishou": 0.7,
-    "evt_1932_weiman_chengli": 0.7,
-    "evt_1932_qiangfeng_fujji": 0.7,
-    "evt_1932_panshi_yiyongjun": 0.7,
-    "evt_1932_bayan_youjidui": 0.7,
-    "evt_1932_pingdingshan": 0.7,
-    "evt_1932_yangjingyu_panshi": 0.7,
-    "evt_1933_126_zhishixin": 0.7,
-    "evt_1933_yitianuzhu": 0.7,
-    "evt_1933_dyj_dulishi": 0.7,
-    "evt_1933_zhuhe_youjidui": 0.7,
-    "evt_1934_tulongshan": 0.7,
-    "evt_1934_tongzhangrong_xisheng": 0.7,
-    "evt_1935_lihongguang_xisheng": 0.7,
-    "evt_1935_dierjun_chengli": 0.7,
-    "evt_1935_zhao_yiman": 0.7,
-    "evt_1936_yijun_xizheng": 0.7,
-    "evt_1936_xiayunjie_xisheng": 0.7,
-    "evt_1936_wangdetai_xisheng": 0.7,
-    "evt_1937_songtieyan_xisheng": 0.7,
-    "evt_1937_bingtangzi": 0.7,
-    "evt_1938_shier_lieshi": 0.7,
-    "evt_1938_chengbin_toudi": 0.7,
-    "evt_1938_banv_toujiang": 0.7
+    "evt_1931_zgzy_jueyi": 0.78,
+    "evt_1931_dengtiemei_ziweijun": 0.78,
+    "evt_1932_jilin_ziweijun": 0.86,
+    "evt_1932_haerbin_shishou": 0.78,
+    "evt_1932_weiman_chengli": 0.78,
+    "evt_1932_qiangfeng_fujji": 0.78,
+    "evt_1932_panshi_yiyongjun": 0.78,
+    "evt_1932_bayan_youjidui": 0.86,
+    "evt_1932_pingdingshan": 0.78,
+    "evt_1932_yangjingyu_panshi": 0.86,
+    "evt_1933_126_zhishixin": 0.78,
+    "evt_1933_yitianuzhu": 0.78,
+    "evt_1933_dyj_dulishi": 0.78,
+    "evt_1933_zhuhe_youjidui": 0.78,
+    "evt_1934_tulongshan": 0.78,
+    "evt_1934_tongzhangrong_xisheng": 0.86,
+    "evt_1935_lihongguang_xisheng": 0.86,
+    "evt_1935_dierjun_chengli": 0.78,
+    "evt_1935_zhao_yiman": 0.86,
+    "evt_1936_yijun_xizheng": 0.78,
+    "evt_1936_xiayunjie_xisheng": 0.78,
+    "evt_1936_wangdetai_xisheng": 0.86,
+    "evt_1937_songtieyan_xisheng": 0.78,
+    "evt_1937_bingtangzi": 0.86,
+    "evt_1938_shier_lieshi": 0.86,
+    "evt_1938_chengbin_toudi": 0.78,
+    "evt_1938_banv_toujiang": 0.86
   }
 }

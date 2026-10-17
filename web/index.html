@@ -127,6 +127,8 @@ svg{width:100%;height:100%;display:block}
   font-family:var(--mono);font-size:10.5px;color:var(--dim);line-height:1.75}
 #tip .pv.none{color:var(--red);opacity:.85;font-family:var(--serif);font-size:11.5px}
 #tip .pv.ns{border-top:0;padding-top:2px;margin-top:3px;color:var(--faint);opacity:.8}
+#tip .pv.arch{border-top:0;padding-top:2px;margin-top:3px;font-size:11px}
+#tip .pv.arch a{color:var(--gold,#c8a24a);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
 
 footer{
   position:fixed;bottom:0;left:0;right:0;z-index:10;height:62px;
@@ -533,12 +535,21 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
         g.classList.add('hot');
         const srcs = (c.sources || []).map(s => s.book).join('、');
         const quote = (c.sources || [])[0];
+        const arch = (c.sources || []).filter(s => s.archive || s.url);
+        const archLinks = arch.length
+          ? '<div class="pv arch">原始存档：' + arch.map(s => {
+              const a = s.archive || s.url;
+              const href = /^https?:/.test(a) ? a : '../' + a;
+              return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(s.book.split('《')[0]) + '</a>';
+            }).join(' · ') + '（本地快照 + sha256）</div>'
+          : '';
         tip.innerHTML =
           '<div class="t">' + esc(c.event_type || '记载') + ' · ' + c.year +
             (c.place ? ' · ' + esc(c.place) : '') + '</div>' +
           esc(c.claim) +
           '<div class="q">' + (quote ? '「' + esc(quote.quote || '') + '」<br>——' + esc(quote.book) : esc(srcs)) + '</div>' +
           (c.supports.length === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
+          archLinks +
           provBlock(c.prov);
         tip.classList.add('on');
         moveTip(e);
