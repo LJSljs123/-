@@ -129,6 +129,9 @@ svg{width:100%;height:100%;display:block}
 #tip .pv.ns{border-top:0;padding-top:2px;margin-top:3px;color:var(--faint);opacity:.8}
 #tip .pv.arch{border-top:0;padding-top:2px;margin-top:3px;font-size:11px}
 #tip .pv.arch a{color:var(--gold,#c8a24a);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
+#tip .v{margin-top:8px;padding:7px 9px;border-left:2px solid var(--gold);background:rgba(200,162,74,.07);font-size:11px;line-height:1.7}
+#tip .v b{color:var(--gold);letter-spacing:2px;margin-right:6px}
+#tip .v span{opacity:.65}
 
 footer{
   position:fixed;bottom:0;left:0;right:0;z-index:10;height:62px;
@@ -550,6 +553,11 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
           esc(c.claim) +
           '<div class="q">' + (quote ? '「' + esc(quote.quote || '') + '」<br>——' + esc(quote.book) : esc(srcs)) + '</div>' +
           (c.supports.length === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
+          (c.conflict_group && STATS.verdicts && STATS.verdicts[c.conflict_group]
+            ? (() => { const v = STATS.verdicts[c.conflict_group];
+                return '<div class="v"><b>裁决</b>' + esc(v.ruling) + ' 基准值 <b>' + esc(v.adopt) +
+                  '</b><br>' + esc(v.basis) + '<br><span>' + esc(v.other) + '　' + esc(v.upgraded) + '</span></div>'; })()
+            : '') +
           archLinks +
           provBlock(c.prov);
         tip.classList.add('on');

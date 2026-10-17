@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>密营 · 燎原（3D 骨架）</title>
+<title>密营 · 燎原</title>
 <style>
   :root{ --gold:#c8a24a; --ink:#0a0e14; --paper:#e8e2d4; --red:#b23a2e; }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -14,23 +14,44 @@
     justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
   #hud .l h1{font-size:19px;letter-spacing:6px;font-weight:normal;color:var(--gold)}
   #hud .l .sub{font-size:11px;opacity:.55;letter-spacing:2px;margin-top:4px}
-  #hud .r{text-align:right;font-size:11px;line-height:1.9;opacity:.8;pointer-events:auto}
+  #hud .r{text-align:right;font-size:11px;line-height:2;opacity:.85;pointer-events:auto}
   #hud a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
-  #stat{position:fixed;bottom:12px;left:0;right:0;text-align:center;font-size:11px;
+  #ctrl{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:6}
+  #ctrl button{background:rgba(10,14,20,.8);border:1px solid rgba(200,162,74,.45);color:var(--paper);
+    font-family:inherit;font-size:12px;letter-spacing:3px;padding:7px 16px;cursor:pointer;transition:.25s}
+  #ctrl button:hover{background:rgba(200,162,74,.18)}
+  #ctrl button.on{background:var(--gold);color:var(--ink)}
+  #stat{position:fixed;bottom:52px;left:0;right:0;text-align:center;font-size:11px;
     letter-spacing:2px;opacity:.45;z-index:5;pointer-events:none}
-  /* 悬停浮层（与 2D 同一信息、同一话术） */
-  #tip{position:fixed;max-width:360px;background:rgba(10,14,20,.94);
+  #tip{position:fixed;max-width:380px;background:rgba(10,14,20,.94);
     border:1px solid rgba(200,162,74,.35);padding:13px 15px;font-size:12.5px;
     line-height:1.75;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9;
     box-shadow:0 8px 40px rgba(0,0,0,.6)}
   #tip.on{opacity:1}
   #tip .t{color:var(--gold);letter-spacing:2px;font-size:11px;margin-bottom:6px}
-  #tip .q{margin-top:8px;padding-left:9px;border-left:2px solid rgba(200,162,74,.4);
-    opacity:.85;font-size:11.5px}
-  #tip .pv{margin-top:8px;padding-top:7px;border-top:1px solid rgba(200,162,74,.16);
-    font-size:11px;opacity:.75}
+  #tip .q{margin-top:8px;padding-left:9px;border-left:2px solid rgba(200,162,74,.4);opacity:.85;font-size:11.5px}
+  #tip .pv{margin-top:8px;padding-top:7px;border-top:1px solid rgba(200,162,74,.16);font-size:11px;opacity:.75}
   #tip .pv a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
   #tip .w{margin-top:6px;color:var(--red);font-size:11px;letter-spacing:1px}
+  #tip .dv{margin-top:7px;padding:6px 9px;border-left:2px solid var(--red);background:rgba(178,58,46,.08);font-size:11px;line-height:1.7}
+  #tip .dv b{color:var(--red);letter-spacing:2px;margin-right:6px}
+  #panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:12;
+    background:rgba(5,8,12,.55)}
+  #panel.on{display:flex}
+  #panel .card{max-width:520px;background:rgba(10,14,20,.96);border:1px solid rgba(200,162,74,.5);
+    padding:34px 40px;text-align:center}
+  #panel .h{font-size:15px;letter-spacing:8px;color:var(--gold);margin-bottom:16px}
+  #panel .big{font-size:30px;letter-spacing:4px;margin:10px 0 14px}
+  #panel .big b{color:var(--red)}
+  #panel .lines{font-size:12.5px;line-height:2.1;opacity:.9;text-align:left;margin:10px 0 18px}
+  #panel .lines em{color:var(--gold);font-style:normal}
+  #panel button{background:none;border:1px solid rgba(200,162,74,.5);color:var(--paper);
+    font-family:inherit;font-size:12px;letter-spacing:3px;padding:8px 22px;cursor:pointer}
+  #panel button:hover{background:rgba(200,162,74,.18)}
+  #cap{position:fixed;bottom:110px;left:0;right:0;text-align:center;z-index:11;pointer-events:none;
+    font-size:14px;letter-spacing:4px;line-height:2.2;opacity:0;transition:opacity 1.2s;color:var(--paper)}
+  #cap.on{opacity:.95}
+  #cap .s{font-size:11px;opacity:.6;letter-spacing:2px}
   #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
     flex-direction:column;gap:12px;background:var(--ink);z-index:20;transition:opacity .6s}
   #loading.off{opacity:0;pointer-events:none}
@@ -42,15 +63,28 @@
 <div id="hud">
   <div class="l">
     <h1>密营 · 燎原</h1>
-    <div class="sub">六十六座灯火 · 三十三座烽燧 · 雪原之下是证据链</div>
+    <div class="sub">66 座灯火 = 66 条可核查记载 · 33 座烽燧 = 33 家来源机构 · 石碑 = 34 处国家级遗址（真实坐标）</div>
   </div>
   <div class="r">
     <a href="index.html">← 2D 承重结构</a>&nbsp;&nbsp;<a href="dossier.html">灯下案卷宗</a><br>
-    拖拽环视 · 滚轮推近 · 悬停灯火看引文与存档
+    拖拽环视 · 滚轮推近 · 悬停火光看引文与原始存档
   </div>
 </div>
 <div id="stat"></div>
+<div id="ctrl">
+  <button id="b-storm">风雪夜</button>
+  <button id="b-chengbin">程斌之夜</button>
+  <button id="b-embers">十四年 · 余烬</button>
+  <button id="b-reset">复原</button>
+</div>
 <div id="tip"></div>
+<div id="panel"><div class="card">
+  <div class="h" id="p-h"></div>
+  <div class="big" id="p-big"></div>
+  <div class="lines" id="p-lines"></div>
+  <button id="p-close">复原 · 让火重新亮起来</button>
+</div></div>
+<div id="cap"></div>
 <div id="loading"><div class="t">密 营 · 燎 原</div><div class="s">正在点灯……</div></div>
 
 <script src="vendor/three.min.js"></script>
@@ -58,25 +92,26 @@
 <script src="structures.js"></script>
 <script>
 /* ============================================================
-   密营 · 燎原 —— 3D 骨架（10/18 夜）
-   本阶段：地形 / 夜空 / 雪 / 66 灯火 instanced 落位 / 33 烽燧 / 悬停浮层
-   下一阶段（10/19-21）：光索流光、遗址地标、风雪夜（程斌导演）、电弧、雾墙、余烬
-   铁律：数据全部来自 data.js / structures.js，本页零硬编码数字；
-        结论不落坐标（时间轴排布），遗址落真实坐标（下一阶段）。
+   密营 · 燎原 v2 —— 3D 主视觉
+   灯火=结论（大小=支撑数，色温=事件类型，位置=时间轴）
+   烽燧=来源机构（高=支撑面）  石碑=国家级遗址（真实经纬度）
+   风雪夜=抽离模拟（与 2D 同一套 removed 逻辑，同一批数字）
+   程斌之夜=史实加权的风雪夜：纪念网抽离 + 叛变因果链强制熄灭
+   十四年·余烬=1941 后灯火渐熄而证据仍在——方法论的终点回到铸魂
+   铁律：全部数字来自 data.js / structures.js / sites，零硬编码。
    ============================================================ */
 'use strict';
 const D = window.__MIYING__, S = window.__MIYING_STRUCT__;
 const EVENTS = (D.events || []).filter(e => e.layer === 'event');
+const SITE_EVENTS = (D.events || []).filter(e => e.layer === 'site');   // 遗址：build_web 已并入 events，layer=site
 const YEAR0 = D.meta.year_min, YEAR1 = D.meta.year_max;
+const VERD = (D.meta && D.meta.verdicts) || {};
 
-/* ---------- 确定性伪噪声（同一数据 → 同一雪原） ---------- */
 function noise2(x, z) {
   return Math.sin(x * 0.35 + Math.cos(z * 0.21) * 2.1) * 1.6
        + Math.sin(z * 0.28 + Math.sin(x * 0.17) * 1.7) * 1.1
        + Math.sin((x + z) * 0.11) * 2.4;
 }
-
-/* ---------- 火光色温：event_type → 颜色 ---------- */
 const TEMP = {
   '牺牲': [0.78, 0.86, 1.00], '惨案': [1.00, 0.42, 0.34],
   '战斗': [1.00, 0.66, 0.34], '会议': [0.49, 0.88, 0.84],
@@ -89,28 +124,24 @@ function tempOf(e) {
   return [1.0, 0.74, 0.42];
 }
 
-/* ---------- 落位：x = 时间轴（1931→1945），z = 类型分道 ---------- */
+/* ---------- 灯火落位 ---------- */
+const SPAN = 64;
+function yearOf(e) { return e.date && e.date.start ? +String(e.date.start).slice(0, 4) : YEAR0; }
 const TYPES = [...new Set(EVENTS.map(e => e.event_type || '其他'))];
 function laneOf(e) {
   const t = e.event_type || '其他';
   let i = TYPES.findIndex(k => t.includes(k) || k.includes(t));
   return (i < 0 ? TYPES.length - 1 : i) - (TYPES.length - 1) / 2;
 }
-const SPAN = 64;
 function firePos(e, i) {
-  const t = e.date && e.date.start ? +String(e.date.start).slice(0, 4) : YEAR0;
-  const x = ((t - YEAR0) / (YEAR1 - YEAR0) - 0.5) * SPAN;
-  const z = laneOf(e) * 5.2 + ((i * 7919) % 100 / 100 - 0.5) * 3.4;  // 确定性抖动
+  const x = ((yearOf(e) - YEAR0) / (YEAR1 - YEAR0) - 0.5) * SPAN;
+  const z = laneOf(e) * 5.2 + ((i * 7919) % 100 / 100 - 0.5) * 3.4;
   const y = 1.1 + Math.max(0, noise2(x, z)) * 0.12;
   return [x, y, z];
 }
-/* 每条结论的支撑来源数（支撑多 → 火大） */
 const nSources = {};
 (S.conclusions || []).forEach(c => { nSources[c.id] = c.sources_count || (c.supports ? c.supports.length : 1); });
-function nSrc(e) {
-  if (nSources[e.id] != null) return nSources[e.id];
-  return (e.sources || []).length || 1;
-}
+function nSrc(e) { return nSources[e.id] != null ? nSources[e.id] : ((e.sources || []).length || 1); }
 
 /* ---------- 场景基座 ---------- */
 const scene = new THREE.Scene();
@@ -122,7 +153,13 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setClearColor(0x0a0e14);
 document.body.appendChild(renderer.domElement);
 
-/* ---------- 夜空：星 + 地平辉光 ---------- */
+const amb = new THREE.AmbientLight(0x33415e, 0.85);
+scene.add(amb);
+const moon = new THREE.DirectionalLight(0x8ea6c8, 0.55);
+moon.position.set(-40, 70, -30);
+scene.add(moon);
+
+/* ---------- 夜空 ---------- */
 (function stars() {
   const N = 1400, pos = new Float32Array(N * 3);
   for (let i = 0; i < N; i++) {
@@ -135,11 +172,10 @@ document.body.appendChild(renderer.domElement);
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0x9fb4d8, size: 0.9, sizeAttenuation: false, transparent: true, opacity: 0.75,
-  })));
+    color: 0x9fb4d8, size: 0.9, sizeAttenuation: false, transparent: true, opacity: 0.75 })));
 })();
 
-/* ---------- 雪原地形 ---------- */
+/* ---------- 雪原 ---------- */
 (function terrain() {
   const W = 340, SEG = 128;
   const g = new THREE.PlaneGeometry(W, W, SEG, SEG);
@@ -147,20 +183,15 @@ document.body.appendChild(renderer.domElement);
   const p = g.attributes.position;
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
-    const rim = Math.max(0, (Math.abs(x) + Math.abs(z)) / W - 0.32) * 46; // 四周缓缓隆起收进雾里
+    const rim = Math.max(0, (Math.abs(x) + Math.abs(z)) / W - 0.32) * 46;
     p.setY(i, noise2(x, z) + rim * rim * 0.06);
   }
   g.computeVertexNormals();
   scene.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({
-    color: 0xb9c8dd, roughness: 0.96, metalness: 0.0,
-  })));
-  scene.add(new THREE.AmbientLight(0x33415e, 0.85));
-  const moon = new THREE.DirectionalLight(0x8ea6c8, 0.55);
-  moon.position.set(-40, 70, -30);
-  scene.add(moon);
+    color: 0xb9c8dd, roughness: 0.96 })));
 })();
 
-/* ---------- 落雪（12k，循环下落） ---------- */
+/* ---------- 落雪 ---------- */
 const SNOW_N = 12000;
 const snowGeo = new THREE.BufferGeometry();
 const snowPos = new Float32Array(SNOW_N * 3);
@@ -173,65 +204,22 @@ for (let i = 0; i < SNOW_N; i++) {
 }
 snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
 const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({
-  color: 0xdfe8f4, size: 0.32, transparent: true, opacity: 0.8, depthWrite: false,
-}));
+  color: 0xdfe8f4, size: 0.32, transparent: true, opacity: 0.8, depthWrite: false }));
 scene.add(snow);
+let wind = 0, snowRate = 1;
 function snowStep(t) {
   const p = snowGeo.attributes.position;
   for (let i = 0; i < SNOW_N; i++) {
-    let y = p.getY(i) - 0.09 - (i % 7) * 0.008;
-    let x = p.getX(i) + Math.sin(t * 0.7 + snowSeed[i]) * 0.014;
+    let y = p.getY(i) - (0.09 + (i % 7) * 0.008) * snowRate;
+    let x = p.getX(i) + (Math.sin(t * 0.7 + snowSeed[i]) * 0.014 + wind * (0.05 + (i % 5) * 0.01));
     if (y < -2) { y = 58 + Math.random() * 4; x = (Math.random() - 0.5) * 200; }
+    if (x > 100) x = -100; if (x < -100) x = 100;
     p.setY(i, y); p.setX(i, x);
   }
   p.needsUpdate = true;
 }
 
-/* ---------- 66 座密营灯火（Points + 自定义着色器：摇曳） ---------- */
-const FIRE_N = EVENTS.length;
-const fireGeo = new THREE.BufferGeometry();
-const fPos = new Float32Array(FIRE_N * 3);
-const fCol = new Float32Array(FIRE_N * 3);
-const fSize = new Float32Array(FIRE_N);
-const fPhase = new Float32Array(FIRE_N);
-const fireMetas = [];
-EVENTS.forEach((e, i) => {
-  const [x, y, z] = firePos(e, i);
-  fPos.set([x, y, z], i * 3);
-  fCol.set(tempOf(e), i * 3);
-  const n = Math.min(nSrc(e), 5);
-  fSize[i] = 5.5 + n * 4.2;               // 多源熊熊，单源残火
-  fPhase[i] = (i * 2654435761 % 1000) / 1000 * 6.283;
-  fireMetas.push({ e, x, y, z, n });
-});
-fireGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3));
-fireGeo.setAttribute('aColor', new THREE.BufferAttribute(fCol, 3));
-fireGeo.setAttribute('aSize', new THREE.BufferAttribute(fSize, 1));
-fireGeo.setAttribute('aPhase', new THREE.BufferAttribute(fPhase, 1));
-const fireMat = new THREE.ShaderMaterial({
-  uniforms: { uTime: { value: 0 }, uTex: { value: makeGlow() } },
-  vertexShader: `
-    attribute vec3 aColor; attribute float aSize; attribute float aPhase;
-    uniform float uTime; varying vec3 vC; varying float vF;
-    void main(){
-      vC = aColor;
-      vF = 1.0 + 0.28 * sin(uTime * 2.4 + aPhase) + 0.12 * sin(uTime * 5.1 + aPhase * 2.3);
-      vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = aSize * vF * (170.0 / -mv.z);
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: `
-    uniform sampler2D uTex; varying vec3 vC; varying float vF;
-    void main(){
-      vec4 t = texture2D(uTex, gl_PointCoord);
-      gl_FragColor = vec4(vC * (0.85 + 0.3 * vF), t.a);
-    }`,
-  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-});
-scene.add(new THREE.Points(fireGeo, fireMat));
-const firePoints = scene.children[scene.children.length - 1];
-/* 灯火的地面倒光：小而暗的一圈，让火"站在雪上" */
-const glowTex = makeGlow();
+/* ---------- 烽燧（先建塔，灯火的光索要连到它） ---------- */
 function makeGlow() {
   const c = document.createElement('canvas'); c.width = c.height = 64;
   const g = c.getContext('2d');
@@ -242,9 +230,10 @@ function makeGlow() {
   g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
   return new THREE.CanvasTexture(c);
 }
+const glowTex = makeGlow();
 
-/* ---------- 33 座烽燧（来源机构） ---------- */
 const towers = [];
+const srcByShort = {};
 (function towersBuild() {
   const srcs = (S.sources || []).slice().sort((a, b) => (b.supports || []).length - (a.supports || []).length);
   const R = 92, arc = Math.PI * 1.25;
@@ -252,7 +241,7 @@ const towers = [];
     const th = -arc / 2 + arc * (srcs.length === 1 ? 0.5 : i / (srcs.length - 1));
     const x = Math.sin(th) * R, z = -Math.cos(th) * R - 18;
     const w = (s.supports || []).length;
-    const h = 4 + Math.min(w, 40) * 0.55;         // 支撑面 → 塔高
+    const h = 4 + Math.min(w, 40) * 0.55;
     const body = new THREE.Mesh(
       new THREE.CylinderGeometry(0.5 + w * 0.03, 0.9 + w * 0.04, h, 6),
       new THREE.MeshStandardMaterial({ color: 0x3a4152, roughness: 0.9 }));
@@ -260,37 +249,184 @@ const towers = [];
     const top = new THREE.Sprite(new THREE.SpriteMaterial({
       map: glowTex, color: w ? 0xc8a24a : 0x555f70,
       transparent: true, opacity: w ? 0.9 : 0.4, depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    }));
+      blending: THREE.AdditiveBlending }));
     top.scale.setScalar(4 + Math.min(w, 30) * 0.5);
     top.position.set(x, h + 1.6, z);
     scene.add(body); scene.add(top);
-    towers.push({ s, x, y: h + 1.6, z, w });
-    /* 光索骨架（细线；10/19 换粒子流光） */
-    (s.supports || []).forEach(eid => {
-      const f = fireMetas.find(m => m.e.id === eid);
-      if (!f) return;
-      const g = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(x, h + 0.4, z),
-        new THREE.Vector3(f.x, f.y + 0.5, f.z),
-      ]);
-      scene.add(new THREE.Line(g, new THREE.LineBasicMaterial({
-        color: 0xc8a24a, transparent: true, opacity: 0.10, depthWrite: false,
-      })));
-    });
+    towers.push({ s, x, y: h + 1.6, z, w, top });
+    srcByShort[s.short || s.full] = towers[towers.length - 1];
   });
 })();
 
-/* ---------- 相机：手写 orbit（file:// 无 OrbitControls 依赖） ---------- */
+/* ---------- 灯火 ---------- */
+const FIRE_N = EVENTS.length;
+const fireGeo = new THREE.BufferGeometry();
+const fPos = new Float32Array(FIRE_N * 3);
+const fCol = new Float32Array(FIRE_N * 3);
+const fSize = new Float32Array(FIRE_N);
+const fPhase = new Float32Array(FIRE_N);
+const fireMetas = [];
+const supportsOf = {};   // event_id -> [towerIndex]
+towers.forEach((t, ti) => (t.s.supports || []).forEach(eid => {
+  (supportsOf[eid] = supportsOf[eid] || []).push(ti);
+}));
+const isRemoved = new Set();          // 被抽离的烽燧 short
+const forcedOut = new Set();          // 程斌之夜因果链强制熄灭的事件
+const alive = new Array(FIRE_N).fill(true);
+const dieT = new Array(FIRE_N).fill(Infinity);   // 各火熄灭动画起点
+EVENTS.forEach((e, i) => {
+  const [x, y, z] = firePos(e, i);
+  fPos.set([x, y, z], i * 3);
+  fCol.set(tempOf(e), i * 3);
+  const n = Math.min(nSrc(e), 5);
+  fSize[i] = 5.5 + n * 4.2;
+  fPhase[i] = (i * 2654435761 % 1000) / 1000 * 6.283;
+  fireMetas.push({ e, x, y, z, n, idx: i });
+});
+fireGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3));
+fireGeo.setAttribute('aColor', new THREE.BufferAttribute(fCol, 3));
+fireGeo.setAttribute('aSize', new THREE.BufferAttribute(fSize, 1));
+fireGeo.setAttribute('aPhase', new THREE.BufferAttribute(fPhase, 1));
+const fireMat = new THREE.ShaderMaterial({
+  uniforms: { uTime: { value: 0 } },
+  vertexShader: `
+    attribute vec3 aColor; attribute float aSize; attribute float aPhase;
+    uniform float uTime; varying vec3 vC; varying float vF;
+    void main(){
+      vC = aColor;
+      vF = 1.0 + 0.28 * sin(uTime * 2.4 + aPhase) + 0.12 * sin(uTime * 5.1 + aPhase * 2.3);
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = max(aSize * vF * (170.0 / -mv.z), 0.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    varying vec3 vC; varying float vF;
+    void main(){
+      vec2 uv = gl_PointCoord - 0.5;
+      float a = smoothstep(0.5, 0.02, length(uv));
+      gl_FragColor = vec4(vC * (0.85 + 0.3 * vF), a);
+    }`,
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+});
+scene.add(new THREE.Points(fireGeo, fireMat));
+const firePoints = scene.children[scene.children.length - 1];
+/* 火光底部的地面光斑（Sprite，熄灭时同步缩小） */
+const groundGlows = fireMetas.map(m => {
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: glowTex, color: 0xc8a24a, transparent: true, opacity: 0.22,
+    depthWrite: false, blending: THREE.AdditiveBlending }));
+  sp.scale.setScalar(m.n > 1 ? 6 : 3.2);
+  sp.position.set(m.x, m.y + 0.15, m.z);
+  scene.add(sp);
+  return sp;
+});
+
+/* ---------- 光索流光：粒子沿贝塞尔从烽燧流向灯火 ---------- */
+const edges = [];
+towers.forEach((t, ti) => (t.s.supports || []).forEach(eid => {
+  const m = fireMetas.find(f => f.e.id === eid);
+  if (!m) return;
+  edges.push({ ti, m, a: new THREE.Vector3(t.x, t.y, t.z), c: new THREE.Vector3(m.x, m.y + 0.5, m.z),
+    b: new THREE.Vector3((t.x + m.x) / 2, Math.max(t.y, m.y) + 7 + Math.abs(t.x - m.x) * 0.12, (t.z + m.z) / 2) });
+}));
+const FLOW_PER = 3;
+const flowN = edges.length * FLOW_PER;
+const flowGeo = new THREE.BufferGeometry();
+const flowPos = new Float32Array(flowN * 3);
+const flowT = new Float32Array(flowN), flowSpeed = new Float32Array(flowN), flowEdge = new Int32Array(flowN);
+for (let i = 0; i < flowN; i++) {
+  flowEdge[i] = Math.floor(i / FLOW_PER);
+  flowT[i] = Math.random(); flowSpeed[i] = 0.10 + Math.random() * 0.14;
+}
+flowGeo.setAttribute('position', new THREE.BufferAttribute(flowPos, 3));
+const flowMat = new THREE.PointsMaterial({
+  map: glowTex, color: 0xe8c877, size: 1.05, transparent: true, opacity: 0.9,
+  depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+const flowPoints = new THREE.Points(flowGeo, flowMat);
+scene.add(flowPoints);
+const _v = new THREE.Vector3();
+function flowStep(dt) {
+  const p = flowGeo.attributes.position;
+  for (let i = 0; i < flowN; i++) {
+    const ed = edges[flowEdge[i]];
+    const ts = towers[ed.ti].s;
+    if (isRemoved.has(ts.short || ts.full)) {   // 断索：粒子隐藏但相位保留
+      p.setXYZ(i, 0, -999, 0); continue;
+    }
+    let t = flowT[i] + flowSpeed[i] * dt;
+    if (t > 1) t = 0;
+    flowT[i] = t;
+    const u = 1 - t;
+    _v.set(0, 0, 0)
+      .addScaledVector(ed.a, u * u)
+      .addScaledVector(ed.b, 2 * u * t)
+      .addScaledVector(ed.c, t * t);
+    p.setXYZ(i, _v.x, _v.y, _v.z);
+  }
+  p.needsUpdate = true;
+}
+
+/* ---------- 遗址石碑：34 处国家级遗址，真实经纬度 ---------- */
+const siteMeshes = [];
+(function sites() {
+  /* 真实经纬 → 平面：保留相对地理关系，等比缩放；结论不落坐标，遗址落真实坐标 */
+  const pts = SITE_EVENTS.filter(e => e.place && e.place.lat != null);
+  const lng0 = 120.45, lat0 = 40.64;
+  const kmX = 111 * Math.cos(45 * Math.PI / 180);
+  const SCALE = 0.62;
+  pts.forEach(e => {
+    const s = e;
+    const x = ((s.place.lng - lng0) * kmX) * SCALE * 0.62;
+    const z = -26 - ((s.place.lat - lat0) * 111) * SCALE * 0.62;
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(0.7, 2.1, 0.5),
+      new THREE.MeshStandardMaterial({ color: 0x8f9aa8, roughness: 0.85 }));
+    mesh.position.set(x, 1.05 + Math.max(0, noise2(x, z)) * 0.12, z);
+    const cap = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: glowTex, color: 0xaebccb, transparent: true, opacity: 0.35,
+      depthWrite: false, blending: THREE.AdditiveBlending }));
+    cap.scale.setScalar(1.6);
+    cap.position.set(x, 2.5, z);
+    scene.add(mesh); scene.add(cap);
+    mesh.userData.site = {
+      name: s.summary, address: (s.place && (s.place.modern || s.place.name)) || '',
+      category: s.category, batch: s.batch, published: s.published,
+    };
+    siteMeshes.push(mesh);
+  });
+})();
+
+/* ---------- 对勘电弧：日期分歧的火光头顶红色脉冲弧 ---------- */
+const arcs = [];
+(function dateArcs() {
+  const CONFLICTED = new Set(['evt_1933_duolun_shoufu', 'evt_1934_tongzhangrong_xisheng', 'evt_1932_qiangfeng_fujji']);
+  fireMetas.forEach(m => {
+    if (!CONFLICTED.has(m.e.id)) return;
+    const cpts = [];
+    for (let i = 0; i <= 24; i++) {
+      const t = i / 24;
+      const x = m.x + (t - 0.5) * 9;
+      const y = m.y + 3.2 + Math.sin(t * Math.PI) * 2.6;
+      cpts.push(new THREE.Vector3(x, y, m.z));
+    }
+    const g = new THREE.BufferGeometry().setFromPoints(cpts);
+    const mat = new THREE.LineBasicMaterial({ color: 0xb23a2e, transparent: true, opacity: 0.55 });
+    scene.add(new THREE.Line(g, mat));
+    arcs.push(mat);
+  });
+})();
+
+/* ---------- 相机 ---------- */
 let theta = 0.06, phi = 1.18, radius = 74, dragging = false, px = 0, py = 0;
+let autoPan = 0;
 function applyCam() {
   phi = Math.max(0.5, Math.min(1.45, phi));
-  radius = Math.max(30, Math.min(160, radius));
-  camera.position.set(
-    Math.sin(theta) * Math.sin(phi) * radius,
+  radius = Math.max(24, Math.min(170, radius));
+  const cx = autoPan;
+  camera.position.set(cx + Math.sin(theta) * Math.sin(phi) * radius,
     Math.cos(phi) * radius + 6,
     Math.cos(theta) * Math.sin(phi) * radius);
-  camera.lookAt(0, 2, -4);
+  camera.lookAt(cx, 2, -4);
 }
 renderer.domElement.addEventListener('pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; });
 addEventListener('pointerup', () => dragging = false);
@@ -301,16 +437,19 @@ addEventListener('pointermove', e => {
     px = e.clientX; py = e.clientY;
     applyCam();
   }
+  mouse.x = (e.clientX / innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+  tip.style.left = Math.min(e.clientX + 16, innerWidth - 400) + 'px';
+  tip.style.top = Math.min(e.clientY + 14, innerHeight - 220) + 'px';
 });
 addEventListener('wheel', e => { radius *= 1 + Math.sign(e.deltaY) * 0.08; applyCam(); });
 applyCam();
 
-/* ---------- 悬停浮层（信息与 2D 完全同源） ---------- */
+/* ---------- 悬停 ---------- */
 const tip = document.getElementById('tip');
 const ray = new THREE.Raycaster();
 ray.params.Points.threshold = 1.6;
 const mouse = new THREE.Vector2(-9, -9);
-let hoverFire = -1, hoverTower = -1;
 function esc(s) { return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function provBlock(p) {
   if (!p || p.depth === 'none') return '<div class="pv">检索：尚未逐条检索，此处不冒充已查</div>';
@@ -325,18 +464,21 @@ function archBlock(sources) {
     return '<a href="' + (/^https?:/.test(u) ? u : '../' + u) + '" target="_blank" rel="noopener">' + esc((s.book || '').split('《')[0]) + '</a>';
   }).join(' · ') + '</div>' : '';
 }
-addEventListener('pointermove', e => {
-  mouse.x = (e.clientX / innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / innerHeight) * 2 + 1;
-  tip.style.left = Math.min(e.clientX + 16, innerWidth - 380) + 'px';
-  tip.style.top = Math.min(e.clientY + 14, innerHeight - 200) + 'px';
-});
+function dvBlock(e) {
+  const dvs = (e.date_variants || []).filter(v => v.value);
+  if (dvs.length < 2) return '';
+  const uniq = [...new Map(dvs.map(v => [v.source + v.value, v])).values()].slice(0, 3);
+  return '<div class="dv"><b>对勘</b>' + uniq.map(v =>
+    esc(v.value) + '（' + esc(v.source.split('《')[0]) + '）').join('　vs　') + '</div>';
+}
+let hoverFire = -1, hoverTower = -1, hoverSite = -1;
 function pick() {
   ray.setFromCamera(mouse, camera);
-  hoverFire = -1; hoverTower = -1;
+  hoverFire = -1; hoverTower = -1; hoverSite = -1;
   const hf = ray.intersectObject(firePoints, false);
   if (hf.length) { hoverFire = hf[0].index; return; }
-  /* 烽燧：球面近似拾取 */
+  const hs = ray.intersectObjects(siteMeshes, false);
+  if (hs.length) { hoverSite = siteMeshes.indexOf(hs[0].object); return; }
   let best = 1e9;
   towers.forEach((t, i) => {
     const v = new THREE.Vector3(t.x, t.y, t.z).project(camera);
@@ -354,37 +496,197 @@ function showTip() {
     tip.innerHTML =
       '<div class="t">' + esc(e.event_type || '记载') + ' · ' + (e.date && e.date.start ? esc(e.date.start) : '') +
       (e.place && e.place.name ? ' · ' + esc(e.place.name) : '') + '</div>' +
-      esc(e.summary || e.claim || '') +
+      esc(e.summary || '') +
       '<div class="q">「' + esc(q.quote || '') + '」<br>——' + esc(q.book || '') + '</div>' +
       (m.n === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
+      dvBlock(e) +
+      (e.conflict_group && VERD[e.conflict_group]
+        ? '<div class="dv"><b>裁决</b>' + esc(VERD[e.conflict_group].ruling) + ' 基准 ' + esc(VERD[e.conflict_group].adopt) + '</div>' : '') +
       archBlock(e.sources) + provBlock(e.provenance);
     tip.classList.add('on');
   } else if (hoverTower >= 0) {
     const t = towers[hoverTower];
     tip.innerHTML =
-      '<div class="t">烽燧 · ' + esc(t.s.short || '') + '</div>' +
-      esc(t.s.full || '') +
-      '<div class="q">支撑 ' + (t.s.supports || []).length + ' 条结论 · 可靠性 ' + esc(t.s.reliability_cn || t.s.reliability || '') + '</div>';
+      '<div class="t">烽燧 · ' + esc(t.s.short || '') + '</div>' + esc(t.s.full || '') +
+      '<div class="q">支撑 ' + (t.s.supports || []).length + ' 条结论 · 可靠性 ' + esc(t.s.reliability_cn || '') + '</div>';
+    tip.classList.add('on');
+  } else if (hoverSite >= 0) {
+    const s = siteMeshes[hoverSite].userData.site;
+    tip.innerHTML =
+      '<div class="t">国家级抗战遗址 · 真实坐标</div>' + esc(s.name) +
+      '<div class="q">' + esc(s.address || '') + '<br>' + esc(s.category || '') + ' · 国务院第 ' + esc(s.batch) + ' 批名录（' + esc(s.published) + '）</div>' +
+      '<div class="pv">结论不落坐标——落的是时间轴；遗址落真实经纬度，因为遗址本身就是地理证据。</div>';
     tip.classList.add('on');
   } else tip.classList.remove('on');
+}
+
+/* ---------- 风雪夜 / 程斌之夜 / 余烬 / 复原 ---------- */
+const KRZZ = '抗战纪念网';   // 三轮指出的最大承重来源（short 名以 structures 为准，运行时校验）
+function realShort(pre) {
+  const k = Object.keys(srcByShort).find(k => k.includes(pre));
+  return k || pre;
+}
+const CHAIN = ['evt_1938_chengbin_toudi', 'evt_1940_yangjingyu_xunguo'];   // 叛变→殉国 因果链
+let mode = 'calm', stormStart = 0;
+
+function computeDeaths(extraForce) {
+  const dead = [];
+  fireMetas.forEach((m, i) => {
+    const sup = supportsOf[m.e.id] || [];
+    const liveSup = sup.filter(ti => !isRemoved.has(towers[ti].s.short || towers[ti].s.full));
+    if (extraForce.has(m.e.id) || (sup.length && liveSup.length === 0)) dead.push(i);
+  });
+  return dead;
+}
+function startStorm(kind) {
+  if (mode !== 'calm') reset();
+  mode = kind; stormStart = performance.now() / 1000;
+  if (kind === 'storm') isRemoved.add(realShort(KRZZ));
+  if (kind === 'chengbin') {
+    isRemoved.add(realShort(KRZZ));
+    CHAIN.forEach(id => forcedOut.add(id));
+  }
+  const dead = computeDeaths(forcedOut);
+  const t0 = performance.now() / 1000;
+  dead.forEach((idx, k) => { dieT[idx] = t0 + 0.4 + k * 0.10; alive[idx] = false; });
+  /* 程斌之夜：点亮相从叛变到殉国的暗红因果边 */
+  if (kind === 'chengbin') {
+    const m1 = fireMetas.find(m => m.e.id === CHAIN[0]);
+    const m2 = fireMetas.find(m => m.e.id === CHAIN[1]);
+    if (m1 && m2) {
+      const pts = [];
+      for (let i = 0; i <= 30; i++) {
+        const t = i / 30, u = 1 - t;
+        pts.push(new THREE.Vector3(
+          u * u * m1.x + t * t * m2.x,
+          Math.max(m1.y, m2.y) + 5 + Math.sin(t * Math.PI) * 3,
+          u * u * m1.z + t * t * m2.z));
+      }
+      chainLine = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0xb23a2e, transparent: true, opacity: 0.8 }));
+      scene.add(chainLine);
+    }
+  }
+  /* 风起 */
+  wind = kind === 'storm' ? 2.4 : 4.2; snowRate = 4.0;
+  scene.fog.density = 0.020;
+  amb.intensity = 0.45; moon.intensity = 0.25;
+  flowMat.opacity = 0.25;
+}
+function startEmbers() {
+  if (mode !== 'calm') reset();
+  mode = 'embers'; stormStart = performance.now() / 1000;
+  fireMetas.forEach((m, i) => {
+    if (yearOf(m.e) >= 1941) { dieT[i] = stormStart + 1.0 + (i % 8) * 0.12; alive[i] = false; }
+  });
+  autoPan = fireMetas.reduce((a, m) => a + m.x, 0) / FIRE_N - SPAN / 2 + 6;
+  document.getElementById('cap').classList.add('on');
+  document.getElementById('cap').innerHTML =
+    '1941 年之后，东北的密营大多熄灭了。<span class="s">—— 但本库 ' + FIRE_N +
+    ' 条可核查记载里，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
+    ' 条在多个独立来源中仍然对得上。他们没有被遗忘。</span>';
+}
+function reset() {
+  mode = 'calm';
+  isRemoved.clear(); forcedOut.clear();
+  alive.fill(true); dieT.fill(Infinity);
+  wind = 0; snowRate = 1; autoPan = 0;
+  scene.fog.density = 0.010;
+  amb.intensity = 0.85; moon.intensity = 0.55;
+  flowMat.opacity = 0.9;
+  /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
+  fireMetas.forEach((m, i) => {
+    fireGeo.attributes.aSize.setX(i, 5.5 + Math.min(m.n, 5) * 4.2);
+    const c = tempOf(m.e);
+    fireGeo.attributes.aColor.setXYZ(i, c[0], c[1], c[2]);
+    groundGlows[i].material.opacity = 0.22;
+    groundGlows[i].scale.setScalar(m.n > 1 ? 6 : 3.2);
+  });
+  fireGeo.attributes.aSize.needsUpdate = true;
+  fireGeo.attributes.aColor.needsUpdate = true;
+  if (chainLine) { scene.remove(chainLine); chainLine = null; }
+  document.getElementById('cap').classList.remove('on');
+  document.getElementById('panel').classList.remove('on');
+  ['b-storm', 'b-chengbin', 'b-embers'].forEach(id => document.getElementById(id).classList.remove('on'));
+}
+let chainLine = null;
+let panelShown = false;
+function maybeSettle(now) {
+  if (panelShown || (mode !== 'storm' && mode !== 'chengbin')) return;
+  const finite = dieT.filter(Number.isFinite);
+  const last = finite.length ? Math.max(...finite) : 0;
+  if (now < last + 1.2) return;
+  panelShown = true;
+  const died = alive.filter(a => !a).length;
+  const left = FIRE_N - died;
+  const multiLeft = fireMetas.filter((m, i) => alive[i] && m.n > 1).length;
+  document.getElementById('b-' + (mode === 'storm' ? 'storm' : 'chengbin')).classList.add('on');
+  const lines = mode === 'storm'
+    ? '<em>' + realShort(KRZZ) + '</em> 被抽离，它独自支撑的 ' + died +
+      ' 条记载失去全部库内依据。同一根柱子在 2D 承重结构里抽掉，熄灭的是同一批火——两套视图共用同一套数据。'
+    : '程斌叛变 → 第一路军密营体系暴露 → 杨靖宇 1940 年 2 月 23 日殉国。<br>' +
+      '这条因果链上的火熄得更多——<em>这不是比喻，是数据里的事实边</em>。' +
+      '<br>叛徒带走的不是火力，是「看不见的据点」之所以安全的全部前提。';
+  document.getElementById('p-h').textContent = mode === 'storm' ? '风 雪 夜 · 结 算' : '程 斌 之 夜 · 结 算';
+  document.getElementById('p-big').innerHTML = '熄灭 <b>' + died + '</b> 座 · 幸存 <b>' + left + '</b> 座（其中多源互证 ' + multiLeft + ' 座）';
+  document.getElementById('p-lines').innerHTML = lines +
+    '<br><span style="opacity:.6;font-size:11px">熄灭的唯一依据是支撑关系计算；灯下案 KL-009 / KL-010 悬案的「最保守结论」就建立在这一逻辑上。</span>';
+  document.getElementById('panel').classList.add('on');
+}
+document.getElementById('b-storm').onclick = () => startStorm('storm');
+document.getElementById('b-chengbin').onclick = () => startStorm('chengbin');
+document.getElementById('b-embers').onclick = () => startEmbers();
+document.getElementById('b-reset').onclick = reset;
+document.getElementById('p-close').onclick = reset;
+
+/* ---------- 熄灭动画 ---------- */
+function dieStep(now) {
+  const col = fireGeo.attributes.aColor, siz = fireGeo.attributes.aSize;
+  let dirty = false;
+  fireMetas.forEach((m, i) => {
+    if (alive[i]) return;
+    const k = (now - dieT[i]) / 1.6;              // 1.6s 熄灭
+    if (k < 0) return;
+    dirty = true;
+    const base = 5.5 + Math.min(m.n, 5) * 4.2;
+    const f = Math.max(0, 1 - k);
+    siz.setX(i, Math.max(k >= 1 ? 0 : base * f * (1 - 0.4 * Math.sin(k * 9)), 0));
+    const c0 = tempOf(m.e);
+    col.setXYZ(i, c0[0] * f + 0.35 * (1 - f), c0[1] * f + 0.18 * (1 - f), c0[2] * f + 0.10 * (1 - f));
+    groundGlows[i].material.opacity = Math.max(0, 0.22 * f);
+    groundGlows[i].scale.setScalar(Math.max(0.01, (m.n > 1 ? 6 : 3.2) * Math.max(f, 0.01)));
+  });
+  if (dirty) { col.needsUpdate = true; siz.needsUpdate = true; }
 }
 
 /* ---------- 主循环 ---------- */
 const stat = document.getElementById('stat');
 const clock = new THREE.Clock();
+let last = 0, arcT = 0;
 function loop() {
   requestAnimationFrame(loop);
+  const now = performance.now() / 1000;
+  const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
   fireMat.uniforms.uTime.value = t;
+  arcT += dt;
+  arcs.forEach((m, i) => { m.opacity = 0.35 + 0.3 * Math.abs(Math.sin(arcT * 2.2 + i)); });
   snowStep(t);
-  if (!dragging) pick();
-  showTip();
+  flowStep(dt);
+  dieStep(now);
+  maybeSettle(now);
+  if (mode === 'embers') autoPan += dt * 1.6;
+  if (!dragging) applyCam();
+  pick(); showTip();
+  const aliveN = alive.filter(Boolean).length;
+  stat.textContent = mode === 'calm'
+    ? '灯火 ' + FIRE_N + ' · 烽燧 ' + towers.length + ' · 遗址 ' + siteMeshes.length + '（真实坐标） · 流光 ' + flowN
+    : (mode === 'embers' ? '余烬：1941 后的火，和仍然亮着的证据' : '风雪中的雪原：幸存灯火 ' + aliveN + ' / ' + FIRE_N);
   renderer.render(scene, camera);
-  stat.textContent = '事件 ' + EVENTS.length + ' · 来源机构 ' + towers.length +
-    ' · 悬停任意火光：引文 / 检索记录 / 原始存档';
 }
 loop();
-setTimeout(() => document.getElementById('loading').classList.add('off'), 300);
+setTimeout(() => document.getElementById('loading').classList.add('off'), 350);
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();

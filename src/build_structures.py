@@ -181,12 +181,19 @@ def main() -> int:
         for y, v in sorted(by_year.items())
     ]
 
+    # 数值裁决链（curated/verdicts.json）注入 2D
+    verdicts = {}
+    vp = ROOT / "data" / "curated" / "verdicts.json"
+    if vp.exists():
+        verdicts = json.loads(vp.read_text(encoding="utf-8")).get("verdicts", {})
+
     payload = {
         "_note": "由 src/build_structures.py 从 events.json 生成。支撑关系取自 sources.book。",
         "sources": sources,
         "conclusions": conclusions,
         "resilience": resilience,
         "year_series": year_series,
+        "verdicts": verdicts,
         "stats": {
             "conclusions": total,
             "sources": len(sources),

@@ -484,6 +484,442 @@
   {
    "id": "case_kl_005",
    "case_no": "KL-005",
+   "kind": "settled",
+   "title": "《东北抗日联军统一军队建制宣言》发表于何时",
+   "claim_text": "《东北抗日联军统一军队建制宣言》于1936年发表",
+   "event_id": "evt_1936_tongyi_jianzhi",
+   "predicate": "发表时间",
+   "unit": null,
+   "values": [],
+   "summary": "《东北抗日联军统一军队建制宣言》发表。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+     ],
+     "assertions": [
+      {
+       "k": "主体",
+       "v": "《东北抗日联军统一军队建制宣言》",
+       "state": "确定"
+      },
+      {
+       "k": "时点",
+       "v": "1936年（3 条来源均记此年）",
+       "state": "确定"
+      },
+      {
+       "k": "月日",
+       "v": "2月20日",
+       "state": "确定"
+      },
+      {
+       "k": "地点",
+       "v": "原文未载地点",
+       "state": "缺失"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内共 3 条记载，均指向同一事件。原文逐字照录。"
+     ],
+     "evidence": [
+      {
+       "book": "辽宁日报《大事记》",
+       "short": "辽宁日报",
+       "page": "2025-09-18",
+       "quote": "2月20日：《东北抗日联军统一军队建制宣言》发表。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "抗日战争纪念网《东北抗联大事记》",
+       "short": "抗日战争纪念网",
+       "page": "1936年2月",
+       "quote": "20日 《东北抗日联军统一军队建制宣言》发表。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+       "short": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
+       "page": "2025-07-31",
+       "quote": "1936年2月20日，中国共产党领导的东北人民革命军共同发表《东北抗日联军统一军队建制宣言》，宣布东北人民革命军“一律改组军队建制为东北抗日联军”。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R3",
+       "name": "库内无一手档案",
+       "severity": "medium",
+       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-005",
+     "status": "settled",
+     "status_cn": "可以定谳",
+     "missing": [],
+     "conservative": "3 条独立来源对「1936年」没有分歧，这一点可以定谳。",
+     "high_count": 0
+    }
+   ]
+  },
+  {
+   "id": "case_kl_006",
+   "case_no": "KL-006",
+   "kind": "settled",
+   "title": "赵尚志作战于何时",
+   "claim_text": "赵尚志于1937年作战",
+   "event_id": "evt_1937_bingtangzi",
+   "predicate": "作战时间",
+   "unit": null,
+   "values": [],
+   "summary": "赵尚志率第三军西征部队在通北冰趟子设伏，重创日伪军。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+     ],
+     "assertions": [
+      {
+       "k": "主体",
+       "v": "赵尚志",
+       "state": "确定"
+      },
+      {
+       "k": "时点",
+       "v": "1937年（3 条来源均记此年）",
+       "state": "确定"
+      },
+      {
+       "k": "月日",
+       "v": "3月7日",
+       "state": "确定"
+      },
+      {
+       "k": "地点",
+       "v": "原文未载地点",
+       "state": "缺失"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内共 3 条记载，均指向同一事件。原文逐字照录。"
+     ],
+     "evidence": [
+      {
+       "book": "抗日战争纪念网《东北抗联大事记》",
+       "short": "抗日战争纪念网",
+       "page": "1937年3月",
+       "quote": "7日 赵尚志率第三军西征部队在通北冰趟子设伏重创敌军。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "北安市人民政府《“浴血兴安驱日寇”北安红色故事之冰趟子大捷》",
+       "short": "北安市人民政府",
+       "page": "2025-08-20",
+       "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的必经之路。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "百家号《山河铭记 抗联记忆丨赵尚志：以少胜多的“冰趟子”战斗》",
+       "short": "百家号",
+       "page": "2026-08-24",
+       "quote": "3月7日，八百余名日伪军循着抗联踪迹闯入冰趟子沟……冰趟子一战战果悬殊，八百余名来犯的日伪军伤亡高达二百余人，而东北抗联第三军有七名战士牺牲。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R3",
+       "name": "库内无一手档案",
+       "severity": "medium",
+       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-006",
+     "status": "settled",
+     "status_cn": "可以定谳",
+     "missing": [],
+     "conservative": "3 条独立来源对「1937年」没有分歧，这一点可以定谳。",
+     "high_count": 0
+    }
+   ]
+  },
+  {
+   "id": "case_kl_007",
+   "case_no": "KL-007",
+   "kind": "settled",
+   "title": "吉林自卫军成立于何时",
+   "claim_text": "吉林自卫军于1932年成立",
+   "event_id": "evt_1932_jilin_ziweijun",
+   "predicate": "成立时间",
+   "unit": null,
+   "values": [],
+   "summary": "以李杜为总司令的吉林自卫军成立，成为吉林抗日武装的主力。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+     ],
+     "assertions": [
+      {
+       "k": "主体",
+       "v": "吉林自卫军",
+       "state": "确定"
+      },
+      {
+       "k": "时点",
+       "v": "1932年（3 条来源均记此年）",
+       "state": "确定"
+      },
+      {
+       "k": "月日",
+       "v": "1月31日",
+       "state": "确定"
+      },
+      {
+       "k": "地点",
+       "v": "原文未载地点",
+       "state": "缺失"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内共 3 条记载，均指向同一事件。原文逐字照录。"
+     ],
+     "evidence": [
+      {
+       "book": "抗日战争纪念网《东北抗联大事记》",
+       "short": "抗日战争纪念网",
+       "page": "1932年1月",
+       "quote": "31日 以李杜为总司令的吉林自卫军成立。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "团结网《1932：李杜与哈尔滨保卫战》",
+       "short": "团结网",
+       "page": "2020-11-26",
+       "quote": "1月31日，李杜、丁超等召集抗日军政要员在哈开会，成立了“吉林自卫军总司令部”，推举李杜为自卫军总司令。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "抗日战争纪念网《功绩赫赫 铁骨铮铮——东北抗日联军总司令李杜将军》",
+       "short": "抗日战争纪念网",
+       "page": "2017-08-02",
+       "quote": "1932年1月31日在哈尔滨成立了统一指挥抗日军队的吉林自卫军总司令部，公推李杜为吉林抗日自卫军总司令。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R3",
+       "name": "库内无一手档案",
+       "severity": "medium",
+       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-007",
+     "status": "settled",
+     "status_cn": "可以定谳",
+     "missing": [],
+     "conservative": "3 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "high_count": 0
+    }
+   ]
+  },
+  {
+   "id": "case_kl_008",
+   "case_no": "KL-008",
+   "kind": "settled",
+   "title": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式成立于何时",
+   "claim_text": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式于1932年成立",
+   "event_id": "evt_1932_bayan_youjidui",
+   "predicate": "成立时间",
+   "unit": null,
+   "values": [],
+   "summary": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式成立，张甲洲任总指挥；赵尚志后到该部工作。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+     ],
+     "assertions": [
+      {
+       "k": "主体",
+       "v": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式",
+       "state": "确定"
+      },
+      {
+       "k": "时点",
+       "v": "1932年（3 条来源均记此年）",
+       "state": "确定"
+      },
+      {
+       "k": "月日",
+       "v": "5月16日",
+       "state": "确定"
+      },
+      {
+       "k": "地点",
+       "v": "原文未载地点",
+       "state": "缺失"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内共 3 条记载，均指向同一事件。原文逐字照录。"
+     ],
+     "evidence": [
+      {
+       "book": "抗日战争纪念网《东北抗联大事记》",
+       "short": "抗日战争纪念网",
+       "page": "1932年5月",
+       "quote": "16日 东北工农义勇军江北骑兵独立师 (巴彦游击队)正式成立，张甲洲任总指挥。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "国防部《甲洲路旁，“小红星”茁壮成长》（中国国防报）",
+       "short": "国防部",
+       "page": "2026-10-14",
+       "quote": "青年时期，他曾就读于北京大学和清华大学，并积极参加学生运动，1932年回到家乡，创建巴彦抗日游击队并担任总指挥。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      },
+      {
+       "book": "贵州省国防动员办公室《记忆｜张甲洲：从清北学子到抗日英雄》",
+       "short": "贵州省国防动员办公室",
+       "page": "2025-03-14",
+       "quote": "1932年5月16日，在一口井前，张甲洲带着来“参加婚礼”的200多人，举行了誓师大会，巴彦抗日游击队正式成立，他担任总指挥。",
+       "reliability": "B",
+       "reliability_cn": "学术著作/权威报道",
+       "value": null,
+       "unit": null,
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R3",
+       "name": "库内无一手档案",
+       "severity": "medium",
+       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-008",
+     "status": "settled",
+     "status_cn": "可以定谳",
+     "missing": [],
+     "conservative": "3 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "high_count": 0
+    }
+   ]
+  },
+  {
+   "id": "case_kl_009",
+   "case_no": "KL-009",
    "kind": "dispute",
    "title": "东北抗日联军总兵力究竟是多少",
    "claim_text": "东北抗日联军在1936年总兵力为 30,000 人（库内最低的一种说法）",
@@ -608,7 +1044,7 @@
     {
      "kind": "register",
      "agent": "存疑",
-     "case_no": "KL-005",
+     "case_no": "KL-009",
      "status": "unresolved",
      "status_cn": "悬案 · 无法定谳",
      "missing": [
@@ -622,8 +1058,8 @@
    ]
   },
   {
-   "id": "case_kl_006",
-   "case_no": "KL-006",
+   "id": "case_kl_010",
+   "case_no": "KL-010",
    "kind": "dispute",
    "title": "东北抗日义勇军总兵力究竟是多少",
    "claim_text": "东北抗日义勇军在1932年总兵力为 300,000 人（库内最低的一种说法）",
@@ -759,7 +1195,7 @@
     {
      "kind": "register",
      "agent": "存疑",
-     "case_no": "KL-006",
+     "case_no": "KL-010",
      "status": "unresolved",
      "status_cn": "悬案 · 无法定谳",
      "missing": [
@@ -773,8 +1209,224 @@
    ]
   },
   {
-   "id": "case_kl_007",
-   "case_no": "KL-007",
+   "id": "case_kl_011",
+   "case_no": "KL-011",
+   "kind": "dispute",
+   "title": "抗日同盟军作战于何时（整月分歧）",
+   "claim_text": "抗日同盟军作战日期：1933-06-01（辽宁日报）vs 1933-07-12（察哈尔抗战遗址展陈（经百科转引））",
+   "event_id": "evt_1933_duolun_shoufu",
+   "predicate": "date.start",
+   "unit": "date",
+   "values": [
+    "1933-06-01",
+    "1933-07-12"
+   ],
+   "summary": "抗日同盟军收复多伦等地。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "「抗日同盟军作战于何时」拆成两条互斥的日期主张：",
+      "主张甲：辽宁日报《大事记》 记 1933-06-01（精度：月）；",
+      "主张乙：察哈尔抗战遗址展陈（经百科转引） 记 1933-07-12（精度：日）。",
+      "两条主张相差 41 天（整月级），在本库的日期层级上不能同时成立。"
+     ],
+     "assertions": [
+      {
+       "k": "事件本体",
+       "v": "抗日同盟军收复多伦等地。",
+       "state": "确定"
+      },
+      {
+       "k": "主张甲",
+       "v": "1933-06-01（辽宁日报）",
+       "state": "存疑"
+      },
+      {
+       "k": "主张乙",
+       "v": "1933-07-12（察哈尔抗战遗址展陈（经百科转引））",
+       "state": "存疑"
+      },
+      {
+       "k": "分歧量级",
+       "v": "41 天",
+       "state": "确定"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内对同一条事实给出了两条日期主张。以下原文逐字照录，未作改写。"
+     ],
+     "evidence": [
+      {
+       "book": "辽宁日报《大事记》",
+       "short": "辽宁日报",
+       "page": "",
+       "quote": "6月：抗日同盟军收复多伦等地。",
+       "reliability": "B",
+       "value": "1933-06-01",
+       "unit": "date",
+       "is_primary": false
+      },
+      {
+       "book": "察哈尔抗战遗址展陈（经百科转引）",
+       "short": "察哈尔抗战遗址展陈",
+       "page": "",
+       "quote": "（该来源以日期主张入链，原文引文见事件层）",
+       "reliability": "B",
+       "value": "1933-07-12",
+       "unit": "date",
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R9",
+       "name": "整月级日期分歧",
+       "severity": "high",
+       "text": "辽宁日报 记 1933-06-01，察哈尔抗战遗址展陈（经百科转引） 记 1933-07-12，相差 41 天，超出精度误差能解释的范围——这是实质性分歧，不是「一个记约数一个记精确数」。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-011",
+     "status": "unresolved",
+     "status_cn": "悬案 · 整月分歧",
+     "missing": [
+      "事件所在省档案馆革命历史档案（闭架）",
+      "当事人回忆录纸本或烈士传记的档案级引文"
+     ],
+     "conservative": "两说并陈：1933-06-01（辽宁日报）与 1933-07-12（察哈尔抗战遗址展陈（经百科转引））。本库按「不动原记载、不加权下结论」处置——机构权重倾向双方，但倾向不是定谳。任何一侧改字都会在系统里留下痕迹：这不是没能得出结论，而是**证据还没到能得出结论的程度**。",
+     "high_count": 1
+    }
+   ]
+  },
+  {
+   "id": "case_kl_012",
+   "case_no": "KL-012",
+   "kind": "dispute",
+   "title": "童长荣牺牲于何时（整月分歧）",
+   "claim_text": "童长荣牺牲日期：1934-04-21（抗日战争纪念网）vs 1934-03-21（国防部）",
+   "event_id": "evt_1934_tongzhangrong_xisheng",
+   "predicate": "date.start",
+   "unit": "date",
+   "values": [
+    "1934-03-21",
+    "1934-04-21"
+   ],
+   "summary": "中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+   "steps": [
+    {
+     "kind": "decompose",
+     "agent": "拆解",
+     "lines": [
+      "「童长荣牺牲于何时」拆成两条互斥的日期主张：",
+      "主张甲：抗日战争纪念网《东北抗联大事记》 记 1934-04-21（精度：日）；",
+      "主张乙：国防部《童长荣》 记 1934-03-21（精度：日）。",
+      "两条主张相差 31 天（整月级），在本库的日期层级上不能同时成立。"
+     ],
+     "assertions": [
+      {
+       "k": "事件本体",
+       "v": "中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+       "state": "确定"
+      },
+      {
+       "k": "主张甲",
+       "v": "1934-04-21（抗日战争纪念网）",
+       "state": "存疑"
+      },
+      {
+       "k": "主张乙",
+       "v": "1934-03-21（国防部）",
+       "state": "存疑"
+      },
+      {
+       "k": "分歧量级",
+       "v": "31 天",
+       "state": "确定"
+      }
+     ]
+    },
+    {
+     "kind": "retrieve",
+     "agent": "辑录",
+     "lines": [
+      "库内对同一条事实给出了两条日期主张。以下原文逐字照录，未作改写。"
+     ],
+     "evidence": [
+      {
+       "book": "抗日战争纪念网《东北抗联大事记》",
+       "short": "抗日战争纪念网",
+       "page": "",
+       "quote": "21日 中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+       "reliability": "B",
+       "value": "1934-04-21",
+       "unit": "date",
+       "is_primary": false
+      },
+      {
+       "book": "国防部《童长荣》",
+       "short": "国防部",
+       "page": "",
+       "quote": "（该来源以日期主张入链，原文引文见事件层）",
+       "reliability": "B",
+       "value": "1934-03-21",
+       "unit": "date",
+       "is_primary": false
+      }
+     ],
+     "side": []
+    },
+    {
+     "kind": "examine",
+     "agent": "对勘",
+     "lines": [],
+     "challenges": [
+      {
+       "code": "R9",
+       "name": "整月级日期分歧",
+       "severity": "high",
+       "text": "抗日战争纪念网 记 1934-04-21，国防部 记 1934-03-21，相差 31 天，超出精度误差能解释的范围——这是实质性分歧，不是「一个记约数一个记精确数」。"
+      },
+      {
+       "code": "R10",
+       "name": "机构权重不对称",
+       "severity": "mid",
+       "text": "分歧一方为国防部门/官方纪念机构，另一方为媒体年表——但这不构成裁决：年表同样有档案出处，且单方权威转述也可能沿用一处笔误。权重只改变候选倾向，不替代证据。"
+      }
+     ]
+    },
+    {
+     "kind": "register",
+     "agent": "存疑",
+     "case_no": "KL-012",
+     "status": "unresolved",
+     "status_cn": "悬案 · 整月分歧",
+     "missing": [
+      "事件所在省档案馆革命历史档案（闭架）",
+      "当事人回忆录纸本或烈士传记的档案级引文"
+     ],
+     "conservative": "两说并陈：1934-04-21（抗日战争纪念网）与 1934-03-21（国防部）。本库按「不动原记载、不加权下结论」处置——机构权重倾向主张乙，但倾向不是定谳。任何一侧改字都会在系统里留下痕迹：这不是没能得出结论，而是**证据还没到能得出结论的程度**。",
+     "high_count": 1
+    }
+   ]
+  },
+  {
+   "id": "case_kl_013",
+   "case_no": "KL-013",
    "kind": "single",
    "title": "高兴亚：孤证怎么处置",
    "claim_text": "辽宁救国军旅长高兴亚牺牲。",
@@ -851,7 +1503,7 @@
     {
      "kind": "register",
      "agent": "存疑",
-     "case_no": "KL-007",
+     "case_no": "KL-013",
      "status": "insufficient",
      "status_cn": "库内证据不足",
      "missing": [

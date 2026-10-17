@@ -88,6 +88,15 @@ def main() -> int:
     by_year = Counter(year_of(e) for e in events)
     by_type = Counter(e.get("event_type", "其他") for e in events)
 
+    # 数值裁决链：conflicts 组 id -> 裁决标注（curated，可被档案推翻）
+    verdicts = {}
+    vp = ROOT / "data" / "curated" / "verdicts.json"
+    if vp.exists():
+        verdicts = json.loads(vp.read_text(encoding="utf-8")).get("verdicts", {})
+        for c in report.get("conflicts", []):
+            if c.get("conflict_group") in verdicts:
+                c["verdict"] = verdicts[c["conflict_group"]]
+
     payload = {
         "events": events + sites,
         "conflicts": report.get("conflicts", []),
@@ -103,6 +112,7 @@ def main() -> int:
             "by_year": dict(sorted(by_year.items())),
             "by_type": dict(by_type.most_common()),
             "problems": len(report.get("problems", [])),
+            "verdicts": verdicts,
         },
     }
 

@@ -27,6 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EVENTS = ROOT / "data" / "curated" / "events.json"
+CONF = ROOT / "data" / "curated" / "conflicts.json"
 OUT = ROOT / "data" / "curated" / "cases.json"
 
 # 时点模糊的语汇。原文出现这些词，说明命题本身没落在具体某一天。
@@ -301,6 +302,116 @@ def build_register(ev: dict, ch: list[dict], measures: list[dict],
     }
 
 
+def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
+    """日期悬案：同一事件的日期主张出现高严重度分歧（整月级）。
+
+    与数值悬案对称：数值案证明「系统对数字不敢下结论」，
+    本案证明「系统对日期也不敢下结论——即使分歧一方是权威机构」。
+    处置不是和稀泥：给出机构权重对比与最保守表述，定谳留给档案级证据。
+    """
+    d = ev.get("date") or {}
+    year = str(d.get("start"))[:4]
+    # 主语复用定谳案的抽取逻辑
+    subject = ("、".join(ev.get("persons") or [])
+               or "、".join(ev.get("units") or [])
+               or "该事件")
+    if subject == "该事件":
+        m_v = re.search(r"(成立|爆发|失守|殉国|牺牲)", ev.get("summary") or "")
+        if m_v:
+            subject = (ev.get("summary") or "")[:m_v.start()].split("的")[-1].strip("，。、； ") or "该事件"
+    et = ev.get("event_type", "事件")
+    act = {"牺牲": "牺牲", "战斗": "作战"}.get(et, "发生")
+
+    a, b = dv[0]["a"], dv[0]["b"]
+    ga, gb = a["source"].split("《")[0], b["source"].split("《")[0]
+
+    # 拆解：把「X 于何时」拆成双方各自的主张
+    decompose = {
+        "kind": "decompose", "agent": "拆解",
+        "lines": [f"「{subject}{act}于何时」拆成两条互斥的日期主张：",
+                  f"主张甲：{a['source']} 记 {a['value']}（精度：{'日' if a['precision']=='day' else '月'}）；",
+                  f"主张乙：{b['source']} 记 {b['value']}（精度：{'日' if b['precision']=='day' else '月'}）。",
+                  "两条主张相差 "
+                  + (f"{dv[0]['gap_days']} 天（整月级）" if dv[0]['gap_days'] >= 15
+                     else f"{dv[0]['gap_days']} 天")
+                  + "，在本库的日期层级上不能同时成立。"],
+        "assertions": [
+            {"k": "事件本体", "v": ev.get("summary", ""), "state": "确定"},
+            {"k": "主张甲", "v": f"{a['value']}（{ga}）", "state": "存疑"},
+            {"k": "主张乙", "v": f"{b['value']}（{gb}）", "state": "存疑"},
+            {"k": "分歧量级", "v": f"{dv[0]['gap_days']} 天", "state": "确定"},
+        ],
+    }
+
+    # 辑录：双方引文逐字照录
+    quotes_by_src = {}
+    for s in ev.get("sources", []):
+        quotes_by_src.setdefault(s.get("book", ""), s.get("quote", ""))
+    def evd(claim):
+        bk = claim["source"]
+        return {"book": bk, "short": short_src(bk), "page": "",
+                "quote": quotes_by_src.get(bk, "（该来源以日期主张入链，原文引文见事件层）"),
+                "reliability": next((s.get("reliability") for s in ev.get("sources", [])
+                                     if s.get("book") == bk), "B"),
+                "value": claim["value"], "unit": "date", "is_primary": False}
+    retrieve = {
+        "kind": "retrieve", "agent": "辑录",
+        "lines": ["库内对同一条事实给出了两条日期主张。以下原文逐字照录，未作改写。"],
+        "evidence": [evd(a), evd(b)],
+        "side": [],
+    }
+
+    # 对勘：整月级分歧 + 机构权重
+    ch = [{
+        "code": "R9", "name": "整月级日期分歧",
+        "severity": "high",
+        "text": f"{ga} 记 {a['value']}，{gb} 记 {b['value']}，相差 {dv[0]['gap_days']} 天，"
+                "超出精度误差能解释的范围——这是实质性分歧，不是「一个记约数一个记精确数」。",
+    }]
+    w_a = ("国防部" in ga or "纪念馆" in ga or "军网" in ga or "新华社" in ga
+           or "纪委监委" in ga or "退役军人" in ga or "党史" in ga)
+    w_b = ("国防部" in gb or "纪念馆" in gb or "军网" in gb or "新华社" in gb
+           or "纪委监委" in gb or "退役军人" in gb or "党史" in gb)
+    if w_a != w_b:
+        ch.append({
+            "code": "R10", "name": "机构权重不对称",
+            "severity": "mid",
+            "text": ("分歧一方为国防部门/官方纪念机构，另一方为媒体年表——"
+                     "但这不构成裁决：年表同样有档案出处，且单方权威转述也可能沿用一处笔误。"
+                     "权重只改变候选倾向，不替代证据。"),
+        })
+    examine = {"kind": "examine", "agent": "对勘", "lines": [], "challenges": ch}
+
+    # 存疑：登记悬案，最保守表述 + 裁决路径
+    register = {
+        "kind": "register", "agent": "存疑",
+        "case_no": case_no, "status": "unresolved", "status_cn": "悬案 · 整月分歧",
+        "missing": ["事件所在省档案馆革命历史档案（闭架）",
+                    "当事人回忆录纸本或烈士传记的档案级引文"],
+        "conservative": (
+            f"两说并陈：{a['value']}（{ga}）与 {b['value']}（{gb}）。"
+            f"本库按「不动原记载、不加权下结论」处置——"
+            f"机构权重倾向{'主张甲' if w_a and not w_b else ('主张乙' if w_b and not w_a else '双方')}，"
+            f"但倾向不是定谳。任何一侧改字都会在系统里留下痕迹："
+            f"这不是没能得出结论，而是**证据还没到能得出结论的程度**。"),
+        "high_count": 1,
+    }
+
+    return {
+        "id": f"case_{case_no.lower().replace('-', '_')}",
+        "case_no": case_no,
+        "kind": "dispute",
+        "title": f"{subject}{act}于何时（整月分歧）",
+        "claim_text": f"{subject}{act}日期：{a['value']}（{ga}）vs {b['value']}（{gb}）",
+        "event_id": ev["id"],
+        "predicate": "date.start",
+        "unit": "date",
+        "values": sorted({a["value"], b["value"]}),
+        "summary": ev.get("summary"),
+        "steps": [decompose, retrieve, examine, register],
+    }
+
+
 def build_single_case(ev: dict, case_no: str) -> dict:
     """孤证案：库内只有一条记载。
 
@@ -400,6 +511,13 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
     subject = ("、".join(ev.get("persons") or [])
                or "、".join(ev.get("units") or [])
                or "该事件")
+    # 仍无主语的：从摘要里截取主语——取谓语（成立/爆发/失守…）之前的片段，
+    # 再取最后一个「的」之后的尾段，避免整句入题。
+    if subject == "该事件":
+        m_v = re.search(r"(成立|爆发|失守|投降|殉国|会师|牺牲)", ev.get("summary") or "")
+        if m_v:
+            frag = (ev.get("summary") or "")[:m_v.start()]
+            subject = frag.split("的")[-1].strip("，。、； ") or "该事件"
     # 文书/宣言类事件没有人物与部队，主体从摘要里的书名号提取——
     # 否则会写成「该事件成立于何时」，案名不知所云。
     m_doc = re.search(r"《([^》]+)》", ev.get("summary") or "")
@@ -530,6 +648,15 @@ def main() -> int:
     raw = json.loads(EVENTS.read_text(encoding="utf-8"))
     events = raw.get("events", []) if isinstance(raw, dict) else raw
 
+    # 消费冲突报告：高严重度日期分歧的事件不做定谳案，单独立日期悬案
+    conf = json.loads(CONF.read_text(encoding="utf-8")) if CONF.exists() else {}
+    high_date = {}   # event_id -> [date_variant 冲突条目]
+    for dv in conf.get("date_variants", []):
+        if dv.get("severity") == "high":
+            high_date.setdefault(dv["event_id"], []).append(dv)
+    for g in conf.get("conflicts", []):
+        high_date.setdefault("_groups", []).extend(g.get("members", []))
+
     # 全库来源索引，供「辑录」做跨条目旁证检索
     all_sources = []
     for e in events:
@@ -546,13 +673,14 @@ def main() -> int:
     single: list[dict] = []
 
     settled_cands = [e for e in events
-                     if not e.get("measures") and len(e.get("sources") or []) >= 2]
+                     if not e.get("measures") and len(e.get("sources") or []) >= 2
+                     and e["id"] not in high_date]
     # 定谳案不是全量罗列：多源一致是正常条目，不构成案子。
     # 只挑来源最多的几个，用来示范「多源如何收敛到同一天」。
     # 来源数相同则优先有日期主张的（能展示粗精度让位于细精度）。
     settled_cands.sort(key=lambda e: (-len(e.get("sources") or []),
                                       -len(e.get("date_variants") or [])))
-    for e in settled_cands[:4]:
+    for e in settled_cands[:8]:
         settled.append(build_settled_case(e, "KL-000"))
 
     # 数值冲突案：同一数量项出现 ≥2 个不同取值，才立 case
@@ -592,6 +720,11 @@ def main() -> int:
             "summary": e.get("summary"),
             "steps": [decompose, retrieve, examine, register],
         })
+
+    # 日期悬案：高严重度日期分歧单独立案（与数值悬案对称）
+    for e in events:
+        if e["id"] in high_date:
+            dispute.append(build_date_case(e, high_date[e["id"]], "KL-000"))
 
     # 孤证案：挑两条标志性的牺牲事件，示范「史实存疑」与「库内证据不足」的界线。
     # 按人物在全库出现的频次排序——反复出现的人物才承载得起一个示范案。
