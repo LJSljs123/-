@@ -1,0 +1,165 @@
+{
+  "problems": [],
+  "conflicts": [
+    {
+      "conflict_group": "cg_kanglian_bingli",
+      "members": [
+        "evt_1936_kanglian_dingsheng"
+      ],
+      "pairs": [
+        {
+          "a": "evt_1936_kanglian_dingsheng",
+          "b": "evt_1936_kanglian_dingsheng",
+          "scope": "within",
+          "diffs": [
+            {
+              "field": "总兵力",
+              "kind": "measure",
+              "a": 30000,
+              "b": 45000,
+              "unit": "人",
+              "a_src": "人民日报《弘扬历久弥新的东北抗联精神》",
+              "b_src": "国家图书馆《抗联简史》（引孔令波《军事历史》1986年第4期）",
+              "a_page": "2021-10-28",
+              "b_page": "抗战胜利80周年专题",
+              "a_id": "evt_1936_kanglian_dingsheng",
+              "b_id": "evt_1936_kanglian_dingsheng",
+              "same_event": true,
+              "ratio": 0.33,
+              "severity": "high"
+            }
+          ]
+        }
+      ],
+      "high_severity": 1,
+      "field_count": 1
+    },
+    {
+      "conflict_group": "cg_yiyongjun_renshu",
+      "members": [
+        "evt_1932_yiyongjun_dingsheng"
+      ],
+      "pairs": [
+        {
+          "a": "evt_1932_yiyongjun_dingsheng",
+          "b": "evt_1932_yiyongjun_dingsheng",
+          "scope": "within",
+          "diffs": [
+            {
+              "field": "总兵力",
+              "kind": "measure",
+              "a": 500000,
+              "b": 300000,
+              "unit": "人",
+              "a_src": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》、国家图书馆《抗联简史》",
+              "b_src": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
+              "a_page": "2018-03-21、抗战胜利80周年专题",
+              "b_page": "2025-08-15",
+              "a_id": "evt_1932_yiyongjun_dingsheng",
+              "b_id": "evt_1932_yiyongjun_dingsheng",
+              "same_event": true,
+              "ratio": 0.4,
+              "severity": "high"
+            }
+          ]
+        }
+      ],
+      "high_severity": 1,
+      "field_count": 1
+    }
+  ],
+  "date_variants": [
+    {
+      "event_id": "evt_1934_zhaoshangzhi_hadong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 28,
+      "a": {
+        "value": "1934-06-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1934-06-29",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_yangjingyu_zongzhihuibu",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 20,
+      "a": {
+        "value": "1934-02-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1934-02-21",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1932_huanren_tangjuwu",
+      "field": "date.start",
+      "kind": "conflict",
+      "gap_days": 2,
+      "a": {
+        "value": "1932-04-21",
+        "precision": "day",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1932-04-23",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    }
+  ],
+  "confidence": {
+    "evt_1931_mgzsw_xuanyan": 0.78,
+    "evt_1931_beiping_jiuguohui": 0.7,
+    "evt_1931_jinzhou_huangxiansheng": 0.7,
+    "evt_1931_jiangqiao_kangzhan": 0.78,
+    "evt_1931_gelin_gaibian": 0.7,
+    "evt_1932_jinxi_gujia": 0.78,
+    "evt_1932_wangdelin_jiuguojun": 0.78,
+    "evt_1932_mgzsw_gaoshu": 0.7,
+    "evt_1932_huanren_tangjuwu": 0.78,
+    "evt_1932_junqu_gaibian": 0.7,
+    "evt_1933_rehe_baoweizhan": 0.7,
+    "evt_1933_changcheng_kangzhan": 0.7,
+    "evt_1933_duolun_shoufu": 0.7,
+    "evt_1933_mgzsw_gaominzhong": 0.7,
+    "evt_1934_yangjingyu_zongzhihuibu": 0.78,
+    "evt_1934_gaoxingya_xisheng": 0.7,
+    "evt_1934_dengtiemei_beibu": 0.86,
+    "evt_1934_zhaoshangzhi_hadong": 0.78,
+    "evt_1934_huanren_shoubian": 0.7,
+    "evt_1934_diyijun_chengli": 0.78,
+    "evt_1934_yiyongjun_yubu": 0.7,
+    "evt_1935_disanjun_chengli": 0.78,
+    "evt_1935_diwujun_chengli": 0.78,
+    "evt_1935_bayi_xuanyan": 0.78,
+    "evt_1936_tongyi_jianzhi": 0.7,
+    "evt_1936_gejun_chengli": 0.7,
+    "evt_1937_youjizhan": 0.7,
+    "evt_1938_liujie_zhidian": 0.7,
+    "evt_1939_nanman_huiyi": 0.7,
+    "evt_1940_yangjingyu_xunguo": 0.86,
+    "evt_1941_wangyachen_xisheng": 0.7,
+    "evt_1941_zhaoshangzhi_xiaobudui": 0.7,
+    "evt_1942_zhaoshangzhi_xisheng": 0.94,
+    "evt_1942_jiaodaolv_chengli": 0.94,
+    "evt_1943_hulin_raohe": 0.7,
+    "evt_1944_yanxi": 0.7,
+    "evt_1945_riben_touxiang": 0.7,
+    "evt_1936_kanglian_dingsheng": 0.66,
+    "evt_1932_yiyongjun_dingsheng": 0.74
+  }
+}

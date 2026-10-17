@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>密营 · 审问台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0c0a08; --panel:#12100d; --ink:#e7dfd0; --dim:#9a8f7c;
+  --faint:#6a6154; --red:#b23a2e; --gold:#c8a24a;
+  --line:rgba(200,162,74,.16); --line-soft:rgba(200,162,74,.08);
+  --serif:"Source Han Serif SC","Noto Serif CJK SC","Songti SC","STSong",SimSun,serif;
+  --mono:"Cascadia Mono","Consolas","SF Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--serif); font-size:16px; line-height:1.95;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(120% 90% at 50% 0%,rgba(200,162,74,.045),transparent 60%);
+}
+::selection{background:rgba(178,58,46,.35)}
+
+/* ---------- 顶栏 ---------- */
+header{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:28px;
+  padding:16px 34px;
+  background:rgba(12,10,8,.93);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-soft);
+}
+.brand{font-size:17px;letter-spacing:.26em;white-space:nowrap}
+.brand span{color:var(--faint);letter-spacing:.14em;font-size:12px;margin-left:10px}
+nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+nav button{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  background:transparent;color:var(--faint);
+  border:1px solid var(--line-soft);border-radius:2px;
+  padding:5px 11px;cursor:pointer;transition:.18s;
+}
+nav button:hover{color:var(--gold);border-color:var(--line)}
+nav button.on{color:var(--gold);border-color:rgba(200,162,74,.45);background:rgba(200,162,74,.06)}
+a.go{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);
+  text-decoration:none;border:1px solid var(--line-soft);padding:5px 11px;
+  border-radius:2px;margin-left:10px;white-space:nowrap;transition:.18s;
+}
+a.go:hover{color:var(--gold);border-color:var(--line)}
+
+/* ---------- 进度条 ---------- */
+#bar{position:fixed;top:0;left:0;height:1px;background:var(--gold);width:0;
+  z-index:30;transition:width .5s ease;opacity:.75}
+
+/* ---------- 正文 ---------- */
+main{max-width:790px;margin:0 auto;padding:64px 34px 180px}
+
+.docket{margin-bottom:56px}
+.docket .no{
+  font-family:var(--mono);font-size:12px;letter-spacing:.2em;
+  color:var(--gold);margin-bottom:16px;
+}
+.docket h1{font-size:33px;font-weight:500;line-height:1.45;letter-spacing:.02em}
+.docket .claim{
+  margin-top:20px;padding:14px 18px;
+  border-left:2px solid var(--line);
+  color:var(--dim);font-size:14.5px;line-height:1.85;
+}
+.docket .claim b{color:var(--faint);font-weight:400;font-size:12px;
+  letter-spacing:.12em;display:block;margin-bottom:4px}
+
+/* 段落 */
+.sec{margin-bottom:44px}
+.sec-h{
+  display:flex;align-items:baseline;gap:12px;
+  margin-bottom:18px;padding-bottom:9px;
+  border-bottom:1px solid var(--line-soft);
+}
+.sec-h .tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--gold);
+}
+.sec-h .sub{font-size:12px;color:var(--faint);letter-spacing:.06em}
+
+.line{color:var(--ink);margin-bottom:9px;font-size:15px;line-height:1.95}
+.line.dim{color:var(--dim);font-size:14px}
+
+/* 断言表 */
+.ass{margin-top:14px;border-top:1px solid var(--line-soft)}
+.ass .row{
+  display:grid;grid-template-columns:64px 1fr auto;gap:14px;
+  padding:10px 2px;border-bottom:1px solid var(--line-soft);
+  align-items:baseline;
+}
+.ass .k{font-size:12px;color:var(--faint);letter-spacing:.12em}
+.ass .v{font-size:14.5px;color:var(--ink)}
+.ass .s{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;padding:2px 8px;
+  border-radius:2px;white-space:nowrap}
+.s.ok{color:#7f9c6a;border:1px solid rgba(127,156,106,.35)}
+.s.mid{color:#c9a35f;border:1px solid rgba(201,163,95,.35)}
+.s.bad{color:var(--red);border:1px solid rgba(178,58,46,.45);background:rgba(178,58,46,.07)}
+
+/* 证据卡 */
+.ev{
+  margin:14px 0;padding:15px 18px;
+  border-left:2px solid var(--line);
+  background:rgba(255,255,255,.012);
+}
+.ev .top{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.ev .bk{font-size:13.5px;color:var(--ink)}
+.ev .pg{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.ev .rel{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  color:var(--faint);border:1px solid var(--line-soft);padding:1px 6px;border-radius:2px}
+.ev .val{margin-left:auto;font-family:var(--mono);font-size:17px;color:var(--gold);
+  font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.ev .q{font-size:14px;color:var(--dim);line-height:1.9;font-style:italic}
+.ev .q::before{content:"「";color:var(--faint)}
+.ev .q::after{content:"」";color:var(--faint)}
+
+/* 旁证 */
+.side{margin-top:10px;padding:12px 16px;border-left:2px solid rgba(107,95,78,.4);
+  background:rgba(255,255,255,.008)}
+.side .h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);margin-bottom:6px}
+.side .q{font-size:13px;color:var(--faint);line-height:1.8;font-style:italic}
+
+/* 质证 */
+.ch{margin:16px 0;padding-left:16px;border-left:2px solid rgba(178,58,46,.5)}
+.ch .hd{display:flex;align-items:baseline;gap:9px;margin-bottom:5px;flex-wrap:wrap}
+.ch .code{font-family:var(--mono);font-size:10.5px;color:var(--red);letter-spacing:.1em}
+.ch .nm{font-size:14px;color:var(--ink)}
+.ch .sev{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  color:var(--red);border:1px solid rgba(178,58,46,.4);padding:1px 6px;border-radius:2px}
+.ch .sev.m{color:#c9a35f;border-color:rgba(201,163,95,.4)}
+.ch .tx{font-size:14px;color:var(--dim);line-height:1.9}
+
+/* 存疑 */
+.verdict{
+  position:relative;margin-top:8px;padding:26px 26px 24px;
+  border:1px solid rgba(200,162,74,.28);
+  background:linear-gradient(180deg,rgba(200,162,74,.05),rgba(200,162,74,.015));
+}
+.verdict .st{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold)}
+.verdict .cs{font-size:26px;margin-top:10px;letter-spacing:.04em}
+.verdict .mi{margin-top:20px}
+.verdict .mi .h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  color:var(--faint);margin-bottom:8px}
+.verdict .mi li{list-style:none;font-size:13.5px;color:var(--dim);
+  padding:5px 0 5px 16px;position:relative;line-height:1.8}
+.verdict .mi li::before{content:"—";position:absolute;left:0;color:var(--faint)}
+.verdict .cc{margin-top:22px;padding-top:18px;border-top:1px solid var(--line-soft);
+  font-size:15px;line-height:2;color:var(--ink)}
+.verdict .cc .h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  color:var(--faint);margin-bottom:8px}
+
+.stamp{
+  position:absolute;right:24px;top:22px;
+  width:70px;height:70px;
+  border:2.5px solid var(--red);
+  box-shadow:inset 0 0 0 3px rgba(178,58,46,.14);
+  border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-9deg);
+  color:var(--red);font-size:19px;letter-spacing:.14em;line-height:1.1;
+  text-align:center;opacity:.72;
+}
+.stamp i{font-style:normal;display:block}
+.stamp.ok{border-color:var(--gold);color:var(--gold);
+  box-shadow:inset 0 0 0 3px rgba(200,162,74,.14)}
+.stamp.dim{border-color:var(--faint);color:var(--faint);opacity:.6;
+  box-shadow:inset 0 0 0 3px rgba(106,97,84,.12)}
+
+/* 浮现动画 */
+.r{opacity:0;transform:translateY(7px);
+  transition:opacity .5s ease,transform .5s ease}
+.r.in{opacity:1;transform:none}
+
+/* 结案陈词 */
+.colophon{
+  margin-top:58px;padding-top:24px;border-top:1px solid var(--line-soft);
+  font-size:13px;color:var(--faint);line-height:2.2;
+  text-align:center;letter-spacing:.05em;
+}
+
+/* 底栏 */
+footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:20;
+  display:flex;align-items:center;gap:16px;
+  padding:13px 34px;
+  background:rgba(12,10,8,.94);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line-soft);
+}
+footer .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--faint)}
+footer .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);
+  animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+footer button{
+  margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  background:transparent;color:var(--dim);border:1px solid var(--line-soft);
+  padding:6px 13px;border-radius:2px;cursor:pointer;transition:.18s;
+}
+footer button:hover{color:var(--gold);border-color:var(--line)}
+footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:14px}
+
+@media(max-width:760px){
+  main{padding:36px 20px 160px}
+  .docket h1{font-size:25px}
+  header{padding:13px 18px;gap:14px}
+  .brand span{display:none}
+  .stamp{display:none}
+  .ass .row{grid-template-columns:52px 1fr;gap:8px}
+  .ass .s{grid-column:2;justify-self:start}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<header>
+  <div class="brand">密营<span>卷宗</span></div>
+  <nav id="nav"></nav>
+  <a class="go" href="index.html">← 承重结构</a>
+</header>
+
+<main id="doc"></main>
+
+<footer>
+  <div class="dot" id="live"></div>
+  <div class="st" id="st">准备中</div>
+  <button id="skip">跳过动画</button>
+  <div class="kbd">空格 跳过 · ←→ 换案</div>
+</footer>
+
+<script src="cases.js"></script>
+<script>
+(function () {
+  const D = window.__MIYING_CASES__ || { cases: [] };
+  const cases = D.cases || [];
+  const doc = document.getElementById('doc');
+  const nav = document.getElementById('nav');
+  const bar = document.getElementById('bar');
+  const stEl = document.getElementById('st');
+
+  let fast = false;
+  let token = 0;                    // 切换案子时作废旧动画
+  let revealed = 0, totalBlocks = 0;
+
+  const sleep = ms => new Promise(r => setTimeout(r, fast ? 0 : ms));
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  function stateClass(s) {
+    return { '确定': 'ok', '较粗': 'mid', '模糊': 'bad', '缺失': 'bad', '约数': 'mid' }[s] || 'mid';
+  }
+
+  /* 逐块浮现：先插入隐藏节点，再依次点亮 */
+  function reveal(el, delay) {
+    el.classList.add('r');
+    return sleep(delay).then(() => {
+      el.classList.add('in');
+      revealed++;
+      bar.style.width = (totalBlocks ? revealed / totalBlocks * 100 : 0) + '%';
+    });
+  }
+
+  function countBlocks(c) {
+    let n = 2;                       // 卷宗头 + 结尾
+    c.steps.forEach(s => {
+      n += 1;                        // 段落标题
+      n += (s.lines || []).length;
+      n += (s.assertions || []).length;
+      n += (s.evidence || []).length;
+      n += (s.side || []).length;
+      n += (s.challenges || []).length;
+      if (s.kind === 'register') n += 4;
+    });
+    return n;
+  }
+
+  function sectionHead(tag, sub) {
+    const d = document.createElement('div');
+    d.className = 'sec-h';
+    d.innerHTML = '<span class="tag">' + esc(tag) + '</span>' +
+                  '<span class="sub">' + esc(sub) + '</span>';
+    return d;
+  }
+
+  async function render(c, my) {
+    doc.innerHTML = '';
+    revealed = 0;
+    totalBlocks = countBlocks(c);
+    bar.style.width = '0%';
+    stEl.textContent = '推理中';
+
+    /* --- 卷宗头 --- */
+    const dk = document.createElement('div');
+    dk.className = 'docket';
+    dk.innerHTML =
+      '<div class="no">' + esc(c.case_no) + ' · ' +
+        (c.kind === 'dispute' ? '多源分歧' : '孤证审查') + '</div>' +
+      '<h1>' + esc(c.title) + '</h1>' +
+      '<div class="claim"><b>被审命题</b>' + esc(c.claim_text) + '</div>';
+    doc.appendChild(dk);
+    await reveal(dk, 60);
+    if (my !== token) return;
+
+    /* --- 四段 --- */
+    for (const step of c.steps) {
+      if (my !== token) return;
+
+      const sec = document.createElement('section');
+      sec.className = 'sec';
+      doc.appendChild(sec);
+
+      const subMap = {
+        decompose: '只拆解，不判断',
+        retrieve: '只引用，不生成',
+        examine: '只质疑，不下结论',
+        register: '解决不了就登记，不硬给答案',
+      };
+      const h = sectionHead(step.agent, subMap[step.kind] || '');
+      sec.appendChild(h);
+      await reveal(h, 120);
+
+      for (const ln of step.lines || []) {
+        const p = document.createElement('div');
+        p.className = 'line';
+        p.textContent = ln;
+        sec.appendChild(p);
+        await reveal(p, 90);
+      }
+
+      if (step.assertions) {
+        const box = document.createElement('div');
+        box.className = 'ass';
+        step.assertions.forEach(a => {
+          const r = document.createElement('div');
+          r.className = 'row';
+          r.innerHTML = '<div class="k">' + esc(a.k) + '</div>' +
+                        '<div class="v">' + esc(a.v) + '</div>' +
+                        '<div class="s ' + stateClass(a.state) + '">' + esc(a.state) + '</div>';
+          box.appendChild(r);
+        });
+        sec.appendChild(box);
+        for (const r of box.children) await reveal(r, 80);
+      }
+
+      for (const e of step.evidence || []) {
+        const d = document.createElement('div');
+        d.className = 'ev';
+        d.innerHTML =
+          '<div class="top">' +
+            '<span class="bk">' + esc(e.short) + '</span>' +
+            (e.page ? '<span class="pg">' + esc(e.page) + '</span>' : '') +
+            '<span class="rel">' + esc(e.reliability || '') + ' ' + esc(e.reliability_cn || '') + '</span>' +
+            (e.value != null
+              ? '<span class="val">' + Number(e.value).toLocaleString('zh-CN') + ' ' + esc(e.unit || '') + '</span>'
+              : '') +
+          '</div>' +
+          '<div class="q">' + esc(e.quote) + '</div>';
+        sec.appendChild(d);
+        await reveal(d, 200);
+      }
+
+      for (const s of step.side || []) {
+        const d = document.createElement('div');
+        d.className = 'side';
+        d.innerHTML = '<div class="h">旁证 · 不在本条事件下</div>' +
+          '<div class="q">' + esc(s.quote) + '</div>';
+        sec.appendChild(d);
+        await reveal(d, 160);
+      }
+
+      for (const ch of step.challenges || []) {
+        const d = document.createElement('div');
+        d.className = 'ch';
+        d.innerHTML =
+          '<div class="hd">' +
+            '<span class="code">' + esc(ch.code) + '</span>' +
+            '<span class="nm">' + esc(ch.name) + '</span>' +
+            '<span class="sev ' + (ch.severity === 'high' ? '' : 'm') + '">' +
+              (ch.severity === 'high' ? '高' : ch.severity === 'medium' ? '中' : '低') +
+            '</span>' +
+          '</div>' +
+          '<div class="tx">' + esc(ch.text) + '</div>';
+        sec.appendChild(d);
+        await reveal(d, 260);
+      }
+
+      if (step.kind === 'register') {
+        const v = document.createElement('div');
+        v.className = 'verdict';
+        const stamp = {
+          settled:      { ch: ['定', '谳'], cls: ' ok' },
+          unresolved:   { ch: ['悬', '案'], cls: '' },
+          insufficient: { ch: ['缺', '证'], cls: ' dim' },
+        }[step.status] || { ch: ['未', '结'], cls: '' };
+        v.innerHTML =
+          '<div class="stamp' + stamp.cls + '"><i>' + stamp.ch[0] + '</i><i>' + stamp.ch[1] + '</i></div>' +
+          '<div class="st">' + esc(step.case_no) + ' · 处置结果</div>' +
+          '<div class="cs">' + esc(step.status_cn) + '</div>' +
+          '<div class="mi"><div class="h">缺什么才能定谳</div><ul>' +
+            (step.missing || []).map(m => '<li>' + esc(m) + '</li>').join('') +
+          '</ul></div>' +
+          '<div class="cc"><div class="h">证据支持的最保守结论</div>' +
+            esc(step.conservative) + '</div>';
+        sec.appendChild(v);
+        await reveal(v, 300);
+      }
+    }
+
+    if (my === token) {
+      const fin = document.createElement('div');
+      fin.className = 'colophon';
+      fin.innerHTML = '本案登记完毕。<br>' +
+        '密营不对历史下结论 —— 只把判断所需的材料，摆到桌面上。';
+      doc.appendChild(fin);
+      await reveal(fin, 420);
+    }
+
+    if (my === token) {
+      stEl.textContent = '已完成 · ' + c.case_no;
+      bar.style.width = '100%';
+    }
+  }
+
+  function go(i) {
+    if (!cases.length) {
+      doc.innerHTML = '<div class="docket"><h1>没有可审的案子</h1>' +
+        '<div class="claim">请先运行 <code>python src/build_cases.py</code> 生成 cases.js。</div></div>';
+      return;
+    }
+    token++;
+    const my = token;
+    fast = false;
+    [...nav.children].forEach((b, j) => b.classList.toggle('on', j === i));
+    render(cases[i], my);
+    if (location.hash !== '#c' + i) history.replaceState(null, '', '#c' + i);
+  }
+
+  /* 导航 */
+  cases.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.textContent = c.case_no;
+    b.title = c.title;
+    b.onclick = () => go(i);
+    nav.appendChild(b);
+  });
+
+  /* 跳过：把剩余全部点亮 */
+  document.getElementById('skip').onclick = () => {
+    fast = true;
+    doc.querySelectorAll('.r:not(.in)').forEach(el => el.classList.add('in'));
+    revealed = totalBlocks;
+    bar.style.width = '100%';
+    stEl.textContent = '已完成';
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.code === 'Space') { e.preventDefault(); document.getElementById('skip').click(); }
+    if (e.code === 'ArrowRight') { e.preventDefault(); const i = cur(); go((i + 1) % cases.length); }
+    if (e.code === 'ArrowLeft') { e.preventDefault(); const i = cur(); go((i - 1 + cases.length) % cases.length); }
+  });
+
+  function cur() {
+    const i = [...nav.children].findIndex(b => b.classList.contains('on'));
+    return i < 0 ? 0 : i;
+  }
+
+  const m = (location.hash || '').match(/#c(\d+)/);
+  go(m ? Math.min(+m[1], cases.length - 1) : 0);
+})();
+</script>
+</body>
+</html>

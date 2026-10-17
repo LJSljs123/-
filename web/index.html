@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>密营 · 承重结构</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0a0908; --ink:#e7dfd0; --dim:#9a8f7c; --faint:#6a6154;
+  --gold:#c8a24a; --red:#b23a2e; --line:rgba(200,162,74,.16);
+  --serif:"Source Han Serif SC","Noto Serif CJK SC","Songti SC",SimSun,serif;
+  --mono:"Cascadia Mono","Consolas",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  background-image:radial-gradient(120% 90% at 50% 100%,rgba(200,162,74,.055),transparent 64%)}
+
+header{
+  position:fixed;top:0;left:0;right:0;z-index:10;height:56px;
+  display:flex;align-items:center;gap:26px;padding:0 30px;
+  border-bottom:1px solid rgba(200,162,74,.08);
+  background:rgba(10,9,8,.9);backdrop-filter:blur(10px);
+}
+.brand{font-size:16px;letter-spacing:.24em;white-space:nowrap}
+.brand span{font-size:11.5px;letter-spacing:.14em;color:var(--faint);margin-left:9px}
+.meta{display:flex;gap:20px;font-size:11.5px;color:var(--faint);
+  font-family:var(--mono);letter-spacing:.06em;margin-left:auto;white-space:nowrap}
+.meta b{color:var(--ink);font-weight:500;font-size:13px;margin-right:3px}
+.meta .alarm b{color:var(--red)}
+
+#live{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  padding:5px 13px;border:1px solid var(--line);border-radius:2px;
+  color:var(--gold);white-space:nowrap;transition:.3s;
+}
+#live.bad{color:var(--red);border-color:rgba(178,58,46,.5);background:rgba(178,58,46,.08)}
+
+main{position:fixed;inset:56px 0 62px 0}
+svg{width:100%;height:100%;display:block}
+
+/* ---------- 结论：从基线长出的芦苇 ---------- */
+.cnode{cursor:pointer}
+/* 外层 g 只负责定位（SVG transform 属性）；内层 g 才用 CSS transform 做动画，
+   否则 CSS transform 会把定位属性整个覆盖掉 */
+.cnode .inner{
+  transform-origin:0 0;
+  transition:transform .62s cubic-bezier(.32,.72,.24,1),opacity .62s ease;
+}
+.cnode.dead .inner{opacity:.34}
+/* 伏倒方向左右交错，像被风压过的一片芦苇；只在 dead 时生效 */
+.cnode.dead:nth-child(odd)  .dead-x{transform:rotate(78deg)}
+.cnode.dead:nth-child(even) .dead-x{transform:rotate(-78deg)}
+
+.cnode .reed{transition:fill .3s,opacity .3s}
+.cnode.single .reed{fill:var(--red);fill-opacity:.78}
+.cnode.multi  .reed{fill:var(--gold);fill-opacity:.95}
+.cnode.dead .reed{fill:var(--faint);fill-opacity:.55}
+.cnode.hot .reed{fill:#fff;fill-opacity:1}
+
+.cnode .cap{transition:opacity .3s}
+.cnode.single .cap{fill:var(--red);opacity:.85}
+.cnode.multi  .cap{fill:var(--gold);opacity:1}
+.cnode.dead .cap{opacity:.25}
+
+/* ---------- 支撑线 ---------- */
+.edge{stroke:var(--gold);stroke-width:.85;fill:none;opacity:.19;
+  transition:opacity .5s ease,stroke .3s,stroke-width .3s}
+.edge.crit{stroke:var(--red);opacity:.34}
+.edge.gone{opacity:0}
+.edge.hot{opacity:.9;stroke-width:1.6}
+
+/* ---------- 来源柱 ---------- */
+.src{cursor:pointer}
+.src .body{fill:rgba(200,162,74,.1);stroke:var(--gold);stroke-width:1;
+  transition:fill .25s,stroke .25s}
+.src:hover .body{fill:rgba(200,162,74,.2)}
+.src.crit .body{fill:rgba(178,58,46,.14);stroke:var(--red)}
+.src.crit:hover .body{fill:rgba(178,58,46,.26)}
+.src.off .body{fill:rgba(106,97,84,.07);stroke:var(--faint);stroke-dasharray:3 3}
+.src.off text{fill:var(--faint)}
+.src.off .grain{opacity:.2}
+
+.src text{fill:var(--ink);font-size:12.5px;font-family:var(--serif);transition:fill .3s}
+.src .cnt{fill:var(--gold);font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+.src.crit .cnt{fill:var(--red)}
+.src .grain{stroke:currentColor;stroke-width:1;transition:opacity .3s}
+
+.tick{fill:var(--faint);font-size:10.5px;font-family:var(--mono);letter-spacing:.07em}
+.legend{fill:var(--dim);font-size:11.5px;font-family:var(--serif);letter-spacing:.02em;opacity:.72}
+.baseline{stroke:rgba(200,162,74,.2);stroke-width:1}
+.hair{stroke:rgba(200,162,74,.07);stroke-width:1}
+
+/* ---------- 图注 ---------- */
+#caption{
+  position:fixed;left:30px;top:112px;z-index:5;width:296px;
+  padding:22px 24px 24px;
+  background:rgba(10,9,8,.94);
+  border-left:2px solid var(--red);
+}
+#caption .big{font-family:var(--mono);font-size:40px;color:var(--red);line-height:1;letter-spacing:-.01em}
+#caption .big i{font-style:normal;font-size:15px;color:var(--faint);margin-left:6px}
+#caption .lead{font-size:12.5px;line-height:1.9;color:var(--dim);margin-top:10px}
+#caption hr{border:0;border-top:1px solid rgba(200,162,74,.14);margin:16px 0}
+#caption .txt{font-size:12.5px;line-height:2;color:var(--dim)}
+#caption .txt b{color:var(--ink);font-weight:500}
+#caption .txt em{color:var(--red);font-style:normal;font-family:var(--mono);font-size:15px}
+#caption .cov{font-family:var(--mono);font-size:10.5px;color:var(--faint);
+  line-height:1.85;letter-spacing:.02em}
+#caption .cov b{color:var(--dim);font-weight:500}
+
+#tip{
+  position:fixed;pointer-events:none;z-index:30;max-width:360px;
+  padding:12px 15px;background:rgba(14,12,10,.975);
+  border:1px solid rgba(200,162,74,.26);border-radius:3px;
+  font-size:12.5px;line-height:1.8;color:var(--ink);
+  opacity:0;transition:opacity .16s;box-shadow:0 10px 32px rgba(0,0,0,.6)
+}
+#tip.on{opacity:1}
+#tip .t{color:var(--gold);font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;margin-bottom:6px}
+#tip .q{color:var(--dim);font-style:italic;margin-top:8px;font-size:11.5px;
+  padding-left:9px;border-left:1px solid rgba(200,162,74,.28)}
+#tip .w{color:var(--red);margin-top:7px;font-size:11.5px}
+/* 检索记录：查过什么、没查什么，都摊在明面上 */
+#tip .pv{margin-top:9px;padding-top:8px;border-top:1px solid rgba(200,162,74,.16);
+  font-family:var(--mono);font-size:10.5px;color:var(--dim);line-height:1.75}
+#tip .pv.none{color:var(--red);opacity:.85;font-family:var(--serif);font-size:11.5px}
+#tip .pv.ns{border-top:0;padding-top:2px;margin-top:3px;color:var(--faint);opacity:.8}
+
+footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:10;height:62px;
+  display:flex;align-items:center;gap:18px;padding:0 30px;
+  border-top:1px solid rgba(200,162,74,.08);
+  background:rgba(10,9,8,.92);backdrop-filter:blur(10px);
+}
+footer .note{font-size:12.5px;color:var(--dim);line-height:1.55}
+footer .note b{color:var(--gold);font-weight:500}
+footer .note em{color:var(--red);font-style:normal;font-family:var(--mono);font-size:14px}
+footer button{
+  margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  background:transparent;color:var(--dim);border:1px solid var(--line);
+  padding:6px 15px;border-radius:2px;cursor:pointer;transition:.18s;white-space:nowrap
+}
+footer button:hover{color:var(--gold);border-color:var(--gold)}
+a.go{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);
+  text-decoration:none;border:1px solid var(--line);padding:6px 13px;
+  border-radius:2px;white-space:nowrap;transition:.18s
+}
+a.go:hover{color:var(--gold);border-color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">密营<span>承重结构</span></div>
+  <div class="meta">
+    <span><b id="m-conc">0</b>条结论</span>
+    <span><b id="m-src">0</b>个来源</span>
+    <span><b id="m-q">0</b>组检索</span>
+    <span class="alarm"><b id="m-a">0</b>条有一手档案</span>
+  </div>
+  <div id="live">0 / 0 有支撑</div>
+</header>
+
+<main><svg id="stage" viewBox="0 0 1600 822" preserveAspectRatio="xMidYMid meet"></svg></main>
+
+<div id="caption">
+  <div class="big"><span id="cap-n">36</span><i>/ 39</i></div>
+  <div class="lead">条结论只有单一来源支撑</div>
+  <hr>
+  <div class="txt" id="cap-txt">抽掉《大事记》，本库 <b>92%</b> 的知识同时失去依据。</div>
+  <hr>
+  <div class="cov" id="cap-cov">已逐条检索 0 条 · 未检索 0 条</div>
+</div>
+
+<footer>
+  <div class="note" id="note">
+    点击下方任意来源，把它抽掉，看哪些结论同时失去依据。
+  </div>
+  <button id="reset">复位</button>
+  <a class="go" href="dossier.html">卷宗视图 →</a>
+</footer>
+
+<div id="tip"></div>
+
+<script src="structures.js"></script>
+<script src="cases.js"></script>
+<script>
+(function () {
+  const D = window.__MIYING_STRUCT__ || {};
+  const SRC = D.sources || [];
+  const CON = D.conclusions || [];
+  const STATS = D.stats || {};
+
+  /* 审问案与结论的对应关系：抽掉来源后，哪些案子会失去核心论据 */
+  const CASES = (window.__MIYING_CASES__ || {}).cases || [];
+  const caseByEvent = new Map();
+  CASES.forEach(c => { if (c.event_id) caseByEvent.set(c.event_id, c.case_no); });
+
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const stage = document.getElementById('stage');
+  const tip = document.getElementById('tip');
+  const live = document.getElementById('live');
+  const removed = new Set();
+
+  function el(tag, attrs) {
+    const n = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+  function fit(s, w, fs) {
+    const max = Math.max(2, Math.floor((w - 22) / fs));
+    return s.length > max ? s.slice(0, max - 1) + '…' : s;
+  }
+
+  /* 检索记录：把「查没查过」直接写进浮层。
+     这是整个作品最该被看见的一行——单一来源到底是「没找到」
+     还是「没去找」，区别全在这里。 */
+  function provBlock(p) {
+    if (!p) return '';
+    if (p.depth === 'none') {
+      return '<div class="pv none">检索：尚未逐条检索，此处不冒充已查</div>';
+    }
+    const bits = ['查了 ' + (p.probes || 0) + ' 组关键词'];
+    if (p.indep) bits.push(p.indep + ' 家独立记载');
+    if (p.deriv) bits.push(p.deriv + ' 条转抄');
+    let s = '<div class="pv">' + bits.join(' · ') + '</div>';
+    if (p.not_searched && p.not_searched.length) {
+      s += '<div class="pv ns">未查：' + esc(p.not_searched.join('、')) + '</div>';
+    }
+    return s;
+  }
+
+  /* ---------- 布局常量 ---------- */
+  const Y_TICK   = 40;    // 年份刻度文字
+  const Y_BASE   = 318;   // 芦苇根部 / 结论基线
+  const Y_BAR    = 700;   // 来源柱顶
+  const BAR_H    = 80;
+  const X0       = 352;   // 结构区起点（左侧留出图注）
+  const STEP     = 27;    // 同一年内结论间距
+  const GAP      = 14;    // 年份之间空隙
+  const H_SINGLE = 116;   // 单源芦苇高
+  const H_MULTI  = 178;   // 多源芦苇高
+
+  /* ---------- 横坐标：按年份聚簇 ---------- */
+  const years = [...new Set(CON.map(c => c.year))].sort((a, b) => a - b);
+  const posX = new Map();
+  let x = X0;
+  years.forEach(y => {
+    const group = CON.filter(c => c.year === y);
+    group.forEach((c, i) => { posX.set(c.id, x + i * STEP); });
+    // 只有一条结论的年份也要占满一个槽位，否则刻度会挤成一团
+    x += Math.max(group.length - 1, 1) * STEP + GAP;
+  });
+  const X1 = x - GAP;
+
+  /* ---------- 来源柱：宽度 ∝ 支撑结论数 ----------
+     用对数压缩，不然一根 37 条的柱子会吃掉半行，小柱子被挤成细条。
+     再按可用宽度整体回缩，保证 10 个来源也能排进一屏。 */
+  const maxCount = Math.max(...SRC.map(s => s.count), 1);
+  const GAP_SRC = 9;
+  const availW = Math.max(X1 - X0, 620) - GAP_SRC * (SRC.length - 1);
+  const lw = s => 0.55 + 0.45 * Math.log1p(s.count) / Math.log1p(maxCount);
+  const sumLW = SRC.reduce((a, s) => a + lw(s), 0) || 1;
+  const MIN_W = 100;
+  let widths = SRC.map(s => Math.max(MIN_W, availW * lw(s) / sumLW));
+  let wTotal = widths.reduce((a, b) => a + b, 0);
+  if (wTotal > availW) {
+    const over = wTotal - availW;
+    const flex = widths.map(w => Math.max(0, w - MIN_W));
+    const flexSum = flex.reduce((a, b) => a + b, 0) || 1;
+    widths = widths.map((w, i) => w - over * flex[i] / flexSum);
+  }
+  let sx = X0;
+  const srcPos = new Map();
+  SRC.forEach((s, i) => {
+    srcPos.set(s.short, { x: sx, w: widths[i], cx: sx + widths[i] / 2 });
+    sx += widths[i] + GAP_SRC;
+  });
+
+  /* ---------- 绘制 ---------- */
+  function draw() {
+    stage.innerHTML = '';
+
+    /* 年份刻度 + 竖发丝线。
+       1937–1945 每年只有一条记载，刻度会挤成一团，因此按最小间距隔位显示，
+       但每段的首尾一定显示，保证区间可读 */
+    const gTick = el('g', {});
+    const MIN_LABEL_GAP = 46;
+    let lastLabelX = -1e9;
+    years.forEach((y, yi) => {
+      const group = CON.filter(c => c.year === y);
+      const cx = (posX.get(group[0].id) + posX.get(group[group.length - 1].id)) / 2;
+
+      gTick.appendChild(el('line', {
+        x1: cx, y1: Y_TICK + 8, x2: cx, y2: Y_BASE + 10,
+        class: 'hair'
+      }));
+
+      const isLast = yi === years.length - 1;
+      if (cx - lastLabelX < MIN_LABEL_GAP && !isLast) return;
+      lastLabelX = cx;
+
+      const t = el('text', { x: cx, y: Y_TICK, 'text-anchor': 'middle', class: 'tick' });
+      t.textContent = y;
+      gTick.appendChild(t);
+    });
+    stage.appendChild(gTick);
+
+    /* 基线 */
+    stage.appendChild(el('line', {
+      x1: X0 - 22, y1: Y_BASE, x2: X1 + 22, y2: Y_BASE, class: 'baseline'
+    }));
+
+    /* 支撑线：从柱顶中心成束发出，收束到各结论根部。
+       起点只做 ±1.1px 微散，保持"所有线挂在同一点上"的视觉张力 */
+    const gEdge = el('g', {});
+    SRC.forEach(s => {
+      const sp = srcPos.get(s.short);
+      const n = Math.max(s.supports.length, 1);
+      s.supports.forEach((cid, i) => {
+        const cx = posX.get(cid);
+        if (cx == null) return;
+        const ox = sp.cx + (i - (n - 1) / 2) * 1.1;
+        const p = el('path', {
+          class: 'edge' + (s.single_point ? ' crit' : ''),
+          d: `M${ox},${Y_BAR} C${ox},${Y_BAR - 170} ${cx},${Y_BASE + 190} ${cx},${Y_BASE}`
+        });
+        p.dataset.src = s.short;
+        p.dataset.con = cid;
+        gEdge.appendChild(p);
+      });
+    });
+    stage.appendChild(gEdge);
+
+    /* 结论：芦苇 */
+    const gNode = el('g', {});
+    CON.forEach(c => {
+      const cx = posX.get(c.id);
+      const multi = c.supports.length > 1;
+      const h = multi ? H_MULTI : H_SINGLE;
+
+      const g = el('g', {
+        class: 'cnode ' + (multi ? 'multi' : 'single'),
+        transform: `translate(${cx},${Y_BASE})`
+      });
+      g.dataset.id = c.id;
+
+      const inner = el('g', { class: 'inner' });
+      const holder = el('g', { class: 'dead-x' });
+      holder.style.transition = 'transform .62s cubic-bezier(.32,.72,.24,1)';
+
+      holder.appendChild(el('rect', {
+        class: 'reed',
+        x: multi ? -2.4 : -1.6, y: -h,
+        width: multi ? 4.8 : 3.2, height: h
+      }));
+      /* 顶端节点：多源是实心圆，单源是小横杠 */
+      if (multi) {
+        holder.appendChild(el('circle', {
+          class: 'cap', cx: 0, cy: -h, r: 3.4
+        }));
+      } else {
+        holder.appendChild(el('rect', {
+          class: 'cap', x: -3.4, y: -h - 1.6, width: 6.8, height: 1.6
+        }));
+      }
+      /* 冲突组：根部加一个缺口环，表示这条记载本身有分歧 */
+      if (c.conflict_group) {
+        holder.appendChild(el('circle', {
+          cx: 0, cy: -6, r: 5,
+          fill: 'none', stroke: 'rgba(178,58,46,.75)', 'stroke-width': 1
+        }));
+      }
+
+      const title = el('title', {});
+      title.textContent = c.claim;
+      holder.appendChild(title);
+
+      inner.appendChild(holder);
+      g.appendChild(inner);
+      gNode.appendChild(g);
+    });
+    stage.appendChild(gNode);
+
+    /* 来源柱 */
+    const gSrc = el('g', {});
+    SRC.forEach(s => {
+      const sp = srcPos.get(s.short);
+      const g = el('g', {
+        class: 'src' + (s.single_point ? ' crit' : ''),
+        transform: `translate(${sp.x},${Y_BAR})`
+      });
+      g.dataset.key = s.short;
+
+      g.appendChild(el('rect', {
+        class: 'body', x: 0, y: 0, width: sp.w, height: BAR_H, rx: 2
+      }));
+
+      /* 柱内刻痕：一条 = 一条被支撑的结论。收在中间条带，避开上下两行文字 */
+      const grains = el('g', { class: 'grain' });
+      const gn = Math.min(s.count, 40);
+      const stepG = (sp.w - 26) / Math.max(gn, 1);
+      for (let i = 0; i < gn; i++) {
+        const gx = 13 + i * stepG;
+        grains.appendChild(el('line', {
+          x1: gx, y1: 27, x2: gx, y2: BAR_H - 27,
+          stroke: s.single_point ? 'rgba(178,58,46,.42)' : 'rgba(200,162,74,.24)',
+          'stroke-width': 1
+        }));
+      }
+      g.appendChild(grains);
+
+      const cnt = el('text', { x: 12, y: 20, class: 'cnt' });
+      cnt.textContent = s.count + ' 条';
+      g.appendChild(cnt);
+
+      const name = el('text', { x: 12, y: BAR_H - 11 });
+      name.textContent = fit(s.short, sp.w, 12.5);
+      g.appendChild(name);
+
+      const tt = el('title', {});
+      tt.textContent = s.full;
+      g.appendChild(tt);
+
+      gSrc.appendChild(g);
+    });
+    stage.appendChild(gSrc);
+
+    /* 图例：把编码规则写在图上，不靠观众猜 */
+    const lg = el('text', { x: X0, y: 812, class: 'legend' });
+    lg.textContent = '柱宽 ∝ 支撑数 · 每道刻痕 = 一条结论 · 红芦苇：库内仅一处记载 · 金芦苇：有多处记载';
+    stage.appendChild(lg);
+
+    bind();
+    refresh();
+  }
+
+  /* ---------- 状态重算 ---------- */
+  function aliveOf(c) {
+    return c.supports.filter(k => !removed.has(k));
+  }
+
+  function updateLive() {
+    let alive = 0;
+    CON.forEach(c => { if (aliveOf(c).length) alive++; });
+    live.textContent = alive + ' / ' + CON.length + ' 有支撑';
+    live.classList.toggle('bad', alive < CON.length * 0.5);
+    return alive;
+  }
+
+  function refresh() {
+    const hitCases = [];
+
+    CON.forEach(c => {
+      const live_ = aliveOf(c);
+      c._live = live_;
+      const g = stage.querySelector(`.cnode[data-id="${c.id}"]`);
+      if (!g) return;
+      const dead = live_.length === 0;
+      g.classList.toggle('dead', dead);
+      g.classList.toggle('multi', live_.length > 1);
+      g.classList.toggle('single', live_.length === 1);
+      if (dead && caseByEvent.has(c.id)) hitCases.push(caseByEvent.get(c.id));    });
+
+    stage.querySelectorAll('.edge').forEach(p => {
+      p.classList.toggle('gone', removed.has(p.dataset.src));
+    });
+
+    stage.querySelectorAll('.src').forEach(g => {
+      g.classList.toggle('off', removed.has(g.dataset.key));
+    });
+
+    const alive = updateLive();
+
+    const note = document.getElementById('note');
+    if (removed.size === 0) {
+      note.innerHTML = '点击下方任意来源，把它抽掉，看哪些结论同时失去依据。';
+    } else {
+      const lost = CON.length - alive;
+      const rate = Math.round(lost / CON.length * 100);
+      note.innerHTML = '已抽掉 <b>' + removed.size + '</b> 个来源 · ' +
+        '<em>' + lost + '</em> 条结论失去全部依据（<em>' + rate + '%</em>）' +
+        (lost === 0 ? '　剩下的结构仍然站得住。' : '') +
+        (hitCases.length ? '<br>审问案 <b>' + hitCases.sort().join(' / ') +
+          '</b> 失去核心论据' : '');
+    }
+  }
+
+  /* 悬停即预演：不点，也先算给你看 */
+  function previewSource(k) {
+    if (removed.has(k)) return;
+    const lost = CON.filter(c => {
+      const before = c.supports.some(s => !removed.has(s));
+      const after = c.supports.some(s => !removed.has(s) && s !== k);
+      return before && !after;
+    }).length;
+    live.textContent = lost === 0
+      ? '抽掉它 → 不损失任何结论'
+      : '抽掉它 → 失去 ' + lost + ' 条';
+    live.classList.add('bad');
+  }
+
+  /* ---------- 交互 ---------- */
+  function bind() {
+    stage.querySelectorAll('.src').forEach(g => {
+      g.addEventListener('click', () => {
+        const k = g.dataset.key;
+        removed.has(k) ? removed.delete(k) : removed.add(k);
+        refresh();
+      });
+      g.addEventListener('mouseenter', () => {
+        stage.querySelectorAll('.edge').forEach(p =>
+          p.classList.toggle('hot', p.dataset.src === g.dataset.key));
+        previewSource(g.dataset.key);
+      });
+      g.addEventListener('mouseleave', () => {
+        stage.querySelectorAll('.edge').forEach(p => p.classList.remove('hot'));
+        updateLive();
+      });
+    });
+
+    stage.querySelectorAll('.cnode').forEach(g => {
+      const c = CON.find(x => x.id === g.dataset.id);
+      if (!c) return;
+      g.addEventListener('mouseenter', e => {
+        g.classList.add('hot');
+        const srcs = (c.sources || []).map(s => s.book).join('、');
+        const quote = (c.sources || [])[0];
+        tip.innerHTML =
+          '<div class="t">' + esc(c.event_type || '记载') + ' · ' + c.year +
+            (c.place ? ' · ' + esc(c.place) : '') + '</div>' +
+          esc(c.claim) +
+          '<div class="q">' + (quote ? '「' + esc(quote.quote || '') + '」<br>——' + esc(quote.book) : esc(srcs)) + '</div>' +
+          (c.supports.length === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
+          provBlock(c.prov);
+        tip.classList.add('on');
+        moveTip(e);
+      });
+      g.addEventListener('mousemove', moveTip);
+      g.addEventListener('mouseleave', () => {
+        g.classList.remove('hot');
+        tip.classList.remove('on');
+      });
+    });
+  }
+
+  function moveTip(e) {
+    const pad = 16;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + 370 > innerWidth) x = e.clientX - 370 - pad;
+    if (y + 170 > innerHeight) y = e.clientY - 170 - pad;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  }
+
+  document.getElementById('reset').onclick = () => { removed.clear(); refresh(); };
+
+  document.getElementById('m-conc').textContent = STATS.conclusions || CON.length;
+  document.getElementById('m-src').textContent = STATS.sources || SRC.length;
+  document.getElementById('m-a').textContent = CON.length - (STATS.no_primary_source || 0);
+
+  // 检索覆盖：查了多少组词、多少条深查、多少条没查，全部实数
+  const totalProbes = CON.reduce((n, c) => n + ((c.prov && c.prov.probes) || 0), 0);
+  document.getElementById('m-q').textContent = totalProbes;
+
+  const deepN = CON.filter(c => c.prov && c.prov.depth === 'deep').length;
+  const shallowN = CON.filter(c => c.prov && c.prov.depth === 'shallow').length;
+  document.getElementById('cap-cov').innerHTML =
+    '逐条深查 <b>' + deepN + '</b> · 浅查 <b>' + shallowN +
+    '</b> · 未查 <b>' + (CON.length - deepN - shallowN) + '</b>';
+
+  /* 图注数字全部取自分析结果，不手填 */
+  const top = (D.resilience || [])[0];
+  document.getElementById('cap-n').textContent = STATS.single_support || 0;
+  if (top) {
+    document.getElementById('cap-txt').innerHTML =
+      '抽掉《' + esc(top.source) + '》，本库 <em>' +
+      Math.round(top.collapse_rate * 100) + '%</em> 的知识将同时失去依据。';
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>

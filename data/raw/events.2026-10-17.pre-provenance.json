@@ -1,0 +1,1473 @@
+{
+ "_note": "由 src/import_excel.py 从录入表生成，请勿手工编辑。",
+ "events": [
+  {
+   "id": "evt_1931_mgzsw_xuanyan",
+   "date": {
+    "start": "1931-09-19",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "中共满洲省委发表宣言，指出日本帝国主义武装占领满洲。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "9月19日：中共满洲省委发表《满洲省委为日本帝国主义武装占领满洲宣言》。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1931_beiping_jiuguohui",
+   "date": {
+    "start": "1931-09-27",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "北平",
+    "modern": "北京市",
+    "lat": 39.9,
+    "lng": 116.41,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北民众抗日救国会在北平成立。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "9月27日：东北民众抗日救国会在北平（今北京）成立。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1931_jinzhou_huangxiansheng",
+   "date": {
+    "start": "1931-10-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "锦州",
+    "modern": "辽宁省锦州市",
+    "lat": 41.1,
+    "lng": 121.13,
+    "precision": "county"
+   },
+   "units": [
+    "东北民众自卫义勇军"
+   ],
+   "persons": [
+    "黄显声"
+   ],
+   "event_type": "其他",
+   "summary": "黄显声在锦州组织抗日武装，开始编组东北民众自卫义勇军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "10月：辽宁省警务处长黄显声在锦州组织抗日武装，开始编委组建“东北民众自卫义勇军”。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1931_jiangqiao_kangzhan",
+   "date": {
+    "start": "1931-11-04",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "嫩江桥",
+    "modern": "黑龙江省泰来县江桥镇",
+    "lat": 46.39,
+    "lng": 123.42,
+    "precision": "town"
+   },
+   "units": [],
+   "persons": [
+    "马占山"
+   ],
+   "event_type": "战斗",
+   "summary": "江桥抗战爆发，马占山率部在嫩江桥阻击日军，至11月18日撤退。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "11月4日：江桥抗战爆发，马占山率部在嫩江桥阻击日军，至11月18日撤退。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1931_gelin_gaibian",
+   "date": {
+    "start": "1931-12-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "各地绿林武装、大刀会等纷纷改编为抗日义勇军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "12月：各地绿林武装、大刀会等纷纷改编为抗日义勇军。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1932_jinxi_gujia",
+   "date": {
+    "start": "1932-01-09",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "锦西",
+    "modern": "辽宁省葫芦岛市连山区",
+    "lat": 40.76,
+    "lng": 120.85,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [
+    "古贺传太郎"
+   ],
+   "event_type": "战斗",
+   "summary": "锦西义勇军击毙日军联队长古贺传太郎。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "1月9日：锦西义勇军击毙日军联队长古贺传太郎。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1932_wangdelin_jiuguojun",
+   "date": {
+    "start": "1932-02-08",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "吉林",
+    "modern": "吉林",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "中国国民救国军"
+   ],
+   "persons": [
+    "王德林"
+   ],
+   "event_type": "其他",
+   "summary": "王德林在吉林成立中国国民救国军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月8日：王德林在吉林成立“中国国民救国军”。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1932_mgzsw_gaoshu",
+   "date": {
+    "start": "1932-03-31",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "中共满洲省委发表《告满洲各地义勇军书》。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "3月31日：中共满洲省委发表《告满洲各地义勇军书》。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1932_huanren_tangjuwu",
+   "date": {
+    "start": "1932-04-21",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "桓仁",
+    "modern": "辽宁省桓仁满族自治县",
+    "lat": 41.27,
+    "lng": 125.36,
+    "precision": "county"
+   },
+   "units": [
+    "辽宁民众自卫军"
+   ],
+   "persons": [
+    "唐聚五"
+   ],
+   "event_type": "其他",
+   "summary": "唐聚五在桓仁成立辽宁民众自卫军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "4月21日：唐聚五在桓仁成立“辽宁民众自卫军”。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1932_junqu_gaibian",
+   "date": {
+    "start": "1932-06-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "辽宁、热边、蒙边和吉林南部地区义勇军被统一改编为5个军区。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "6月：辽宁、热边、蒙边和吉林南部地区的义勇军被东北民众抗日救国会统一改编为5个军区。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1933_rehe_baoweizhan",
+   "date": {
+    "start": "1933-02-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "热河",
+    "modern": "河北省承德市",
+    "lat": 40.95,
+    "lng": 117.93,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "战斗",
+   "summary": "热河保卫战爆发。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月：热河保卫战爆发。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1933_changcheng_kangzhan",
+   "date": {
+    "start": "1933-03-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "长城",
+    "modern": "河北省秦皇岛市山海关区",
+    "lat": 40.01,
+    "lng": 119.75,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "战斗",
+   "summary": "长城抗战爆发。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "3月：长城抗战爆发。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1933_duolun_shoufu",
+   "date": {
+    "start": "1933-06-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "多伦",
+    "modern": "内蒙古多伦县",
+    "lat": 42.2,
+    "lng": 116.47,
+    "precision": "county"
+   },
+   "units": [
+    "抗日同盟军"
+   ],
+   "persons": [],
+   "event_type": "战斗",
+   "summary": "抗日同盟军收复多伦等地。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "6月：抗日同盟军收复多伦等地。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1933_mgzsw_gaominzhong",
+   "date": {
+    "start": "1933-07-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "7月：中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》，号召东北抗日武装坚持抗战。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_yangjingyu_zongzhihuibu",
+   "date": {
+    "start": "1934-02-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联合军"
+   ],
+   "persons": [
+    "杨靖宇"
+   ],
+   "event_type": "其他",
+   "summary": "杨靖宇成立东北抗日联合军总指挥部，收编多支义勇军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月：杨靖宇成立东北抗日联合军总指挥部，收编多支义勇军。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_gaoxingya_xisheng",
+   "date": {
+    "start": "1934-04-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "辽宁救国军"
+   ],
+   "persons": [
+    "高兴亚"
+   ],
+   "event_type": "牺牲",
+   "summary": "辽宁救国军旅长高兴亚牺牲。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "4月：辽宁救国军旅长高兴亚牺牲。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_dengtiemei_beibu",
+   "date": {
+    "start": "1934-05-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北民众自卫军"
+   ],
+   "persons": [
+    "邓铁梅"
+   ],
+   "event_type": "被捕",
+   "summary": "东北民众自卫军司令邓铁梅被捕，9月牺牲。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "5月：东北民众自卫军司令邓铁梅被捕，9月牺牲。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_zhaoshangzhi_hadong",
+   "date": {
+    "start": "1934-06-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "珠河",
+    "modern": "黑龙江省尚志市",
+    "lat": 45.21,
+    "lng": 127.96,
+    "precision": "county"
+   },
+   "units": [
+    "东北反日游击队哈东支队"
+   ],
+   "persons": [
+    "赵尚志"
+   ],
+   "event_type": "其他",
+   "summary": "赵尚志成立东北反日游击队哈东支队。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "6月：赵尚志成立东北反日游击队哈东支队。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_huanren_shoubian",
+   "date": {
+    "start": "1934-07-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "桓仁",
+    "modern": "辽宁省桓仁满族自治县",
+    "lat": 41.27,
+    "lng": 125.36,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [
+    "杨靖宇"
+   ],
+   "event_type": "其他",
+   "summary": "杨靖宇在桓仁收编山林队，扩大抗日武装力量。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "7月：杨靖宇在桓仁收编山林队，扩大抗联抗日武装力量。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_diyijun_chengli",
+   "date": {
+    "start": "1934-11-07",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "临江",
+    "modern": "吉林省临江市",
+    "lat": 41.81,
+    "lng": 126.92,
+    "precision": "county"
+   },
+   "units": [
+    "东北人民革命军第一军"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北人民革命军第一军成立。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "11月7日：东北人民革命军第一军成立。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1934_yiyongjun_yubu",
+   "date": {
+    "start": "1934-12-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗日义勇军余部十余万人仍在坚持战斗。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "年底：东北抗日义勇军余部十余万人仍在坚持战斗。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1935_disanjun_chengli",
+   "date": {
+    "start": "1935-01-28",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "珠河",
+    "modern": "黑龙江省尚志市",
+    "lat": 45.21,
+    "lng": 127.96,
+    "precision": "county"
+   },
+   "units": [
+    "东北人民革命军第三军"
+   ],
+   "persons": [
+    "赵尚志"
+   ],
+   "event_type": "转移",
+   "summary": "东北反日游击队哈东支队改编为东北人民革命军第三军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "1月28日：东北反日游击队哈东支队改编为东北人民革命军第三军。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1935_diwujun_chengli",
+   "date": {
+    "start": "1935-02-10",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "宁安",
+    "modern": "黑龙江省宁安市",
+    "lat": 44.34,
+    "lng": 129.47,
+    "precision": "county"
+   },
+   "units": [
+    "东北反日联合军第五军"
+   ],
+   "persons": [],
+   "event_type": "转移",
+   "summary": "绥宁反日同盟军正式改编为东北反日联合军第五军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月10日：绥宁反日同盟军正式改编为东北反日联合军第五军。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1935_bayi_xuanyan",
+   "date": {
+    "start": "1935-08-01",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "中共中央草拟《八一宣言》，号召一致抗日。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "8月1日：中共中央草拟《八一宣言》，号召一致抗日。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1936_tongyi_jianzhi",
+   "date": {
+    "start": "1936-02-20",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "《东北抗日联军统一军队建制宣言》发表。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月20日：《东北抗日联军统一军队建制宣言》发表。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1936_gejun_chengli",
+   "date": {
+    "start": "1936-03-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联军"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗日联军各军陆续成立，收编大量抗日义勇军余部。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "1936年春：东北抗日联军各军陆续成立，收编大量抗日义勇军余部。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1937_youjizhan",
+   "date": {
+    "start": "1937-07-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联军"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗联各部在东北坚持游击战，配合全国抗战。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "1937年：东北抗联各部在东北坚持游击战，配合全国抗战。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1938_liujie_zhidian",
+   "date": {
+    "start": "1938-11-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "延安",
+    "modern": "陕西省延安市",
+    "lat": 36.58,
+    "lng": 109.49,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "中共六届六中全会致电慰问东北抗日联军和义勇军。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "11月：中共六届六中全会致电慰问东北抗日联军和义勇军。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1939_nanman_huiyi",
+   "date": {
+    "start": "1939-10-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联军第一路军"
+   ],
+   "persons": [],
+   "event_type": "会议",
+   "summary": "中共南满省委和第一路军主要领导干部会议召开，决定化整为零、分散游击。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "10月：中共南满省委和东北抗日联军第一路军主要领导干部会议召开，研究对敌斗争策略，决定把部队化整为零，实行分散游击，伺机歼敌。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1940_yangjingyu_xunguo",
+   "date": {
+    "start": "1940-02-23",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "濛江",
+    "modern": "吉林省靖宇县",
+    "lat": 42.39,
+    "lng": 126.81,
+    "precision": "county"
+   },
+   "units": [
+    "东北抗日联军第一路军"
+   ],
+   "persons": [
+    "杨靖宇"
+   ],
+   "event_type": "牺牲",
+   "summary": "东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月23日：东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1941_wangyachen_xisheng",
+   "date": {
+    "start": "1941-01-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联军第十军"
+   ],
+   "persons": [
+    "汪雅臣",
+    "张忠喜"
+   ],
+   "event_type": "牺牲",
+   "summary": "东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "1月：东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1941_zhaoshangzhi_xiaobudui",
+   "date": {
+    "start": "1941-10-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "萝北",
+    "modern": "黑龙江省萝北县",
+    "lat": 47.58,
+    "lng": 130.83,
+    "precision": "county"
+   },
+   "units": [],
+   "persons": [
+    "赵尚志"
+   ],
+   "event_type": "转移",
+   "summary": "赵尚志率小部队在萝北、汤原、鹤立一带活动。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "10月：赵尚志率小部队在萝北、汤原、鹤立一带活动。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1942_zhaoshangzhi_xisheng",
+   "date": {
+    "start": "1942-02-12",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "萝北",
+    "modern": "黑龙江省萝北县",
+    "lat": 47.58,
+    "lng": 130.83,
+    "precision": "county"
+   },
+   "units": [
+    "东北抗日联军第二路军"
+   ],
+   "persons": [
+    "赵尚志"
+   ],
+   "event_type": "牺牲",
+   "summary": "东北抗联第二路军副总指挥赵尚志身负重伤牺牲。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "2月12日：东北抗联第二路军副总指挥赵尚志身负重伤牺牲。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1942_jiaodaolv_chengli",
+   "date": {
+    "start": "1942-08-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "北野营",
+    "modern": "俄罗斯哈巴罗夫斯克",
+    "lat": 48.48,
+    "lng": 135.08,
+    "precision": "county"
+   },
+   "units": [
+    "东北抗日联军教导旅"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗日联军教导旅在北野营正式成立。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "8月：东北抗日联军教导旅在北野营正式成立。",
+     "reliability": "B"
+    },
+    {
+     "book": "彭施鲁《东北抗日联军和苏联远东军关系回顾》（载《中共党史资料》）",
+     "page": "2014-09-11",
+     "quote": "到了1942年的8月1日，东北抗日联军教导旅正式成立。设旅、营、连三级，军政主官都由抗联人员担任，另由苏联军官担任副职，以协助进行军事训练。",
+     "reliability": "B"
+    },
+    {
+     "book": "国家图书馆《抗联简史》",
+     "page": "抗战胜利80周年专题",
+     "quote": "1942年秋，南北野营合编为国际旅（番号为苏联远东方面军步兵第八十八旅，又称东北抗联教导旅）。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1943_hulin_raohe",
+   "date": {
+    "start": "1943-03-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "虎林、饶河",
+    "modern": "黑龙江省虎林市",
+    "lat": 45.76,
+    "lng": 132.98,
+    "precision": "county"
+   },
+   "units": [
+    "东北抗日联军教导旅"
+   ],
+   "persons": [],
+   "event_type": "转移",
+   "summary": "教导旅派小部队到虎林、饶河县开展抗日活动。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "3月：东北抗日联军教导旅派小部队到虎林、饶河县开展抗日活动。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1944_yanxi",
+   "date": {
+    "start": "1944-12-01",
+    "end": null,
+    "precision": "month"
+   },
+   "place": {
+    "name": "北野营",
+    "modern": "俄罗斯哈巴罗夫斯克",
+    "lat": 48.48,
+    "lng": 135.08,
+    "precision": "county"
+   },
+   "units": [
+    "东北抗日联军教导旅"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "教导旅在野营驻地附近进行实战军事演习。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "12月：东北抗日联军教导旅在野营驻地附近进行实战军事演习。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1945_riben_touxiang",
+   "date": {
+    "start": "1945-08-15",
+    "end": null,
+    "precision": "day"
+   },
+   "place": {
+    "name": "",
+    "modern": "",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "日本宣布无条件投降。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [],
+   "sources": [
+    {
+     "book": "辽宁日报《大事记》",
+     "page": "2025-09-18",
+     "quote": "8月15日：日本宣布无条件投降。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": null
+  },
+  {
+   "id": "evt_1936_kanglian_dingsheng",
+   "date": {
+    "start": "1936-01-01",
+    "end": null,
+    "precision": "year"
+   },
+   "place": {
+    "name": "东北",
+    "modern": "中国东北",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日联军"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗日联军编成11个军，进入鼎盛时期，活动范围遍及东南满、吉东、北满70余县。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [
+    {
+     "name": "总兵力",
+     "value": 30000,
+     "unit": "人",
+     "source": "人民日报《弘扬历久弥新的东北抗联精神》",
+     "page": "2021-10-28"
+    },
+    {
+     "name": "总兵力",
+     "value": 45000,
+     "unit": "人",
+     "source": "国家图书馆《抗联简史》（引孔令波《军事历史》1986年第4期）",
+     "page": "抗战胜利80周年专题"
+    }
+   ],
+   "sources": [
+    {
+     "book": "人民日报《弘扬历久弥新的东北抗联精神》",
+     "page": "2021-10-28",
+     "quote": "鼎盛时期，东北抗日联军共组建成11个军、3万余人，活动范围遍及东南满、吉东、北满70余县的广大地区。",
+     "reliability": "B"
+    },
+    {
+     "book": "国家图书馆《抗联简史》（引孔令波《军事历史》1986年第4期）",
+     "page": "抗战胜利80周年专题",
+     "quote": "东北抗联的11个军，鼎盛时期达四万五千余人，经一年多协同作战，给日伪军以沉重打击。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": "cg_kanglian_bingli"
+  },
+  {
+   "id": "evt_1932_yiyongjun_dingsheng",
+   "date": {
+    "start": "1932-01-01",
+    "end": null,
+    "precision": "year"
+   },
+   "place": {
+    "name": "东北",
+    "modern": "中国东北",
+    "lat": null,
+    "lng": null,
+    "precision": "province"
+   },
+   "units": [
+    "东北抗日义勇军"
+   ],
+   "persons": [],
+   "event_type": "其他",
+   "summary": "东北抗日义勇军进入鼎盛时期，总人数达到历史最高。",
+   "casualties": {
+    "our": null,
+    "enemy": null
+   },
+   "measures": [
+    {
+     "name": "总兵力",
+     "value": 500000,
+     "unit": "人",
+     "source": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
+     "page": "2018-03-21"
+    },
+    {
+     "name": "总兵力",
+     "value": 300000,
+     "unit": "人",
+     "source": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
+     "page": "2025-08-15"
+    },
+    {
+     "name": "总兵力",
+     "value": 500000,
+     "unit": "人",
+     "source": "国家图书馆《抗联简史》",
+     "page": "抗战胜利80周年专题"
+    }
+   ],
+   "sources": [
+    {
+     "book": "抗日战争纪念网《三十万人不解甲：东北抗日义勇军》",
+     "page": "2018-03-21",
+     "quote": "义勇军主动出击，部队迅速发展壮大，是年夏秋达鼎盛时期，总人数约50万（一说30万）。",
+     "reliability": "C"
+    },
+    {
+     "book": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
+     "page": "2025-08-15",
+     "quote": "东北义勇军的总兵力，在1932年全盛时期达到了30万人之多。",
+     "reliability": "C"
+    },
+    {
+     "book": "国家图书馆《抗联简史》",
+     "page": "抗战胜利80周年专题",
+     "quote": "1931年“九一八”事变后，东北人民和东北军队部分爱国官兵纷纷组成义勇军、救国军、自卫军等抗日武装，统称抗日义勇军，约50万人，在东北各地抵抗日军进攻。",
+     "reliability": "B"
+    }
+   ],
+   "confidence": 0,
+   "conflict_group": "cg_yiyongjun_renshu"
+  }
+ ]
+}

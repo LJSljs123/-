@@ -1,0 +1,10 @@
+# 统一换行符，避免 Windows/Linux 混合提交产生全文件 diff
+* text=auto eol=lf
+
+# 二进制：不做换行符转换，也不做文本 diff
+*.xlsx binary
+*.xls  binary
+*.png  binary
+*.jpg  binary
+*.pdf  binary
+*.mp4  binary

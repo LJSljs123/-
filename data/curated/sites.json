@@ -1,0 +1,346 @@
+{
+  "_note": "数据来源：国务院《关于公布第一批/第二批/第三批/第四批国家级抗战纪念设施、遗址名录的通知》（2014、2015、2020、2025）。名称与地址为名录原文。坐标为县级质心估计值，标注 precision=county，需用 src/geocode.py 校准为 GCJ-02 精确坐标。",
+  "_source_url": "https://www.gov.cn/zhengce/content/2020-09/03/content_5540097.htm",
+  "sites": [
+    {
+      "id": "site_ln_xifeng_chengzishan",
+      "name": "东北抗联城子山根据地遗址",
+      "address": "辽宁西丰县凉泉镇城子山风景区",
+      "region": "辽宁",
+      "category": "抗联根据地",
+      "batch": 4,
+      "published": "2025",
+      "lat": 42.74, "lng": 124.72, "precision": "county"
+    },
+    {
+      "id": "site_ln_benxi_shishi",
+      "name": "东北抗联史实陈列馆",
+      "address": "辽宁本溪满族自治县小市镇滨河东路",
+      "region": "辽宁",
+      "category": "抗联纪念场馆",
+      "batch": 1,
+      "published": "2014",
+      "lat": 41.30, "lng": 124.12, "precision": "county"
+    },
+    {
+      "id": "site_ln_chaoyang_zhaoshangzhi",
+      "name": "赵尚志纪念馆",
+      "address": "辽宁朝阳市双塔区中山大街2段",
+      "region": "辽宁",
+      "category": "抗联人物纪念地",
+      "batch": 2,
+      "published": "2015",
+      "lat": 41.57, "lng": 120.45, "precision": "county"
+    },
+    {
+      "id": "site_ln_shenyang_manzhoushengwei",
+      "name": "中共满洲省委旧址纪念馆",
+      "address": "辽宁沈阳市和平区皇寺路福安巷3号",
+      "region": "辽宁",
+      "category": "抗联领导机关旧址",
+      "batch": 2,
+      "published": "2015",
+      "lat": 41.80, "lng": 123.43, "precision": "county"
+    },
+    {
+      "id": "site_ln_shenyang_918",
+      "name": "“九·一八”历史博物馆",
+      "address": "辽宁沈阳市大东区望花南街46号",
+      "region": "辽宁",
+      "category": "事变纪念地",
+      "batch": 1,
+      "published": "2014",
+      "lat": 41.83, "lng": 123.46, "precision": "county"
+    },
+    {
+      "id": "site_ln_huanren_yiyongjun",
+      "name": "东北抗日义勇军纪念馆",
+      "address": "辽宁桓仁满族自治县桓仁镇东关村",
+      "region": "辽宁",
+      "category": "抗联纪念场馆",
+      "batch": 3,
+      "published": "2020",
+      "lat": 41.27, "lng": 125.36, "precision": "county"
+    },
+    {
+      "id": "site_ln_fuxin_wanrenkeng",
+      "name": "阜新万人坑死难矿工纪念馆",
+      "address": "辽宁阜新市太平区孙家湾街道新园街1号",
+      "region": "辽宁",
+      "category": "日军罪行遗址",
+      "batch": 1,
+      "published": "2014",
+      "lat": 42.02, "lng": 121.67, "precision": "county"
+    },
+    {
+      "id": "site_ln_fushun_pingdingshan",
+      "name": "抚顺平顶山惨案纪念馆",
+      "address": "辽宁抚顺市新抚区南昌路17号",
+      "region": "辽宁",
+      "category": "日军罪行遗址",
+      "batch": 2,
+      "published": "2015",
+      "lat": 41.88, "lng": 123.96, "precision": "county"
+    },
+    {
+      "id": "site_ln_dashiqiao_hushigou",
+      "name": "虎石沟万人坑纪念馆",
+      "address": "辽宁大石桥市南楼经济开发区圣水寺村",
+      "region": "辽宁",
+      "category": "日军罪行遗址",
+      "batch": 3,
+      "published": "2020",
+      "lat": 40.64, "lng": 122.51, "precision": "county"
+    },
+    {
+      "id": "site_ln_panjin_panshan",
+      "name": "侵华日本关东军护路守备队盘山分队旧址陈列馆",
+      "address": "辽宁盘锦市双台子区胜利街东段13号",
+      "region": "辽宁",
+      "category": "日军罪行遗址",
+      "batch": 3,
+      "published": "2020",
+      "lat": 41.20, "lng": 122.05, "precision": "county"
+    },
+    {
+      "id": "site_jl_panshi_hongshilazi",
+      "name": "红石砬子抗日根据地遗址",
+      "address": "吉林磐石市红石砬子山区",
+      "region": "吉林",
+      "category": "抗联根据地",
+      "batch": 4,
+      "published": "2025",
+      "lat": 42.94, "lng": 126.06, "precision": "county"
+    },
+    {
+      "id": "site_jl_fusong_laoheihe",
+      "name": "长白山老黑河遗址",
+      "address": "吉林抚松县白桦路与育才路交叉路口",
+      "region": "吉林",
+      "category": "抗联根据地",
+      "batch": 4,
+      "published": "2025",
+      "lat": 42.34, "lng": 127.28, "precision": "county"
+    },
+    {
+      "id": "site_jl_tonghua_yangjingyu",
+      "name": "杨靖宇烈士陵园",
+      "address": "吉林通化市浑江东岸靖宇山",
+      "region": "吉林",
+      "category": "抗联人物纪念地",
+      "batch": 1,
+      "published": "2014",
+      "lat": 41.72, "lng": 125.96, "precision": "county"
+    },
+    {
+      "id": "site_jl_jingyu_xunguodi",
+      "name": "杨靖宇将军殉国地",
+      "address": "吉林靖宇县濛江乡靖宇村东",
+      "region": "吉林",
+      "category": "抗联人物纪念地",
+      "batch": 3,
+      "published": "2020",
+      "lat": 42.39, "lng": 126.81, "precision": "county"
+    },
+    {
+      "id": "site_jl_jilin_lieshi",
+      "name": "吉林市革命烈士陵园",
+      "address": "吉林吉林市船营区环山路27号",
+      "region": "吉林",
+      "category": "烈士陵园",
+      "batch": 2,
+      "published": "2015",
+      "lat": 43.84, "lng": 126.55, "precision": "county"
+    },
+    {
+      "id": "site_jl_shulan_laoheigou",
+      "name": "老黑沟惨案遗址",
+      "address": "吉林舒兰市新安乡联合村",
+      "region": "吉林",
+      "category": "日军罪行遗址",
+      "batch": 2,
+      "published": "2015",
+      "lat": 44.41, "lng": 126.95, "precision": "county"
+    },
+    {
+      "id": "site_jl_yanji_yanbian",
+      "name": "延边革命烈士陵园",
+      "address": "吉林延边州延吉市公园街烟集路8号",
+      "region": "吉林",
+      "category": "烈士陵园",
+      "batch": 2,
+      "published": "2015",
+      "lat": 42.90, "lng": 129.51, "precision": "county"
+    },
+    {
+      "id": "site_jl_jilin_fengman",
+      "name": "丰满万人坑遗址",
+      "address": "吉林吉林市丰满区江南乡孟家村",
+      "region": "吉林",
+      "category": "日军罪行遗址",
+      "batch": 3,
+      "published": "2020",
+      "lat": 43.80, "lng": 126.60, "precision": "county"
+    },
+    {
+      "id": "site_jl_liaoyuan_kuanggong",
+      "name": "东北沦陷时期辽源矿工墓陈列馆",
+      "address": "吉林辽源市西安区泰安大路5048号",
+      "region": "吉林",
+      "category": "日军罪行遗址",
+      "batch": 3,
+      "published": "2020",
+      "lat": 42.89, "lng": 125.14, "precision": "county"
+    },
+    {
+      "id": "site_jl_dunhua_lieshi",
+      "name": "敦化市烈士陵园",
+      "address": "吉林敦化市翰章乡翰章村",
+      "region": "吉林",
+      "category": "烈士陵园",
+      "batch": 3,
+      "published": "2020",
+      "lat": 43.37, "lng": 128.23, "precision": "county"
+    },
+    {
+      "id": "site_jl_changchun_weiman",
+      "name": "伪满皇宫博物院暨东北沦陷史陈列馆",
+      "address": "吉林长春市宽城区光复北路",
+      "region": "吉林",
+      "category": "事变纪念地",
+      "batch": 1,
+      "published": "2014",
+      "lat": 43.90, "lng": 125.35, "precision": "county"
+    },
+    {
+      "id": "site_hlj_wudalianchi_chaoyangshan",
+      "name": "朝阳山东北抗联第三路军密营遗址",
+      "address": "黑龙江五大连池市朝阳乡",
+      "region": "黑龙江",
+      "category": "抗联密营",
+      "batch": 4,
+      "published": "2025",
+      "lat": 48.51, "lng": 126.20, "precision": "county"
+    },
+    {
+      "id": "site_hlj_harbin_dongbei",
+      "name": "东北烈士纪念馆",
+      "address": "黑龙江哈尔滨市南岗区一曼街",
+      "region": "黑龙江",
+      "category": "抗联纪念场馆",
+      "batch": 1,
+      "published": "2014",
+      "lat": 45.76, "lng": 126.63, "precision": "county"
+    },
+    {
+      "id": "site_hlj_linkou_banytoujiang",
+      "name": "“八女投江”殉难地",
+      "address": "黑龙江林口县刁翎镇三家子村",
+      "region": "黑龙江",
+      "category": "抗联人物纪念地",
+      "batch": 1,
+      "published": "2014",
+      "lat": 45.28, "lng": 130.28, "precision": "county"
+    },
+    {
+      "id": "site_hlj_harbin_lieshi",
+      "name": "哈尔滨烈士陵园",
+      "address": "黑龙江哈尔滨市香坊区体育街1号",
+      "region": "黑龙江",
+      "category": "烈士陵园",
+      "batch": 2,
+      "published": "2015",
+      "lat": 45.72, "lng": 126.68, "precision": "county"
+    },
+    {
+      "id": "site_hlj_tailai_jiangqiao",
+      "name": "江桥抗战纪念馆",
+      "address": "黑龙江泰来县江桥镇江安社区",
+      "region": "黑龙江",
+      "category": "抗战战场遗址",
+      "batch": 2,
+      "published": "2015",
+      "lat": 46.39, "lng": 123.42, "precision": "county"
+    },
+    {
+      "id": "site_hlj_raohe_youji",
+      "name": "饶河抗日游击队纪念碑",
+      "address": "黑龙江饶河县饶河镇小南山",
+      "region": "黑龙江",
+      "category": "抗联人物纪念地",
+      "batch": 2,
+      "published": "2015",
+      "lat": 46.80, "lng": 134.02, "precision": "county"
+    },
+    {
+      "id": "site_hlj_shangzhi_lieshi",
+      "name": "尚志烈士陵园",
+      "address": "黑龙江尚志市北环街92号",
+      "region": "黑龙江",
+      "category": "烈士陵园",
+      "batch": 3,
+      "published": "2020",
+      "lat": 45.21, "lng": 127.96, "precision": "county"
+    },
+    {
+      "id": "site_hlj_tangyuan_lieshi",
+      "name": "汤原烈士陵园",
+      "address": "黑龙江汤原县京抚路中段",
+      "region": "黑龙江",
+      "category": "烈士陵园",
+      "batch": 3,
+      "published": "2020",
+      "lat": 46.73, "lng": 129.90, "precision": "county"
+    },
+    {
+      "id": "site_hlj_harbin_731",
+      "name": "侵华日军第七三一部队罪证陈列馆",
+      "address": "黑龙江哈尔滨市平房区新疆大街47号",
+      "region": "黑龙江",
+      "category": "日军罪行遗址",
+      "batch": 1,
+      "published": "2014",
+      "lat": 45.61, "lng": 126.64, "precision": "county"
+    },
+    {
+      "id": "site_hlj_sunwu",
+      "name": "孙吴日本侵华罪证陈列馆",
+      "address": "黑龙江孙吴县城东",
+      "region": "黑龙江",
+      "category": "日军罪行遗址",
+      "batch": 1,
+      "published": "2014",
+      "lat": 49.42, "lng": 127.33, "precision": "county"
+    },
+    {
+      "id": "site_hlj_dongning_yaosai",
+      "name": "侵华日军东宁要塞遗址",
+      "address": "黑龙江东宁县三岔口镇",
+      "region": "黑龙江",
+      "category": "日军罪行遗址",
+      "batch": 1,
+      "published": "2014",
+      "lat": 44.09, "lng": 131.12, "precision": "county"
+    },
+    {
+      "id": "site_hlj_hulin_hutou",
+      "name": "侵华日军虎头要塞遗址博物馆",
+      "address": "黑龙江虎林市虎头镇虎东山",
+      "region": "黑龙江",
+      "category": "日军罪行遗址",
+      "batch": 2,
+      "published": "2015",
+      "lat": 45.76, "lng": 132.98, "precision": "county"
+    },
+    {
+      "id": "site_nmg_arongqi_kanglian",
+      "name": "抗联英雄园",
+      "address": "内蒙古阿荣旗那吉镇东山",
+      "region": "内蒙古",
+      "category": "抗联纪念场馆",
+      "batch": 2,
+      "published": "2015",
+      "lat": 48.13, "lng": 123.46, "precision": "county"
+    }
+  ]
+}

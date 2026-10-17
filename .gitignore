@@ -1,0 +1,35 @@
+# ---- 合成/演示数据：绝不能进仓库 ----
+# data/demo/ 下是按 schema 造的假数据，只用于验证脚本链路。
+# 一旦提交，审稿人可能把它当成真实史料。必须隔离。
+data/demo/
+
+# ---- 构建缓存 ----
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# ---- 虚拟环境 ----
+.venv/
+venv/
+env/
+
+# ---- 临时截图与调试产物 ----
+web/_*.png
+web/_*.html
+*.tmp
+*.log
+
+# ---- Office 锁文件（Windows） ----
+~$*
+.~lock.*
+
+# ---- 系统垃圾 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 编辑器 ----
+.vscode/
+.idea/
+*.swp

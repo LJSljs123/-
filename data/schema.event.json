@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "密营 · 史料事件实体",
+  "description": "每条事件必须可追溯到至少一个公开来源。无 source 不入库。",
+  "type": "object",
+  "required": [
+    "id",
+    "date",
+    "place",
+    "event_type",
+    "summary",
+    "sources",
+    "confidence"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^evt_[0-9]{4}_[a-z0-9_]+$",
+      "description": "evt_年份_地名简写_序号，如 evt_1938_mishan_01"
+    },
+    "date": {
+      "type": "object",
+      "required": [
+        "start",
+        "precision"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "ISO 8601，不确定的部分补 01"
+        },
+        "end": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "precision": {
+          "type": "string",
+          "enum": [
+            "day",
+            "month",
+            "year"
+          ],
+          "description": "史料只到月/年时如实标注，不得虚构到日"
+        }
+      }
+    },
+    "place": {
+      "type": "object",
+      "required": [
+        "name",
+        "modern",
+        "precision"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "史料中的历史地名"
+        },
+        "modern": {
+          "type": "string",
+          "description": "今地名"
+        },
+        "lat": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "lng": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "precision": {
+          "type": "string",
+          "enum": [
+            "site",
+            "town",
+            "county",
+            "province"
+          ],
+          "description": "site=遗址可定位；county=只知县，坐标取县质心"
+        }
+      }
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "部队番号，按史料原文"
+    },
+    "persons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "规范化后的人名"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "战斗",
+        "转移",
+        "密营建立",
+        "被捕",
+        "牺牲",
+        "会议",
+        "群众工作",
+        "其他"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 400
+    },
+    "casualties": {
+      "type": "object",
+      "properties": {
+        "our": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "enemy": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "measures": {
+      "type": "array",
+      "description": "数值主张。同一事件的多个来源可以各带一条同名数量项，值不一致即构成冲突。数值必须绑定来源，不得脱离出处单独存在。",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "unit",
+          "source"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "数量项名称，如 总兵力 / 歼敌数 / 作战次数"
+          },
+          "value": {
+            "type": "number",
+            "description": "纯数字。原文写“四万五千余”则填 45000"
+          },
+          "unit": {
+            "type": "string",
+            "description": "人 / 次 / 支"
+          },
+          "source": {
+            "type": "string",
+            "description": "该数值出自哪一条来源，必须能在 sources 中找到"
+          },
+          "page": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "book",
+          "quote",
+          "reliability"
+        ],
+        "properties": {
+          "book": {
+            "type": "string",
+            "description": "书名/馆藏名 + 页码或编号"
+          },
+          "page": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "quote": {
+            "type": "string",
+            "description": "原文摘录，不得改写"
+          },
+          "reliability": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "description": "A=一手档案 B=学术著作 C=回忆录/口述"
+          }
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "综合来源等级与冲突情况计算，不手填"
+    },
+    "conflict_group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "同一事件多源记载的锚点，同组事件会被冲突检测比对"
+    },
+    "provenance": {
+      "type": "object",
+      "description": "检索记录（负证据）。记录为核实这条结论实际检索过什么、命中了什么。核心要求：可复现——读者照同样的词再搜一遍，应当得到同样的结果。",
+      "properties": {
+        "depth": {
+          "type": "string",
+          "enum": [
+            "deep",
+            "shallow",
+            "none"
+          ],
+          "description": "deep=逐库多轮检索；shallow=一次聚合检索；none=尚未逐条检索（如实标注，不冒充已检索）"
+        },
+        "on": {
+          "type": "string",
+          "description": "检索日期 ISO 8601"
+        },
+        "probes": {
+          "type": "array",
+          "description": "每一轮检索一条记录",
+          "items": {
+            "type": "object",
+            "required": [
+              "q",
+              "n"
+            ],
+            "properties": {
+              "q": {
+                "type": "string",
+                "description": "实际使用的检索词，逐字记录，不得事后润色"
+              },
+              "n": {
+                "type": "integer",
+                "description": "返回结果条数"
+              },
+              "indep": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "构成独立记载的站点/文献名。百科、文库、自媒体转抄一律不计入"
+              },
+              "deriv": {
+                "type": "integer",
+                "description": "命中但属转抄/汇编/自媒体的条数"
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "命中了什么、为何不算支撑"
+              }
+            }
+          }
+        },
+        "not_searched": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "明确未检索的库与原因（闭架、未数字化、未获取）。缺这一项，没找到就退化成默证——默证不能当证据"
+        }
+      }
+    }
+  }
+}
