@@ -109,7 +109,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -229,7 +229,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -349,7 +349,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -458,7 +458,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -570,7 +570,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -721,7 +721,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {
@@ -831,7 +831,7 @@ window.__MIYING_CASES__ = {
     },
     {
      "kind": "examine",
-     "agent": "质证",
+     "agent": "对勘",
      "lines": [],
      "challenges": [
       {

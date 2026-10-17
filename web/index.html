@@ -182,6 +182,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     点击下方任意来源，把它抽掉，看哪些结论同时失去依据。
   </div>
   <button id="reset">复位</button>
+  <a class="go" href="sanctuary.html">3D 燎原 →</a>
   <a class="go" href="dossier.html">卷宗视图 →</a>
 </footer>
 
@@ -196,7 +197,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   const CON = D.conclusions || [];
   const STATS = D.stats || {};
 
-  /* 审问案与结论的对应关系：抽掉来源后，哪些案子会失去核心论据 */
+  /* 灯下案与结论的对应关系：抽掉来源后，哪些案子会失去核心论据 */
   const CASES = (window.__MIYING_CASES__ || {}).cases || [];
   const caseByEvent = new Map();
   CASES.forEach(c => { if (c.event_id) caseByEvent.set(c.event_id, c.case_no); });
@@ -490,7 +491,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
       note.innerHTML = '已抽掉 <b>' + removed.size + '</b> 个来源 · ' +
         '<em>' + lost + '</em> 条结论失去全部依据（<em>' + rate + '%</em>）' +
         (lost === 0 ? '　剩下的结构仍然站得住。' : '') +
-        (hitCases.length ? '<br>审问案 <b>' + hitCases.sort().join(' / ') +
+        (hitCases.length ? '<br>灯下案 <b>' + hitCases.sort().join(' / ') +
           '</b> 失去核心论据' : '');
     }
   }

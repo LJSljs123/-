@@ -1,4 +1,4 @@
-"""从事件库生成「审问案」——把一条史实的推理过程展开成可回放的轨迹。
+"""从事件库生成「灯下案」——把一条史实的推理过程展开成可回放的轨迹。
 
 用法：
     python src/build_cases.py
@@ -6,7 +6,7 @@
 
 设计原则：
 - 不生成任何史实。所有引文都从 events.json 的 sources.quote 里逐字取出。
-- 质证结论由规则判定（时点是否模糊、是否同源、有无一手档案、数值离散度），
+- 对勘结论由规则判定（时点是否模糊、是否同源、有无一手档案、数值离散度），
   不由模型自由发挥。
 - 「存疑」是正常产出：解决不了的分歧登记为悬案，并写明缺什么材料才能定谳。
 - 输出的是**推理轨迹**，前端按段落逐条回放，不是一段静态报告。
@@ -14,7 +14,7 @@
 一个案子的四段：
     decompose  拆解   把命题拆成原子断言，逐项标注确定性
     retrieve   辑录   库内找到哪些记载，各自说了什么
-    examine    质证   这些记载撑不撑得住命题
+    examine    对勘   这些记载撑不撑得住命题
     register   存疑   登记悬案，给出证据支持的最保守结论
 """
 
@@ -177,7 +177,7 @@ def build_retrieve(ev: dict, all_sources: list[dict]) -> dict:
 
 
 def build_examine(ev: dict, sources: list[dict], measures: list[dict]) -> dict:
-    """质证：规则驱动，只挑毛病，不下结论。"""
+    """对勘：规则驱动，只挑毛病，不下结论。"""
     ch: list[dict] = []
     quote_all = " ".join(s.get("quote", "") for s in sources)
 
@@ -250,7 +250,7 @@ def build_examine(ev: dict, sources: list[dict], measures: list[dict]) -> dict:
                    "text": "本轮规则未在这组记载中发现时点、同源、孤证或口径问题。"
                            "但这不等于命题成立，只说明现有材料没有暴露矛盾。"})
 
-    return {"kind": "examine", "agent": "质证", "lines": [], "challenges": ch}
+    return {"kind": "examine", "agent": "对勘", "lines": [], "challenges": ch}
 
 
 def build_register(ev: dict, ch: list[dict], measures: list[dict],
@@ -374,7 +374,7 @@ def build_single_case(ev: dict, case_no: str) -> dict:
             {"kind": "retrieve", "agent": "辑录",
              "lines": ["库内共 1 条记载。原文逐字照录，未作改写。"],
              "evidence": srcs, "side": []},
-            {"kind": "examine", "agent": "质证", "lines": [], "challenges": ch},
+            {"kind": "examine", "agent": "对勘", "lines": [], "challenges": ch},
             register,
         ],
     }
@@ -514,7 +514,7 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
             {"kind": "retrieve", "agent": "辑录",
              "lines": [f"库内共 {len(srcs)} 条记载，均指向同一事件。原文逐字照录。"],
              "evidence": srcs, "side": []},
-            {"kind": "examine", "agent": "质证", "lines": [], "challenges": ch},
+            {"kind": "examine", "agent": "对勘", "lines": [], "challenges": ch},
             register,
         ],
     }
@@ -632,13 +632,13 @@ def main() -> int:
             encoding="utf-8",
         )
 
-    print(f"生成 {len(cases)} 个审问案 → {args.out}")
+    print(f"生成 {len(cases)} 个灯下案 → {args.out}")
     if args.web:
         print(f"前端数据 → {args.web}")
     for c in cases:
         reg = c["steps"][-1]
         print(f"  {c['case_no']} {c['title']}  "
-              f"（{reg['status_cn']}，{reg['high_count']} 项高严重度质证）")
+              f"（{reg['status_cn']}，{reg['high_count']} 项高严重度对勘）")
     return 0
 
 
