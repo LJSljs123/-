@@ -12,7 +12,7 @@
 - 输出的是**推理轨迹**，前端按段落逐条回放，不是一段静态报告。
 
 一个案子的四段：
-    decompose  拆解   把命题拆成原子断言，逐项标注确定性
+    decompose  拆解   把命题拆成原子断言，分别标注来源提及、记录精度与数值分歧
     retrieve   辑录   库内找到哪些记载，各自说了什么
     examine    对勘   这些记载撑不撑得住命题
     register   存疑   登记悬案，给出证据支持的最保守结论
@@ -31,16 +31,43 @@ CONF = ROOT / "data" / "curated" / "conflicts.json"
 OUT = ROOT / "data" / "curated" / "cases.json"
 
 # 时点模糊的语汇。原文出现这些词，说明命题本身没落在具体某一天。
-VAGUE_TIME = ["鼎盛", "前后", "左右", "之际", "期间", "时期", "初期", "末期", "年初", "年底"]
-# 数值为约数的语汇。原文出现这些词，数字就不能当精确值用。
+VAGUE_TIME = ["鼎盛", "全盛", "前后", "之际", "期间", "时期", "初期", "末期", "年初", "年底"]
+# 数量引文中的概数语汇；「一说」标记异说，不等于数字本身是约数。
 # 注意不含「多」：它会误命中「一年多」这类非数值用法。
-APPROX = ["约", "余", "近", "逾", "一说", "估计"]
+APPROX = ["约", "余", "近", "逾", "估计", "左右"]
+AMBIGUOUS_QUANTITY = ["之多"]
 
 RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈/待核转述"}
 
 
 def hits(text: str, words: list[str]) -> list[str]:
     return [w for w in words if w in (text or "")]
+
+
+def time_markers(text: str) -> list[str]:
+    markers = hits(text, VAGUE_TIME)
+    if re.search(r"\d+(?:年|年代|月|日)左右", text or ""):
+        markers.append("左右")
+    return markers
+
+
+def numeric_approx_claims(ev: dict, measures: list[dict]) -> list[dict]:
+    """只用该数量主张对应来源的引文判定概数，不把异说词传给另一来源。"""
+    claims = []
+    sources = {s.get("book"): s.get("quote", "") for s in ev.get("sources", [])}
+    for measure in measures:
+        quote = sources.get(measure.get("source"), "")
+        markers = hits(quote, APPROX)
+        if markers:
+            claims.append({**measure, "markers": markers})
+    return claims
+
+
+def describe_numeric_claims(claims: list[dict]) -> str:
+    return "；".join(
+        f"{short_src(m.get('source'))}的 {fmt(m.get('value'))} {m.get('unit', '')}（「{'」「'.join(m['markers'])}」）"
+        for m in claims
+    )
 
 
 def fmt(n) -> str:
@@ -91,40 +118,60 @@ def court_no(i: int) -> str:
     return f"KL-{i:03d}"
 
 
-def build_decompose(ev: dict, claim_value, claim_unit: str) -> dict:
-    """把命题拆成原子断言，逐项判定确定性。"""
+def build_decompose(ev: dict, claim_value, claim_unit: str, claim_measures: list[dict]) -> dict:
+    """把命题拆成原子断言，展示来源提及、记录精度和库内数值分歧。"""
     d = ev.get("date") or {}
     p = ev.get("place") or {}
     quote_all = " ".join(s.get("quote", "") for s in ev.get("sources", []))
 
     prec_cn = {"day": "日", "month": "月", "year": "年"}.get(d.get("precision"), "年")
-    time_state = {"day": "确定", "month": "较粗", "year": "模糊"}.get(d.get("precision"), "模糊")
-    if hits(quote_all, VAGUE_TIME):
-        time_state = "模糊"
+    time_state = {"day": "记录精确到日", "month": "记录精确到月", "year": "记录仅到年"}.get(
+        d.get("precision"), "时点待核")
+    vt = sorted({marker for s in ev.get("sources", []) for marker in time_markers(s.get("quote", ""))})
+    if vt:
+        time_state = "原文时点表述较宽"
 
     place_text, place_state = place_label(p)
+    place_state_label = "未载地点" if place_state == "缺失" else {
+        "site": "遗址级位置", "town": "乡镇级范围", "county": "县级范围",
+        "province": "省级范围",
+    }.get(p.get("precision"), "位置精度待核")
 
-    approx = hits(quote_all, APPROX)
-    value_state = "约数" if approx else "确定"
+    approx_claims = numeric_approx_claims(ev, claim_measures)
+    approx = sorted({marker for claim in approx_claims for marker in claim["markers"]})
+    value_state = "存在分歧且为约数" if approx else "存在分歧"
+    subjects = list(ev.get("units") or []) + list(ev.get("persons") or [])
+    subject_value = "、".join(ev.get("units") or ev.get("persons") or []) or "（原文未点名）"
+    subject_state = ("来源引文提及" if subjects and all(s and s in quote_all for s in subjects)
+                     else "主体需逐项核查" if subjects else "原文未点名")
 
     assertions = [
-        {"k": "主体", "v": "、".join(ev.get("units") or []) or "（原文未点名）", "state": "确定"},
+        {"k": "主体", "v": subject_value, "state": subject_state},
         {"k": "时点", "v": f"{date_label(d)}（仅到{prec_cn}）", "state": time_state},
-        {"k": "地点", "v": place_text, "state": place_state},
+        {"k": "地点", "v": place_text, "state": place_state_label},
         {"k": "数值", "v": f"{fmt(claim_value)} {claim_unit}", "state": value_state},
     ]
 
     lines = [
         f"命题拆成 {len(assertions)} 个原子断言。任何一个不成立，命题就不能成立。",
     ]
-    vt = hits(quote_all, VAGUE_TIME)
-    if time_state == "模糊":
+    vt = time_markers(quote_all)
+    if time_state in {"记录仅到年", "时点待核", "原文时点表述较宽"}:
         tag = "".join(f"「{w}」" for w in vt) if vt else f"仅到{prec_cn}"
-        lines.append(f"时点{tag}，没有落到具体年月——"
-                     f"这会是后面所有分歧的源头，因为不同来源可能各自指向不同年份。")
-    if approx:
-        lines.append(f"原文出现「{'」「'.join(approx)}」，说明这个数字本身是约数。"
-                     f"把它当成精确值来比较，方法上就已经失真。")
+        lines.append(f"时点{tag}未落到统一年月；这可能影响不同来源所指时间的可比性，需先查明。")
+    if approx_claims:
+        lines.append(f"对应数量引文含概数表达：{describe_numeric_claims(approx_claims)}。"
+                     "本项只作量级比较，不按精确值解释。")
+    ambiguous_claims = []
+    source_quotes = {s.get("book"): s.get("quote", "") for s in ev.get("sources", [])}
+    for measure in claim_measures:
+        markers = hits(source_quotes.get(measure.get("source"), ""), AMBIGUOUS_QUANTITY)
+        if markers:
+            ambiguous_claims.append({**measure, "markers": markers})
+    if ambiguous_claims:
+        lines.append(f"对应引文另有数量措辞：{describe_numeric_claims(ambiguous_claims)}；"
+                     "本规则保留原文，不自动将其判作约数，统计口径仍需核查。")
+    lines.append("本案数值已出现互异主张；拆解展示的是库内记录精度，不将主张写成已证实事实。")
 
     return {"kind": "decompose", "agent": "拆解", "lines": lines, "assertions": assertions}
 
@@ -184,15 +231,20 @@ def build_examine(ev: dict, sources: list[dict], measures: list[dict]) -> dict:
     """对勘：规则驱动，只挑毛病，不下结论。"""
     ch: list[dict] = []
     quote_all = " ".join(s.get("quote", "") for s in sources)
+    approx_claims = numeric_approx_claims(ev, measures)
 
-    # R1 时点无定义
-    vt = hits(quote_all, VAGUE_TIME)
-    if vt:
+    # R1 时点无定义；逐条来源呈现原文用词，避免把异词并成同一表述。
+    vague_sources = []
+    for source in sources:
+        markers = time_markers(source.get("quote", ""))
+        if markers:
+            vague_sources.append(f"{short_src(source.get('book'))}（「{'」「'.join(markers)}」）")
+    if vague_sources:
         ch.append({
             "code": "R1", "name": "时点无统一定义", "severity": "high",
-            "text": f"两条原文都用「{vt[0]}」指代时间，但没有一条给出起止年月。"
-                    f"「鼎盛」在史学上没有公认区间，不同来源可能各自指向不同年份——"
-                    f"这是分歧的根，不是数字本身。",
+            "text": f"参与对勘的 {len(sources)} 条来源中，有 {len(vague_sources)} 条引文含未定义的时点措辞："
+                    f"{'；'.join(vague_sources)}。当前数据未给这些词统一界定起止年月，"
+                    "不能据此认定各数字指向同一时段。",
         })
 
     # R2 同源风险
@@ -218,7 +270,8 @@ def build_examine(ev: dict, sources: list[dict], measures: list[dict]) -> dict:
     if len(set(vals)) >= 2:
         lo, hi = min(vals), max(vals)
         ratio = (hi - lo) / max(hi, 1)
-        caveat = "（这个百分比本身建立在约数换算上，只能看量级，见 R6）" if hits(quote_all, APPROX) else ""
+        caveat = (f"（参与比较的数量引文含概数表达：{describe_numeric_claims(approx_claims)}；"
+                  "百分比只作量级参考，见 R6）" if approx_claims else "")
         ch.append({
             "code": "R4", "name": "数值离散超出容差", "severity": "high" if ratio >= 0.25 else "medium",
             "text": f"最高 {fmt(hi)}，最低 {fmt(lo)}，机械相除差 {ratio:.0%}{caveat}。"
@@ -233,19 +286,18 @@ def build_examine(ev: dict, sources: list[dict], measures: list[dict]) -> dict:
         })
 
     # R6 约数当精确值
-    ap = hits(quote_all, APPROX)
-    if ap:
+    if approx_claims:
         ch.append({
             "code": "R6", "name": "约数被当作精确值", "severity": "medium",
-            "text": f"原文用的是「{'」「'.join(ap[:3])}」。把「三万余」换算成 30,000 再算百分比差异，"
-                    f"方法上就已经失真——约数只能比量级，不能比个位。",
+            "text": f"参与本案比较的数量引文含概数表达：{describe_numeric_claims(approx_claims)}。"
+                    "将其转换成整数单点参与计算只能作量级参考，不能视作精确值。",
         })
 
     # R7 自认分歧
     if "一说" in quote_all:
         ch.append({
             "code": "R7", "name": "史料自认存在异说", "severity": "high",
-            "text": "有一条原文自己就写着「一说」。这不是我们比对出来的分歧，"
+            "text": "至少一条原文自己写着「一说」。这不是我们比对出来的分歧，"
                     "是史料本身承认了它——这类分歧通常比外部比对更值得记。",
         })
 
@@ -261,29 +313,29 @@ def build_register(ev: dict, ch: list[dict], measures: list[dict],
                    case_no: str) -> dict:
     """存疑：登记悬案，给出证据支持的最保守结论。"""
     vals = sorted({m["value"] for m in measures if isinstance(m.get("value"), (int, float))})
-    quote_all = " ".join(s.get("quote", "") for s in ev.get("sources", []))
-
-    # 从原文里抠出各方一致的硬事实（如「11个军」）
+    # 只在每条来源都明确给出同一数值时，才把它记作来源共识。
     consensus = []
+    source_quotes = [s.get("quote", "") for s in ev.get("sources", []) if s.get("quote")]
     for pat, label in ((r"(\d+)\s*个军", "编成 {n} 个军"), (r"(\d+)\s*个路军", "编成 {n} 个路军")):
-        m = re.search(pat, quote_all)
-        if m:
-            consensus.append(label.format(n=m.group(1)))
+        mentions = [re.search(pat, quote) for quote in source_quotes]
+        values = [m.group(1) for m in mentions if m]
+        if len(source_quotes) >= 2 and len(values) == len(source_quotes) and len(set(values)) == 1:
+            consensus.append(label.format(n=values[0]))
 
     missing = []
     if not any(s.get("reliability") == "A" for s in ev.get("sources", [])):
         missing.append("抗联各军兵力统计的原始报表或档案（现库内 0 条 A 级来源）")
-    if hits(quote_all, VAGUE_TIME):
-        missing.append("「鼎盛时期」的起止年月，需权威辞书或军史给出界定")
-    if hits(quote_all, APPROX):
-        missing.append("精确到百位的统计口径说明（现有原文全为约数）")
+    if any(time_markers(s.get("quote", "")) for s in ev.get("sources", [])):
+        missing.append("模糊时点措辞的时间范围，需由可引用的权威史料界定")
+    approx_claims = numeric_approx_claims(ev, measures)
+    if approx_claims:
+        missing.append(f"需核对概数表达对应的统计口径：{describe_numeric_claims(approx_claims)}")
 
     if len(vals) >= 2:
         if consensus:
             sure = f"可以确定的是：{'、'.join(consensus)}——这一点各条原文一致。"
         else:
-            sure = ("可以确定的是：各来源对「此时处于规模高点」这一定性并无分歧，"
-                    "分歧只在具体数字。")
+            sure = "可以确认的是：库内存在互异的数量主张；现有引文不足以证明它们采用相同的统计口径和时点。"
         conservative = (
             f"{sure}"
             f"数值上只能给出区间：{fmt(vals[0])} 至 {fmt(vals[-1])} "
@@ -719,7 +771,8 @@ def main() -> int:
         vals = sorted({m["value"] for m in group})
         unit = group[0].get("unit", "")
 
-        decompose = build_decompose(e, vals[0], unit)
+        claim_measures = [m for m in group if m.get("value") == vals[0]]
+        decompose = build_decompose(e, vals[0], unit, claim_measures)
         retrieve = build_retrieve(e, all_sources)
         examine = build_examine(e, e.get("sources", []), group)
         register = build_register(e, examine["challenges"], group, "KL-000")

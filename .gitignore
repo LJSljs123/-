@@ -33,3 +33,5 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+.worktrees/

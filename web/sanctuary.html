@@ -65,11 +65,20 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 .vr-button:disabled { color: #a9948a; border-color: rgba(228, 189, 120, .18); cursor: help; }
 .gyro-button { display: none; padding: 8px 12px; border: 1px solid var(--line); border-radius: 2px; background: rgba(19, 26, 28, .9); color: var(--paper); font-size: 10px; }
 #vr-hint { color: #d8c5b7; font: 10px/1.6 ui-monospace, Consolas, monospace; text-align: right; text-shadow: 0 1px 8px #080609; }
-.brief { position: fixed; z-index: 1; left: clamp(18px, 3vw, 48px); bottom: 112px; width: min(340px, 30vw); pointer-events: none; }
+.brief { position: fixed; z-index: 1; left: clamp(18px, 3vw, 48px); bottom: 112px; width: min(380px, 34vw); padding: 12px; border: 1px solid rgba(214, 196, 154, .25); background: linear-gradient(145deg, rgba(15, 22, 23, .88), rgba(13, 18, 20, .64)); box-shadow: 0 18px 50px rgba(0,0,0,.32); backdrop-filter: blur(10px); pointer-events: none; }
+.brief-art { position: relative; margin: -12px -12px 12px; overflow: hidden; aspect-ratio: 16 / 8; background: #17201f; }
+.brief-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 62% 52%; }
+.brief-art::after { content: ""; position: absolute; inset: 35% 0 0; background: linear-gradient(0deg, rgba(10,14,15,.88), transparent); pointer-events: none; }
+.brief-art figcaption { position: absolute; z-index: 1; right: 9px; bottom: 6px; color: #f0e7d6; font: 9px/1.4 ui-monospace, Consolas, monospace; text-shadow: 0 1px 5px #000; }
 .brief::before { content: ""; display: block; width: 36px; height: 2px; margin-bottom: 12px; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.brief-art + .tag { margin-top: 0; }
 .brief .tag { color: var(--gold); font: 10px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .18em; }
-.brief h2 { max-width: 280px; margin: 8px 0 6px; font-size: clamp(19px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; letter-spacing: .08em; text-shadow: 0 3px 24px #090509; }
+.brief h2 { max-width: 340px; margin: 8px 0 6px; font-size: clamp(19px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; letter-spacing: .08em; text-shadow: 0 3px 24px #090509; }
 .brief p { max-width: 320px; margin: 0; color: #d4c3b9; font-size: 12px; line-height: 1.9; text-shadow: 0 2px 10px #090509; }
+.brief-actions { display: flex; align-items: center; gap: 12px; margin-top: 12px; pointer-events: auto; }
+.brief-actions button { padding: 9px 13px; border: 1px solid rgba(214,196,154,.62); background: linear-gradient(125deg, rgba(73,78,63,.9), rgba(31,39,37,.94)); color: #fff3df; cursor: pointer; font-size: 11px; letter-spacing: .08em; }
+.brief-actions button:hover { border-color: var(--gold); background: rgba(93,100,77,.88); }
+.brief-actions a { color: var(--gold); font-size: 10px; border-bottom: 1px solid rgba(214,196,154,.38); padding-bottom: 3px; }
 #stat { left: 50%; bottom: 76px; width: min(90vw, 880px); transform: translateX(-50%); color: #e0cbb9; font: 10px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .1em; text-align: center; text-shadow: 0 2px 12px #090509; pointer-events: none; }
 #ctrl { left: 50%; bottom: max(17px, env(safe-area-inset-bottom)); display: flex; justify-content: center; gap: 8px; width: max-content; max-width: calc(100vw - 24px); transform: translateX(-50%); padding: 7px; border: 1px solid rgba(214, 196, 154, .2); background: rgba(13, 18, 20, .74); backdrop-filter: blur(16px); }
 #ctrl button { min-height: 39px; padding: 8px 15px; white-space: nowrap; font-size: 11px; letter-spacing: .06em; }
@@ -100,17 +109,24 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #cap h2 { margin: 3px 0 4px; color: #fff1e5; font-size: clamp(16px, 1.65vw, 21px); font-weight: 500; letter-spacing: .09em; }
 #cap p { margin: 0; font-size: clamp(12px, 1.15vw, 14px); line-height: 1.8; text-shadow: 0 2px 15px #090509; }
 #cap .s { display: block; margin-top: 6px; color: #d8c5b7; font-size: 10px; letter-spacing: .025em; }
+#factory-story-art { position: relative; margin: -15px -19px 12px; overflow: hidden; aspect-ratio: 16 / 7; background: #17201f; }
+#factory-story-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 62% 53%; }
+#factory-story-art figcaption { position: absolute; right: 10px; bottom: 7px; color: #f0e7d6; font: 9px/1.4 ui-monospace, Consolas, monospace; text-shadow: 0 1px 5px #000; }
+#factory-story-art[hidden] { display: none !important; }
+#factory-citation { display: block; margin-top: 7px; color: var(--gold); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; }
+#factory-citation[hidden], #b-factory-play[hidden] { display: none !important; }
 #cap-progress { display: grid; grid-template-columns: repeat(8, minmax(10px, 1fr)); gap: 5px; margin-top: 12px; }
 #cap-progress[hidden], #cap-nav[hidden] { display: none; }
 #cap-progress button { position: relative; height: 26px; min-height: 26px; padding: 0; border: 0; background: transparent; cursor: pointer; }
 #cap-progress button::before { content: ""; position: absolute; inset: 11px 0; border-radius: 2px; background: linear-gradient(90deg, rgba(210, 160, 129, .92) var(--fill, 0%), rgba(214, 196, 154, .17) var(--fill, 0%)); }
 #cap-progress button.current::before { box-shadow: 0 0 12px rgba(210, 160, 129, .42); }
 #cap-progress button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-#cap-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 7px; color: #cbb5a8; font: 9px/1.5 ui-monospace, Consolas, monospace; }
+#cap-nav { position: sticky; bottom: -13px; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 7px -2px -4px; padding: 5px 2px 2px; background: linear-gradient(180deg, rgba(21, 29, 29, .76), rgba(17, 24, 25, .98) 28%); color: #cbb5a8; font: 9px/1.5 ui-monospace, Consolas, monospace; }
 #cap-nav button { min-height: 25px; padding: 3px 9px; border: 1px solid rgba(228, 189, 120, .2); background: rgba(71, 16, 23, .46); color: #f1ddd0; cursor: pointer; }
 #cap-nav button:disabled { opacity: .4; cursor: default; }
+#cap-clock { flex: 1 1 auto; text-align: center; }
 body.story-active .brief, body.story-active #tools, body.factory-active .brief { opacity: 0; visibility: hidden; }
-body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; width: min(410px, 32vw); max-height: min(52vh, 410px); transform: none; }
+body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto; left: auto; width: min(430px, 35vw); max-height: min(72vh, 670px); transform: translateY(-50%); }
 #loading { inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 13px; background: radial-gradient(ellipse at center, #303b39, #151d20 58%, #0a0e11); transition: opacity .7s ease; }
 #loading.off { opacity: 0; pointer-events: none; }
 #loading .mark { width: 34px; height: 34px; border: 1px solid var(--accent-light); transform: rotate(45deg); animation: pulse 1.8s ease-in-out infinite; }
@@ -135,22 +151,28 @@ body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; wi
   .gyro-button { display: block; }
   #vr-hint { max-width: 240px; font-size: 9px; }
   .vr-button { padding: 9px 12px; font-size: 10px; }
-  .brief { left: 16px; bottom: 116px; width: min(58vw, 290px); }
+  .brief { left: 16px; bottom: 116px; width: min(58vw, 310px); padding: 9px; }
+  .brief-art { margin: -9px -9px 9px; aspect-ratio: 16 / 7; }
   .brief h2 { font-size: 19px; }
   .brief p { font-size: 10px; line-height: 1.7; }
+  .brief-actions { margin-top: 8px; gap: 8px; }
+  .brief-actions button { padding: 7px 9px; font-size: 9px; }
+  .brief-actions a { font-size: 9px; }
   #stat { bottom: 67px; font-size: 9px; letter-spacing: .02em; }
   #stat::after { content: " · 单指环视 / 双指缩放"; color: #f0b0a1; }
   #ctrl { bottom: max(10px, env(safe-area-inset-bottom)); flex-wrap: wrap; gap: 5px; width: calc(100vw - 18px); padding: 5px; }
   #ctrl button { min-height: 36px; flex: 1 1 auto; padding: 7px 9px; font-size: 10px; }
   #cap { bottom: 133px; max-height: min(34vh, 270px); padding: 13px 15px 11px; }
-  body.factory-active #cap { top: 82px; right: 10px; bottom: auto; left: 10px; width: auto; max-height: min(31vh, 250px); }
+  body.factory-active #cap { top: 74px; right: 10px; bottom: auto; left: 10px; width: auto; max-height: min(52vh, 430px); transform: none; }
+  #factory-story-art { margin: -13px -15px 10px; aspect-ratio: 16 / 5.5; }
   #cap p { font-size: 12px; }
 }
 @media (max-width: 420px) {
   #hud { padding: 12px 12px 28px; }
   .nav { top: 12px; right: 10px; flex-direction: column; align-items: flex-end; gap: 4px; }
   .nav a { font-size: 9px; }
-  .brief { bottom: 145px; width: 57vw; }
+  .brief { bottom: 145px; width: 57vw; padding: 7px; }
+  .brief-art { margin: -7px -7px 7px; aspect-ratio: 16 / 6.5; }
   .brief p { display: none; }
   #tools { right: 10px; bottom: 139px; max-width: 42vw; }
   #vr-hint { font-size: 8px; }
@@ -158,12 +180,15 @@ body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; wi
   #ctrl { width: calc(100vw - 14px); }
   #ctrl button { font-size: 9px; letter-spacing: 0; }
   #cap { bottom: 148px; width: calc(100vw - 20px); max-height: 32vh; padding: 11px 12px 9px; }
-  body.factory-active #cap { top: 82px; right: 10px; bottom: auto; left: 10px; width: auto; max-height: 30vh; }
+  body.factory-active #cap { top: 74px; right: 8px; bottom: auto; left: 8px; width: auto; max-height: 46vh; padding: 10px 12px 8px; transform: none; }
+  #factory-story-art { margin: -10px -12px 8px; aspect-ratio: 16 / 5; }
   #cap h2 { font-size: 15px; }
   #cap p { font-size: 11px; line-height: 1.65; }
   #cap .s { font-size: 9px; }
   #cap-progress { gap: 4px; margin-top: 8px; }
-  #cap-nav { margin-top: 5px; }
+  #cap-nav { justify-content: center; gap: 5px; margin-top: 5px; }
+  #cap-nav button { padding: 3px 6px; font-size: 8px; }
+  #cap-clock { flex: 0 0 auto; padding: 0 3px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
@@ -192,17 +217,25 @@ body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; wi
   <button class="gyro-button" id="b-gyro" type="button" aria-describedby="vr-hint">开启手机环视</button>
 </div>
 <section class="brief" aria-label="场景说明">
+  <figure class="brief-art">
+    <img src="assets/needle-watch-keyart.png" alt="密林木屋中，一双手正在旧式缝纫机旁缝制布料的艺术示意画面" decoding="async">
+    <figcaption>艺术示意 · 非历史照片或遗址复原</figcaption>
+  </figure>
   <div class="tag">抗战记忆 · 针线与守望</div>
-  <h2>针线里有山河，<br>守望中见信念。</h2>
-  <p>沿史料时间线进入 1936 年第三军被服厂密营。人物、陈设和院落为合成视觉示意，史实日期与行动可回查来源。</p>
+  <h2>一针一线，<br>缝起林海里的坚守。</h2>
+  <p>1936 年，抗联第三军在密林中设立被服厂。沿着一台旧机器、一块染布，走进供给与坚守的故事。</p>
+  <div class="brief-actions">
+    <button id="b-enter-factory" type="button">进入 88 秒故事 →</button>
+    <a href="index.html">先看史料证据</a>
+  </div>
 </section>
 <div id="stat" role="status" aria-live="polite">正在构建雪原与证据网络</div>
 <div id="ctrl" role="toolbar" aria-label="场景演示控制">
-  <button class="primary" id="b-tour" type="button" title="播放八幕东北抗联史料故事线">剧情漫游</button>
+  <button class="primary" id="b-tour" type="button" title="播放东北抗联史料时间线">史料时间线</button>
   <button id="b-storm" type="button" title="移除当前最大支撑来源">风雪试验</button>
   <button id="b-chengbin" type="button" title="聚焦相关记载；该视角不加入未验证的因果边">人物脉络</button>
   <button id="b-embers" type="button" title="以 1941 年为叙事分界的展示模式">十四年 · 余烬</button>
-  <button id="b-factory" type="button" title="进入第三军被服厂密营合成场景">针线与守望</button>
+  <button id="b-factory" type="button" title="进入第三军被服厂 88 秒分幕故事">针线与守望</button>
   <button id="b-reset" type="button" title="恢复完整场景">复原</button>
 </div>
 <div id="tip" role="tooltip" aria-live="polite"></div>
@@ -215,11 +248,16 @@ body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; wi
   </div>
 </div>
 <section id="cap" aria-label="剧情与场景说明">
+  <figure id="factory-story-art" hidden>
+    <img src="assets/needle-watch-keyart.png" alt="无具体人物指认的被服厂缝制场景艺术示意">
+    <figcaption>AI 辅助创作 · 艺术示意，非史料影像</figcaption>
+  </figure>
   <div id="cap-narration" role="status" aria-live="polite" aria-atomic="true">
     <div id="cap-step"></div>
     <h2 id="cap-title"></h2>
     <p id="cap-copy"></p>
     <small id="cap-source" class="s"></small>
+    <a id="factory-citation" href="https://wlt.hlj.gov.cn/wlt/c114274/202508/c00_31866464.shtml" target="_blank" rel="noopener noreferrer" hidden>查阅黑龙江省文化和旅游厅转载《黑龙江日报》原文</a>
   </div>
   <div id="cap-progress" role="group" aria-label="剧情分幕">
     <button type="button" aria-label="跳到第一幕" title="第一幕"></button>
@@ -233,6 +271,7 @@ body.factory-active #cap { top: 210px; right: 24px; bottom: auto; left: auto; wi
   </div>
   <div id="cap-nav" hidden>
     <button id="b-story-prev" type="button" aria-label="上一幕">上一幕</button>
+    <button id="b-factory-play" type="button" title="自动节奏固定 88 秒，每幕 11 秒；可随时暂停或手动翻幕" hidden>播放 88 秒故事</button>
     <span id="cap-clock">0:00 / 1:20</span>
     <button id="b-story-next" type="button" aria-label="下一幕">下一幕</button>
   </div>
