@@ -25,6 +25,8 @@ const SITES_WITH_COORDS = SITE_EVENTS.filter(e => e.place && e.place.lat != null
 const YEAR0 = D.meta.year_min, YEAR1 = D.meta.year_max;
 const VERD = (D.meta && D.meta.verdicts) || {};
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// 截图/自动化验收用：相机不做补间，直接落到本章构图
+const INSTANT_CAMERA = new URLSearchParams(location.search).get('instant') === '1';
 const STORY_SECONDS = 10;
 const STORY_CHAPTERS = [
   { title: '从一条记载出发', from: 1931, to: 1931, ids: ['evt_1931_mgzsw_xuanyan'], camera: [0.08, 1.04, 44], body: '1931 年 9 月 19 日，中共满洲省委发表宣言，指出日本帝国主义武装占领满洲。我们先从这条记载出发，沿着出处进入这段历史。' },
@@ -570,41 +572,48 @@ const factoryGroup = new THREE.Group();
    合并静态环境时跳过这些节点，否则人会被焊进大网格里永远删不掉。 */
 let factoryWorkers = null;
 let factoryProps = null;
+let factoryHands = null;   // A4：第 2 幕的「多双手」——不建全身，避免「说 15 人只有 2 人」
+let factoryCloth = null;   // 第 2 幕铺开的大块布，给手一个落点
 factoryGroup.visible = false;
 scene.add(factoryGroup);
 let factoryMode = false;
 const factoryVisibility = new Map();
+/* A3：纹理 256 → 512。相机下限解锁到 2.2 米后，256px 在近景会明显拉花；
+   同时把各向异性提到 16，斜看布面时纤维方向才不糊。 */
+const TEX_SIZE = 512;
 function weaveTexture() {
-  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const S = TEX_SIZE;
+  const c = document.createElement('canvas'); c.width = c.height = S;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#b2a487'; ctx.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 256; i += 4) {
-    ctx.strokeStyle = i % 8 ? 'rgba(35,34,27,.13)' : 'rgba(231,224,199,.10)';
-    ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 256); ctx.stroke();
-    ctx.strokeStyle = i % 8 ? 'rgba(231,224,199,.10)' : 'rgba(35,34,27,.13)';
-    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(256, i); ctx.stroke();
+  ctx.fillStyle = '#b2a487'; ctx.fillRect(0, 0, S, S);
+  for (let i = 0; i < S; i += 8) {
+    ctx.strokeStyle = i % 16 ? 'rgba(35,34,27,.13)' : 'rgba(231,224,199,.10)';
+    ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, S); ctx.stroke();
+    ctx.strokeStyle = i % 16 ? 'rgba(231,224,199,.10)' : 'rgba(35,34,27,.13)';
+    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(S, i); ctx.stroke();
   }
-  for (let i = 0; i < 2600; i++) {
-    const x = Math.random() * 256, y = Math.random() * 256;
+  for (let i = 0; i < 10400; i++) {
+    const x = Math.random() * S, y = Math.random() * S;
     ctx.fillStyle = i % 2 ? 'rgba(25,25,20,.10)' : 'rgba(245,237,215,.11)';
-    ctx.fillRect(x, y, 1 + Math.random() * 2, 1);
+    ctx.fillRect(x, y, 2 + Math.random() * 3, 1);
   }
   const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.repeat.set(2, 2); t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  t.repeat.set(2, 2); t.anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy());
   return t;
 }
 function timberTexture() {
-  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const S = TEX_SIZE;
+  const c = document.createElement('canvas'); c.width = c.height = S;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#68513c'; ctx.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 55; i++) {
-    const y = Math.random() * 256, w = 18 + Math.random() * 210;
+  ctx.fillStyle = '#68513c'; ctx.fillRect(0, 0, S, S);
+  for (let i = 0; i < 110; i++) {
+    const y = Math.random() * S, w = 36 + Math.random() * 420;
     ctx.strokeStyle = i % 3 ? 'rgba(36,28,21,.20)' : 'rgba(191,152,105,.18)';
-    ctx.lineWidth = 1 + Math.random() * 2; ctx.beginPath();
-    ctx.moveTo(Math.random() * 18, y); ctx.bezierCurveTo(w * .25, y - 3, w * .65, y + 3, w, y); ctx.stroke();
+    ctx.lineWidth = 2 + Math.random() * 3; ctx.beginPath();
+    ctx.moveTo(Math.random() * 36, y); ctx.bezierCurveTo(w * .25, y - 6, w * .65, y + 6, w, y); ctx.stroke();
   }
   const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.repeat.set(2, 1); t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  t.repeat.set(2, 1); t.anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy());
   return t;
 }
 const clothMap = weaveTexture(), woodMap = timberTexture();
@@ -720,9 +729,12 @@ function buildWorker(parent, x, z, options = {}) {
     }
     const shoulderY = seated ? 2.08 : 2.38, elbowY = seated ? 1.72 : 1.96;
     fLink(g, [side * 0.48, shoulderY, 0], [side * 0.53, elbowY, 0.27], 0.15, jacket, 10);
-    const handX = options.work ? 0.68 + side * 0.12 : side * 0.54;
-    const handY = options.work ? 1.52 : 1.57;
-    const handZ = options.work ? 1.48 : 0.37;
+    /* 缝制手位（A2）：坐姿工人 turn=π/2，局部 z 决定世界 x、局部 x 决定世界 z。
+       原来双手共用一个 handZ，世界 x 相同，等于两只手叠在一条线上、还落在布外。
+       现在让双手在布面上左右展开，指腹贴在布面（布顶 1.56，手 1.60）。 */
+    const handX = options.work ? 0.30 + side * 0.10 : side * 0.54;
+    const handY = options.work ? 1.60 : 1.57;
+    const handZ = options.work ? 1.52 + side * 0.14 : 0.37;
     fLink(g, [side * 0.53, elbowY, 0.27], [handX, handY, handZ], 0.115, jacket, 10);
     fSphere(g, FM.skin, handX, handY, handZ + 0.08, 0.15, 0.10, 0.15, 12);
     for (let finger = -1; finger <= 1; finger++) {
@@ -862,9 +874,42 @@ function groundTexture() {
   factoryProps = new THREE.Group();
   factoryProps.name = 'props';
   factoryGroup.add(factoryProps);
-  /* 布堆逐层贴合台面：底块底=1.41，第二块叠在第一块上，散落的布条直接贴台面 */
-  fBox(factoryProps, 1.2, 0.18, 0.8, FM.cloth, -0.4, 1.50, -0.05, 0.04, 0.1, -0.06);
-  fBox(factoryProps, 0.86, 0.12, 0.66, FM.dyed, -0.48, 1.65, -0.03, -0.03, -0.06, 0.08);
+
+  /* A4：第 2 幕讲「15 人组成」，但只建两个全身人会让画面与文案打架。
+     这一幕改为「手的群像」：四组前臂与手在铺开的布上工作，
+     文字说明「至少 13 双女工的手」，画面与文案不再矛盾。 */
+  factoryCloth = new THREE.Group();
+  factoryCloth.name = 'cloth-spread';
+  fBox(factoryCloth, 2.6, 0.05, 1.15, FM.cloth, -0.1, 1.435, 0.05);
+  fBox(factoryCloth, 1.1, 0.04, 0.7, FM.dyed, 0.55, 1.46, 0.02, 0, 0.1, 0);
+  factoryGroup.add(factoryCloth);
+
+  factoryHands = new THREE.Group();
+  factoryHands.name = 'hands';
+  const handSpots = [
+    { x: -1.55, z: 0.30, rot: 0.45, lift: 0.00 },
+    { x: -0.55, z: 0.52, rot: -0.28, lift: 0.02 },
+    { x: 0.45, z: 0.46, rot: 0.22, lift: 0.01 },
+    { x: 1.35, z: 0.16, rot: -0.55, lift: 0.03 },
+  ];
+  handSpots.forEach(spot => {
+    const h = new THREE.Group();
+    h.position.set(spot.x, 1.46 + spot.lift, spot.z);
+    h.rotation.y = spot.rot;
+    // 前臂从画面外伸进来
+    fLink(h, [0.02, 0.19, 0.92], [0, 0.11, 0.10], 0.105, FM.coatAlt, 10);
+    fSphere(h, FM.skin, 0, 0.095, 0.01, 0.15, 0.065, 0.125, 14);
+    for (let f = -2; f <= 2; f++) {
+      fLink(h, [f * 0.048, 0.085, -0.09], [f * 0.056, 0.035, -0.23], 0.021, FM.skin, 5);
+    }
+    factoryHands.add(h);
+  });
+  factoryGroup.add(factoryHands);
+  /* 布堆（A2）：移到缝制手正下方——手在世界 (0.58~0.86, 0.05~0.25)，
+     布堆中心 (0.72, 0.15)，顶面 1.56，指腹 1.54 接触布面。
+     逐层贴合台面（桌面顶 1.41），不悬空。 */
+  fBox(factoryProps, 0.65, 0.12, 0.50, FM.cloth, 0.72, 1.47, 0.15, 0.03, 0.08, -0.04);
+  fBox(factoryProps, 0.46, 0.08, 0.38, FM.dyed, 0.70, 1.54, 0.14, -0.02, -0.05, 0.06);
   fBox(factoryProps, 0.48, 0.05, 0.12, FM.cloth, -1.3, 1.435, 0.28, 0, 0.2, 0.08);
   fBox(factoryProps, 0.44, 0.045, 0.12, FM.dyed, -1.32, 1.483, 0.28, 0, 0.2, 0.08);
   /* P1-13 支撑检查：桌面顶面 y=1.41，x∈[-2.6,1.8]，z∈[-0.85,0.95]。
@@ -886,7 +931,7 @@ function groundTexture() {
 function mergeFactoryMeshes(root) {
   root.updateMatrixWorld(true);
   const batches = new Map(), sourceMeshes = [];
-  const keepGroups = new Set([factoryWorkers, factoryProps].filter(Boolean));
+  const keepGroups = new Set([factoryWorkers, factoryProps, factoryHands, factoryCloth].filter(Boolean));
   root.traverse(object => {
     if (!object.isMesh || object.isInstancedMesh || Array.isArray(object.material)) return;
     // 沿父链检查是否属于需要独立控制的组
@@ -933,12 +978,30 @@ function pointerGap() {
 }
 function applyCam() {
   phi = Math.max(0.5, Math.min(1.45, phi));
-  radius = Math.max(factoryMode ? 10 : 24, Math.min(170, radius));
+  radius = Math.max(factoryMode ? 2.2 : 24, Math.min(170, radius));
   const cx = autoPan;
-  camera.position.set(cx + Math.sin(theta) * Math.sin(phi) * radius,
-    Math.cos(phi) * radius + 6,
-    Math.cos(theta) * Math.sin(phi) * radius);
+  if (factoryMode) {
+    /* 被服厂模式围绕 target 求球坐标。
+       原来 y = cos(phi)*radius + 6 是给雪原留的抬高量，套到桌面场景里
+       半径 2.6 时相机仍在 6.4 米高，近景永远拍不到针杆。 */
+    camera.position.set(
+      cx + Math.sin(theta) * Math.sin(phi) * radius,
+      targetY + Math.cos(phi) * radius,
+      autoPanZ + Math.cos(theta) * Math.sin(phi) * radius
+    );
+  } else {
+    camera.position.set(
+      cx + Math.sin(theta) * Math.sin(phi) * radius,
+      Math.cos(phi) * radius + 6,
+      Math.cos(theta) * Math.sin(phi) * radius
+    );
+  }
   camera.lookAt(cx, targetY, autoPanZ);
+  // 验收用：把当前半径写进 dataset，截图脚本可断言「是否真的推近了」
+  if (factoryMode) {
+    const r = radius.toFixed(1);
+    if (document.body.dataset.camRadius !== r) document.body.dataset.camRadius = r;
+  }
 }
 renderer.domElement.addEventListener('pointerdown', e => {
   stopTour();
@@ -982,7 +1045,7 @@ addEventListener('pointermove', e => {
     activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (e.pointerType === 'touch' && activePointers.size >= 2) {
       const gap = pointerGap();
-      if (pinchDistance > 0 && gap > 0) radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * pinchDistance / gap));
+      if (pinchDistance > 0 && gap > 0) radius = Math.max(factoryMode ? 2.2 : 22, Math.min(170, radius * pinchDistance / gap));
       pinchDistance = gap; pointerOrigin = null; dragging = false; applyCam(); return;
     }
   }
@@ -1001,7 +1064,7 @@ addEventListener('pointermove', e => {
 });
 addEventListener('wheel', e => {
   if (e.target.closest && e.target.closest('#cap, #ctrl')) return;
-  stopTour(); stopFactoryTour(); radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam();
+  stopTour(); stopFactoryTour(); radius = Math.max(factoryMode ? 2.2 : 22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam();
 }, { passive: true });
 applyCam();
 
@@ -1385,13 +1448,18 @@ function applyFactoryScene(scene) {
   if (!scene) return;
   const targetW = scene.workers ? 1 : 0;
   const targetP = scene.props ? 1 : 0;
+  const targetH = scene.hands ? 1 : 0;
+  const targetC = scene.cloth ? 1 : 0;
   if (factoryWorkers) factoryWorkers.visible = targetW > 0.01;
   if (factoryProps) factoryProps.visible = targetP > 0.01;
+  if (factoryHands) factoryHands.visible = targetH > 0.01;
+  if (factoryCloth) factoryCloth.visible = targetC > 0.01;
   sceneFade.workers = targetW;
   sceneFade.props = targetP;
   // 可观测状态：截图验收与自动化检查都靠它，避免「文案说空、画面有人」
   document.body.dataset.sceneWorkers = targetW ? 'on' : 'off';
   document.body.dataset.sceneProps = targetP ? 'on' : 'off';
+  document.body.dataset.sceneHands = targetH ? 'on' : 'off';
 }
 
 function renderFactoryChapter(index) {
@@ -1418,7 +1486,15 @@ function renderFactoryChapter(index) {
   });
   applyFactoryScene(chapter.scene);
   const [nextTheta, nextPhi, nextRadius, x, z, y] = chapter.camera;
-  factoryCameraGoal = reducedMotion ? null : { theta: nextTheta, phi: nextPhi, radius: nextRadius, x, z, y };
+  if (reducedMotion || INSTANT_CAMERA) {
+    // 减少动态效果 / 截图验收：跳过补间，直接落到本章构图（不是不移动）
+    theta = nextTheta; phi = nextPhi; radius = nextRadius;
+    autoPan = x; autoPanZ = z; targetY = y;
+    factoryCameraGoal = null;
+    applyCam();
+  } else {
+    factoryCameraGoal = { theta: nextTheta, phi: nextPhi, radius: nextRadius, x, z, y };
+  }
   updateFactoryProgress();
 }
 function setFactoryChapter(index) {
@@ -1465,7 +1541,7 @@ function factoryTourStep(now) {
 function factoryCameraStep(dt) {
   if (!factoryMode || !factoryCameraGoal || reducedMotion || renderer.xr.isPresenting) return;
   const goal = factoryCameraGoal;
-  const k = 1 - Math.exp(-dt * 1.05);
+  const k = 1 - Math.exp(-dt * 3.2);
   autoPan += (goal.x - autoPan) * k;
   autoPanZ += (goal.z - autoPanZ) * k;
   targetY += (goal.y - targetY) * k;
