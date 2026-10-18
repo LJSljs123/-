@@ -1,0 +1,105 @@
+{
+  "audit_date": "2026-10-18",
+  "timezone": "Asia/Shanghai",
+  "project": "D:/数字媒体/01_参赛作品/密营",
+  "source_baseline": "1df5028",
+  "readonly_data_counts": {
+    "events": 66,
+    "source_records": 144,
+    "date_variants": 85,
+    "date_sources_not_matching_exact_book_name": 26,
+    "xlsx_unique_events": 39
+  },
+  "method": "Read-only source/data inspection plus Chromium browser checks. No physical phone, HMD, GPU performance benchmark, or representative user study.",
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "layout": {
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "factory390": {
+      "width": 390,
+      "height": 844,
+      "documentWidth": 390,
+      "caption": {
+        "x": 8,
+        "y": 74,
+        "width": 374,
+        "height": 331,
+        "scrollHeight": 329
+      }
+    },
+    "factory360": {
+      "width": 360,
+      "height": 640,
+      "documentWidth": 360,
+      "caption": {
+        "x": 8,
+        "y": 74,
+        "width": 344,
+        "height": 294,
+        "scrollHeight": 353
+      }
+    },
+    "index390": {
+      "width": 390,
+      "height": 844,
+      "documentWidth": 390
+    }
+  },
+  "confirmed": {
+    "dateCase": {
+      "title": "抗日同盟军作战于何时（整月分歧）",
+      "values": [
+        "NaN date",
+        "NaN date"
+      ],
+      "quotes": [
+        "6月：抗日同盟军收复多伦等地。",
+        "（该来源以日期主张入链，原文引文见事件层）"
+      ]
+    },
+    "graph": {
+      "viewBoxWidth": 1600,
+      "svgOverflow": "hidden",
+      "sources": 33,
+      "sourceNodesEntirelyPastViewBox": 21,
+      "sourceMaxRight": 3940,
+      "conclusions": 66,
+      "conclusionNodesEntirelyPastViewBox": 17,
+      "conclusionMaxRight": 2036.4000000953677,
+      "tooltipPointerEvents": "none"
+    }
+  },
+  "scene": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "chapter": "留下来的针脚",
+    "text": "留守的“小把头”未能及时撤离，当晚遭到袭击并牺牲，四间木刻楞房屋被焚。镜头停在空下来的工作台，不重演战斗，也不把牺牲变成视觉奇观。",
+    "evidenceNavigation": [
+      {
+        "text": "证据结构",
+        "href": "index.html"
+      },
+      {
+        "text": "灯下卷宗",
+        "href": "dossier.html"
+      }
+    ]
+  },
+  "console": {
+    "application_errors": 0,
+    "third_party_warnings": [
+      "Three.js r150 UMD deprecation warning"
+    ]
+  },
+  "screenshots": [
+    "01-landing-desktop.png",
+    "02-factory-desktop.png",
+    "03-factory-mobile.png",
+    "04-factory-small-mobile.png",
+    "05-evidence-desktop.png",
+    "06-evidence-mobile.png",
+    "08-date-evidence-defect.png",
+    "09-chapter-seven-scene.png"
+  ]
+}
