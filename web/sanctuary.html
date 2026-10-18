@@ -179,10 +179,16 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   #stat::after { content: " · 单指环视 / 双指缩放"; color: #f0b0a1; }
   #ctrl { bottom: max(10px, env(safe-area-inset-bottom)); flex-wrap: wrap; gap: 5px; width: calc(100vw - 18px); padding: 5px; }
   #ctrl button { min-height: 36px; flex: 1 1 auto; padding: 7px 9px; font-size: 10px; }
-  #cap { bottom: 133px; max-height: min(34vh, 270px); padding: 13px 15px 11px; }
-  body.factory-active #cap { top: 74px; right: 10px; bottom: auto; left: 10px; width: auto; max-height: min(52vh, 430px); transform: none; }
-  #factory-story-art { margin: -13px -15px 10px; aspect-ratio: 16 / 5.5; }
-  #cap p { font-size: 12px; }
+  /* P1-18：手机不再用整块上半屏的正文卡——主视觉要让出来。
+     默认底部抽屉 + 正文折叠 3 行，点标题展开；概念图手机默认收起。 */
+  #cap { bottom: 112px; max-height: min(30vh, 240px); padding: 12px 14px 10px; }
+  body.factory-active #cap { top: auto; right: 8px; bottom: 104px; left: 8px; width: auto; max-height: 34vh; transform: none; }
+  body.factory-active #cap.expanded { max-height: 62vh; }
+  #factory-story-art { display: none; }
+  #cap p { font-size: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  #cap.expanded p { display: block; -webkit-line-clamp: unset; max-height: 38vh; overflow: auto; }
+  #cap h2::after { content: " ▾"; font-size: 10px; color: var(--gold); opacity: .8; }
+  #cap.expanded h2::after { content: " ▴"; }
 }
 @media (max-width: 420px) {
   #hud { padding: 12px 12px 28px; }
@@ -196,8 +202,9 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   #stat { bottom: 98px; }
   #ctrl { width: calc(100vw - 14px); }
   #ctrl button { font-size: 9px; letter-spacing: 0; }
-  #cap { bottom: 148px; width: calc(100vw - 20px); max-height: 32vh; padding: 11px 12px 9px; }
-  body.factory-active #cap { top: 74px; right: 8px; bottom: auto; left: 8px; width: auto; max-height: 46vh; padding: 10px 12px 8px; transform: none; }
+  #cap { bottom: 132px; width: calc(100vw - 16px); max-height: 30vh; padding: 10px 12px 8px; }
+  body.factory-active #cap { top: auto; right: 6px; bottom: 100px; left: 6px; width: auto; max-height: 32vh; padding: 10px 12px 8px; transform: none; }
+  body.factory-active #cap.expanded { max-height: 58vh; }
   #factory-story-art { margin: -10px -12px 8px; aspect-ratio: 16 / 5; }
   #cap h2 { font-size: 15px; }
   #cap p { font-size: 11px; line-height: 1.65; }

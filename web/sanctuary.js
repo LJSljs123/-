@@ -42,6 +42,7 @@ const FACTORY_SECONDS = 11;
 const FACTORY_CHAPTERS = (STORY.chapters || []).map(ch => ({
   no: ch.no, title: ch.title, date: ch.date, body: ch.body, camera: ch.camera,
   claims: ch.claims || [], visual: ch.visual || '',
+  scene: ch.scene || { workers: true, props: true },
 }));
 const STORY_SOURCE = STORY.source || {};
 document.getElementById('m-events').textContent = EVENTS.length;
@@ -565,6 +566,10 @@ const arcs = [];
 
 /* ---------- 三军被服厂：史料锚定的合成密营场景 ---------- */
 const factoryGroup = new THREE.Group();
+/* P1-12：工人与道具必须能独立控制——第七幕要真的「空下来」。
+   合并静态环境时跳过这些节点，否则人会被焊进大网格里永远删不掉。 */
+let factoryWorkers = null;
+let factoryProps = null;
 factoryGroup.visible = false;
 scene.add(factoryGroup);
 let factoryMode = false;
@@ -848,13 +853,23 @@ function groundTexture() {
   fBox(factoryGroup, 4.0, 0.06, 1.65, FM.woodLight, -0.4, 1.45, 0.05);
   [-2.0, 1.2].forEach(x => [-0.55, 0.65].forEach(z => fLink(factoryGroup, [x, 0.1, z], [x, 1.35, z], 0.08, FM.woodDark)));
   buildFootMachine(factoryGroup, 0.3, -0.25, 0.9);
-  buildWorker(factoryGroup, -0.8, 0.45, { work: true, seated: true, turn: Math.PI / 2, scale: 0.96, jacket: FM.coat });
-  buildWorker(factoryGroup, 1.5, -1.4, { turn: 0.4, scale: 0.95, jacket: FM.coatAlt });
-  fBox(factoryGroup, 1.2, 0.18, 0.8, FM.cloth, -0.4, 1.57, -0.05, 0.04, 0.1, -0.06);
-  fBox(factoryGroup, 0.86, 0.12, 0.66, FM.dyed, -0.48, 1.72, -0.03, -0.03, -0.06, 0.08);
-  fBox(factoryGroup, 0.48, 0.05, 0.12, FM.cloth, -1.3, 1.56, 0.28, 0, 0.2, 0.08);
-  fBox(factoryGroup, 0.44, 0.045, 0.12, FM.dyed, -1.32, 1.61, 0.28, 0, 0.2, 0.08);
-  buildKettle(factoryGroup, 2.65, 1.58, -0.2);
+  factoryWorkers = new THREE.Group();
+  factoryWorkers.name = 'workers';
+  factoryGroup.add(factoryWorkers);
+  buildWorker(factoryWorkers, -0.8, 0.45, { work: true, seated: true, turn: Math.PI / 2, scale: 0.96, jacket: FM.coat });
+  buildWorker(factoryWorkers, 1.5, -1.4, { turn: 0.4, scale: 0.95, jacket: FM.coatAlt });
+  /* 可被「转移」带走的布包与半成品：与桌面区分，第七幕要能收走 */
+  factoryProps = new THREE.Group();
+  factoryProps.name = 'props';
+  factoryGroup.add(factoryProps);
+  /* 布堆逐层贴合台面：底块底=1.41，第二块叠在第一块上，散落的布条直接贴台面 */
+  fBox(factoryProps, 1.2, 0.18, 0.8, FM.cloth, -0.4, 1.50, -0.05, 0.04, 0.1, -0.06);
+  fBox(factoryProps, 0.86, 0.12, 0.66, FM.dyed, -0.48, 1.65, -0.03, -0.03, -0.06, 0.08);
+  fBox(factoryProps, 0.48, 0.05, 0.12, FM.cloth, -1.3, 1.435, 0.28, 0, 0.2, 0.08);
+  fBox(factoryProps, 0.44, 0.045, 0.12, FM.dyed, -1.32, 1.483, 0.28, 0, 0.2, 0.08);
+  /* P1-13 支撑检查：桌面顶面 y=1.41，x∈[-2.6,1.8]，z∈[-0.85,0.95]。
+     原壶位 x=2.65 / -3.3 在桌外悬空——移回桌面内，壶底（y-0.36）落在台面上。 */
+  buildKettle(factoryGroup, 1.25, 1.77, -0.25);
   fCylinder(factoryGroup, 0.36, 0.33, 0.38, FM.woodDark, -3.1, 0.2, -0.5, 'y', 12);
   fBox(factoryGroup, 0.78, 0.44, 0.58, FM.leather, -3.1, 0.64, -0.5, 0.04, -0.16, 0.02);
   fBox(factoryGroup, 0.34, 0.36, 0.28, FM.iron, -3.1, 0.36, -0.5, 0.02, 0.2, 0);
@@ -865,14 +880,19 @@ function groundTexture() {
   const lampLight = new THREE.PointLight(0xffc47b, 1.1, 10, 2); lampLight.position.set(0, -0.45, 0); lamp.add(lampLight);
   const factoryKeyLight = new THREE.DirectionalLight(0xffd8ad, 0.52);
   factoryKeyLight.position.set(-4, 7, 8); factoryGroup.add(factoryKeyLight);
-  buildKettle(factoryGroup, -3.3, 1.53, -0.55);
+  buildKettle(factoryGroup, -2.10, 1.77, -0.45);
   fTube(factoryGroup, [[-7, 0.04, 3], [-5, 0.07, 2.4], [-3.8, 0.04, 1.8]], 0.025, FM.woodDark, 6);
 })();
 function mergeFactoryMeshes(root) {
   root.updateMatrixWorld(true);
   const batches = new Map(), sourceMeshes = [];
+  const keepGroups = new Set([factoryWorkers, factoryProps].filter(Boolean));
   root.traverse(object => {
     if (!object.isMesh || object.isInstancedMesh || Array.isArray(object.material)) return;
+    // 沿父链检查是否属于需要独立控制的组
+    for (let p = object; p; p = p.parent) {
+      if (keepGroups.has(p)) return;
+    }
     const source = object.geometry;
     const geometry = source.index ? source.toNonIndexed() : source.clone();
     geometry.applyMatrix4(object.matrixWorld);
@@ -1285,6 +1305,36 @@ function updateFactoryProgress() {
   storyNext.disabled = index === FACTORY_CHAPTERS.length - 1;
   factoryPlayButton.textContent = factoryTour.active ? '暂停故事' : (elapsed >= total ? '重播 88 秒故事' : '播放 88 秒故事');
 }
+/* P1-18：手机端点标题展开正文（桌面不折叠，点击无副作用） */
+(function bindCapToggle() {
+  const cap = document.getElementById('cap');
+  const title = document.getElementById('cap-title');
+  if (!cap || !title) return;
+  const isNarrow = () => matchMedia('(max-width: 760px)').matches;
+  const toggle = () => {
+    if (!isNarrow()) return;
+    cap.classList.toggle('expanded');
+    title.setAttribute('aria-expanded', cap.classList.contains('expanded') ? 'true' : 'false');
+  };
+  title.addEventListener('click', toggle);
+  title.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+  if (isNarrow()) {
+    title.setAttribute('role', 'button');
+    title.setAttribute('tabindex', '0');
+    title.setAttribute('aria-expanded', 'false');
+    title.title = '点击展开/收起本幕正文';
+  }
+  // 换幕时收起，避免上一幕的展开状态带到下一幕
+  const observer = new MutationObserver(() => {
+    cap.classList.remove('expanded');
+    title.setAttribute('aria-expanded', 'false');
+  });
+  const step = document.getElementById('cap-step');
+  if (step) observer.observe(step, { childList: true, characterData: true, subtree: true });
+})();
+
 /* ---------- 本章主张与引文（P0-08：故事—出处闭环） ---------- */
 const claimsBtn = document.getElementById('story-claims-btn');
 const claimsPanel = document.getElementById('story-claims');
@@ -1328,6 +1378,22 @@ document.getElementById('factory-citation').addEventListener('click', () => {
   if (factoryTour.active) stopFactoryTour();
 });
 
+/* P1-12：章节状态同时控制画面与字幕。
+   第六幕物资被带走、第七幕人走台空——不靠镜头角度遮掩，直接改场景状态。 */
+let sceneFade = { workers: 1, props: 1 };
+function applyFactoryScene(scene) {
+  if (!scene) return;
+  const targetW = scene.workers ? 1 : 0;
+  const targetP = scene.props ? 1 : 0;
+  if (factoryWorkers) factoryWorkers.visible = targetW > 0.01;
+  if (factoryProps) factoryProps.visible = targetP > 0.01;
+  sceneFade.workers = targetW;
+  sceneFade.props = targetP;
+  // 可观测状态：截图验收与自动化检查都靠它，避免「文案说空、画面有人」
+  document.body.dataset.sceneWorkers = targetW ? 'on' : 'off';
+  document.body.dataset.sceneProps = targetP ? 'on' : 'off';
+}
+
 function renderFactoryChapter(index) {
   const chapter = FACTORY_CHAPTERS[index];
   if (!chapter) return;
@@ -1350,6 +1416,7 @@ function renderFactoryChapter(index) {
     button.title = FACTORY_CHAPTERS[i].title;
     button.setAttribute('aria-label', '跳到被服厂故事第 ' + (i + 1) + ' 幕：' + FACTORY_CHAPTERS[i].title);
   });
+  applyFactoryScene(chapter.scene);
   const [nextTheta, nextPhi, nextRadius, x, z, y] = chapter.camera;
   factoryCameraGoal = reducedMotion ? null : { theta: nextTheta, phi: nextPhi, radius: nextRadius, x, z, y };
   updateFactoryProgress();
@@ -1864,4 +1931,17 @@ addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
 });
+
+/* 直达某一幕：sanctuary.html?factory=1&chapter=7
+   用途：截图验收（第七幕必须是空台）、答辩时按需跳段，不必逐幕点。 */
+(function deepLink() {
+  const q = new URLSearchParams(location.search);
+  if (q.get('factory') !== '1' && !q.get('chapter')) return;
+  const n = Math.max(1, Math.min(FACTORY_CHAPTERS.length,
+    parseInt(q.get('chapter') || '1', 10) || 1));
+  setTimeout(() => {
+    focusFactory();
+    setFactoryChapter(n - 1);
+  }, 400);
+})();
 })();
