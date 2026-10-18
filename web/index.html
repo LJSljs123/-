@@ -31,6 +31,10 @@ header{
 .meta b{color:var(--ink);font-weight:500;font-size:13px;margin-right:3px}
 .meta .alarm b{color:var(--red)}
 
+#scope{font-size:10.5px;color:var(--faint);max-width:min(520px,52vw);line-height:1.7}
+#scope summary{cursor:pointer;letter-spacing:.06em;color:var(--dim)}
+#scope summary:hover{color:var(--gold)}
+#scope p{margin:6px 0 0;text-align:justify}
 #zoom{background:none;border:1px solid var(--line);color:var(--faint);font:10px/1.6 ui-monospace,Consolas,monospace;letter-spacing:.08em;padding:3px 8px;border-radius:2px;cursor:pointer;margin-left:8px}
 #zoom:hover{color:var(--gold);border-color:var(--gold)}
 #live{
@@ -194,9 +198,51 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   footer a.go:nth-of-type(1){grid-column:2;grid-row:2}
   footer a.go:nth-of-type(2){grid-column:3;grid-row:2}
 }
+/* C1：开场层——评委点开链接的前 10 秒决定他是否认真看。
+   先给一个具体问题（记载相差一个月），再给两个入口；不先给数据图。 */
+#intro{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 90% at 50% 40%,#161c1b 0%,#0b0d0d 70%);
+  transition:opacity .5s ease,visibility .5s ease}
+#intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+#intro .in-card{max-width:min(680px,calc(100vw - 48px));text-align:left}
+#intro .in-kicker{font:10px/1.6 ui-monospace,Consolas,monospace;letter-spacing:.28em;color:#8a6d3b}
+#intro .in-dates{margin:18px 0 26px;display:grid;gap:7px}
+#intro .in-dates span{font:13px/1.7 ui-monospace,Consolas,monospace;color:#b9b2a3;letter-spacing:.04em}
+#intro .in-dates span b{color:#e8dfd0;font-weight:400}
+#intro h1{margin:0 0 14px;font-size:clamp(26px,4.2vw,40px);font-weight:500;
+  letter-spacing:.06em;color:#f2ece1}
+#intro p{margin:0 0 30px;font-size:clamp(13px,1.5vw,15px);line-height:1.9;color:#a8a196;max-width:34em}
+#intro .in-acts{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+#intro .primary{padding:12px 22px;border:1px solid rgba(200,162,74,.6);background:rgba(200,162,74,.12);
+  color:#e8d5a8;text-decoration:none;font-size:13px;letter-spacing:.06em}
+#intro .primary:hover{background:rgba(200,162,74,.2)}
+#intro #in-skip{padding:12px 18px;border:1px solid rgba(255,255,255,.16);background:none;
+  color:#9d968a;font-size:12px;cursor:pointer;letter-spacing:.04em}
+#intro #in-skip:hover{color:#d8d0c2;border-color:rgba(255,255,255,.3)}
+#intro .in-foot{margin-top:34px;font:11px/1.6 ui-monospace,Consolas,monospace;
+  letter-spacing:.2em;color:#6f6a60}
+@media(max-width:760px){#intro .in-dates span{font-size:11.5px}}
 </style>
 </head>
 <body>
+
+<div id="intro" role="dialog" aria-label="作品入口">
+  <div class="in-card">
+    <div class="in-kicker">同一件事 · 三种记载</div>
+    <div class="in-dates">
+      <span>年表　　　<b>1934 年 4 月 21 日</b></span>
+      <span>国防部　　<b>1934 年 3 月 21 日</b></span>
+      <span>纪念馆　　<b>4 月 21 日</b></span>
+    </div>
+    <h1>记载相差一个月。</h1>
+    <p>这是同一个人、同一次牺牲。我们不替你判断哪一天是对的——我们把每一条记载的出处摊开，让你看见依据站在哪里、又在哪里站不住。</p>
+    <div class="in-acts">
+      <a class="primary" href="sanctuary.html?factory=1&amp;chapter=1">看故事 · 88 秒 →</a>
+      <button type="button" id="in-skip">直接查证据 →</button>
+    </div>
+    <div class="in-foot">审的是记载，不是历史。</div>
+  </div>
+</div>
 
 <header>
   <div class="brand">密营<span>承重结构</span></div>
@@ -216,7 +262,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   <div class="big"><span id="cap-n">0</span><i>/ <span id="cap-total">0</span></i></div>
   <div class="lead">条结论只有一家来源机构记载</div>
   <hr>
-  <div class="txt" id="cap-txt">抽掉《大事记》，本库 <b>92%</b> 的知识同时失去依据。</div>
+  <div class="txt" id="cap-txt">抽掉当前承重最大的机构，本库的记录将暂不显示可用来源。</div>
   <hr>
   <div class="cov" id="cap-cov">已逐条检索 0 条 · 未检索 0 条</div>
 </div>
@@ -225,6 +271,10 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   <div class="note" id="note">
     点击下方任意来源机构，把它抽掉，看哪些结论同时失去依据。
   </div>
+  <details id="scope">
+    <summary>范围声明</summary>
+    <p>本库不收档案原件，收的是公开记载之间的对位关系。0 条一手档案不是缺陷，是范围声明——它决定了我们只谈「记载如何相合或分歧」，不谈「历史事实如此」。</p>
+  </details>
   <button id="reset">复位</button>
   <a class="go" href="sanctuary.html">3D 燎原 →</a>
   <a class="go" href="dossier.html">卷宗视图 →</a>
@@ -783,8 +833,20 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   draw();
   applyZoom();
 
+  /* 开场层：点「直接查证据」或 Esc 关闭 */
+  const introEl = document.getElementById('intro');
+  const introSkip = document.getElementById('in-skip');
+  if (introSkip && introEl) {
+    introSkip.addEventListener('click', () => introEl.classList.add('gone'));
+  }
+
   /* Escape 关闭固定详情；点画布空白处同样关闭 */
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') unpin(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      unpin();
+      if (introEl) introEl.classList.add('gone');
+    }
+  });
   document.querySelector('main').addEventListener('click', e => {
     if (e.target === stage) unpin();
   });
