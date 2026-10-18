@@ -1995,6 +1995,19 @@ function loop() {
   if (stat.textContent !== statusText) stat.textContent = statusText;
   renderer.render(scene, camera);
 }
+renderer.domElement.addEventListener('webglcontextlost', (e) => {
+  e.preventDefault();
+  renderer.setAnimationLoop(null);
+  const card = fallback.querySelector('.card');
+  if (card) {
+    card.innerHTML =
+      '<h2>图形上下文丢失</h2><p>三维场景已停止（诊断 M-GL-01）。<br>' +
+      '2D 视图不受影响，可查看完整证据结构；刷新本页可重试三维。</p>' +
+      '<a href="index.html">打开 2D 证据结构</a>';
+  }
+  fallback.classList.add('on');
+  loading.classList.add('off');
+});
 renderer.setAnimationLoop(loop);
 setTimeout(() => {
   loading.classList.add('off');

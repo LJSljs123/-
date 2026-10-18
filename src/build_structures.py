@@ -24,6 +24,8 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from short_names import SHORT_OVERRIDE
+
 ROOT = Path(__file__).resolve().parent.parent
 EVENTS = ROOT / "data" / "curated" / "events.json"
 OUT = ROOT / "data" / "curated" / "structures.json"
@@ -31,17 +33,6 @@ OUT = ROOT / "data" / "curated" / "structures.json"
 RELIABILITY_WEIGHT = {"A": 1.0, "B": 0.7, "C": 0.45}
 RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈/待核转述"}
 
-
-# 长机构名的固定短写。图上柱宽有限，全称放不下；
-# 但缩写不能自己造词，必须是这个机构通行的简称，否则读图的人对不上。
-SHORT_OVERRIDE = {
-    "侵华日军南京大屠杀遇难同胞纪念馆": "南京大屠杀馆",
-    "抗日战争纪念网": "抗战纪念网",
-    "国家图书馆": "国图",
-    "赵尚志纪念馆": "赵尚志馆",
-    "莆田市博物馆": "莆田博物馆",
-    "辽宁日报": "辽宁日报",
-}
 
 
 def short_src(s: str) -> str:

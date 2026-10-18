@@ -25,6 +25,10 @@ import json
 import re
 from pathlib import Path
 
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+from short_names import SHORT_OVERRIDE
+
 ROOT = Path(__file__).resolve().parent.parent
 EVENTS = ROOT / "data" / "curated" / "events.json"
 CONF = ROOT / "data" / "curated" / "conflicts.json"
@@ -97,9 +101,12 @@ def md_label(iso: str, prec: str | None) -> str:
 
 
 def short_src(s: str) -> str:
-    """「国家图书馆《抗联简史》（引…）」→「国家图书馆」"""
+    """「国家图书馆《抗联简史》（引…）」→「国家图书馆」；
+    长机构名走共享简称表，与来源柱、开场层保持同一称呼。"""
     s = str(s or "")
     head = s.split("《")[0].split("（")[0].strip()
+    if head in SHORT_OVERRIDE:
+        return SHORT_OVERRIDE[head]
     return head or s[:16]
 
 
@@ -164,6 +171,18 @@ def action_kind(text: str) -> str | None:
     if any(w in t for w in FOUND_ACTION_WORDS):
         return "成立"
     return None
+
+
+def battle_act(summary: str, et: str) -> str:
+    # 战斗类案名不能一律写「作战」——冰趟子是设伏、多伦是收复。
+    # 从摘要里提取动词（带宾语到「等地/标点」前），兜底回 event_type 映射。
+    s = str(summary or "")
+    m = re.search(r"(收复|设伏|奔袭|夜袭|伏击|阻击|突围)([\u4e00-\u9fa5]{0,6}?)(?=等地|[，。；、]|$)", s)
+    if m:
+        obj = m.group(2)
+        return m.group(1) + (obj if obj and obj != "等" else "")
+    return {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕", "会议": "开会",
+            "转移": "转移", "密营建立": "建立密营"}.get(et, "成立")
 
 
 def date_support(ev: dict) -> dict:
@@ -549,10 +568,11 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         if m_v:
             subject = (ev.get("summary") or "")[:m_v.start()].split("的")[-1].strip("，。、； ") or "该事件"
     et = ev.get("event_type", "事件")
-    act = {"牺牲": "牺牲", "战斗": "作战"}.get(et, "发生")
+    act = battle_act(ev.get("summary"), et)
 
     a, b = dv[0]["a"], dv[0]["b"]
-    ga, gb = a["source"].split("《")[0], b["source"].split("《")[0]
+    # 统一用共享简称表——命名空间混用会让同一家机构重复出现在证据卡里
+    ga, gb = short_src(a["source"]), short_src(b["source"])
 
     # P0-03：月精度不能伪装成「6 月 1 日」。原文只写「6月」，补位的 01 不是史料。
     def claim_label(c: dict) -> str:
@@ -796,8 +816,7 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
         subject = f"《{m_doc.group(1)}》"
         act = "发表"
     else:
-        act = {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕",
-               "会议": "开会", "转移": "转移", "密营建立": "建立密营"}.get(et, "成立")
+        act = battle_act(ev.get("summary"), et)
 
     srcs = [{
         "book": s.get("book"), "short": short_src(s.get("book")),
