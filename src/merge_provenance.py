@@ -8,8 +8,8 @@
     data/curated/provenance.json  人工检索后录入的对位记录
 
 做的事：
-    1. add_sources   —— 把检索到的独立记载补进 sources（按 book 去重）
-    2. date_variants —— 记录每个来源各自主张的日期（一致也记，用于表达多源互证）
+    1. add_sources   —— 把检索到的来源记录补进 sources（按 book 去重）
+    2. date_variants —— 记录每个来源各自主张的日期（一致也记，用于来源间对照）
     3. provenance    —— 写入检索记录（负证据）
     4. 没有对位记录的条目，写入 depth=none，如实标注"尚未逐条检索"
 

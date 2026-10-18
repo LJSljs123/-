@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>密营 · 承重结构</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -162,7 +163,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   <div class="brand">密营<span>承重结构</span></div>
   <div class="meta">
     <span><b id="m-conc">0</b>条结论</span>
-    <span><b id="m-src">0</b>个来源</span>
+    <span><b id="m-src">0</b>个来源机构</span>
     <span><b id="m-q">0</b>组检索</span>
     <span class="alarm"><b id="m-a">0</b>条有一手档案</span>
   </div>
@@ -172,8 +173,8 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
 <main><svg id="stage" viewBox="0 0 1600 822" preserveAspectRatio="xMidYMid meet"></svg></main>
 
 <div id="caption">
-  <div class="big"><span id="cap-n">36</span><i>/ 39</i></div>
-  <div class="lead">条结论只有单一来源支撑</div>
+  <div class="big"><span id="cap-n">0</span><i>/ <span id="cap-total">0</span></i></div>
+  <div class="lead">条结论只有一家来源机构记载</div>
   <hr>
   <div class="txt" id="cap-txt">抽掉《大事记》，本库 <b>92%</b> 的知识同时失去依据。</div>
   <hr>
@@ -182,7 +183,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
 
 <footer>
   <div class="note" id="note">
-    点击下方任意来源，把它抽掉，看哪些结论同时失去依据。
+    点击下方任意来源机构，把它抽掉，看哪些结论同时失去依据。
   </div>
   <button id="reset">复位</button>
   <a class="go" href="sanctuary.html">3D 燎原 →</a>
@@ -234,9 +235,12 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
       return '<div class="pv none">检索：尚未逐条检索，此处不冒充已查</div>';
     }
     const bits = ['查了 ' + (p.probes || 0) + ' 组关键词'];
-    if (p.indep) bits.push(p.indep + ' 家独立记载');
-    if (p.deriv) bits.push(p.deriv + ' 条转抄');
+    if (p.indep) bits.push(p.indep + ' 条检索标记为独立的记载');
+    if (p.deriv) bits.push(p.deriv + ' 条检索标记为转抄的记录');
     let s = '<div class="pv">' + bits.join(' · ') + '</div>';
+    if (p.indep || p.deriv) {
+      s += '<div class="pv ns">独立或转引关系来自检索记录标注，仍需核查来源谱系。</div>';
+    }
     if (p.not_searched && p.not_searched.length) {
       s += '<div class="pv ns">未查：' + esc(p.not_searched.join('、')) + '</div>';
     }
@@ -441,7 +445,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
 
     /* 图例：把编码规则写在图上，不靠观众猜 */
     const lg = el('text', { x: X0, y: 812, class: 'legend' });
-    lg.textContent = '柱宽 ∝ 支撑数 · 每道刻痕 = 一条结论 · 红芦苇：库内仅一处记载 · 金芦苇：有多处记载';
+    lg.textContent = '柱宽 ∝ 支撑数 · 每道刻痕 = 一条结论 · 红芦苇：仅一家来源机构记载 · 金芦苇：多家来源机构记载';
     stage.appendChild(lg);
 
     bind();
@@ -487,11 +491,11 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
 
     const note = document.getElementById('note');
     if (removed.size === 0) {
-      note.innerHTML = '点击下方任意来源，把它抽掉，看哪些结论同时失去依据。';
+      note.innerHTML = '点击下方任意来源机构，把它抽掉，看哪些结论同时失去依据。';
     } else {
       const lost = CON.length - alive;
       const rate = Math.round(lost / CON.length * 100);
-      note.innerHTML = '已抽掉 <b>' + removed.size + '</b> 个来源 · ' +
+      note.innerHTML = '已抽掉 <b>' + removed.size + '</b> 家来源机构 · ' +
         '<em>' + lost + '</em> 条结论失去全部依据（<em>' + rate + '%</em>）' +
         (lost === 0 ? '　剩下的结构仍然站得住。' : '') +
         (hitCases.length ? '<br>灯下案 <b>' + hitCases.sort().join(' / ') +
@@ -539,13 +543,21 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
         g.classList.add('hot');
         const srcs = (c.sources || []).map(s => s.book).join('、');
         const quote = (c.sources || [])[0];
-        const arch = (c.sources || []).filter(s => s.archive || s.url);
-        const archLinks = arch.length
-          ? '<div class="pv arch">原始存档：' + arch.map(s => {
-              const a = s.archive || s.url;
-              const href = /^https?:/.test(a) ? a : '../' + a;
-              return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(s.book.split('《')[0]) + '</a>';
-            }).join(' · ') + '（本地快照 + sha256）</div>'
+        const archLinks = (c.sources || []).flatMap(s => {
+          const name = (s.book || '来源').split('《')[0];
+          const links = [];
+          if (s.archive) links.push({ url: s.archive, label: '本地快照' });
+          if (s.url) links.push({ url: s.url, label: '来源网页' });
+          return links.map(link => {
+            const href = /^https?:/.test(link.url) ? link.url : '../' + link.url;
+            return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' +
+              esc(name + ' · ' + link.label) + '</a>';
+          });
+        });
+        const hasSnapshot = (c.sources || []).some(s => s.archive && !/^https?:/.test(s.archive));
+        const archiveBlock = archLinks.length
+          ? '<div class="pv arch">来源核查：' + archLinks.join(' · ') +
+            (hasSnapshot ? '（本地快照哈希见 manifest.json）' : '') + '</div>'
           : '';
         tip.innerHTML =
           '<div class="t">' + esc(c.event_type || '记载') + ' · ' + c.year +
@@ -558,7 +570,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
                 return '<div class="v"><b>裁决</b>' + esc(v.ruling) + ' 基准值 <b>' + esc(v.adopt) +
                   '</b><br>' + esc(v.basis) + '<br><span>' + esc(v.other) + '　' + esc(v.upgraded) + '</span></div>'; })()
             : '') +
-          archLinks +
+          archiveBlock +
           provBlock(c.prov);
         tip.classList.add('on');
         moveTip(e);
@@ -599,6 +611,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   /* 图注数字全部取自分析结果，不手填 */
   const top = (D.resilience || [])[0];
   document.getElementById('cap-n').textContent = STATS.single_support || 0;
+  document.getElementById('cap-total').textContent = STATS.conclusions || CON.length;
   if (top) {
     document.getElementById('cap-txt').innerHTML =
       '抽掉《' + esc(top.source) + '》，本库 <em>' +

@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>密营 · 灯下</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -117,6 +118,10 @@ main{max-width:790px;margin:0 auto;padding:64px 34px 180px}
 .ev .q{font-size:14px;color:var(--dim);line-height:1.9;font-style:italic}
 .ev .q::before{content:"「";color:var(--faint)}
 .ev .q::after{content:"」";color:var(--faint)}
+.ev .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--faint)}
+.ev .links a{color:#c8a24a;text-decoration:none}
+.ev .links a:hover{text-decoration:underline}
+.ev .links .note{color:var(--faint)}
 
 /* 旁证 */
 .side{margin-top:10px;padding:12px 16px;border-left:2px solid rgba(107,95,78,.4);
@@ -256,6 +261,23 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
     return { '确定': 'ok', '较粗': 'mid', '模糊': 'bad', '缺失': 'bad', '约数': 'mid' }[s] || 'mid';
   }
 
+  function sourceLinks(e) {
+    const items = [];
+    if (e.archive) {
+      const local = !/^https?:/.test(e.archive);
+      items.push({ url: local ? '../' + e.archive : e.archive,
+                   label: local ? '本地快照' : '来源网页', local });
+    }
+    if (e.url && e.url !== e.archive) items.push({ url: e.url, label: '来源网页', local: false });
+    const links = items.map(link => '<a href="' + esc(link.url) + '" target="_blank" rel="noopener">' +
+      esc(link.label) + '</a>');
+    if (items.some(link => link.local)) {
+      links.push('<a href="../data/probe_archive/manifest.json" target="_blank" rel="noopener">SHA256 清单</a>');
+    }
+    if (e.archive_note) links.push('<span class="note">' + esc(e.archive_note) + '</span>');
+    return links.length ? '<div class="links">来源核查：' + links.join(' · ') + '</div>' : '';
+  }
+
   /* 逐块浮现：先插入隐藏节点，再依次点亮 */
   function reveal(el, delay) {
     el.classList.add('r');
@@ -300,7 +322,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
     dk.className = 'docket';
     dk.innerHTML =
       '<div class="no">' + esc(c.case_no) + ' · ' +
-        (c.kind === 'dispute' ? '多源分歧' : '孤证审查') + '</div>' +
+        ({ settled: '一手来源支持', consistent: '库内记载相合', dispute: '来源分歧', single: '孤证审查' }[c.kind] || '待核查') + '</div>' +
       '<h1>' + esc(c.title) + '</h1>' +
       '<div class="claim"><b>被审命题</b>' + esc(c.claim_text) + '</div>';
     doc.appendChild(dk);
@@ -360,7 +382,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
               ? '<span class="val">' + Number(e.value).toLocaleString('zh-CN') + ' ' + esc(e.unit || '') + '</span>'
               : '') +
           '</div>' +
-          '<div class="q">' + esc(e.quote) + '</div>';
+          '<div class="q">' + esc(e.quote) + '</div>' + sourceLinks(e);
         sec.appendChild(d);
         await reveal(d, 200);
       }
@@ -395,6 +417,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
         v.className = 'verdict';
         const stamp = {
           settled:      { ch: ['定', '谳'], cls: ' ok' },
+          consistent:   { ch: ['记', '载'], cls: ' ok' },
           unresolved:   { ch: ['悬', '案'], cls: '' },
           insufficient: { ch: ['缺', '证'], cls: ' dim' },
         }[step.status] || { ch: ['未', '结'], cls: '' };
@@ -402,7 +425,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
           '<div class="stamp' + stamp.cls + '"><i>' + stamp.ch[0] + '</i><i>' + stamp.ch[1] + '</i></div>' +
           '<div class="st">' + esc(step.case_no) + ' · 处置结果</div>' +
           '<div class="cs">' + esc(step.status_cn) + '</div>' +
-          '<div class="mi"><div class="h">缺什么才能定谳</div><ul>' +
+          '<div class="mi"><div class="h">核查边界与所需材料</div><ul>' +
             (step.missing || []).map(m => '<li>' + esc(m) + '</li>').join('') +
           '</ul></div>' +
           '<div class="cc"><div class="h">证据支持的最保守结论</div>' +

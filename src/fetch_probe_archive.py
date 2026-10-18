@@ -19,7 +19,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ARCH = ROOT / "data" / "probe_archive"
-ARCH.mkdir(parents=True, exist_ok=True)
 
 # (event_id, slug, url)
 TARGETS = [
@@ -107,6 +106,7 @@ def title_of(text: str) -> str:
 
 
 def main() -> int:
+    ARCH.mkdir(parents=True, exist_ok=True)
     manifest = {}
     ok = fail = 0
     for eid, slug, url in TARGETS:
@@ -115,9 +115,11 @@ def main() -> int:
             b = fetch(url)
             if len(b) < 800:
                 raise RuntimeError(f"too small: {len(b)}B")
+            text = to_text(b)
+            if len(text.strip()) < 100:
+                raise RuntimeError(f"page body is not readable: {len(text.strip())} chars")
             html_p = ARCH / f"{fname}.html"
             html_p.write_bytes(b)
-            text = to_text(b)
             (ARCH / f"{fname}.txt").write_text(text, encoding="utf-8")
             manifest[fname] = {
                 "event": eid, "url": url,
@@ -125,6 +127,7 @@ def main() -> int:
                 "sha256": hashlib.sha256(b).hexdigest(),
                 "bytes": len(b),
                 "title": title_of(text),
+                "capture_status": "readable_snapshot",
             }
             ok += 1
             print(f"OK  {fname}  {len(b)}B")
@@ -132,7 +135,7 @@ def main() -> int:
             fail += 1
             print(f"FAIL {fname}: {e}")
     (ARCH / "manifest.json").write_text(
-        json.dumps({"_note": "检索存档：每个文件 = 抓取时刻的来源页面快照，sha256 可验。", **manifest},
+        json.dumps({"_note": "仅 capture_status=readable_snapshot 的记录视为可用快照；其他记录保留失败元数据。", **manifest},
                    ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"\n{ok} ok / {fail} fail -> {ARCH}")
     return 0

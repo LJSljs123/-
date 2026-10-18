@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """第四轮补源：给 27 条独占条目补第二来源 + 检索记录。
 
-所有 add_sources 的 quote 均已逐条与 data/probe_archive/ 存档文本核对；
-每个来源页存有 HTML 快照 + sha256（见 data/probe_archive/manifest.json），
+具备可读本地快照的引文由 verify_quotes.py 核验；
+无快照或正文不可读的来源只保留来源网页信息，不标为本地存档，
 负证据从"自述"升级为"可审计"。
 
 运行：python src/add_sources_round4.py
@@ -26,7 +26,7 @@ P["evt_1931_zgzy_jueyi"] = {
         "page": "2016-09-18",
         "url": "http://military.people.com.cn/n1/2016/0918/c1011-28721822-8.html",
         "quote": "1931年9月22日，中共中央做出了《关于日本帝国主义武装占据满洲与目前党的紧急任务的决议》，号召东北人民开展游击战争，打击侵略者。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1931_zgzy_jueyi__renminwang-jueyi.html",
     }],
     "date_variants": [
@@ -46,7 +46,7 @@ P["evt_1931_dengtiemei_ziweijun"] = {
         "page": "英烈名录",
         "url": "https://www.81.cn/yljnt_208627/ylml/D/9385721.html",
         "quote": "１９３１年１０月下旬，邓铁梅前往辽东凤城西部山区小汤沟顾家堡子（今属岫岩县朝阳乡）串连旧好十数人……正式创建了辽东三角地区第一支民众抗日武装——东北民众自卫军，邓铁梅任司令。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1931_dengtiemei_ziweijun__junwang-dengtiemei.html",
     }],
     "date_variants": [
@@ -66,7 +66,7 @@ P["evt_1932_jilin_ziweijun"] = {
         "page": "2020-11-26",
         "url": "https://www.tuanjiebao.com/m/2020-11/26/content_8896400.htm",
         "quote": "1月31日，李杜、丁超等召集抗日军政要员在哈开会，成立了“吉林自卫军总司令部”，推举李杜为自卫军总司令。",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_jilin_ziweijun__tuanjiebao-lidu.html",
     }, {
         "book": "抗日战争纪念网《功绩赫赫 铁骨铮铮——东北抗日联军总司令李杜将军》",
@@ -93,7 +93,7 @@ P["evt_1932_haerbin_shishou"] = {
         "page": "2020-11-26",
         "url": "https://www.tuanjiebao.com/m/2020-11/26/content_8896400.htm",
         "quote": "2月5日夜，哈市被日军占领。第二次哈尔滨保卫战“终以转战经日，伤亡盈千，兵力过疲，呼救无缘”而失败。",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_haerbin_shishou__tuanjiebao-haerbin.html",
     }],
     "date_variants": [
@@ -113,7 +113,7 @@ P["evt_1932_weiman_chengli"] = {
         "page": "2015-05-26",
         "url": "https://dangshi.people.com.cn/n/2015/0526/c396421-27056835-2.html",
         "quote": "3月1日，关东军发表伪满洲国“建国宣言”。3月9日，在长春举行了溥仪就职典礼。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_weiman_chengli__renmin-dangshi-weiman.html",
     }],
     "date_variants": [
@@ -133,7 +133,7 @@ P["evt_1932_qiangfeng_fujji"] = {
         "page": "2022-02-10",
         "url": "https://www.tuanjiewang.cn/2022-02/10/content_8926224.htm",
         "quote": "李延禄所说的墙缝伏击战，是1932年3月13日，由他指挥的救国军补充团700多人和戴凤龄独立营的300多人，在镜泊湖的墙缝，伏击以天野第十五旅团为主力的日军部队。",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_qiangfeng_fujji__tuanjiewang-qiangfeng.html",
     }],
     "date_variants": [
@@ -153,7 +153,7 @@ P["evt_1932_panshi_yiyongjun"] = {
         "page": "2017-01-06",
         "url": "https://dfz.jl.gov.cn/dbkl/201701/t20170106_5217616.html",
         "quote": "于1932年5月成立的磐石工农反日义勇军（即磐石游击队），是中国共产党在东北创建的第一支抗日武装。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_panshi_yiyongjun__jl-difangzhi-panshi.html",
     }],
     "date_variants": [
@@ -174,14 +174,14 @@ P["evt_1932_bayan_youjidui"] = {
         "page": "2026-10-14",
         "url": "http://www.mod.gov.cn/gfbw/gfdy/16492977.html",
         "quote": "青年时期，他曾就读于北京大学和清华大学，并积极参加学生运动，1932年回到家乡，创建巴彦抗日游击队并担任总指挥。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_bayan_youjidui__guofangbu-zhangjiazhou.html",
     }, {
         "book": "贵州省国防动员办公室《记忆｜张甲洲：从清北学子到抗日英雄》",
         "page": "2025-03-14",
         "url": "http://www.gzdis.gov.cn/xwhc/yw/202503/t20250314_87166276.html",
         "quote": "1932年5月16日，在一口井前，张甲洲带着来“参加婚礼”的200多人，举行了誓师大会，巴彦抗日游击队正式成立，他担任总指挥。",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_bayan_youjidui__gzdis-zhangjiazhou.html",
     }],
     "date_variants": [
@@ -201,7 +201,7 @@ P["evt_1932_pingdingshan"] = {
         "page": "纪念馆官网",
         "url": "http://m.pds1932.cn/index.php?c=category&id=51",
         "quote": "1932年9月16日，日本侵略者以莫须有的罪名，将抚顺平顶山村及比邻的栗家沟和千金堡村共三千多名无辜村民集体枪杀，制造了日本侵占东北期间第一起大规模屠杀平民的“平顶山惨案”。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_pingdingshan__pds1932-jinianguan.html",
     }],
     "date_variants": [
@@ -221,7 +221,7 @@ P["evt_1932_yangjingyu_panshi"] = {
         "page": "2017-01-06",
         "url": "https://dfz.jl.gov.cn/dbkl/201701/t20170106_5217616.html",
         "quote": "满洲省委接受“北方会议”决议后，立即指示磐石中心县委：“把目前的义勇军改名为中国工农红军第三十二军东北游击队”。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1932_yangjingyu_panshi__jl-difangzhi-hongsanjun.html",
     }, {
         "book": "百家号《在磐石，见“磐石”——寻迹杨靖宇将军参加东北抗联活动的起点》",
@@ -248,7 +248,7 @@ P["evt_1933_126_zhishixin"] = {
         "page": "2026-01-29",
         "url": "http://www.mod.gov.cn/gfbw/gfjy_index/js_214151/16439864.html",
         "quote": "1933年1月26日，中共驻共产国际代表团以中共中央名义发出《中央给满洲各级党部及全体党员的信——论满洲的状况和我们党的任务》（即“一二六指示信”）。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1933_126_zhishixin__guofangbu-126zhishixin.html",
     }],
     "date_variants": [
@@ -268,7 +268,7 @@ P["evt_1933_yitianuzhu"] = {
         "page": "2018-04-27",
         "url": "https://www.krzzjn.com/show-1032-72174.html",
         "quote": "日本关东军间岛辎重队 共产党员伊田助男 一九三三年三月三十日",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1933_yitianuzhu__krzzjn-yitian-beibei.html",
     }],
     "date_variants": [
@@ -308,7 +308,7 @@ P["evt_1933_zhuhe_youjidui"] = {
         "page": "2014-03-25",
         "url": "http://dangshi.people.com.cn/n/2014/0325/c85037-24731596.html",
         "quote": "1933年10月，珠河反日游击队成立，赵尚志任队长。在他的领导下，不到三个月时间内连续取得了多次战斗的胜利。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1933_zhuhe_youjidui__renmin-dangshi-zhaoshangzhi.html",
     }],
     "date_variants": [
@@ -328,7 +328,7 @@ P["evt_1934_tulongshan"] = {
         "page": "2025-06-11",
         "url": "https://www.81.cn/yl_208589/16391832.html",
         "quote": "３月８日晚，当地五个保的保长悄悄集会……决定发起武装暴动。……３月１０日上午，饭冢朝吾率领伪警察大队大队长盖文义等４０多名日伪军……进入白家沟埋伏区。",
-        "reliability": "A-",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1934_tulongshan__junwang-tulongshan.html",
     }],
     "date_variants": [
@@ -349,15 +349,15 @@ P["evt_1934_tongzhangrong_xisheng"] = {
         "page": "2025-08-27",
         "url": "http://www.mod.gov.cn/gfbw/gfjy_index/js_214151/16405189.html",
         "quote": "1934年3月21日，日军调集重兵对汪清县庙沟村（今长荣村）实施合围。突围战斗中，27岁的童长荣腹部中弹仍坚持指挥……壮烈牺牲。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1934_tongzhangrong_xisheng__guofangbu-tongzhangrong.html",
     }, {
         "book": "杨靖宇烈士陵园暨东北抗日联军纪念馆《童长荣》",
         "page": "纪念馆官网",
         "url": "https://yjylsly.org.cn/news/174.html",
         "quote": "1934年3月21日，身患重病的童长荣和部队转移到汪清县十里坪庙沟一带时被敌人包围，壮烈牺牲，年仅27岁。",
-        "reliability": "A",
-        "archive": "（与 evt_1935_lihongguang_xisheng 烈士陵园页同批存档）",
+        "reliability": "B",
+        "archive_note": "仅保留来源网页链接，未找到对应的本地快照。",
     }],
     "date_variants": [
         {"value": "1934-04-21", "precision": "day", "source": "抗日战争纪念网《东北抗联大事记》"},
@@ -377,14 +377,14 @@ P["evt_1935_lihongguang_xisheng"] = {
         "page": "2025-06-17",
         "url": "https://ccdijl.gov.cn/ztjc/ljwh/by/202506/t20250617_9257799.html",
         "quote": "1935年5月，在一次战斗中，李红光不幸中弹牺牲，年仅25岁。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1935_lihongguang_xisheng__jl-jianwei-lihongguang.html",
     }, {
         "book": "杨靖宇烈士陵园暨东北抗日联军纪念馆《李红光》",
         "page": "纪念馆官网",
         "url": "https://yjylsly.org.cn/news/154.html",
         "quote": "5月11日，李红光率部队行至兴京县老岭时，与日本守备队200多人遭遇，双方激战时不幸胸部中弹。12日，年仅25岁的李红光因伤势过重，在辽宁省新宾县光荣牺牲。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1935_lihongguang_xisheng__yangjingyu-lievelingyuan-lihongguang.html",
     }],
     "date_variants": [
@@ -404,7 +404,7 @@ P["evt_1935_dierjun_chengli"] = {
         "page": "国图中国记忆项目",
         "url": "http://memory.nlc.cn/topic/resource/205",
         "quote": "1935年3月任师长，同年5月30日任东北人民革命军第二军军长。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1935_dierjun_chengli__guotu-nlc-wangdetai.html",
     }],
     "date_variants": [
@@ -424,14 +424,14 @@ P["evt_1935_zhao_yiman"] = {
         "page": "2025-08-29",
         "url": "https://www.mva.gov.cn/sy/zt/jnkzsl80zn/shzb/202508/t20250829_509832.html",
         "quote": "1935年11月 为掩护部队突围 赵一曼在与日伪军激战中身负重伤 不幸落入敌手",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1935_zhao_yiman__mva-zhaoyiman.html",
     }, {
         "book": "共产党员网《百年瞬间丨赵一曼》",
         "page": "2021-04-20",
         "url": "https://www.12371.cn/2021/04/20/VIDE1618874520618438.shtml",
         "quote": "1936年8月2日清晨，在一列从黑龙江哈尔滨开往珠河的火车上，东北抗日联军第三军二团政委赵一曼向看守她的日本宪兵要来纸笔，写下了给儿子陈掖贤的最后遗言。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1935_zhao_yiman__gongchandangwang-zhaoyiman.html",
     }],
     "date_variants": [
@@ -452,7 +452,7 @@ P["evt_1936_yijun_xizheng"] = {
         "page": "2021-08-31",
         "url": "https://www.81.cn/2021zt/2021-08/31/content_10090467.htm",
         "quote": "1936年6月中旬，抗联一军一师西征部队从本溪县铺石河(现属凤城县)正式出发，李敏焕和一军政治部主任宋铁岩率部西进。……1936年7月15日，在摩天岭战役中壮烈牺牲。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1936_yijun_xizheng__junwang-liminhuan.html",
     }],
     "date_variants": [
@@ -473,7 +473,7 @@ P["evt_1936_xiayunjie_xisheng"] = {
         "page": "2018-10-15",
         "url": "http://www.mod.gov.cn/gfbw/zt/gfbwzt/2018_213791/mhyxlsp/4826713.html",
         "quote": "同年11月21日，在为筹集给养与装备时，在汤原丁大千屯遭伪治安队袭击，身负重伤。弥留之际，他再三嘱咐身边的战友、妻子和女儿，要团结一致……",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1936_xiayunjie_xisheng__guofangbu-xiayunjie.html",
     }],
     "date_variants": [
@@ -493,14 +493,14 @@ P["evt_1936_wangdetai_xisheng"] = {
         "page": "国图中国记忆项目",
         "url": "http://memory.nlc.cn/topic/resource/205",
         "quote": "11月7日在抚松县与蒙江县交界处的小汤河村遭到伪骑兵七团袭击，在追击敌人时牺牲。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1936_wangdetai_xisheng__guotu-nlc-wangdetai2.html",
     }, {
         "book": "中国军网《中共抗战英烈：王德泰》",
         "page": "2021-09-28",
         "url": "https://www.81.cn/yl/2021-09/28/content_10094025.htm",
         "quote": "在这次战斗中，军长王德泰中弹，壮烈殉国，年仅29岁。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1936_wangdetai_xisheng__junwang-wangdetai.html",
     }],
     "date_variants": [
@@ -520,7 +520,7 @@ P["evt_1937_songtieyan_xisheng"] = {
         "page": "2025-06-13",
         "url": "https://www.81.cn/yl_208589/16391184.html",
         "quote": "宋铁岩临危不惧，带领身边战士边打边撤，在战斗中不幸中弹，英勇牺牲，年仅２８岁。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1937_songtieyan_xisheng__junwang-songtieyan.html",
     }],
     "provenance": {"depth": "deep", "on": "2026-10-17", "probes": [{
@@ -535,8 +535,8 @@ P["evt_1937_bingtangzi"] = {
         "book": "北安市人民政府《“浴血兴安驱日寇”北安红色故事之冰趟子大捷》",
         "page": "2025-08-20",
         "url": "https://www.hljba.gov.cn/bas/bmdt/202508/c11_337253.shtml",
-        "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的必经之路。",
-        "reliability": "A-",
+        "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的一个重要通道。",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1937_bingtangzi__beian-gov-bingtangzi.html",
     }, {
         "book": "百家号《山河铭记 抗联记忆丨赵尚志：以少胜多的“冰趟子”战斗》",
@@ -571,7 +571,7 @@ P["evt_1938_shier_lieshi"] = {
         "page": "2024-10-30",
         "url": "https://gzc.zzut.edu.cn/info/1157/1607.htm",
         "quote": "1938年3月18日，他率领16名抗联战士为了掩护大部队撤退，被日伪军包围在一座小孤山上，他们英勇作战，多次打退敌人的进攻。最后，包括他在内的12名战士壮烈殉国。",
-        "reliability": "B-",
+        "reliability": "C",
         "archive": f"{ARCH}/evt_1938_shier_lieshi__zzut-lilhaifeng.html",
     }],
     "date_variants": [
@@ -591,7 +591,7 @@ P["evt_1938_chengbin_toudi"] = {
         "page": "2026-08-06",
         "url": "https://baijiahao.baidu.com/s?id=1872695328133062993&wfr=spider&for=pc",
         "quote": "1938年，日军抓了程斌的母亲和哥哥，在报纸上大肆宣扬。……于1938年7月率所部115人投敌。投敌后，程斌开始为日本人效力，并组建了“程斌挺进队”，将杨靖宇在深山老林里的密营全部捣毁。",
-        "reliability": "B-",
+        "reliability": "C",
         "archive": f"{ARCH}/evt_1938_chengbin_toudi__baijiahao-chengbin.html",
     }],
     "date_variants": [
@@ -611,15 +611,15 @@ P["evt_1938_banv_toujiang"] = {
         "page": "2025-09-04",
         "url": "https://www.news.cn/politics/20250904/d1c6684a85154afcbfd26ea84fa0c60a/c.html",
         "quote": "1938年10月的一天，东北抗日联军第2路军西征回师队伍在牡丹江地区乌斯浑河渡口与日伪军千余人遭遇。",
-        "reliability": "A",
+        "reliability": "B",
         "archive": f"{ARCH}/evt_1938_banv_toujiang__xinhuanet-banv.html",
     }, {
         "book": "中央纪委国家监委网站《八女投江：宁死不屈的如花战士》（英雄烈士谱）",
         "page": "2018-11-09",
         "url": "https://www.ccdi.gov.cn/yaowen/201811/t20181109_183102.html",
         "quote": "是年10月上旬，队伍在牡丹江地区乌斯浑河渡口与日伪军千余人遭遇。……她们毁掉枪支，挽臂涉入乌斯浑河，高唱着《国际歌》，集体沉江，壮烈殉国。",
-        "reliability": "A",
-        "archive": f"{ARCH}/evt_1938_banv_toujiang__ccdi-banv.html",
+        "reliability": "B",
+        "archive_note": "本地原始 HTML 无可读正文，因此未用于引文核查。",
     }],
     "date_variants": [
         {"value": "1938-10", "precision": "month", "source": "抗日战争纪念网《东北抗联大事记》"},

@@ -319,7 +319,7 @@ window.__MIYING_STRUCT__ = {
    "full": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）",
    "short": "察哈尔抗战遗址展陈",
    "reliability": "C",
-   "reliability_cn": "回忆录/展陈说明",
+   "reliability_cn": "回忆录/展陈/待核转述",
    "page": "遗址认定材料（经百科条目转引）",
    "supports": [
     "evt_1933_duolun_shoufu"
@@ -455,7 +455,7 @@ window.__MIYING_STRUCT__ = {
    "full": "莆田市博物馆《抗战篇系列——东北抗日义勇军》",
    "short": "莆田博物馆",
    "reliability": "C",
-   "reliability_cn": "回忆录/展陈说明",
+   "reliability_cn": "回忆录/展陈/待核转述",
    "page": "2025-08-15",
    "supports": [
     "evt_1932_yiyongjun_dingsheng"
@@ -625,7 +625,7 @@ window.__MIYING_STRUCT__ = {
    "full": "郑州大学（转载《红旗 热血 黑土——100位抗联英雄的故事》）",
    "short": "郑州大学",
    "reliability": "C",
-   "reliability_cn": "回忆录/展陈说明",
+   "reliability_cn": "回忆录/展陈/待核转述",
    "page": "2024-10-30",
    "supports": [
     "evt_1938_shier_lieshi"
@@ -707,6 +707,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "9月19日：中共满洲省委发表《满洲省委为日本帝国主义武装占领满洲宣言》。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -714,6 +717,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1931年9月",
      "quote": "9月19日　日军占领沈阳及南满路、安奉路沿线各要地。△中共满洲省委发表《为日本帝国主义武装占领满洲宣言》。",
+     "url": "https://www.krzzjn.com/show-3159-162412.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -752,6 +758,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "9月27日：东北民众抗日救国会在北平（今北京）成立。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -791,6 +800,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "10月：辽宁省警务处长黄显声在锦州组织抗日武装，开始编委组建“东北民众自卫义勇军”。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -832,6 +844,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "11月4日：江桥抗战爆发，马占山率部在嫩江桥阻击日军，至11月18日撤退。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -839,6 +854,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1931年11月",
      "quote": "11月4日日军和张海鹏逆军向嫩江桥黑龙江驻军大举进攻。马占山下令抵抗。嫩江桥抗战开始。",
+     "url": "https://www.krzzjn.com/show-3159-162412.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -875,6 +893,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "12月：各地绿林武装、大刀会等纷纷改编为抗日义勇军。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -914,6 +935,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1月9日：锦西义勇军击毙日军联队长古贺传太郎。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -921,6 +945,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年1月",
      "quote": "1月9日　义勇军刘纯启部在锦西县伏击日军骑兵第二十七联队(即古贺联队)。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -961,6 +988,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月8日：王德林在吉林成立“中国国民救国军”。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -968,6 +998,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年2月",
      "quote": "2月8日　吉林国民救国军在延吉县小城子正式成立，总指挥王德林。不久，任命李延禄为总参谋长兼补充团团长。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1008,6 +1041,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "3月31日：中共满洲省委发表《告满洲各地义勇军书》。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1015,6 +1051,9 @@ window.__MIYING_STRUCT__ = {
      "short": "黑龙江省文化和旅游厅",
      "page": "2025-08-30",
      "quote": "1932年3月31日，中共满洲省委印发《告满洲各地义勇军书》，鼓舞义勇军团结劳苦群众，坚决与日本侵略者战斗。在党的号召下，义勇军迅速壮大，半年多就发展到30多万人，遍布东北93个市县。",
+     "url": "https://wlt.hlj.gov.cn/wlt/c116709/202508/c00_31869288.shtml",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1022,6 +1061,9 @@ window.__MIYING_STRUCT__ = {
      "short": "东北烈士纪念馆馆藏说明",
      "page": "藏品条目",
      "quote": "《告满洲各地义勇军书》为黄褐色薄纸，1页……刻印时间在标题下面，写的是“1931年3月31日”。因行文内写的是1931年九一八事变后日本帝国主义已侵占东北三省，故以上时间显然是笔误，应为“1932年3月31日”。",
+     "url": "https://www.jn1948.cn/news/641.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1029,6 +1071,9 @@ window.__MIYING_STRUCT__ = {
      "short": "黑龙江省档案馆",
      "page": "2025-09-20",
      "quote": "自1931年起中共满洲省委发表《告满洲各地义勇军书》《为反对日本帝国主义进攻热河华北举行援助义勇军运动周的决议》……",
+     "url": "http://hljsdag.org.cn/index.php?m=home&c=View&a=index&aid=271783",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1070,6 +1115,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "4月21日：唐聚五在桓仁成立“辽宁民众自卫军”。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1077,6 +1125,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年4月",
      "quote": "4月23日　以唐聚五为总司令的辽宁民众自卫军在桓仁举行成立誓师大会。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1115,6 +1166,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "6月：辽宁、热边、蒙边和吉林南部地区的义勇军被东北民众抗日救国会统一改编为5个军区。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1152,6 +1206,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月：热河保卫战爆发。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1189,6 +1246,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "3月：长城抗战爆发。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1228,6 +1288,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "6月：抗日同盟军收复多伦等地。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1235,6 +1298,9 @@ window.__MIYING_STRUCT__ = {
      "short": "察哈尔抗战遗址展陈",
      "page": "遗址认定材料（经百科条目转引）",
      "quote": "1933年7月12日，察哈尔民众抗日同盟军收复多伦……遗址包含察哈尔抗日同盟军收复多伦指挥部（察哈尔抗战纪念馆）、吉鸿昌将军演讲台、同盟军收复多伦战斗旧址等核心组成部分。",
+     "url": "https://baike.baidu.com/item/%E5%AF%9F%E5%93%88%E5%B0%94%E6%8A%97%E6%88%98%E9%81%97%E5%9D%80/59196961",
+     "archive": null,
+     "archive_note": null,
      "reliability": "C"
     }
    ]
@@ -1274,6 +1340,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "7月：中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》，号召东北抗日武装坚持抗战。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1281,6 +1350,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中央档案馆",
      "page": "2020-08-27（微信发布）",
      "quote": "1933年7月11日，中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。(中央档案馆提供)",
+     "url": "https://mp.weixin.qq.com/s?__biz=MzAxNDIxMDE2NQ==&mid=2651204718&idx=1&sn=815c0af9710eb182005e5794b4db1d52&chksm=80644974b713c062d0000adfbd71432ca9687b45dee5f64cb1acf2d146ab64e6a6501ac02812&scene=27",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1288,6 +1360,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "2017-08-05",
      "quote": "11日 中共满洲省委发表《为反对日本强盗“围剿”东北义勇军告东北民众书》。",
+     "url": "https://www.krzzjn.com/show-90-54080.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1327,6 +1402,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月：杨靖宇成立东北抗日联合军总指挥部，收编多支义勇军。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1334,6 +1412,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1934年2月",
      "quote": "2月21日　东北人民革命第一军独立师与南满十七支抗日武装在濛江县城墙砬子举行大会，成立东北抗日联合军总指挥部，杨靖宇当选为总指挥。",
+     "url": "https://www.krzzjn.com/show-3159-162415.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1373,6 +1454,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "4月：辽宁救国军旅长高兴亚牺牲。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1414,6 +1498,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "5月：东北民众自卫军司令邓铁梅被捕，9月牺牲。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1421,6 +1508,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2020-09-16",
      "quote": "邓铁梅正式创建了辽东地区第一支民众抗日武装——东北民众自卫军，邓铁梅任司令。",
+     "url": "https://www.81.cn/yl_208589/9903891.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1428,6 +1518,9 @@ window.__MIYING_STRUCT__ = {
      "short": "央视网",
      "page": "2025-04-03",
      "quote": "1934年5月，东北民众自卫军总司令邓铁梅被捕，9月牺牲。面对艰难局面，苗可秀毅然接过东北民众自卫军的大旗继续战斗。",
+     "url": "https://content-static.cctvnews.cctv.com/snow-book/index.html?item_id=8249306175852669079",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1468,6 +1561,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "6月：赵尚志成立东北反日游击队哈东支队。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1475,6 +1571,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1934年6月",
      "quote": "6月29日　东北反日游击队哈东支队正式宣布成立，赵尚志任支队司令。",
+     "url": "https://www.krzzjn.com/show-3159-162415.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1515,6 +1614,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "7月：杨靖宇在桓仁收编山林队，扩大抗联抗日武装力量。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1552,6 +1654,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "11月7日：东北人民革命军第一军成立。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1559,6 +1664,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1934年11月",
      "quote": "11月7日　东北人民革命军第一军正式成立，下辖二个师。杨靖宇任军长兼政委，宋铁岩任政治部主任。",
+     "url": "https://www.krzzjn.com/show-3159-162415.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1596,6 +1704,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "年底：东北抗日义勇军余部十余万人仍在坚持战斗。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1635,6 +1746,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1月28日：东北反日游击队哈东支队改编为东北人民革命军第三军。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1642,6 +1756,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年1月",
      "quote": "1月28日　东北反日游击队哈东支队在珠河县道南半截河，正式改编为东北人民革命第三军，赵尚志任军长。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1679,6 +1796,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月10日：绥宁反日同盟军正式改编为东北反日联合军第五军。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1686,6 +1806,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年2月",
      "quote": "2月10日　绥宁反日同盟军改编为东北反日联合军第五军，周保中任军长。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1723,6 +1846,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "8月1日：中共中央草拟《八一宣言》，号召一致抗日。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1730,6 +1856,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年8月",
      "quote": "8月1日　中共中央发表《为抗日救国告全体同胞书》(即“八一”宣言)。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1768,6 +1897,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月20日：《东北抗日联军统一军队建制宣言》发表。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1775,6 +1907,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1936年2月",
      "quote": "20日 《东北抗日联军统一军队建制宣言》发表。",
+     "url": "https://www.krzzjn.com/show-3159-162417.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1782,6 +1917,9 @@ window.__MIYING_STRUCT__ = {
      "short": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
      "page": "2025-07-31",
      "quote": "1936年2月20日，中国共产党领导的东北人民革命军共同发表《东北抗日联军统一军队建制宣言》，宣布东北人民革命军“一律改组军队建制为东北抗日联军”。",
+     "url": "http://www.bxszx.gov.cn/wysc/content_648725",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1819,6 +1957,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1936年春：东北抗日联军各军陆续成立，收编大量抗日义勇军余部。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1826,6 +1967,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1936年2月",
      "quote": "本月上旬 东北人民革命军第二军在安图县迷魂阵召开领导干部会议，决定改编为东北抗日联军第二军，王德泰任军长，魏拯民任政委。",
+     "url": "https://www.krzzjn.com/show-3159-162417.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1863,6 +2007,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1937年：东北抗联各部在东北坚持游击战，配合全国抗战。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1870,6 +2017,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1937年7月",
      "quote": "18日 北满抗联总司令部发出紧急通知，号召北满人民积极行动起来，配合全国抗战。",
+     "url": "https://www.krzzjn.com/show-3159-162418.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1907,6 +2057,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "11月：中共六届六中全会致电慰问东北抗日联军和义勇军。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1914,6 +2067,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1938年11月",
      "quote": "5日 中国共产党扩大的六届六中全会向以杨靖宇为代表的东北抗日联军，义勇军和全体东北同胞发出慰问电。",
+     "url": "https://www.krzzjn.com/show-3159-162419.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -1951,6 +2107,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "10月：中共南满省委和东北抗日联军第一路军主要领导干部会议召开，研究对敌斗争策略，决定把部队化整为零，实行分散游击，伺机歼敌。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -1958,6 +2117,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1939年10月",
      "quote": "1日 中共南满省委和第一路军主要领导人在桦甸头道溜河举行会议研究对敌斗争策略。",
+     "url": "https://www.krzzjn.com/show-3159-162420.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2000,6 +2162,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月23日：东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2007,6 +2172,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1940年2月",
      "quote": "2月23日　杨靖宇于濛江县保安村三道崴子与敌战斗中壮烈殉国。",
+     "url": "https://www.krzzjn.com/show-3159-162421.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2014,6 +2182,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2017-02-23",
      "quote": "他以难以想象的毅力，坚持和敌人进行顽强斗争，直至弹尽，于1940年2月23日在吉林濛江三道崴子壮烈牺牲。",
+     "url": "http://photo.81.cn/tsjs/2017-02/23/content_7499557.htm",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2054,6 +2225,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "1月：东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2061,6 +2235,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1941年1月",
      "quote": "29日第十军军长汪雅臣、副军长张忠喜在五常县石头亮子与敌战斗中壮烈牺牲。",
+     "url": "https://www.krzzjn.com/show-3159-162422.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2100,6 +2277,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "10月：赵尚志率小部队在萝北、汤原、鹤立一带活动。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2107,6 +2287,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1941年10月",
      "quote": "本月 赵尚志率由5人组成的小部队由苏联返回萝北、汤原、鹤立一带活动。",
+     "url": "https://www.krzzjn.com/show-3159-162422.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2150,6 +2333,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "2月12日：东北抗联第二路军副总指挥赵尚志身负重伤牺牲。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2157,6 +2343,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1942年2月",
      "quote": "2月12日　赵尚志率小部队在袭击鹤立县梧桐河伪警察分驻所时，遭混入队内的特务分子枪击，重伤被俘后，英勇牺牲。",
+     "url": "https://www.krzzjn.com/show-3159-162423.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2164,6 +2353,9 @@ window.__MIYING_STRUCT__ = {
      "short": "赵尚志馆",
      "page": "馆方年表",
      "quote": "1942年2月12日　在去袭击鹤立县梧桐河金矿伪警察分驻所途中，被混入队内的敌特打伤、被俘，八个小时后英勇牺牲。",
+     "url": "https://www.zszjng.cn/about/19.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2171,6 +2363,9 @@ window.__MIYING_STRUCT__ = {
      "short": "南京大屠杀馆",
      "page": "2022-03-25",
      "quote": "1942年2月12日凌晨，在东北的凛冽寒风中，一支不足10人的抗日小分队正在密林中穿行。",
+     "url": "http://www.19371213.cn/information/news/hotnews/202203/t20220325_3327047.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2213,6 +2408,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "8月：东北抗日联军教导旅在北野营正式成立。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2220,6 +2418,9 @@ window.__MIYING_STRUCT__ = {
      "short": "彭施鲁",
      "page": "2014-09-11",
      "quote": "到了1942年的8月1日，东北抗日联军教导旅正式成立。设旅、营、连三级，军政主官都由抗联人员担任，另由苏联军官担任副职，以协助进行军事训练。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2227,6 +2428,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国图",
      "page": "抗战胜利80周年专题",
      "quote": "1942年秋，南北野营合编为国际旅（番号为苏联远东方面军步兵第八十八旅，又称东北抗联教导旅）。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2234,6 +2438,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1942年7—8月",
      "quote": "7月22日　东北抗日联军南北两野营及在东北活动的抗联人员统一编为东北抗联教导旅(亦称八十八独立步兵旅)。周保中任旅长，张寿钱任政治副旅长。",
+     "url": "https://www.krzzjn.com/show-3159-162423.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2241,6 +2448,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2020-08-18",
      "quote": "他们就是由退入苏联境内的东北抗日联军余部改编而成的教导旅，又称中国特别旅。",
+     "url": "https://www.81.cn/wh_208594/9884382.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2277,6 +2487,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "3月：东北抗日联军教导旅派小部队到虎林、饶河县开展抗日活动。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2314,6 +2527,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "12月：东北抗日联军教导旅在野营驻地附近进行实战军事演习。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2321,6 +2537,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1944年12月",
      "quote": "本月 抗联教导旅在训练营地进行一个多月的军事演习。",
+     "url": "https://www.krzzjn.com/show-3159-162425.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2356,6 +2575,9 @@ window.__MIYING_STRUCT__ = {
      "short": "辽宁日报",
      "page": "2025-09-18",
      "quote": "8月15日：日本宣布无条件投降。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2363,6 +2585,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1945年8月",
      "quote": "15日 日本天皇宣布无条件投降，并颁发停战诏书。",
+     "url": "https://www.krzzjn.com/show-3159-162426.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2416,6 +2641,9 @@ window.__MIYING_STRUCT__ = {
      "short": "人民日报",
      "page": "2021-10-28",
      "quote": "鼎盛时期，东北抗日联军共组建成11个军、3万余人，活动范围遍及东南满、吉东、北满70余县的广大地区。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2423,6 +2651,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国图",
      "page": "抗战胜利80周年专题",
      "quote": "东北抗联的11个军，鼎盛时期达四万五千余人，经一年多协同作战，给日伪军以沉重打击。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2483,6 +2714,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "2018-03-21",
      "quote": "义勇军主动出击，部队迅速发展壮大，是年夏秋达鼎盛时期，总人数约50万（一说30万）。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "C"
     },
     {
@@ -2490,6 +2724,9 @@ window.__MIYING_STRUCT__ = {
      "short": "莆田博物馆",
      "page": "2025-08-15",
      "quote": "东北义勇军的总兵力，在1932年全盛时期达到了30万人之多。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "C"
     },
     {
@@ -2497,6 +2734,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国图",
      "page": "抗战胜利80周年专题",
      "quote": "1931年“九一八”事变后，东北人民和东北军队部分爱国官兵纷纷组成义勇军、救国军、自卫军等抗日武装，统称抗日义勇军，约50万人，在东北各地抵抗日军进攻。",
+     "url": null,
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2535,6 +2775,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1931年9月",
      "quote": "22日中共中央作出《关于日本帝国主义强占满洲的决议》。",
+     "url": "https://www.krzzjn.com/show-3159-162412.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2542,6 +2785,9 @@ window.__MIYING_STRUCT__ = {
      "short": "人民网",
      "page": "2016-09-18",
      "quote": "1931年9月22日，中共中央做出了《关于日本帝国主义武装占据满洲与目前党的紧急任务的决议》，号召东北人民开展游击战争，打击侵略者。",
+     "url": "http://military.people.com.cn/n1/2016/0918/c1011-28721822-8.html",
+     "archive": "data/probe_archive/evt_1931_zgzy_jueyi__renminwang-jueyi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2580,6 +2826,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1931年10月",
      "quote": "本月初邓铁梅在凤城小汤沟建立抗日武装 东北民众自卫军 。",
+     "url": "https://www.krzzjn.com/show-3159-162412.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2587,6 +2836,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "英烈名录",
      "quote": "１９３１年１０月下旬，邓铁梅前往辽东凤城西部山区小汤沟顾家堡子（今属岫岩县朝阳乡）串连旧好十数人……正式创建了辽东三角地区第一支民众抗日武装——东北民众自卫军，邓铁梅任司令。",
+     "url": "https://www.81.cn/yljnt_208627/ylml/D/9385721.html",
+     "archive": "data/probe_archive/evt_1931_dengtiemei_ziweijun__junwang-dengtiemei.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2625,6 +2877,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年1月",
      "quote": "31日 以李杜为总司令的吉林自卫军成立。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2632,6 +2887,9 @@ window.__MIYING_STRUCT__ = {
      "short": "团结网",
      "page": "2020-11-26",
      "quote": "1月31日，李杜、丁超等召集抗日军政要员在哈开会，成立了“吉林自卫军总司令部”，推举李杜为自卫军总司令。",
+     "url": "https://www.tuanjiebao.com/m/2020-11/26/content_8896400.htm",
+     "archive": "data/probe_archive/evt_1932_jilin_ziweijun__tuanjiebao-lidu.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2639,6 +2897,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "2017-08-02",
      "quote": "1932年1月31日在哈尔滨成立了统一指挥抗日军队的吉林自卫军总司令部，公推李杜为吉林抗日自卫军总司令。",
+     "url": "https://www.krzzjn.com/show-90-53815.html",
+     "archive": "data/probe_archive/evt_1932_jilin_ziweijun__krzzjn-lidu.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2677,6 +2938,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年2月",
      "quote": "5日 哈尔滨失守。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2684,6 +2948,9 @@ window.__MIYING_STRUCT__ = {
      "short": "团结网",
      "page": "2020-11-26",
      "quote": "2月5日夜，哈市被日军占领。第二次哈尔滨保卫战“终以转战经日，伤亡盈千，兵力过疲，呼救无缘”而失败。",
+     "url": "https://www.tuanjiebao.com/m/2020-11/26/content_8896400.htm",
+     "archive": "data/probe_archive/evt_1932_haerbin_shishou__tuanjiebao-haerbin.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2722,6 +2989,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年3月",
      "quote": "1日 伪 建国宣言 发表，傀儡政权伪满洲国成立。9日，清废帝溥仪就任伪国执政。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2729,6 +2999,9 @@ window.__MIYING_STRUCT__ = {
      "short": "人民网-中国共产党新闻网",
      "page": "2015-05-26",
      "quote": "3月1日，关东军发表伪满洲国“建国宣言”。3月9日，在长春举行了溥仪就职典礼。",
+     "url": "https://dangshi.people.com.cn/n/2015/0526/c396421-27056835-2.html",
+     "archive": "data/probe_archive/evt_1932_weiman_chengli__renmin-dangshi-weiman.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2767,6 +3040,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年3月",
      "quote": "18日 李延禄率救国军补充团在宁安县墙缝一带伏击日军上田支队。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2774,6 +3050,9 @@ window.__MIYING_STRUCT__ = {
      "short": "团结网",
      "page": "2022-02-10",
      "quote": "李延禄所说的墙缝伏击战，是1932年3月13日，由他指挥的救国军补充团700多人和戴凤龄独立营的300多人，在镜泊湖的墙缝，伏击以天野第十五旅团为主力的日军部队。",
+     "url": "https://www.tuanjiewang.cn/2022-02/10/content_8926224.htm",
+     "archive": "data/probe_archive/evt_1932_qiangfeng_fujji__tuanjiewang-qiangfeng.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2812,6 +3091,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年5月",
      "quote": "4日 在中共磐石中心县委领导下，磐石工农反日义勇军正式成立。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2819,6 +3101,9 @@ window.__MIYING_STRUCT__ = {
      "short": "吉林省地方志编纂委员会",
      "page": "2017-01-06",
      "quote": "于1932年5月成立的磐石工农反日义勇军（即磐石游击队），是中国共产党在东北创建的第一支抗日武装。",
+     "url": "https://dfz.jl.gov.cn/dbkl/201701/t20170106_5217616.html",
+     "archive": "data/probe_archive/evt_1932_panshi_yiyongjun__jl-difangzhi-panshi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2858,6 +3143,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年5月",
      "quote": "16日 东北工农义勇军江北骑兵独立师 (巴彦游击队)正式成立，张甲洲任总指挥。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2865,6 +3153,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国防部",
      "page": "2026-10-14",
      "quote": "青年时期，他曾就读于北京大学和清华大学，并积极参加学生运动，1932年回到家乡，创建巴彦抗日游击队并担任总指挥。",
+     "url": "http://www.mod.gov.cn/gfbw/gfdy/16492977.html",
+     "archive": "data/probe_archive/evt_1932_bayan_youjidui__guofangbu-zhangjiazhou.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2872,6 +3163,9 @@ window.__MIYING_STRUCT__ = {
      "short": "贵州省国防动员办公室",
      "page": "2025-03-14",
      "quote": "1932年5月16日，在一口井前，张甲洲带着来“参加婚礼”的200多人，举行了誓师大会，巴彦抗日游击队正式成立，他担任总指挥。",
+     "url": "http://www.gzdis.gov.cn/xwhc/yw/202503/t20250314_87166276.html",
+     "archive": "data/probe_archive/evt_1932_bayan_youjidui__gzdis-zhangjiazhou.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2918,6 +3212,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年9月",
      "quote": "16日 日军驻抚顺守备队、宪兵队制造 平顶山惨案 ，屠杀和平居民 3000余人。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2925,6 +3222,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抚顺平顶山惨案纪念馆",
      "page": "纪念馆官网",
      "quote": "1932年9月16日，日本侵略者以莫须有的罪名，将抚顺平顶山村及比邻的栗家沟和千金堡村共三千多名无辜村民集体枪杀，制造了日本侵占东北期间第一起大规模屠杀平民的“平顶山惨案”。",
+     "url": "http://m.pds1932.cn/index.php?c=category&id=51",
+     "archive": "data/probe_archive/evt_1932_pingdingshan__pds1932-jinianguan.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -2966,6 +3266,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1932年11月",
      "quote": "△中共满洲省委派杨靖宇到南满磐石巡视工作，根据省委指示将磐石游击队( 五洋 队)改编为 中国工农红军第三十二军南满游击总队 。",
+     "url": "https://www.krzzjn.com/show-3159-162413.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2973,6 +3276,9 @@ window.__MIYING_STRUCT__ = {
      "short": "吉林省地方志编纂委员会",
      "page": "2017-01-06",
      "quote": "满洲省委接受“北方会议”决议后，立即指示磐石中心县委：“把目前的义勇军改名为中国工农红军第三十二军东北游击队”。",
+     "url": "https://dfz.jl.gov.cn/dbkl/201701/t20170106_5217616.html",
+     "archive": "data/probe_archive/evt_1932_yangjingyu_panshi__jl-difangzhi-hongsanjun.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -2980,6 +3286,9 @@ window.__MIYING_STRUCT__ = {
      "short": "百家号",
      "page": "2025-08-07",
      "quote": "同年11月，这支队伍改编为中国工农红军第三十二军南满游击队，在杨靖宇带领下返回磐石。",
+     "url": "https://baijiahao.baidu.com/s?id=1839761200792313442&wfr=spider&for=pc",
+     "archive": "data/probe_archive/evt_1932_yangjingyu_panshi__baijiahao-panshi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3018,6 +3327,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1933年1月",
      "quote": "26日 中共驻共产国际代表团以中共中央名义发出《给满洲各级党部及全体党员的信 论满洲的状况和我们党的任务》(即 一。二六 指示信)。",
+     "url": "https://www.krzzjn.com/show-3159-162414.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3025,6 +3337,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国防部",
      "page": "2026-01-29",
      "quote": "1933年1月26日，中共驻共产国际代表团以中共中央名义发出《中央给满洲各级党部及全体党员的信——论满洲的状况和我们党的任务》（即“一二六指示信”）。",
+     "url": "http://www.mod.gov.cn/gfbw/gfjy_index/js_214151/16439864.html",
+     "archive": "data/probe_archive/evt_1933_126_zhishixin__guofangbu-126zhishixin.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3070,6 +3385,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1933年3月",
      "quote": "△日军间岛辎重队中的伊田助男(日共党员)用汽车载十万发子弹送给反日游击队。由于未找到游击队，最后遗书自尽。",
+     "url": "https://www.krzzjn.com/show-3159-162414.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3077,6 +3395,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "2018-04-27",
      "quote": "日本关东军间岛辎重队 共产党员伊田助男 一九三三年三月三十日",
+     "url": "https://www.krzzjn.com/show-1032-72174.html",
+     "archive": "data/probe_archive/evt_1933_yitianuzhu__krzzjn-yitian-beibei.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3117,6 +3438,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1933年9月",
      "quote": "18日 中国红军第三十二军南满游击队在磐石玻璃河套改编为东北人民革命军第一军独立师，杨靖宇任师长兼政委。",
+     "url": "https://www.krzzjn.com/show-3159-162414.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3124,6 +3448,9 @@ window.__MIYING_STRUCT__ = {
      "short": "百家号",
      "page": "2026-09-10",
      "quote": "1933年9月18日，东北人民革命军第一军独立师在吉林磐石正式成立，杨靖宇任独立师师长兼政委，李红光任参谋长，宋铁岩任政治部主任。",
+     "url": "https://baijiahao.baidu.com/s?id=1875927257337062045&wfr=spider&for=pc",
+     "archive": "data/probe_archive/evt_1933_dyj_dulishi__baijiahao-dulishi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3164,6 +3491,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1933年10月",
      "quote": "10日 珠河东北反日游击队在中东路南三股流宣告成立，赵尚志任队长。",
+     "url": "https://www.krzzjn.com/show-3159-162414.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3171,6 +3501,9 @@ window.__MIYING_STRUCT__ = {
      "short": "人民网-党史频道",
      "page": "2014-03-25",
      "quote": "1933年10月，珠河反日游击队成立，赵尚志任队长。在他的领导下，不到三个月时间内连续取得了多次战斗的胜利。",
+     "url": "http://dangshi.people.com.cn/n/2014/0325/c85037-24731596.html",
+     "archive": "data/probe_archive/evt_1933_zhuhe_youjidui__renmin-dangshi-zhaoshangzhi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3217,6 +3550,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1934年3月",
      "quote": "9日 依兰土龙山农民为反抗日伪统治举行武装暴动，占领太平镇伪警 / 10日 土龙山农民武装击毙前来镇压的关东军第十师团第六十三联队长饭冢朝吾大佐和伪警察大队长盖文义。 / 12日 土龙山农民暴动武装在半截河子召开整编会议，组成 东北民众救国军 ，谢文东为总司令。",
+     "url": "https://www.krzzjn.com/show-3159-162415.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3224,6 +3560,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2025-06-11",
      "quote": "３月８日晚，当地五个保的保长悄悄集会……决定发起武装暴动。……３月１０日上午，饭冢朝吾率领伪警察大队大队长盖文义等４０多名日伪军……进入白家沟埋伏区。",
+     "url": "https://www.81.cn/yl_208589/16391832.html",
+     "archive": "data/probe_archive/evt_1934_tulongshan__junwang-tulongshan.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3265,6 +3604,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1934年4月",
      "quote": "21日 中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
+     "url": "https://www.krzzjn.com/show-3159-162415.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3272,6 +3614,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国防部",
      "page": "2025-08-27",
      "quote": "1934年3月21日，日军调集重兵对汪清县庙沟村（今长荣村）实施合围。突围战斗中，27岁的童长荣腹部中弹仍坚持指挥……壮烈牺牲。",
+     "url": "http://www.mod.gov.cn/gfbw/gfjy_index/js_214151/16405189.html",
+     "archive": "data/probe_archive/evt_1934_tongzhangrong_xisheng__guofangbu-tongzhangrong.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3279,6 +3624,9 @@ window.__MIYING_STRUCT__ = {
      "short": "杨靖宇烈士陵园暨东北抗日联军纪念馆",
      "page": "纪念馆官网",
      "quote": "1934年3月21日，身患重病的童长荣和部队转移到汪清县十里坪庙沟一带时被敌人包围，壮烈牺牲，年仅27岁。",
+     "url": "https://yjylsly.org.cn/news/174.html",
+     "archive": null,
+     "archive_note": "仅保留来源网页链接，未找到对应的本地快照。",
      "reliability": "B"
     }
    ]
@@ -3320,6 +3668,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年5月",
      "quote": "11日 第一军第一师长李红光在兴京与日军交战中负重伤，次日牺牲。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3327,6 +3678,9 @@ window.__MIYING_STRUCT__ = {
      "short": "吉林省纪委监委网站",
      "page": "2025-06-17",
      "quote": "1935年5月，在一次战斗中，李红光不幸中弹牺牲，年仅25岁。",
+     "url": "https://ccdijl.gov.cn/ztjc/ljwh/by/202506/t20250617_9257799.html",
+     "archive": "data/probe_archive/evt_1935_lihongguang_xisheng__jl-jianwei-lihongguang.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3334,6 +3688,9 @@ window.__MIYING_STRUCT__ = {
      "short": "杨靖宇烈士陵园暨东北抗日联军纪念馆",
      "page": "纪念馆官网",
      "quote": "5月11日，李红光率部队行至兴京县老岭时，与日本守备队200多人遭遇，双方激战时不幸胸部中弹。12日，年仅25岁的李红光因伤势过重，在辽宁省新宾县光荣牺牲。",
+     "url": "https://yjylsly.org.cn/news/154.html",
+     "archive": "data/probe_archive/evt_1935_lihongguang_xisheng__yangjingyu-lievelingyuan-lihongguang.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3375,6 +3732,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年5月",
      "quote": "30日 东北人民革命军第二军发表成立宣言，二军军长王德泰，政治委员魏拯民。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3382,6 +3742,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国图",
      "page": "国图中国记忆项目",
      "quote": "1935年3月任师长，同年5月30日任东北人民革命军第二军军长。",
+     "url": "http://memory.nlc.cn/topic/resource/205",
+     "archive": "data/probe_archive/evt_1935_dierjun_chengli__guotu-nlc-wangdetai.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3423,6 +3786,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1935年11月",
      "quote": "15日 第三军第二团政治部主任、珠河中心县委特派员赵一曼在战斗中身负重伤，后在养伤期间被俘。1936年8月2日英勇就义。",
+     "url": "https://www.krzzjn.com/show-3159-162416.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3430,6 +3796,9 @@ window.__MIYING_STRUCT__ = {
      "short": "退役军人事务部",
      "page": "2025-08-29",
      "quote": "1935年11月 为掩护部队突围 赵一曼在与日伪军激战中身负重伤 不幸落入敌手",
+     "url": "https://www.mva.gov.cn/sy/zt/jnkzsl80zn/shzb/202508/t20250829_509832.html",
+     "archive": "data/probe_archive/evt_1935_zhao_yiman__mva-zhaoyiman.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3437,6 +3806,9 @@ window.__MIYING_STRUCT__ = {
      "short": "共产党员网",
      "page": "2021-04-20",
      "quote": "1936年8月2日清晨，在一列从黑龙江哈尔滨开往珠河的火车上，东北抗日联军第三军二团政委赵一曼向看守她的日本宪兵要来纸笔，写下了给儿子陈掖贤的最后遗言。",
+     "url": "https://www.12371.cn/2021/04/20/VIDE1618874520618438.shtml",
+     "archive": "data/probe_archive/evt_1935_zhao_yiman__gongchandangwang-zhaoyiman.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3475,6 +3847,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1936年6月",
      "quote": "28日 第一军第一师开始向辽西远征。 / 7月15日 第一军第一师西征部队在本溪县摩天岭与驻连山关日军激战，战斗中一师参谋长李敏焕不幸牺牲。 / 7月8日 第一军第一师西征军在岫岩县姜家堡子一带为敌军所阻，西征部队陆续回师。",
+     "url": "https://www.krzzjn.com/show-3159-162417.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3482,6 +3857,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2021-08-31",
      "quote": "1936年6月中旬，抗联一军一师西征部队从本溪县铺石河(现属凤城县)正式出发，李敏焕和一军政治部主任宋铁岩率部西进。……1936年7月15日，在摩天岭战役中壮烈牺牲。",
+     "url": "https://www.81.cn/2021zt/2021-08/31/content_10090467.htm",
+     "archive": "data/probe_archive/evt_1936_yijun_xizheng__junwang-liminhuan.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3522,6 +3900,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1936年11月",
      "quote": "23日 第六军军长夏云杰率队在汤原西北活动时，遭敌伏击，身受重伤， 26日牺牲。戴鸿滨代理六军军长。",
+     "url": "https://www.krzzjn.com/show-3159-162417.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3529,6 +3910,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国防部",
      "page": "2018-10-15",
      "quote": "同年11月21日，在为筹集给养与装备时，在汤原丁大千屯遭伪治安队袭击，身负重伤。弥留之际，他再三嘱咐身边的战友、妻子和女儿，要团结一致……",
+     "url": "http://www.mod.gov.cn/gfbw/zt/gfbwzt/2018_213791/mhyxlsp/4826713.html",
+     "archive": "data/probe_archive/evt_1936_xiayunjie_xisheng__guofangbu-xiayunjie.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3571,6 +3955,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1936年11月",
      "quote": "本月 第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时，遭敌袭击，壮烈牺牲，魏拯民继任军长。",
+     "url": "https://www.krzzjn.com/show-3159-162417.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3578,6 +3965,9 @@ window.__MIYING_STRUCT__ = {
      "short": "国图",
      "page": "国图中国记忆项目",
      "quote": "11月7日在抚松县与蒙江县交界处的小汤河村遭到伪骑兵七团袭击，在追击敌人时牺牲。",
+     "url": "http://memory.nlc.cn/topic/resource/205",
+     "archive": "data/probe_archive/evt_1936_wangdetai_xisheng__guotu-nlc-wangdetai2.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3585,6 +3975,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2021-09-28",
      "quote": "在这次战斗中，军长王德泰中弹，壮烈殉国，年仅29岁。",
+     "url": "https://www.81.cn/yl/2021-09/28/content_10094025.htm",
+     "archive": "data/probe_archive/evt_1936_wangdetai_xisheng__junwang-wangdetai.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3625,6 +4018,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1937年1月",
      "quote": "11日 第一军第一师建立在本溪县和尚帽子的密营遭日伪军包围。战斗中，一军政治部主任宋铁岩壮烈牺牲。",
+     "url": "https://www.krzzjn.com/show-3159-162418.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3632,6 +4028,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中国军网",
      "page": "2025-06-13",
      "quote": "宋铁岩临危不惧，带领身边战士边打边撤，在战斗中不幸中弹，英勇牺牲，年仅２８岁。",
+     "url": "https://www.81.cn/yl_208589/16391184.html",
+     "archive": "data/probe_archive/evt_1937_songtieyan_xisheng__junwang-songtieyan.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3673,13 +4072,19 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1937年3月",
      "quote": "7日 赵尚志率第三军西征部队在通北冰趟子设伏重创敌军。",
+     "url": "https://www.krzzjn.com/show-3159-162418.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
      "book": "北安市人民政府《“浴血兴安驱日寇”北安红色故事之冰趟子大捷》",
      "short": "北安市人民政府",
      "page": "2025-08-20",
-     "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的必经之路。",
+     "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的一个重要通道。",
+     "url": "https://www.hljba.gov.cn/bas/bmdt/202508/c11_337253.shtml",
+     "archive": "data/probe_archive/evt_1937_bingtangzi__beian-gov-bingtangzi.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3687,6 +4092,9 @@ window.__MIYING_STRUCT__ = {
      "short": "百家号",
      "page": "2026-08-24",
      "quote": "3月7日，八百余名日伪军循着抗联踪迹闯入冰趟子沟……冰趟子一战战果悬殊，八百余名来犯的日伪军伤亡高达二百余人，而东北抗联第三军有七名战士牺牲。",
+     "url": "https://baijiahao.baidu.com/s?id=1874365408727694942&wfr=spider&for=pc",
+     "archive": "data/probe_archive/evt_1937_bingtangzi__baijiahao-bingtangzi.html",
+     "archive_note": null,
      "reliability": "B"
     }
    ]
@@ -3734,6 +4142,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1938年3月",
      "quote": "18日 留守五军后方密营的五军三师八团一连在宝清县境的小孤山与敌军激战，12名战土壮烈牺牲。此战后小孤山被第二路军总部命名为 十二烈士山 。",
+     "url": "https://www.krzzjn.com/show-3159-162419.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3741,6 +4152,9 @@ window.__MIYING_STRUCT__ = {
      "short": "百家号",
      "page": "2026-09-10",
      "quote": "1938年3月18日拂晓，抗联第二路军五军三师八团一连连长李海峰、指导员班路遗，率领13名战士与1名交通员踏雪行军。……为掩护后方主力部队安全转移，李海峰当即决断，抢占地势有利的小孤山阵地，就地阻击敌军。",
+     "url": "https://baijiahao.baidu.com/s?id=1875903637732736837&wfr=spider&for=pc",
+     "archive": "data/probe_archive/evt_1938_shier_lieshi__baijiahao-shierlieshi.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3748,6 +4162,9 @@ window.__MIYING_STRUCT__ = {
      "short": "郑州大学",
      "page": "2024-10-30",
      "quote": "1938年3月18日，他率领16名抗联战士为了掩护大部队撤退，被日伪军包围在一座小孤山上，他们英勇作战，多次打退敌人的进攻。最后，包括他在内的12名战士壮烈殉国。",
+     "url": "https://gzc.zzut.edu.cn/info/1157/1607.htm",
+     "archive": "data/probe_archive/evt_1938_shier_lieshi__zzut-lilhaifeng.html",
+     "archive_note": null,
      "reliability": "C"
     }
    ]
@@ -3788,6 +4205,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1938年6月",
      "quote": "29日 第一军一师师长程斌，在本溪县挟迫本部投敌。",
+     "url": "https://www.krzzjn.com/show-3159-162419.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3795,6 +4215,9 @@ window.__MIYING_STRUCT__ = {
      "short": "百家号",
      "page": "2026-08-06",
      "quote": "1938年，日军抓了程斌的母亲和哥哥，在报纸上大肆宣扬。……于1938年7月率所部115人投敌。投敌后，程斌开始为日本人效力，并组建了“程斌挺进队”，将杨靖宇在深山老林里的密营全部捣毁。",
+     "url": "https://baijiahao.baidu.com/s?id=1872695328133062993&wfr=spider&for=pc",
+     "archive": "data/probe_archive/evt_1938_chengbin_toudi__baijiahao-chengbin.html",
+     "archive_note": null,
      "reliability": "C"
     }
    ]
@@ -3844,6 +4267,9 @@ window.__MIYING_STRUCT__ = {
      "short": "抗战纪念网",
      "page": "1938年10月",
      "quote": "本月中旬 第五军一师西征部队向刁翎地区返回途中，在牡丹江支流乌斯浑河渡口与敌遭遇，妇女团冷云等8人壮烈殉国。是为著名的 八女投江 。",
+     "url": "https://www.krzzjn.com/show-3159-162419.html",
+     "archive": null,
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3851,6 +4277,9 @@ window.__MIYING_STRUCT__ = {
      "short": "新华社",
      "page": "2025-09-04",
      "quote": "1938年10月的一天，东北抗日联军第2路军西征回师队伍在牡丹江地区乌斯浑河渡口与日伪军千余人遭遇。",
+     "url": "https://www.news.cn/politics/20250904/d1c6684a85154afcbfd26ea84fa0c60a/c.html",
+     "archive": "data/probe_archive/evt_1938_banv_toujiang__xinhuanet-banv.html",
+     "archive_note": null,
      "reliability": "B"
     },
     {
@@ -3858,6 +4287,9 @@ window.__MIYING_STRUCT__ = {
      "short": "中央纪委国家监委网站",
      "page": "2018-11-09",
      "quote": "是年10月上旬，队伍在牡丹江地区乌斯浑河渡口与日伪军千余人遭遇。……她们毁掉枪支，挽臂涉入乌斯浑河，高唱着《国际歌》，集体沉江，壮烈殉国。",
+     "url": "https://www.ccdi.gov.cn/yaowen/201811/t20181109_183102.html",
+     "archive": null,
+     "archive_note": "本地原始 HTML 无可读正文，因此未用于引文核查。",
      "reliability": "B"
     }
    ]
@@ -4192,6 +4624,7 @@ window.__MIYING_STRUCT__ = {
  "stats": {
   "conclusions": 66,
   "sources": 33,
+  "multi_support": 55,
   "single_support": 11,
   "single_support_rate": 0.167,
   "no_primary_source": 66,

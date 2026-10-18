@@ -36,7 +36,7 @@ VAGUE_TIME = ["鼎盛", "前后", "左右", "之际", "期间", "时期", "初�
 # 注意不含「多」：它会误命中「一年多」这类非数值用法。
 APPROX = ["约", "余", "近", "逾", "一说", "估计"]
 
-RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈说明"}
+RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈/待核转述"}
 
 
 def hits(text: str, words: list[str]) -> list[str]:
@@ -140,6 +140,9 @@ def build_retrieve(ev: dict, all_sources: list[dict]) -> dict:
             "short": short_src(s.get("book")),
             "page": s.get("page"),
             "quote": s.get("quote"),
+            "url": s.get("url"),
+            "archive": s.get("archive"),
+            "archive_note": s.get("archive_note"),
             "reliability": s.get("reliability"),
             "reliability_cn": RELIABILITY_CN.get(s.get("reliability"), "未标"),
             "value": m.get("value") if m else None,
@@ -436,6 +439,8 @@ def build_single_case(ev: dict, case_no: str) -> dict:
     srcs = [{
         "book": s.get("book"), "short": short_src(s.get("book")),
         "page": s.get("page"), "quote": s.get("quote"),
+        "url": s.get("url"), "archive": s.get("archive"),
+        "archive_note": s.get("archive_note"),
         "reliability": s.get("reliability"),
         "reliability_cn": RELIABILITY_CN.get(s.get("reliability"), "未标"),
         "value": None, "unit": None,
@@ -492,11 +497,10 @@ def build_single_case(ev: dict, case_no: str) -> dict:
 
 
 def build_settled_case(ev: dict, case_no: str) -> dict:
-    """定谳案：多源在某一层级上一致。
+    """多来源同年记载案：有一手来源才可定谳。
 
-    这类案子存在的意义是证明系统不是个只会说「不知道」的怀疑论者——
-    该定的定，但要说清楚**定到哪一层**。
-    三条来源都说 1942 年，年份可以定；月日说法不一，月日就不定。
+    这类案子展示来源记录在时间精度上的收敛；是否定谳取决于是否有一手来源。
+    若多条转述都记为 1942 年，只能说明当前库内记载相合，不能据此认定历史原件如此。
     """
     d = ev.get("date") or {}
     p = ev.get("place") or {}
@@ -531,11 +535,14 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
     srcs = [{
         "book": s.get("book"), "short": short_src(s.get("book")),
         "page": s.get("page"), "quote": s.get("quote"),
+        "url": s.get("url"), "archive": s.get("archive"),
+        "archive_note": s.get("archive_note"),
         "reliability": s.get("reliability"),
         "reliability_cn": RELIABILITY_CN.get(s.get("reliability"), "未标"),
         "value": None, "unit": None,
         "is_primary": s.get("reliability") == "A",
     } for s in ev.get("sources", [])]
+    has_primary = any(s.get("reliability") == "A" for s in srcs)
 
     # 月日层面：优先用来源级日期主张（date_variants）。
     # 从 quote 里正则抠时间不可靠——纪念网同一条里既有「7月22日编成」
@@ -561,10 +568,14 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
                           "expr": found[0] if found else "未载具体时间"})
         distinct = {e["expr"] for e in exprs}
     assertions = [
-        {"k": "主体", "v": subject, "state": "确定"},
-        {"k": "时点", "v": f"{year}年（{len(srcs)} 条来源均记此年）", "state": "确定"},
-        {"k": "月日", "v": "／".join(sorted(distinct)), "state": "较粗" if len(distinct) > 1 else "确定"},
-        {"k": "地点", "v": place_text, "state": place_state},
+        {"k": "主体", "v": subject, "state": "确定" if has_primary else "来源记载相合"},
+        {"k": "时点", "v": f"{year}年（{len(srcs)} 条来源均记此年）",
+         "state": "确定" if has_primary else "来源记载相合"},
+        {"k": "月日", "v": "／".join(sorted(distinct)),
+         "state": ("较粗" if len(distinct) > 1 else "确定") if has_primary
+                   else ("来源记载有差异" if len(distinct) > 1 else "来源记载相合")},
+        {"k": "地点", "v": place_text,
+         "state": place_state if has_primary or place_state != "确定" else "来源记载"},
     ]
 
     ch = []
@@ -584,41 +595,50 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
                         + "、".join(f"「{e['expr']}」({e['short']})" for e in exprs)
                         + "。这不是矛盾，是粗细不同——粗的让位于细的，但细的一方仍需第二家佐证。",
             })
-    if not any(s.get("reliability") == "A" for s in srcs):
+    if not has_primary:
         ch.append({
             "code": "R3", "name": "库内无一手档案", "severity": "medium",
-            "text": f"{len(srcs)} 条来源均为转述，无一出自原始档案。"
-                    "所以能定的是「这几家都这样写」，不是「档案原件如此」。",
+            "text": f"{len(srcs)} 条来源记录均未标为一手档案。"
+                    "所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。",
         })
 
-    if variants and len(day_vals) == 1:
-        status_cn, missing = "可以定谳", []
+    if not has_primary:
+        status, status_cn = "consistent", "库内年份记载相合 · 未达定谳"
+        missing = ["需可核验的一手档案或命令原件，才能支持历史层面的定谳"]
+        if len(distinct) > 1:
+            missing.insert(0, "月日记载差异需原始档案或命令原件才能消除")
+    elif variants and len(day_vals) == 1:
+        status, status_cn, missing = "settled", "可以定谳", []
     elif len(distinct) > 1:
-        status_cn = "可以定谳 · 限于月"
+        status, status_cn = "settled", "可以定谳 · 限于月"
         missing = ["日层面的分歧需原始档案或命令原件才能消除"]
     elif d.get("precision") == "day":
-        status_cn, missing = "可以定谳", []
+        status, status_cn, missing = "settled", "可以定谳", []
     else:
+        status = "settled"
         status_cn = f"可以定谳 · 限于{prec_cn}"
         missing = []
+
+    conservative = (f"库内 {len(srcs)} 条来源记录均记载「{year}年」；来源机构数不等于独立史源数。")
+    if has_primary:
+        conservative += "该结论仅在页面标明的时间精度范围内成立。"
+    else:
+        conservative += "这只能说明当前库内记载口径相合，不能据此定谳。"
 
     register = {
         "kind": "register", "agent": "存疑",
         "case_no": case_no,
-        "status": "settled",
+        "status": status,
         "status_cn": status_cn,
         "missing": missing,
-        "conservative": f"{len(srcs)} 条独立来源对「{year}年」没有分歧，这一点可以定谳。"
-                        + ("月日层面各方精度不一或日子对不上，系统不在该层面下结论——"
-                           "定谳是有范围的，超出范围的部分仍是悬案。"
-                           if len(distinct) > 1 else ""),
+        "conservative": conservative,
         "high_count": 0,
     }
 
     return {
         "id": f"case_{case_no.lower().replace('-', '_')}",
         "case_no": case_no,
-        "kind": "settled",
+        "kind": status,
         "title": f"{subject}{act}于何时",
         "claim_text": f"{subject}于{year}年{act}",
         "event_id": ev["id"],
@@ -627,7 +647,7 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
         "steps": [
             {"kind": "decompose", "agent": "拆解",
              "lines": [f"命题拆成 {len(assertions)} 个原子断言。"
-                       f"本次有 {len(srcs)} 条独立来源可比对。"],
+                       f"本次有 {len(srcs)} 条来源记录可比对；来源机构数不等于独立史源数。"],
              "assertions": assertions},
             {"kind": "retrieve", "agent": "辑录",
              "lines": [f"库内共 {len(srcs)} 条记载，均指向同一事件。原文逐字照录。"],
@@ -675,8 +695,7 @@ def main() -> int:
     settled_cands = [e for e in events
                      if not e.get("measures") and len(e.get("sources") or []) >= 2
                      and e["id"] not in high_date]
-    # 定谳案不是全量罗列：多源一致是正常条目，不构成案子。
-    # 只挑来源最多的几个，用来示范「多源如何收敛到同一天」。
+    # 同年记载案不是全量罗列：只挑来源记录较多的几个，展示记录口径如何收敛。
     # 来源数相同则优先有日期主张的（能展示粗精度让位于细精度）。
     settled_cands.sort(key=lambda e: (-len(e.get("sources") or []),
                                       -len(e.get("date_variants") or [])))
@@ -742,7 +761,7 @@ def main() -> int:
     for e in cands[:2]:
         single.append(build_single_case(e, "KL-000"))
 
-    # 排序即叙事：先证明系统会定谳，再展示它敢悬案，最后划清「库内不足」的界线
+    # 排序即叙事：先展示库内记载相合或有档案支撑的案例，再展示悬案与证据不足
     cases = settled + dispute + single
     for i, c in enumerate(cases, 1):
         no = court_no(i)

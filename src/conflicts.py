@@ -354,7 +354,9 @@ def detect_conflicts(events: list[dict]) -> list[dict]:
 
 
 def score_confidence(events: list[dict], conflicts: list[dict]) -> dict[str, float]:
-    """置信度 = 最高来源等级权重 + 多源加成 − 冲突惩罚。
+    """启发式分值 = 最高来源等级权重 + 来源机构数加成 − 冲突惩罚。
+
+    分值不是概率；机构不同也不代表史源彼此独立，来源谱系需单独审查。
 
     注意：同一事件内部的冲突，p["a"] 与 p["b"] 是同一个 id，
     扣分只能记一次，否则一条分歧会被算成两处。
@@ -374,7 +376,8 @@ def score_confidence(events: list[dict], conflicts: list[dict]) -> dict[str, flo
             scores[e["id"]] = 0.0
             continue
         base = max(weights)
-        bonus = 0.08 * min(len(weights) - 1, 3)  # 多源互证，最多 +0.24
+        orgs = {short_src(s.get("book")) for s in e.get("sources", []) if s.get("book")}
+        bonus = 0.08 * min(max(len(orgs) - 1, 0), 3)  # 不同来源机构加分，最多 +0.24
         score = min(1.0, base + bonus) - 0.12 * penalized.get(e["id"], 0)
         scores[e["id"]] = round(max(0.05, score), 2)
     return scores

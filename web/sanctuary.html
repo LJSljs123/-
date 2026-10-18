@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>密营 · 燎原</title>
 <style>
@@ -67,7 +68,7 @@
   </div>
   <div class="r">
     <a href="index.html">← 2D 承重结构</a>&nbsp;&nbsp;<a href="dossier.html">灯下案卷宗</a><br>
-    拖拽环视 · 滚轮推近 · 悬停火光看引文与原始存档
+    拖拽环视 · 滚轮推近 · 悬停火光查看引文与来源核查
   </div>
 </div>
 <div id="stat"></div>
@@ -458,11 +459,20 @@ function provBlock(p) {
   return '<div class="pv">' + pr + '</div>' + ns;
 }
 function archBlock(sources) {
-  const a = (sources || []).filter(s => s.archive || s.url);
-  return a.length ? '<div class="pv">原始存档：' + a.map(s => {
-    const u = s.archive || s.url;
-    return '<a href="' + (/^https?:/.test(u) ? u : '../' + u) + '" target="_blank" rel="noopener">' + esc((s.book || '').split('《')[0]) + '</a>';
-  }).join(' · ') + '</div>' : '';
+  const links = (sources || []).flatMap(s => {
+    const name = (s.book || '来源').split('《')[0];
+    return [
+      s.archive && { url: s.archive, label: '本地快照' },
+      s.url && { url: s.url, label: '来源网页' },
+    ].filter(Boolean).map(link => {
+      const href = /^https?:/.test(link.url) ? link.url : '../' + link.url;
+      return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' +
+        esc(name + ' · ' + link.label) + '</a>';
+    });
+  });
+  const hasSnapshot = (sources || []).some(s => s.archive && !/^https?:/.test(s.archive));
+  return links.length ? '<div class="pv">来源核查：' + links.join(' · ') +
+    (hasSnapshot ? '（本地快照哈希见 manifest.json）' : '') + '</div>' : '';
 }
 function dvBlock(e) {
   const dvs = (e.date_variants || []).filter(v => v.value);
@@ -583,9 +593,9 @@ function startEmbers() {
   autoPan = fireMetas.reduce((a, m) => a + m.x, 0) / FIRE_N - SPAN / 2 + 6;
   document.getElementById('cap').classList.add('on');
   document.getElementById('cap').innerHTML =
-    '1941 年之后，东北的密营大多熄灭了。<span class="s">—— 但本库 ' + FIRE_N +
-    ' 条可核查记载里，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
-    ' 条在多个独立来源中仍然对得上。他们没有被遗忘。</span>';
+    '1941 年之后的条目在这一体验模式中熄灭。<span class="s">—— 本库 ' + FIRE_N +
+    ' 条记载中，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
+    ' 条有多家来源机构记载。机构数量不代表史源彼此独立；熄灭效果也不表示据点的实际存续时间。</span>';
 }
 function reset() {
   mode = 'calm';
@@ -629,9 +639,9 @@ function maybeSettle(now) {
       '这条因果链上的火熄得更多——<em>这不是比喻，是数据里的事实边</em>。' +
       '<br>叛徒带走的不是火力，是「看不见的据点」之所以安全的全部前提。';
   document.getElementById('p-h').textContent = mode === 'storm' ? '风 雪 夜 · 结 算' : '程 斌 之 夜 · 结 算';
-  document.getElementById('p-big').innerHTML = '熄灭 <b>' + died + '</b> 座 · 幸存 <b>' + left + '</b> 座（其中多源互证 ' + multiLeft + ' 座）';
+  document.getElementById('p-big').innerHTML = '熄灭 <b>' + died + '</b> 条 · 幸存 <b>' + left + '</b> 条（其中多家来源机构记载 ' + multiLeft + ' 条）';
   document.getElementById('p-lines').innerHTML = lines +
-    '<br><span style="opacity:.6;font-size:11px">熄灭的唯一依据是支撑关系计算；灯下案 KL-009 / KL-010 悬案的「最保守结论」就建立在这一逻辑上。</span>';
+    '<br><span style="opacity:.6;font-size:11px">熄灭依据是支撑关系计算；来源记录数量不等于独立史源数量。</span>';
   document.getElementById('panel').classList.add('on');
 }
 document.getElementById('b-storm').onclick = () => startStorm('storm');

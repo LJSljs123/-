@@ -4,7 +4,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_001",
    "case_no": "KL-001",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "东北抗日联军教导旅成立于何时",
    "claim_text": "东北抗日联军教导旅于1942年成立",
    "event_id": "evt_1942_jiaodaolv_chengli",
@@ -17,23 +17,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 5 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 5 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "东北抗日联军教导旅",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1942年（5 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "8月1日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -54,6 +54,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "8月：东北抗日联军教导旅在北野营正式成立。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -65,6 +68,9 @@ window.__MIYING_CASES__ = {
        "short": "彭施鲁",
        "page": "2014-09-11",
        "quote": "到了1942年的8月1日，东北抗日联军教导旅正式成立。设旅、营、连三级，军政主官都由抗联人员担任，另由苏联军官担任副职，以协助进行军事训练。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -76,6 +82,9 @@ window.__MIYING_CASES__ = {
        "short": "国家图书馆",
        "page": "抗战胜利80周年专题",
        "quote": "1942年秋，南北野营合编为国际旅（番号为苏联远东方面军步兵第八十八旅，又称东北抗联教导旅）。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -87,6 +96,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1942年7—8月",
        "quote": "7月22日　东北抗日联军南北两野营及在东北活动的抗联人员统一编为东北抗联教导旅(亦称八十八独立步兵旅)。周保中任旅长，张寿钱任政治副旅长。",
+       "url": "https://www.krzzjn.com/show-3159-162423.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -98,6 +110,9 @@ window.__MIYING_CASES__ = {
        "short": "中国军网",
        "page": "2020-08-18",
        "quote": "他们就是由退入苏联境内的东北抗日联军余部改编而成的教导旅，又称中国特别旅。",
+       "url": "https://www.81.cn/wh_208594/9884382.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -116,7 +131,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "5 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "5 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -124,10 +139,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-001",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "5 条独立来源对「1942年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 5 条来源记录均记载「1942年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -135,7 +152,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_002",
    "case_no": "KL-002",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "《告满洲各地义勇军书》发表于何时",
    "claim_text": "《告满洲各地义勇军书》于1932年发表",
    "event_id": "evt_1932_mgzsw_gaoshu",
@@ -148,23 +165,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 4 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 4 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "《告满洲各地义勇军书》",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1932年（4 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "3月31日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -185,6 +202,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "3月31日：中共满洲省委发表《告满洲各地义勇军书》。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -196,6 +216,9 @@ window.__MIYING_CASES__ = {
        "short": "黑龙江省文化和旅游厅",
        "page": "2025-08-30",
        "quote": "1932年3月31日，中共满洲省委印发《告满洲各地义勇军书》，鼓舞义勇军团结劳苦群众，坚决与日本侵略者战斗。在党的号召下，义勇军迅速壮大，半年多就发展到30多万人，遍布东北93个市县。",
+       "url": "https://wlt.hlj.gov.cn/wlt/c116709/202508/c00_31869288.shtml",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -207,6 +230,9 @@ window.__MIYING_CASES__ = {
        "short": "东北烈士纪念馆馆藏说明",
        "page": "藏品条目",
        "quote": "《告满洲各地义勇军书》为黄褐色薄纸，1页……刻印时间在标题下面，写的是“1931年3月31日”。因行文内写的是1931年九一八事变后日本帝国主义已侵占东北三省，故以上时间显然是笔误，应为“1932年3月31日”。",
+       "url": "https://www.jn1948.cn/news/641.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -218,6 +244,9 @@ window.__MIYING_CASES__ = {
        "short": "黑龙江省档案馆",
        "page": "2025-09-20",
        "quote": "自1931年起中共满洲省委发表《告满洲各地义勇军书》《为反对日本帝国主义进攻热河华北举行援助义勇军运动周的决议》……",
+       "url": "http://hljsdag.org.cn/index.php?m=home&c=View&a=index&aid=271783",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -236,7 +265,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "4 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "4 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -244,10 +273,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-002",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "4 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 4 条来源记录均记载「1932年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -255,7 +286,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_003",
    "case_no": "KL-003",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "赵尚志牺牲于何时",
    "claim_text": "赵尚志于1942年牺牲",
    "event_id": "evt_1942_zhaoshangzhi_xisheng",
@@ -268,23 +299,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 4 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 4 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "赵尚志",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1942年（4 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "2月12日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -305,6 +336,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "2月12日：东北抗联第二路军副总指挥赵尚志身负重伤牺牲。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -316,6 +350,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1942年2月",
        "quote": "2月12日　赵尚志率小部队在袭击鹤立县梧桐河伪警察分驻所时，遭混入队内的特务分子枪击，重伤被俘后，英勇牺牲。",
+       "url": "https://www.krzzjn.com/show-3159-162423.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -327,6 +364,9 @@ window.__MIYING_CASES__ = {
        "short": "赵尚志纪念馆",
        "page": "馆方年表",
        "quote": "1942年2月12日　在去袭击鹤立县梧桐河金矿伪警察分驻所途中，被混入队内的敌特打伤、被俘，八个小时后英勇牺牲。",
+       "url": "https://www.zszjng.cn/about/19.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -338,6 +378,9 @@ window.__MIYING_CASES__ = {
        "short": "侵华日军南京大屠杀遇难同胞纪念馆",
        "page": "2022-03-25",
        "quote": "1942年2月12日凌晨，在东北的凛冽寒风中，一支不足10人的抗日小分队正在密林中穿行。",
+       "url": "http://www.19371213.cn/information/news/hotnews/202203/t20220325_3327047.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -356,7 +399,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "4 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "4 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -364,10 +407,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-003",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "4 条独立来源对「1942年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 4 条来源记录均记载「1942年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -375,7 +420,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_004",
    "case_no": "KL-004",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "《为反对日本强盗围剿东北义勇军告东北民众书》发表于何时",
    "claim_text": "《为反对日本强盗围剿东北义勇军告东北民众书》于1933年发表",
    "event_id": "evt_1933_mgzsw_gaominzhong",
@@ -388,23 +433,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 3 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "《为反对日本强盗围剿东北义勇军告东北民众书》",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1933年（3 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "7月11日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -425,6 +470,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "7月：中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》，号召东北抗日武装坚持抗战。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -436,6 +484,9 @@ window.__MIYING_CASES__ = {
        "short": "中央档案馆",
        "page": "2020-08-27（微信发布）",
        "quote": "1933年7月11日，中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。(中央档案馆提供)",
+       "url": "https://mp.weixin.qq.com/s?__biz=MzAxNDIxMDE2NQ==&mid=2651204718&idx=1&sn=815c0af9710eb182005e5794b4db1d52&chksm=80644974b713c062d0000adfbd71432ca9687b45dee5f64cb1acf2d146ab64e6a6501ac02812&scene=27",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -447,6 +498,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "2017-08-05",
        "quote": "11日 中共满洲省委发表《为反对日本强盗“围剿”东北义勇军告东北民众书》。",
+       "url": "https://www.krzzjn.com/show-90-54080.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -465,7 +519,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "3 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -473,10 +527,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-004",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "3 条独立来源对「1933年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 3 条来源记录均记载「1933年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -484,7 +540,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_005",
    "case_no": "KL-005",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "《东北抗日联军统一军队建制宣言》发表于何时",
    "claim_text": "《东北抗日联军统一军队建制宣言》于1936年发表",
    "event_id": "evt_1936_tongyi_jianzhi",
@@ -497,23 +553,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 3 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "《东北抗日联军统一军队建制宣言》",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1936年（3 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "2月20日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -534,6 +590,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "2月20日：《东北抗日联军统一军队建制宣言》发表。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -545,6 +604,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1936年2月",
        "quote": "20日 《东北抗日联军统一军队建制宣言》发表。",
+       "url": "https://www.krzzjn.com/show-3159-162417.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -556,6 +618,9 @@ window.__MIYING_CASES__ = {
        "short": "本溪县人民政府“铭记历史 缅怀先烈”专栏",
        "page": "2025-07-31",
        "quote": "1936年2月20日，中国共产党领导的东北人民革命军共同发表《东北抗日联军统一军队建制宣言》，宣布东北人民革命军“一律改组军队建制为东北抗日联军”。",
+       "url": "http://www.bxszx.gov.cn/wysc/content_648725",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -574,7 +639,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "3 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -582,10 +647,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-005",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "3 条独立来源对「1936年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 3 条来源记录均记载「1936年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -593,7 +660,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_006",
    "case_no": "KL-006",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "赵尚志作战于何时",
    "claim_text": "赵尚志于1937年作战",
    "event_id": "evt_1937_bingtangzi",
@@ -606,23 +673,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 3 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "赵尚志",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1937年（3 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "3月7日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -643,6 +710,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1937年3月",
        "quote": "7日 赵尚志率第三军西征部队在通北冰趟子设伏重创敌军。",
+       "url": "https://www.krzzjn.com/show-3159-162418.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -653,7 +723,10 @@ window.__MIYING_CASES__ = {
        "book": "北安市人民政府《“浴血兴安驱日寇”北安红色故事之冰趟子大捷》",
        "short": "北安市人民政府",
        "page": "2025-08-20",
-       "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的必经之路。",
+       "quote": "1937年3月初的一天，赵尚志率领抗联部队来到一个叫“冰趟子”的地方。“冰趟子”原名“黑风口”，是通北县通往小兴安岭的一个重要通道。",
+       "url": "https://www.hljba.gov.cn/bas/bmdt/202508/c11_337253.shtml",
+       "archive": "data/probe_archive/evt_1937_bingtangzi__beian-gov-bingtangzi.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -665,6 +738,9 @@ window.__MIYING_CASES__ = {
        "short": "百家号",
        "page": "2026-08-24",
        "quote": "3月7日，八百余名日伪军循着抗联踪迹闯入冰趟子沟……冰趟子一战战果悬殊，八百余名来犯的日伪军伤亡高达二百余人，而东北抗联第三军有七名战士牺牲。",
+       "url": "https://baijiahao.baidu.com/s?id=1874365408727694942&wfr=spider&for=pc",
+       "archive": "data/probe_archive/evt_1937_bingtangzi__baijiahao-bingtangzi.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -683,7 +759,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "3 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -691,10 +767,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-006",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "3 条独立来源对「1937年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 3 条来源记录均记载「1937年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -702,7 +780,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_007",
    "case_no": "KL-007",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "吉林自卫军成立于何时",
    "claim_text": "吉林自卫军于1932年成立",
    "event_id": "evt_1932_jilin_ziweijun",
@@ -715,23 +793,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 3 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "吉林自卫军",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1932年（3 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "1月31日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -752,6 +830,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1932年1月",
        "quote": "31日 以李杜为总司令的吉林自卫军成立。",
+       "url": "https://www.krzzjn.com/show-3159-162413.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -763,6 +844,9 @@ window.__MIYING_CASES__ = {
        "short": "团结网",
        "page": "2020-11-26",
        "quote": "1月31日，李杜、丁超等召集抗日军政要员在哈开会，成立了“吉林自卫军总司令部”，推举李杜为自卫军总司令。",
+       "url": "https://www.tuanjiebao.com/m/2020-11/26/content_8896400.htm",
+       "archive": "data/probe_archive/evt_1932_jilin_ziweijun__tuanjiebao-lidu.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -774,6 +858,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "2017-08-02",
        "quote": "1932年1月31日在哈尔滨成立了统一指挥抗日军队的吉林自卫军总司令部，公推李杜为吉林抗日自卫军总司令。",
+       "url": "https://www.krzzjn.com/show-90-53815.html",
+       "archive": "data/probe_archive/evt_1932_jilin_ziweijun__krzzjn-lidu.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -792,7 +879,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "3 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -800,10 +887,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-007",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "3 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 3 条来源记录均记载「1932年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -811,7 +900,7 @@ window.__MIYING_CASES__ = {
   {
    "id": "case_kl_008",
    "case_no": "KL-008",
-   "kind": "settled",
+   "kind": "consistent",
    "title": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式成立于何时",
    "claim_text": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式于1932年成立",
    "event_id": "evt_1932_bayan_youjidui",
@@ -824,23 +913,23 @@ window.__MIYING_CASES__ = {
      "kind": "decompose",
      "agent": "拆解",
      "lines": [
-      "命题拆成 4 个原子断言。本次有 3 条独立来源可比对。"
+      "命题拆成 4 个原子断言。本次有 3 条来源记录可比对；来源机构数不等于独立史源数。"
      ],
      "assertions": [
       {
        "k": "主体",
        "v": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "时点",
        "v": "1932年（3 条来源均记此年）",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "月日",
        "v": "5月16日",
-       "state": "确定"
+       "state": "来源记载相合"
       },
       {
        "k": "地点",
@@ -861,6 +950,9 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "1932年5月",
        "quote": "16日 东北工农义勇军江北骑兵独立师 (巴彦游击队)正式成立，张甲洲任总指挥。",
+       "url": "https://www.krzzjn.com/show-3159-162413.html",
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -872,6 +964,9 @@ window.__MIYING_CASES__ = {
        "short": "国防部",
        "page": "2026-10-14",
        "quote": "青年时期，他曾就读于北京大学和清华大学，并积极参加学生运动，1932年回到家乡，创建巴彦抗日游击队并担任总指挥。",
+       "url": "http://www.mod.gov.cn/gfbw/gfdy/16492977.html",
+       "archive": "data/probe_archive/evt_1932_bayan_youjidui__guofangbu-zhangjiazhou.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -883,6 +978,9 @@ window.__MIYING_CASES__ = {
        "short": "贵州省国防动员办公室",
        "page": "2025-03-14",
        "quote": "1932年5月16日，在一口井前，张甲洲带着来“参加婚礼”的200多人，举行了誓师大会，巴彦抗日游击队正式成立，他担任总指挥。",
+       "url": "http://www.gzdis.gov.cn/xwhc/yw/202503/t20250314_87166276.html",
+       "archive": "data/probe_archive/evt_1932_bayan_youjidui__gzdis-zhangjiazhou.html",
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,
@@ -901,7 +999,7 @@ window.__MIYING_CASES__ = {
        "code": "R3",
        "name": "库内无一手档案",
        "severity": "medium",
-       "text": "3 条来源均为转述，无一出自原始档案。所以能定的是「这几家都这样写」，不是「档案原件如此」。"
+       "text": "3 条来源记录均未标为一手档案。所以只能说「当前库内来源这样记载」，不能声称「档案原件如此」。"
       }
      ]
     },
@@ -909,10 +1007,12 @@ window.__MIYING_CASES__ = {
      "kind": "register",
      "agent": "存疑",
      "case_no": "KL-008",
-     "status": "settled",
-     "status_cn": "可以定谳",
-     "missing": [],
-     "conservative": "3 条独立来源对「1932年」没有分歧，这一点可以定谳。",
+     "status": "consistent",
+     "status_cn": "库内年份记载相合 · 未达定谳",
+     "missing": [
+      "需可核验的一手档案或命令原件，才能支持历史层面的定谳"
+     ],
+     "conservative": "库内 3 条来源记录均记载「1932年」；来源机构数不等于独立史源数。这只能说明当前库内记载口径相合，不能据此定谳。",
      "high_count": 0
     }
    ]
@@ -976,6 +1076,9 @@ window.__MIYING_CASES__ = {
        "short": "人民日报",
        "page": "2021-10-28",
        "quote": "鼎盛时期，东北抗日联军共组建成11个军、3万余人，活动范围遍及东南满、吉东、北满70余县的广大地区。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": 30000,
@@ -987,6 +1090,9 @@ window.__MIYING_CASES__ = {
        "short": "国家图书馆",
        "page": "抗战胜利80周年专题",
        "quote": "东北抗联的11个军，鼎盛时期达四万五千余人，经一年多协同作战，给日伪军以沉重打击。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": 45000,
@@ -1116,8 +1222,11 @@ window.__MIYING_CASES__ = {
        "short": "抗日战争纪念网",
        "page": "2018-03-21",
        "quote": "义勇军主动出击，部队迅速发展壮大，是年夏秋达鼎盛时期，总人数约50万（一说30万）。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "C",
-       "reliability_cn": "回忆录/展陈说明",
+       "reliability_cn": "回忆录/展陈/待核转述",
        "value": 500000,
        "unit": "人",
        "is_primary": false
@@ -1127,8 +1236,11 @@ window.__MIYING_CASES__ = {
        "short": "莆田市博物馆",
        "page": "2025-08-15",
        "quote": "东北义勇军的总兵力，在1932年全盛时期达到了30万人之多。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "C",
-       "reliability_cn": "回忆录/展陈说明",
+       "reliability_cn": "回忆录/展陈/待核转述",
        "value": 300000,
        "unit": "人",
        "is_primary": false
@@ -1138,6 +1250,9 @@ window.__MIYING_CASES__ = {
        "short": "国家图书馆",
        "page": "抗战胜利80周年专题",
        "quote": "1931年“九一八”事变后，东北人民和东北军队部分爱国官兵纷纷组成义勇军、救国军、自卫军等抗日武装，统称抗日义勇军，约50万人，在东北各地抵抗日军进攻。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": 500000,
@@ -1472,6 +1587,9 @@ window.__MIYING_CASES__ = {
        "short": "辽宁日报",
        "page": "2025-09-18",
        "quote": "4月：辽宁救国军旅长高兴亚牺牲。",
+       "url": null,
+       "archive": null,
+       "archive_note": null,
        "reliability": "B",
        "reliability_cn": "学术著作/权威报道",
        "value": null,

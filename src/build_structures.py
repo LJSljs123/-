@@ -28,7 +28,7 @@ EVENTS = ROOT / "data" / "curated" / "events.json"
 OUT = ROOT / "data" / "curated" / "structures.json"
 
 RELIABILITY_WEIGHT = {"A": 1.0, "B": 0.7, "C": 0.45}
-RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈说明"}
+RELIABILITY_CN = {"A": "一手档案", "B": "学术著作/权威报道", "C": "回忆录/展陈/待核转述"}
 
 
 # 长机构名的固定短写。图上柱宽有限，全称放不下；
@@ -55,7 +55,7 @@ def _prov_summary(prov: dict) -> dict:
     """把检索记录压成前端够用的摘要。
 
     前端要回答的问题只有一个：这条结论，到底查没查过。
-    查过就说清查了几组词、几家独立记载；没查就直说没查，不装。
+    查过就说清查了几组词、检索记录如何标注来源关系；没查就直说没查。
     """
     probes = prov.get("probes") or []
     return {
@@ -127,6 +127,8 @@ def main() -> int:
             "sources": [
                 {"book": s.get("book"), "short": short_src(s.get("book")),
                  "page": s.get("page"), "quote": s.get("quote"),
+                 "url": s.get("url"), "archive": s.get("archive"),
+                 "archive_note": s.get("archive_note"),
                  "reliability": s.get("reliability")}
                 for s in e.get("sources", [])
             ],
@@ -197,6 +199,7 @@ def main() -> int:
         "stats": {
             "conclusions": total,
             "sources": len(sources),
+            "multi_support": sum(1 for c in conclusions if len(c["supports"]) > 1),
             "single_support": single,
             "single_support_rate": round(single / total, 3) if total else 0,
             "no_primary_source": no_primary,
@@ -225,6 +228,7 @@ def main() -> int:
 
     st = payload["stats"]
     print(f"结论 {st['conclusions']} 条 · 来源 {st['sources']} 个")
+    print(f"多来源机构支撑 {st['multi_support']} 条")
     print(f"单一支撑 {st['single_support']} 条（{st['single_support_rate']:.0%}）")
     print(f"无一手档案的结论 {st['no_primary_source']} 条")
     print(f"最大来源：支撑面 {st['top_source_share']:.0%} · 独占面 {st['top_exclusive_share']:.0%}")

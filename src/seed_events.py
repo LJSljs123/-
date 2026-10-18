@@ -198,7 +198,7 @@ EXTRA_ROWS = [
         rel="B", cg="cg_yiyongjun_renshu",
         qname="总兵力", qval=500000, qunit="人",
     ),
-    # ---- 教导旅：补充两条来源，用于展示"多源互证" ----
+    # ---- 教导旅：补充两条来源记录，用于展示来源支撑关系 ----
     row(
         id="evt_1942_jiaodaolv_chengli", date="1942-08", prec="月",
         hname="北野营", mname="俄罗斯哈巴罗夫斯克", lat=48.48, lng=135.08, pprec="县",

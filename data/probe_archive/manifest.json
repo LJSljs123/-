@@ -1,12 +1,13 @@
 {
- "_note": "检索存档：每个文件 = 抓取时刻的来源页面快照，sha256 可验。",
+ "_note": "Only records with capture_status=readable_snapshot count as usable snapshots; other capture metadata is retained.",
  "evt_1931_zgzy_jueyi__renminwang-jueyi": {
   "event": "evt_1931_zgzy_jueyi",
   "url": "http://military.people.com.cn/n1/2016/0918/c1011-28721822-8.html",
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "94007789716ddf2d6cd9b18fb80948395c63fdc95ce1bd2d197ba3ab426de75a",
   "bytes": 32527,
-  "title": "“九一八”，不能不知的8个历史真相【8】--军事--人民网"
+  "title": "“九一八”，不能不知的8个历史真相【8】--军事--人民网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1931_dengtiemei_ziweijun__junwang-dengtiemei": {
   "event": "evt_1931_dengtiemei_ziweijun",
@@ -14,7 +15,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "5a5111dd1cd43b8601018f422b56b91821ce014181594e030e5ff782bb3459da",
   "bytes": 34186,
-  "title": "邓铁梅 - 中国军网"
+  "title": "邓铁梅 - 中国军网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_jilin_ziweijun__tuanjiebao-lidu": {
   "event": "evt_1932_jilin_ziweijun",
@@ -22,7 +24,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "a2856408b67ea7a9957c400ccbcf787271fa3ff368e624e2a778ab8697909d25",
   "bytes": 12100,
-  "title": "1932：李杜与哈尔滨保卫战"
+  "title": "1932：李杜与哈尔滨保卫战",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_jilin_ziweijun__krzzjn-lidu": {
   "event": "evt_1932_jilin_ziweijun",
@@ -30,7 +33,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "649ada5199ae255c89897f7b9254b5e5cbd5e4bca0311525a777ad72e3d3ac81",
   "bytes": 165230,
-  "title": "功绩赫赫 铁骨铮铮——东北抗日联军总司令李杜将军 - 综合资料 - 抗日战争纪念网"
+  "title": "功绩赫赫 铁骨铮铮——东北抗日联军总司令李杜将军 - 综合资料 - 抗日战争纪念网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_haerbin_shishou__tuanjiebao-haerbin": {
   "event": "evt_1932_haerbin_shishou",
@@ -38,7 +42,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "a2856408b67ea7a9957c400ccbcf787271fa3ff368e624e2a778ab8697909d25",
   "bytes": 12100,
-  "title": "1932：李杜与哈尔滨保卫战"
+  "title": "1932：李杜与哈尔滨保卫战",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_qiangfeng_fujji__tuanjiewang-qiangfeng": {
   "event": "evt_1932_qiangfeng_fujji",
@@ -46,7 +51,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "7cf4a06be6209055ef482cd91f17d732a7327adaa1bcc11b215f6a61c0aa0913",
   "bytes": 16591,
-  "title": "镜泊湖连环战的历史考证_团结网"
+  "title": "镜泊湖连环战的历史考证_团结网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_panshi_yiyongjun__jl-difangzhi-panshi": {
   "event": "evt_1932_panshi_yiyongjun",
@@ -54,7 +60,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "26a8624eb67d9ee147b00d3b6db6327a0ee54b98d50ef04bfda3c6e30688879c",
   "bytes": 39511,
-  "title": "吉林省地方志编纂委员会 > 东北抗联"
+  "title": "吉林省地方志编纂委员会 > 东北抗联",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_bayan_youjidui__guofangbu-zhangjiazhou": {
   "event": "evt_1932_bayan_youjidui",
@@ -62,7 +69,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "10b072fbfb4f926d55f72b58f09c4098eff9e8839e2631dfeff5aa679d76c6e1",
   "bytes": 16270,
-  "title": "黑龙江省巴彦县引导学生传承弘扬抗联精神——甲洲路旁，“小红星”茁壮成长 - 中华人民共和国国防部"
+  "title": "黑龙江省巴彦县引导学生传承弘扬抗联精神——甲洲路旁，“小红星”茁壮成长 - 中华人民共和国国防部",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_bayan_youjidui__gzdis-zhangjiazhou": {
   "event": "evt_1932_bayan_youjidui",
@@ -70,7 +78,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "351e716fdab75aa3e4892b9575ca95c22fe6f8f3f2c8bc02eed31b393cd77024",
   "bytes": 58097,
-  "title": "记忆｜张甲洲：从清北学子到抗日英雄"
+  "title": "记忆｜张甲洲：从清北学子到抗日英雄",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_pingdingshan__pds1932-jinianguan": {
   "event": "evt_1932_pingdingshan",
@@ -78,7 +87,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "78b673e93d5e1997dba79f087afb39d30787e3816c8f8c63804160ce2a8c8beb",
   "bytes": 11731,
-  "title": "抚顺平顶山惨案纪念馆"
+  "title": "抚顺平顶山惨案纪念馆",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_yangjingyu_panshi__baijiahao-panshi": {
   "event": "evt_1932_yangjingyu_panshi",
@@ -86,7 +96,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "6045cae7f483a17d62bd04606c3f8b4ba2d4fdaf5ebf96abab58419fb3cbbbf4",
   "bytes": 70253,
-  "title": "在磐石，见“磐石”——寻迹杨靖宇将军参加东北抗联活动的起点"
+  "title": "在磐石，见“磐石”——寻迹杨靖宇将军参加东北抗联活动的起点",
+  "capture_status": "readable_snapshot"
  },
  "evt_1932_yangjingyu_panshi__jl-difangzhi-hongsanjun": {
   "event": "evt_1932_yangjingyu_panshi",
@@ -94,7 +105,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "26a8624eb67d9ee147b00d3b6db6327a0ee54b98d50ef04bfda3c6e30688879c",
   "bytes": 39511,
-  "title": "吉林省地方志编纂委员会 > 东北抗联"
+  "title": "吉林省地方志编纂委员会 > 东北抗联",
+  "capture_status": "readable_snapshot"
  },
  "evt_1933_126_zhishixin__guofangbu-126zhishixin": {
   "event": "evt_1933_126_zhishixin",
@@ -102,7 +114,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "b753c3d0e1e3e0766fe7090c9cb91b861ccb5f4342357745a0567c7c8df2d1b7",
   "bytes": 25543,
-  "title": "东南满抗日游击根据地——东北抗联第一路军的大本营 - 中华人民共和国国防部"
+  "title": "东南满抗日游击根据地——东北抗联第一路军的大本营 - 中华人民共和国国防部",
+  "capture_status": "readable_snapshot"
  },
  "evt_1933_yitianuzhu__baike-yitianuzhu": {
   "event": "evt_1933_yitianuzhu",
@@ -110,7 +123,9 @@
   "fetched_at": "2026-10-17T20:52:09",
   "sha256": "e27747541a38b087d0f5bba2d4d6f8789cff9e9f26fe0747fd6007c5c0f4ddfd",
   "bytes": 2557,
-  "title": "百度安全验证"
+  "title": "百度安全验证",
+  "capture_status": "no_local_html",
+  "capture_note": "Response metadata retained; no local HTML snapshot is present."
  },
  "evt_1933_yitianuzhu__krzzjn-yitian-beibei": {
   "event": "evt_1933_yitianuzhu",
@@ -118,7 +133,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "af70d834dd39d0a5b653d2462c5e915fd80480d7c1f9ba6db20dcafd6857300b",
   "bytes": 147218,
-  "title": "伊田助男遗书碑 - 吉林抗战纪念场馆和遗址 - 抗日战争纪念网"
+  "title": "伊田助男遗书碑 - 吉林抗战纪念场馆和遗址 - 抗日战争纪念网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1933_dyj_dulishi__baijiahao-dulishi": {
   "event": "evt_1933_dyj_dulishi",
@@ -126,7 +142,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "1111c287f2f8c74bef37fa1ed90e441e93739d3f95167ee54a820d11eb83c664",
   "bytes": 31553,
-  "title": "E法同行 兴辽治宁｜字字铿锵！探寻“20条军规”里的红色法治初心"
+  "title": "E法同行 兴辽治宁｜字字铿锵！探寻“20条军规”里的红色法治初心",
+  "capture_status": "readable_snapshot"
  },
  "evt_1933_zhuhe_youjidui__renmin-dangshi-zhaoshangzhi": {
   "event": "evt_1933_zhuhe_youjidui",
@@ -134,7 +151,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "681267236f3346f8b1535231d1e5f2b08f84052f3cdb488f78a076a7fc34e894",
   "bytes": 21786,
-  "title": "中共抗战英烈：赵尚志--党史频道-人民网"
+  "title": "中共抗战英烈：赵尚志--党史频道-人民网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1934_tulongshan__junwang-tulongshan": {
   "event": "evt_1934_tulongshan",
@@ -142,7 +160,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "aeb39acb01c2d94acad8dc08990d97e578ba1941154f9cb6762016d3884ec4e2",
   "bytes": 33257,
-  "title": "-->"
+  "title": "-->",
+  "capture_status": "readable_snapshot"
  },
  "evt_1934_tongzhangrong_xisheng__guofangbu-tongzhangrong": {
   "event": "evt_1934_tongzhangrong_xisheng",
@@ -150,7 +169,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "1af0443c37d041fd32e5278d1a0ffd126cada8067d5a9785b2932ffe189a4f2a",
   "bytes": 17500,
-  "title": "铭记历史 缅怀先烈丨童长荣：白山黑水间谱写青春壮歌 - 中华人民共和国国防部"
+  "title": "铭记历史 缅怀先烈丨童长荣：白山黑水间谱写青春壮歌 - 中华人民共和国国防部",
+  "capture_status": "readable_snapshot"
  },
  "evt_1935_lihongguang_xisheng__jl-jianwei-lihongguang": {
   "event": "evt_1935_lihongguang_xisheng",
@@ -158,7 +178,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "722458a4151b8c56d068285b4f8e2e59ff9d05e0de71b08a139afa247daf87fe",
   "bytes": 22234,
-  "title": "抗日英烈李红光：热血铸就不朽功勋——榜样——吉林省纪委 省监委网站"
+  "title": "抗日英烈李红光：热血铸就不朽功勋——榜样——吉林省纪委 省监委网站",
+  "capture_status": "readable_snapshot"
  },
  "evt_1935_lihongguang_xisheng__yangjingyu-lievelingyuan-lihongguang": {
   "event": "evt_1935_lihongguang_xisheng",
@@ -166,7 +187,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "8200f1eabf76fc659c7e5207409c934575e8905f0aa0723dd2671724fbc43bd6",
   "bytes": 64823,
-  "title": "李红光-杨靖宇烈士陵园暨东北抗日联军纪念馆"
+  "title": "李红光-杨靖宇烈士陵园暨东北抗日联军纪念馆",
+  "capture_status": "readable_snapshot"
  },
  "evt_1935_dierjun_chengli__guotu-nlc-wangdetai": {
   "event": "evt_1935_dierjun_chengli",
@@ -174,7 +196,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "ebf07e5b3964d12144405d5dde46da4276c6381038fedc02ede9e980586ab201",
   "bytes": 21125,
-  "title": "王德泰"
+  "title": "王德泰",
+  "capture_status": "readable_snapshot"
  },
  "evt_1935_zhao_yiman__mva-zhaoyiman": {
   "event": "evt_1935_zhao_yiman",
@@ -182,7 +205,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "b1eeda16bcff420a326c0ffd05a7a6f086b68932592ced6ad0e2008436b1874d",
   "bytes": 50780,
-  "title": "山河坐标-中华人民共和国退役军人事务部"
+  "title": "山河坐标-中华人民共和国退役军人事务部",
+  "capture_status": "readable_snapshot"
  },
  "evt_1935_zhao_yiman__gongchandangwang-zhaoyiman": {
   "event": "evt_1935_zhao_yiman",
@@ -190,7 +214,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "c271d4d4b772adb1e5a116d17b00ee3a3c457661e42557092fb7adee1b7d0e80",
   "bytes": 90102,
-  "title": "百年瞬间丨赵一曼_共产党员网"
+  "title": "百年瞬间丨赵一曼_共产党员网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1936_yijun_xizheng__junwang-liminhuan": {
   "event": "evt_1936_yijun_xizheng",
@@ -198,7 +223,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "81fb98500e11fbafa647451ecb0a92c95c29cbb017530844e380eac5ddb10f78",
   "bytes": 25985,
-  "title": "李敏焕：抗联一军一师参谋长 - 中国军网"
+  "title": "李敏焕：抗联一军一师参谋长 - 中国军网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1936_xiayunjie_xisheng__guofangbu-xiayunjie": {
   "event": "evt_1936_xiayunjie_xisheng",
@@ -206,7 +232,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "54c01974f4f2e5cb31ea1c703e12c211ba8cf7c19888309c9ce3d3117bf87a20",
   "bytes": 16629,
-  "title": "英雄烈士谱|夏云杰：赤胆忠心 捐躯为国 - 中华人民共和国国防部"
+  "title": "英雄烈士谱|夏云杰：赤胆忠心 捐躯为国 - 中华人民共和国国防部",
+  "capture_status": "readable_snapshot"
  },
  "evt_1936_wangdetai_xisheng__guotu-nlc-wangdetai2": {
   "event": "evt_1936_wangdetai_xisheng",
@@ -214,7 +241,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "ebf07e5b3964d12144405d5dde46da4276c6381038fedc02ede9e980586ab201",
   "bytes": 21125,
-  "title": "王德泰"
+  "title": "王德泰",
+  "capture_status": "readable_snapshot"
  },
  "evt_1936_wangdetai_xisheng__junwang-wangdetai": {
   "event": "evt_1936_wangdetai_xisheng",
@@ -222,7 +250,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "3fd4c5e7240216c4ab60d810fd028b0253932cfdc394d4045231e88e81f30c5d",
   "bytes": 30408,
-  "title": "-->"
+  "title": "-->",
+  "capture_status": "readable_snapshot"
  },
  "evt_1937_songtieyan_xisheng__junwang-songtieyan": {
   "event": "evt_1937_songtieyan_xisheng",
@@ -230,7 +259,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "14731e4946ddb66b6a2fcd8b8e9748477dcc6b297075879d5166c962238e0861",
   "bytes": 40282,
-  "title": "-->"
+  "title": "-->",
+  "capture_status": "readable_snapshot"
  },
  "evt_1937_bingtangzi__beian-gov-bingtangzi": {
   "event": "evt_1937_bingtangzi",
@@ -238,7 +268,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "c6fd06501976171774bad9de7bdb1e32208631fb51a8ffd0c8d4261eecf8a650",
   "bytes": 25842,
-  "title": "“浴血兴安驱日寇”北安红色故事之冰趟子大捷_部门动态_北安市人民政府"
+  "title": "“浴血兴安驱日寇”北安红色故事之冰趟子大捷_部门动态_北安市人民政府",
+  "capture_status": "readable_snapshot"
  },
  "evt_1937_bingtangzi__baijiahao-bingtangzi": {
   "event": "evt_1937_bingtangzi",
@@ -246,7 +277,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "de9b3d75ea83c916236897be4b065f7d21ed3fe23dc0f4a68dc0a7fcd6ea2a1f",
   "bytes": 50795,
-  "title": "山河铭记 抗联记忆丨赵尚志：以少胜多的“冰趟子”战斗"
+  "title": "山河铭记 抗联记忆丨赵尚志：以少胜多的“冰趟子”战斗",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_shier_lieshi__baijiahao-shierlieshi": {
   "event": "evt_1938_shier_lieshi",
@@ -254,7 +286,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "e6d1ea8a83329f068d44d57b2f9661cd27d6384477b61a3029017dd6cf239f89",
   "bytes": 43804,
-  "title": "山河铭记 抗联记忆丨小孤山十二烈士：以生命守护抗日事业"
+  "title": "山河铭记 抗联记忆丨小孤山十二烈士：以生命守护抗日事业",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_shier_lieshi__zzut-lilhaifeng": {
   "event": "evt_1938_shier_lieshi",
@@ -262,7 +295,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "a8d6c0c5d82327d1602246d8b79017a5105f672407288143ee4e321c0162e229",
   "bytes": 42487,
-  "title": "﻿"
+  "title": "﻿",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_chengbin_toudi__baike-chengbin": {
   "event": "evt_1938_chengbin_toudi",
@@ -270,7 +304,9 @@
   "fetched_at": "2026-10-17T20:53:53",
   "sha256": "1080cdb659cd91c8c877b28b3cc46db3af2ec592399e865d6e33f0c46994469d",
   "bytes": 2539,
-  "title": "百度安全验证"
+  "title": "百度安全验证",
+  "capture_status": "no_local_html",
+  "capture_note": "Response metadata retained; no local HTML snapshot is present."
  },
  "evt_1938_chengbin_toudi__baijiahao-chengbin": {
   "event": "evt_1938_chengbin_toudi",
@@ -278,7 +314,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "ba2c4ec1c3921d15f94b70b7cea044499d99447d41b13f40efddf17e680465e7",
   "bytes": 70738,
-  "title": "当年残害杨靖宇将军的叛徒，潜伏北京做官多年，一场大雨露了马脚"
+  "title": "当年残害杨靖宇将军的叛徒，潜伏北京做官多年，一场大雨露了马脚",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_banv_toujiang__baike-lengyun": {
   "event": "evt_1938_banv_toujiang",
@@ -286,7 +323,9 @@
   "fetched_at": "2026-10-17T20:53:55",
   "sha256": "f68e3a314e37b98e4bd6e9cb41ee8ef84f9ed893dbe02f46520859da8bd80b08",
   "bytes": 2539,
-  "title": "百度安全验证"
+  "title": "百度安全验证",
+  "capture_status": "no_local_html",
+  "capture_note": "Response metadata retained; no local HTML snapshot is present."
  },
  "evt_1932_weiman_chengli__renmin-dangshi-weiman": {
   "event": "evt_1932_weiman_chengli",
@@ -294,7 +333,8 @@
   "fetched_at": "2026-10-17T20:55:57",
   "sha256": "2720c1cd79b5f10b89b5dc90931a627ae99f2e4d04e81d36adc308860ea7a48b",
   "bytes": 40670,
-  "title": "三、东北沦陷与东北人民的英勇斗争【2】--党史频道-人民网"
+  "title": "三、东北沦陷与东北人民的英勇斗争【2】--党史频道-人民网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_banv_toujiang__xinhuanet-banv": {
   "event": "evt_1938_banv_toujiang",
@@ -302,7 +342,8 @@
   "fetched_at": "2026-10-17T21:00:05",
   "sha256": "97a2ce63a94cc91f31768e7fa8eb928203aa02efbe388267151de489e6473734",
   "bytes": 12247,
-  "title": "铭记历史 缅怀先烈｜八女投江：乌斯浑河畔的绝唱 -新华网"
+  "title": "铭记历史 缅怀先烈｜八女投江：乌斯浑河畔的绝唱 -新华网",
+  "capture_status": "readable_snapshot"
  },
  "evt_1938_banv_toujiang__ccdi-banv": {
   "event": "evt_1938_banv_toujiang",
@@ -310,6 +351,8 @@
   "fetched_at": "2026-10-17T21:00:05",
   "sha256": "b2d196d9de65560105d2fa0330cdd9d77d3e56f648fe534800cecda6e10936f3",
   "bytes": 1828,
-  "title": ""
+  "title": "",
+  "capture_status": "unreadable_text",
+  "capture_note": "Local HTML retained, but no readable extracted body is available."
  }
 }
