@@ -2,706 +2,242 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16090d">
+<meta name="description" content="沿 1931—1945 年东北抗联记载进入红色雪原剧情线，再逐条查看事件来源。支持桌面、手机与 WebXR 头显。">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>密营 · 燎原</title>
 <style>
-  :root{ --gold:#c8a24a; --ink:#0a0e14; --paper:#e8e2d4; --red:#b23a2e; }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;background:var(--ink);
-    font-family:"Songti SC","STSong","SimSun",serif;color:var(--paper)}
-  canvas{display:block}
-  #hud{position:fixed;top:0;left:0;right:0;padding:14px 20px;display:flex;
-    justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
-  #hud .l h1{font-size:19px;letter-spacing:6px;font-weight:normal;color:var(--gold)}
-  #hud .l .sub{font-size:11px;opacity:.55;letter-spacing:2px;margin-top:4px}
-  #hud .r{text-align:right;font-size:11px;line-height:2;opacity:.85;pointer-events:auto}
-  #hud a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
-  #ctrl{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:6}
-  #ctrl button{background:rgba(10,14,20,.8);border:1px solid rgba(200,162,74,.45);color:var(--paper);
-    font-family:inherit;font-size:12px;letter-spacing:3px;padding:7px 16px;cursor:pointer;transition:.25s}
-  #ctrl button:hover{background:rgba(200,162,74,.18)}
-  #ctrl button.on{background:var(--gold);color:var(--ink)}
-  #stat{position:fixed;bottom:52px;left:0;right:0;text-align:center;font-size:11px;
-    letter-spacing:2px;opacity:.45;z-index:5;pointer-events:none}
-  #tip{position:fixed;max-width:380px;background:rgba(10,14,20,.94);
-    border:1px solid rgba(200,162,74,.35);padding:13px 15px;font-size:12.5px;
-    line-height:1.75;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9;
-    box-shadow:0 8px 40px rgba(0,0,0,.6)}
-  #tip.on{opacity:1}
-  #tip .t{color:var(--gold);letter-spacing:2px;font-size:11px;margin-bottom:6px}
-  #tip .q{margin-top:8px;padding-left:9px;border-left:2px solid rgba(200,162,74,.4);opacity:.85;font-size:11.5px}
-  #tip .pv{margin-top:8px;padding-top:7px;border-top:1px solid rgba(200,162,74,.16);font-size:11px;opacity:.75}
-  #tip .pv a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
-  #tip .w{margin-top:6px;color:var(--red);font-size:11px;letter-spacing:1px}
-  #tip .dv{margin-top:7px;padding:6px 9px;border-left:2px solid var(--red);background:rgba(178,58,46,.08);font-size:11px;line-height:1.7}
-  #tip .dv b{color:var(--red);letter-spacing:2px;margin-right:6px}
-  #panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:12;
-    background:rgba(5,8,12,.55)}
-  #panel.on{display:flex}
-  #panel .card{max-width:520px;background:rgba(10,14,20,.96);border:1px solid rgba(200,162,74,.5);
-    padding:34px 40px;text-align:center}
-  #panel .h{font-size:15px;letter-spacing:8px;color:var(--gold);margin-bottom:16px}
-  #panel .big{font-size:30px;letter-spacing:4px;margin:10px 0 14px}
-  #panel .big b{color:var(--red)}
-  #panel .lines{font-size:12.5px;line-height:2.1;opacity:.9;text-align:left;margin:10px 0 18px}
-  #panel .lines em{color:var(--gold);font-style:normal}
-  #panel button{background:none;border:1px solid rgba(200,162,74,.5);color:var(--paper);
-    font-family:inherit;font-size:12px;letter-spacing:3px;padding:8px 22px;cursor:pointer}
-  #panel button:hover{background:rgba(200,162,74,.18)}
-  #cap{position:fixed;bottom:110px;left:0;right:0;text-align:center;z-index:11;pointer-events:none;
-    font-size:14px;letter-spacing:4px;line-height:2.2;opacity:0;transition:opacity 1.2s;color:var(--paper)}
-  #cap.on{opacity:.95}
-  #cap .s{font-size:11px;opacity:.6;letter-spacing:2px}
-  #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-    flex-direction:column;gap:12px;background:var(--ink);z-index:20;transition:opacity .6s}
-  #loading.off{opacity:0;pointer-events:none}
-  #loading .t{letter-spacing:8px;color:var(--gold);font-size:14px}
-  #loading .s{font-size:11px;opacity:.5;letter-spacing:2px}
+:root {
+  color-scheme: dark;
+  --red: #d4483d;
+  --red-light: #ff7967;
+  --red-deep: #6f1e24;
+  --gold: #e4bd78;
+  --paper: #f4ece4;
+  --muted: #c0aca0;
+  --ink: #10080b;
+  --panel: rgba(20, 9, 13, .78);
+  --line: rgba(228, 189, 120, .24);
+  font-family: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", SimSun, serif;
+}
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; margin: 0; }
+body {
+  background: radial-gradient(ellipse at 50% 58%, #42171b 0%, #1b0b11 48%, #080609 100%);
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+button, a { font: inherit; }
+button { color: inherit; }
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--red-light); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+#world { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; touch-action: none; }
+#hud, #tools, #ctrl, #stat, #tip, #panel, #cap, #loading, #fallback { position: fixed; z-index: 2; }
+#hud {
+  inset: 0 0 auto; display: grid; grid-template-columns: minmax(260px, 1fr) auto;
+  align-items: start; gap: 20px; padding: 22px clamp(18px, 3vw, 48px) 28px;
+  background: linear-gradient(180deg, rgba(13, 6, 9, .94), rgba(13, 6, 9, .52) 68%, transparent);
+  pointer-events: none;
+}
+.identity { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.seal {
+  display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px;
+  border: 1px solid var(--red-light); color: var(--red-light); transform: rotate(45deg);
+  box-shadow: 0 0 22px rgba(212, 72, 61, .22); font: 700 17px/1 "STSong", serif;
+}
+.seal span { transform: rotate(-45deg); }
+.eyebrow { color: var(--red-light); font: 10px/1.4 ui-monospace, Consolas, monospace; letter-spacing: .22em; }
+h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); font-weight: 500; letter-spacing: .28em; }
+.subtitle { margin-top: 4px; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+.nav { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 9px 18px; padding-top: 4px; pointer-events: auto; }
+.nav a { color: #e8d7c6; font-size: 12px; border-bottom: 1px solid rgba(228, 189, 120, .28); padding-bottom: 4px; }
+.nav a:first-child { color: var(--gold); }
+#tools { top: 112px; right: clamp(18px, 3vw, 48px); display: flex; align-items: flex-end; flex-direction: column; gap: 7px; max-width: 340px; }
+.vr-button, .tool-button, #ctrl button, #panel button {
+  border: 1px solid var(--line); border-radius: 2px; background: rgba(19, 8, 12, .76);
+  color: var(--paper); cursor: pointer; transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.vr-button { padding: 10px 16px; border-color: rgba(255, 121, 103, .68); color: #ffe5d7; background: linear-gradient(135deg, rgba(122, 28, 34, .88), rgba(38, 11, 15, .88)); box-shadow: 0 0 30px rgba(190, 37, 42, .18); font-size: 12px; letter-spacing: .12em; }
+.vr-button:not(:disabled):hover, #ctrl button:hover, #panel button:hover { border-color: var(--red-light); background-color: rgba(145, 35, 38, .55); transform: translateY(-1px); }
+.vr-button:disabled { color: #a9948a; border-color: rgba(228, 189, 120, .18); cursor: help; }
+.gyro-button { display: none; padding: 8px 12px; border: 1px solid var(--line); border-radius: 2px; background: rgba(19, 8, 12, .82); color: var(--paper); font-size: 10px; }
+#vr-hint { color: #d8c5b7; font: 10px/1.6 ui-monospace, Consolas, monospace; text-align: right; text-shadow: 0 1px 8px #080609; }
+.brief { position: fixed; z-index: 1; left: clamp(18px, 3vw, 48px); bottom: 112px; width: min(340px, 30vw); pointer-events: none; }
+.brief::before { content: ""; display: block; width: 36px; height: 2px; margin-bottom: 12px; background: var(--red); box-shadow: 0 0 16px var(--red); }
+.brief .tag { color: var(--gold); font: 10px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .18em; }
+.brief h2 { max-width: 280px; margin: 8px 0 6px; font-size: clamp(19px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; letter-spacing: .08em; text-shadow: 0 3px 24px #090509; }
+.brief p { max-width: 320px; margin: 0; color: #d4c3b9; font-size: 12px; line-height: 1.9; text-shadow: 0 2px 10px #090509; }
+#stat { left: 50%; bottom: 76px; width: min(90vw, 880px); transform: translateX(-50%); color: #e0cbb9; font: 10px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .1em; text-align: center; text-shadow: 0 2px 12px #090509; pointer-events: none; }
+#ctrl { left: 50%; bottom: max(17px, env(safe-area-inset-bottom)); display: flex; justify-content: center; gap: 8px; width: max-content; max-width: calc(100vw - 24px); transform: translateX(-50%); padding: 7px; border: 1px solid rgba(228, 189, 120, .2); background: rgba(13, 6, 9, .68); backdrop-filter: blur(16px); }
+#ctrl button { min-height: 39px; padding: 8px 15px; white-space: nowrap; font-size: 11px; letter-spacing: .06em; }
+#ctrl button.primary { border-color: rgba(255, 121, 103, .7); color: #ffe5d7; background: rgba(116, 25, 31, .55); }
+#ctrl button.on { border-color: var(--red-light); color: #fff4e9; background: rgba(166, 37, 42, .8); }
+#ctrl button:disabled { opacity: .55; cursor: progress; }
+#tip { display: none; width: min(370px, calc(100vw - 28px)); max-height: min(58vh, 520px); overflow: auto; padding: 14px 16px; border: 1px solid rgba(228, 189, 120, .44); background: rgba(16, 7, 11, .96); box-shadow: 0 18px 60px rgba(0, 0, 0, .6), 0 0 34px rgba(161, 38, 43, .14); color: var(--paper); font-size: 12px; line-height: 1.8; pointer-events: none; }
+#tip.on { display: block; }
+#tip .t { margin-bottom: 6px; color: var(--gold); font: 10px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .12em; }
+#tip .q { margin-top: 8px; padding-left: 10px; border-left: 2px solid rgba(228, 189, 120, .5); color: #e2d4ca; font-size: 11px; }
+#tip .pv { margin-top: 8px; padding-top: 7px; border-top: 1px solid rgba(228, 189, 120, .18); color: #c1aca0; font-size: 10px; overflow-wrap: anywhere; }
+#tip .pv a { color: var(--gold); border-bottom: 1px dotted currentColor; }
+#tip .w { margin-top: 6px; color: var(--red-light); font-size: 11px; }
+#tip .dv { margin-top: 7px; padding: 6px 9px; border-left: 2px solid var(--red); background: rgba(169, 38, 43, .16); font-size: 11px; }
+#tip .dv b { margin-right: 6px; color: var(--red-light); letter-spacing: .12em; }
+#panel { inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(8, 4, 7, .72); backdrop-filter: blur(7px); }
+#panel.on { display: flex; }
+#panel .card { width: min(560px, 100%); max-height: min(86vh, 680px); overflow: auto; padding: clamp(22px, 4vw, 42px); border: 1px solid rgba(228, 189, 120, .5); background: linear-gradient(155deg, rgba(42, 13, 18, .98), rgba(15, 7, 10, .98) 62%); box-shadow: 0 26px 100px rgba(0,0,0,.68), 0 0 50px rgba(171,36,42,.14); }
+#panel .h { color: var(--gold); font: 11px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .22em; }
+#panel .big { margin: 13px 0 16px; color: var(--paper); font-size: clamp(19px, 4vw, 28px); line-height: 1.5; }
+#panel .big b { color: var(--red-light); font: 600 1.15em ui-monospace, Consolas, monospace; }
+#panel .lines { margin: 0 0 20px; color: #d7c7bc; font-size: 12px; line-height: 2; }
+#panel .lines em { color: var(--gold); font-style: normal; }
+#panel button { padding: 10px 16px; border-color: rgba(255, 121, 103, .48); font-size: 11px; }
+#cap { left: 50%; bottom: 126px; width: min(760px, calc(100vw - 32px)); max-height: min(36vh, 280px); overflow: auto; transform: translateX(-50%); padding: 15px 19px 13px; border: 1px solid rgba(255, 121, 103, .28); background: linear-gradient(110deg, rgba(31, 8, 13, .94), rgba(14, 7, 11, .91)); box-shadow: 0 14px 56px rgba(0,0,0,.38), inset 3px 0 0 rgba(212, 72, 61, .72); backdrop-filter: blur(14px); color: #fff1e5; line-height: 1.75; letter-spacing: .035em; opacity: 0; visibility: hidden; transition: opacity .45s ease; pointer-events: none; }
+#cap.on { opacity: .98; visibility: visible; pointer-events: auto; }
+#cap-step { color: var(--gold); font: 9px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .16em; text-transform: uppercase; }
+#cap h2 { margin: 3px 0 4px; color: #fff1e5; font-size: clamp(16px, 1.65vw, 21px); font-weight: 500; letter-spacing: .09em; }
+#cap p { margin: 0; font-size: clamp(12px, 1.15vw, 14px); line-height: 1.8; text-shadow: 0 2px 15px #090509; }
+#cap .s { display: block; margin-top: 6px; color: #d8c5b7; font-size: 10px; letter-spacing: .025em; }
+#cap-progress { display: grid; grid-template-columns: repeat(8, minmax(10px, 1fr)); gap: 5px; margin-top: 12px; }
+#cap-progress[hidden], #cap-nav[hidden] { display: none; }
+#cap-progress button { position: relative; height: 26px; min-height: 26px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+#cap-progress button::before { content: ""; position: absolute; inset: 11px 0; border-radius: 2px; background: linear-gradient(90deg, rgba(255, 121, 103, .92) var(--fill, 0%), rgba(228, 189, 120, .17) var(--fill, 0%)); }
+#cap-progress button.current::before { box-shadow: 0 0 12px rgba(255, 80, 70, .65); }
+#cap-progress button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#cap-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 7px; color: #cbb5a8; font: 9px/1.5 ui-monospace, Consolas, monospace; }
+#cap-nav button { min-height: 25px; padding: 3px 9px; border: 1px solid rgba(228, 189, 120, .2); background: rgba(71, 16, 23, .46); color: #f1ddd0; cursor: pointer; }
+#cap-nav button:disabled { opacity: .4; cursor: default; }
+body.story-active .brief, body.story-active #tools { opacity: 0; visibility: hidden; }
+#loading { inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 13px; background: radial-gradient(ellipse at center, #48161c, #13070c 58%, #080609); transition: opacity .7s ease; }
+#loading.off { opacity: 0; pointer-events: none; }
+#loading .mark { width: 34px; height: 34px; border: 1px solid var(--red-light); transform: rotate(45deg); animation: pulse 1.8s ease-in-out infinite; }
+#loading .t { color: #fff0e6; font-size: 13px; letter-spacing: .42em; }
+#loading .s { color: #c7a999; font: 10px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .12em; }
+#fallback { inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: #10080b; text-align: center; }
+#fallback.on { display: flex; }
+#fallback .card { max-width: 480px; padding: 32px; border: 1px solid var(--line); background: #1d0d12; }
+#fallback h2 { color: var(--red-light); font-weight: 500; }
+#fallback p { color: #dfcec2; font-size: 13px; line-height: 1.9; }
+#fallback a { display: inline-block; margin-top: 8px; padding: 9px 15px; border: 1px solid var(--line); }
+.skip { position: fixed; z-index: 30; top: 8px; left: 8px; padding: 8px 12px; transform: translateY(-160%); background: #200c11; color: white; }
+.skip:focus { transform: none; }
+@keyframes pulse { 50% { box-shadow: 0 0 32px rgba(255, 70, 68, .75); } }
+@media (max-width: 760px) {
+  #hud { grid-template-columns: 1fr; gap: 9px; padding: 14px 16px 30px; }
+  .seal { width: 30px; height: 30px; flex-basis: 30px; font-size: 14px; }
+  .subtitle { max-width: 72vw; font-size: 9px; line-height: 1.6; }
+  .nav { position: absolute; top: 17px; right: 16px; gap: 8px; max-width: 42vw; }
+  .nav a { font-size: 10px; }
+  #tools { top: auto; right: 14px; bottom: 110px; max-width: 55vw; }
+  .gyro-button { display: block; }
+  #vr-hint { max-width: 240px; font-size: 9px; }
+  .vr-button { padding: 9px 12px; font-size: 10px; }
+  .brief { left: 16px; bottom: 116px; width: min(58vw, 290px); }
+  .brief h2 { font-size: 19px; }
+  .brief p { font-size: 10px; line-height: 1.7; }
+  #stat { bottom: 67px; font-size: 9px; letter-spacing: .02em; }
+  #stat::after { content: " · 单指环视 / 双指缩放"; color: #f0b0a1; }
+  #ctrl { bottom: max(10px, env(safe-area-inset-bottom)); flex-wrap: wrap; gap: 5px; width: calc(100vw - 18px); padding: 5px; }
+  #ctrl button { min-height: 36px; flex: 1 1 auto; padding: 7px 9px; font-size: 10px; }
+  #cap { bottom: 133px; max-height: min(34vh, 270px); padding: 13px 15px 11px; }
+  #cap p { font-size: 12px; }
+}
+@media (max-width: 420px) {
+  #hud { padding: 12px 12px 28px; }
+  .nav { top: 12px; right: 10px; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .nav a { font-size: 9px; }
+  .brief { bottom: 145px; width: 57vw; }
+  .brief p { display: none; }
+  #tools { right: 10px; bottom: 139px; max-width: 42vw; }
+  #vr-hint { font-size: 8px; }
+  #stat { bottom: 98px; }
+  #ctrl { width: calc(100vw - 14px); }
+  #ctrl button { font-size: 9px; letter-spacing: 0; }
+  #cap { bottom: 148px; width: calc(100vw - 20px); max-height: 32vh; padding: 11px 12px 9px; }
+  #cap h2 { font-size: 15px; }
+  #cap p { font-size: 11px; line-height: 1.65; }
+  #cap .s { font-size: 9px; }
+  #cap-progress { gap: 4px; margin-top: 8px; }
+  #cap-nav { margin-top: 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
 </style>
 </head>
 <body>
-<div id="hud">
-  <div class="l">
-    <h1>密营 · 燎原</h1>
-    <div class="sub">66 座灯火 = 66 条可核查记载 · 33 座烽燧 = 33 家来源机构 · 石碑 = 34 处国家级遗址（真实坐标）</div>
+<a class="skip" href="#ctrl">跳到场景控制</a>
+<header id="hud">
+  <div class="identity">
+    <div class="seal" aria-hidden="true"><span>火</span></div>
+    <div>
+      <div class="eyebrow">东北抗联 · 1931—1945</div>
+      <h1>密营 · 燎原</h1>
+    <div class="subtitle"><span id="m-events">66</span> 条记载 · <span id="m-sources">33</span> 家来源机构 · <span id="m-sites">34</span> 处有坐标遗址</div>
+    </div>
   </div>
-  <div class="r">
-    <a href="index.html">← 2D 承重结构</a>&nbsp;&nbsp;<a href="dossier.html">灯下案卷宗</a><br>
-    拖拽环视 · 滚轮推近 · 悬停火光查看引文与来源核查
+  <nav class="nav" aria-label="作品视图">
+    <a href="index.html">证据结构</a>
+    <a href="dossier.html">灯下卷宗</a>
+  </nav>
+</header>
+<div id="tools">
+  <button class="vr-button" id="b-vr" type="button" disabled aria-describedby="vr-hint">检测沉浸式 VR…</button>
+  <div id="vr-hint" role="status" aria-live="polite">WebXR 头显接入检测中</div>
+  <button class="gyro-button" id="b-gyro" type="button" aria-describedby="vr-hint">开启手机环视</button>
+</div>
+<section class="brief" aria-label="场景说明">
+  <div class="tag">东北抗联 · 红色故事时间线</div>
+  <h2>先沿着故事走，<br>再回到每条证据。</h2>
+  <p>从 1931 年的首条记载走到 1945 年，再沿光火查看事件与出处。雪原是数据空间，不是历史现场复原。</p>
+</section>
+<div id="stat" role="status" aria-live="polite">正在构建雪原与证据网络</div>
+<div id="ctrl" role="toolbar" aria-label="场景演示控制">
+  <button class="primary" id="b-tour" type="button" title="播放八幕红色故事剧情线">剧情漫游</button>
+  <button id="b-storm" type="button" title="移除当前最大支撑来源">风雪试验</button>
+  <button id="b-chengbin" type="button" title="聚焦相关记载；该视角不加入未验证的因果边">人物脉络</button>
+  <button id="b-embers" type="button" title="以 1941 年为叙事分界的展示模式">十四年 · 余烬</button>
+  <button id="b-reset" type="button" title="恢复完整场景">复原</button>
+</div>
+<div id="tip" role="tooltip" aria-live="polite"></div>
+<div id="panel" role="dialog" aria-modal="true" aria-labelledby="p-h" aria-describedby="p-lines" tabindex="-1">
+  <div class="card">
+    <div class="h" id="p-h"></div>
+    <div class="big" id="p-big"></div>
+    <div class="lines" id="p-lines"></div>
+    <button id="p-close" type="button">复原 · 让火重新亮起来</button>
   </div>
 </div>
-<div id="stat"></div>
-<div id="ctrl">
-  <button id="b-storm">风雪夜</button>
-  <button id="b-chengbin">程斌之夜</button>
-  <button id="b-embers">十四年 · 余烬</button>
-  <button id="b-reset">复原</button>
-</div>
-<div id="tip"></div>
-<div id="panel"><div class="card">
-  <div class="h" id="p-h"></div>
-  <div class="big" id="p-big"></div>
-  <div class="lines" id="p-lines"></div>
-  <button id="p-close">复原 · 让火重新亮起来</button>
-</div></div>
-<div id="cap"></div>
-<div id="loading"><div class="t">密 营 · 燎 原</div><div class="s">正在点灯……</div></div>
-
+<section id="cap" aria-label="剧情与场景说明">
+  <div id="cap-narration" role="status" aria-live="polite" aria-atomic="true">
+    <div id="cap-step"></div>
+    <h2 id="cap-title"></h2>
+    <p id="cap-copy"></p>
+    <small id="cap-source" class="s"></small>
+  </div>
+  <div id="cap-progress" role="group" aria-label="剧情分幕">
+    <button type="button" aria-label="跳到第一幕" title="第一幕"></button>
+    <button type="button" aria-label="跳到第二幕" title="第二幕"></button>
+    <button type="button" aria-label="跳到第三幕" title="第三幕"></button>
+    <button type="button" aria-label="跳到第四幕" title="第四幕"></button>
+    <button type="button" aria-label="跳到第五幕" title="第五幕"></button>
+    <button type="button" aria-label="跳到第六幕" title="第六幕"></button>
+    <button type="button" aria-label="跳到第七幕" title="第七幕"></button>
+    <button type="button" aria-label="跳到第八幕" title="第八幕"></button>
+  </div>
+  <div id="cap-nav" hidden>
+    <button id="b-story-prev" type="button" aria-label="上一幕">上一幕</button>
+    <span id="cap-clock">0:00 / 1:20</span>
+    <button id="b-story-next" type="button" aria-label="下一幕">下一幕</button>
+  </div>
+</section>
+<div id="loading" role="status" aria-live="polite"><div class="mark" aria-hidden="true"></div><div class="t">密 营 · 燎 原</div><div class="s">正在点亮红色证据链……</div></div>
+<div id="fallback" role="alert"><div class="card"><h2>当前设备无法开启三维场景</h2><p>可以进入 2D 承重结构查看完整来源关系，也可使用支持 WebGL 的现代浏览器重试。</p><a href="index.html">打开 2D 证据结构</a></div></div>
 <script src="vendor/three.min.js"></script>
 <script src="data.js"></script>
 <script src="structures.js"></script>
-<script>
-/* ============================================================
-   密营 · 燎原 v2 —— 3D 主视觉
-   灯火=结论（大小=支撑数，色温=事件类型，位置=时间轴）
-   烽燧=来源机构（高=支撑面）  石碑=国家级遗址（真实经纬度）
-   风雪夜=抽离模拟（与 2D 同一套 removed 逻辑，同一批数字）
-   程斌之夜=史实加权的风雪夜：纪念网抽离 + 叛变因果链强制熄灭
-   十四年·余烬=1941 后灯火渐熄而证据仍在——方法论的终点回到铸魂
-   铁律：全部数字来自 data.js / structures.js / sites，零硬编码。
-   ============================================================ */
-'use strict';
-const D = window.__MIYING__, S = window.__MIYING_STRUCT__;
-const EVENTS = (D.events || []).filter(e => e.layer === 'event');
-const SITE_EVENTS = (D.events || []).filter(e => e.layer === 'site');   // 遗址：build_web 已并入 events，layer=site
-const YEAR0 = D.meta.year_min, YEAR1 = D.meta.year_max;
-const VERD = (D.meta && D.meta.verdicts) || {};
-
-function noise2(x, z) {
-  return Math.sin(x * 0.35 + Math.cos(z * 0.21) * 2.1) * 1.6
-       + Math.sin(z * 0.28 + Math.sin(x * 0.17) * 1.7) * 1.1
-       + Math.sin((x + z) * 0.11) * 2.4;
-}
-const TEMP = {
-  '牺牲': [0.78, 0.86, 1.00], '惨案': [1.00, 0.42, 0.34],
-  '战斗': [1.00, 0.66, 0.34], '会议': [0.49, 0.88, 0.84],
-  '宣言': [0.49, 0.88, 0.84], '建军': [1.00, 0.84, 0.54],
-  '叛变': [0.55, 0.28, 0.28],
-};
-function tempOf(e) {
-  const t = e.event_type || '';
-  for (const k in TEMP) if (t.includes(k)) return TEMP[k];
-  return [1.0, 0.74, 0.42];
-}
-
-/* ---------- 灯火落位 ---------- */
-const SPAN = 64;
-function yearOf(e) { return e.date && e.date.start ? +String(e.date.start).slice(0, 4) : YEAR0; }
-const TYPES = [...new Set(EVENTS.map(e => e.event_type || '其他'))];
-function laneOf(e) {
-  const t = e.event_type || '其他';
-  let i = TYPES.findIndex(k => t.includes(k) || k.includes(t));
-  return (i < 0 ? TYPES.length - 1 : i) - (TYPES.length - 1) / 2;
-}
-function firePos(e, i) {
-  const x = ((yearOf(e) - YEAR0) / (YEAR1 - YEAR0) - 0.5) * SPAN;
-  const z = laneOf(e) * 5.2 + ((i * 7919) % 100 / 100 - 0.5) * 3.4;
-  const y = 1.1 + Math.max(0, noise2(x, z)) * 0.12;
-  return [x, y, z];
-}
-const nSources = {};
-(S.conclusions || []).forEach(c => { nSources[c.id] = c.sources_count || (c.supports ? c.supports.length : 1); });
-function nSrc(e) { return nSources[e.id] != null ? nSources[e.id] : ((e.sources || []).length || 1); }
-
-/* ---------- 场景基座 ---------- */
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x0a0e14, 0.010);
-const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 600);
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.setSize(innerWidth, innerHeight);
-renderer.setClearColor(0x0a0e14);
-document.body.appendChild(renderer.domElement);
-
-const amb = new THREE.AmbientLight(0x33415e, 0.85);
-scene.add(amb);
-const moon = new THREE.DirectionalLight(0x8ea6c8, 0.55);
-moon.position.set(-40, 70, -30);
-scene.add(moon);
-
-/* ---------- 夜空 ---------- */
-(function stars() {
-  const N = 1400, pos = new Float32Array(N * 3);
-  for (let i = 0; i < N; i++) {
-    const th = Math.random() * Math.PI * 2, ph = Math.acos(Math.random() * 0.85);
-    const r = 260;
-    pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
-    pos[i * 3 + 1] = r * Math.cos(ph) + 10;
-    pos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0x9fb4d8, size: 0.9, sizeAttenuation: false, transparent: true, opacity: 0.75 })));
-})();
-
-/* ---------- 雪原 ---------- */
-(function terrain() {
-  const W = 340, SEG = 128;
-  const g = new THREE.PlaneGeometry(W, W, SEG, SEG);
-  g.rotateX(-Math.PI / 2);
-  const p = g.attributes.position;
-  for (let i = 0; i < p.count; i++) {
-    const x = p.getX(i), z = p.getZ(i);
-    const rim = Math.max(0, (Math.abs(x) + Math.abs(z)) / W - 0.32) * 46;
-    p.setY(i, noise2(x, z) + rim * rim * 0.06);
-  }
-  g.computeVertexNormals();
-  scene.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({
-    color: 0xb9c8dd, roughness: 0.96 })));
-})();
-
-/* ---------- 落雪 ---------- */
-const SNOW_N = 12000;
-const snowGeo = new THREE.BufferGeometry();
-const snowPos = new Float32Array(SNOW_N * 3);
-const snowSeed = new Float32Array(SNOW_N);
-for (let i = 0; i < SNOW_N; i++) {
-  snowPos[i * 3] = (Math.random() - 0.5) * 200;
-  snowPos[i * 3 + 1] = Math.random() * 60;
-  snowPos[i * 3 + 2] = (Math.random() - 0.5) * 200;
-  snowSeed[i] = Math.random() * 100;
-}
-snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
-const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({
-  color: 0xdfe8f4, size: 0.32, transparent: true, opacity: 0.8, depthWrite: false }));
-scene.add(snow);
-let wind = 0, snowRate = 1;
-function snowStep(t) {
-  const p = snowGeo.attributes.position;
-  for (let i = 0; i < SNOW_N; i++) {
-    let y = p.getY(i) - (0.09 + (i % 7) * 0.008) * snowRate;
-    let x = p.getX(i) + (Math.sin(t * 0.7 + snowSeed[i]) * 0.014 + wind * (0.05 + (i % 5) * 0.01));
-    if (y < -2) { y = 58 + Math.random() * 4; x = (Math.random() - 0.5) * 200; }
-    if (x > 100) x = -100; if (x < -100) x = 100;
-    p.setY(i, y); p.setX(i, x);
-  }
-  p.needsUpdate = true;
-}
-
-/* ---------- 烽燧（先建塔，灯火的光索要连到它） ---------- */
-function makeGlow() {
-  const c = document.createElement('canvas'); c.width = c.height = 64;
-  const g = c.getContext('2d');
-  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-  gr.addColorStop(0, 'rgba(255,255,255,1)');
-  gr.addColorStop(0.35, 'rgba(255,255,255,.5)');
-  gr.addColorStop(1, 'rgba(255,255,255,0)');
-  g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
-  return new THREE.CanvasTexture(c);
-}
-const glowTex = makeGlow();
-
-const towers = [];
-const srcByShort = {};
-(function towersBuild() {
-  const srcs = (S.sources || []).slice().sort((a, b) => (b.supports || []).length - (a.supports || []).length);
-  const R = 92, arc = Math.PI * 1.25;
-  srcs.forEach((s, i) => {
-    const th = -arc / 2 + arc * (srcs.length === 1 ? 0.5 : i / (srcs.length - 1));
-    const x = Math.sin(th) * R, z = -Math.cos(th) * R - 18;
-    const w = (s.supports || []).length;
-    const h = 4 + Math.min(w, 40) * 0.55;
-    const body = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.5 + w * 0.03, 0.9 + w * 0.04, h, 6),
-      new THREE.MeshStandardMaterial({ color: 0x3a4152, roughness: 0.9 }));
-    body.position.set(x, h / 2, z);
-    const top = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: w ? 0xc8a24a : 0x555f70,
-      transparent: true, opacity: w ? 0.9 : 0.4, depthWrite: false,
-      blending: THREE.AdditiveBlending }));
-    top.scale.setScalar(4 + Math.min(w, 30) * 0.5);
-    top.position.set(x, h + 1.6, z);
-    scene.add(body); scene.add(top);
-    towers.push({ s, x, y: h + 1.6, z, w, top });
-    srcByShort[s.short || s.full] = towers[towers.length - 1];
-  });
-})();
-
-/* ---------- 灯火 ---------- */
-const FIRE_N = EVENTS.length;
-const fireGeo = new THREE.BufferGeometry();
-const fPos = new Float32Array(FIRE_N * 3);
-const fCol = new Float32Array(FIRE_N * 3);
-const fSize = new Float32Array(FIRE_N);
-const fPhase = new Float32Array(FIRE_N);
-const fireMetas = [];
-const supportsOf = {};   // event_id -> [towerIndex]
-towers.forEach((t, ti) => (t.s.supports || []).forEach(eid => {
-  (supportsOf[eid] = supportsOf[eid] || []).push(ti);
-}));
-const isRemoved = new Set();          // 被抽离的烽燧 short
-const forcedOut = new Set();          // 程斌之夜因果链强制熄灭的事件
-const alive = new Array(FIRE_N).fill(true);
-const dieT = new Array(FIRE_N).fill(Infinity);   // 各火熄灭动画起点
-EVENTS.forEach((e, i) => {
-  const [x, y, z] = firePos(e, i);
-  fPos.set([x, y, z], i * 3);
-  fCol.set(tempOf(e), i * 3);
-  const n = Math.min(nSrc(e), 5);
-  fSize[i] = 5.5 + n * 4.2;
-  fPhase[i] = (i * 2654435761 % 1000) / 1000 * 6.283;
-  fireMetas.push({ e, x, y, z, n, idx: i });
-});
-fireGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3));
-fireGeo.setAttribute('aColor', new THREE.BufferAttribute(fCol, 3));
-fireGeo.setAttribute('aSize', new THREE.BufferAttribute(fSize, 1));
-fireGeo.setAttribute('aPhase', new THREE.BufferAttribute(fPhase, 1));
-const fireMat = new THREE.ShaderMaterial({
-  uniforms: { uTime: { value: 0 } },
-  vertexShader: `
-    attribute vec3 aColor; attribute float aSize; attribute float aPhase;
-    uniform float uTime; varying vec3 vC; varying float vF;
-    void main(){
-      vC = aColor;
-      vF = 1.0 + 0.28 * sin(uTime * 2.4 + aPhase) + 0.12 * sin(uTime * 5.1 + aPhase * 2.3);
-      vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = max(aSize * vF * (170.0 / -mv.z), 0.0);
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: `
-    varying vec3 vC; varying float vF;
-    void main(){
-      vec2 uv = gl_PointCoord - 0.5;
-      float a = smoothstep(0.5, 0.02, length(uv));
-      gl_FragColor = vec4(vC * (0.85 + 0.3 * vF), a);
-    }`,
-  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-});
-scene.add(new THREE.Points(fireGeo, fireMat));
-const firePoints = scene.children[scene.children.length - 1];
-/* 火光底部的地面光斑（Sprite，熄灭时同步缩小） */
-const groundGlows = fireMetas.map(m => {
-  const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: glowTex, color: 0xc8a24a, transparent: true, opacity: 0.22,
-    depthWrite: false, blending: THREE.AdditiveBlending }));
-  sp.scale.setScalar(m.n > 1 ? 6 : 3.2);
-  sp.position.set(m.x, m.y + 0.15, m.z);
-  scene.add(sp);
-  return sp;
-});
-
-/* ---------- 光索流光：粒子沿贝塞尔从烽燧流向灯火 ---------- */
-const edges = [];
-towers.forEach((t, ti) => (t.s.supports || []).forEach(eid => {
-  const m = fireMetas.find(f => f.e.id === eid);
-  if (!m) return;
-  edges.push({ ti, m, a: new THREE.Vector3(t.x, t.y, t.z), c: new THREE.Vector3(m.x, m.y + 0.5, m.z),
-    b: new THREE.Vector3((t.x + m.x) / 2, Math.max(t.y, m.y) + 7 + Math.abs(t.x - m.x) * 0.12, (t.z + m.z) / 2) });
-}));
-const FLOW_PER = 3;
-const flowN = edges.length * FLOW_PER;
-const flowGeo = new THREE.BufferGeometry();
-const flowPos = new Float32Array(flowN * 3);
-const flowT = new Float32Array(flowN), flowSpeed = new Float32Array(flowN), flowEdge = new Int32Array(flowN);
-for (let i = 0; i < flowN; i++) {
-  flowEdge[i] = Math.floor(i / FLOW_PER);
-  flowT[i] = Math.random(); flowSpeed[i] = 0.10 + Math.random() * 0.14;
-}
-flowGeo.setAttribute('position', new THREE.BufferAttribute(flowPos, 3));
-const flowMat = new THREE.PointsMaterial({
-  map: glowTex, color: 0xe8c877, size: 1.05, transparent: true, opacity: 0.9,
-  depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
-const flowPoints = new THREE.Points(flowGeo, flowMat);
-scene.add(flowPoints);
-const _v = new THREE.Vector3();
-function flowStep(dt) {
-  const p = flowGeo.attributes.position;
-  for (let i = 0; i < flowN; i++) {
-    const ed = edges[flowEdge[i]];
-    const ts = towers[ed.ti].s;
-    if (isRemoved.has(ts.short || ts.full)) {   // 断索：粒子隐藏但相位保留
-      p.setXYZ(i, 0, -999, 0); continue;
-    }
-    let t = flowT[i] + flowSpeed[i] * dt;
-    if (t > 1) t = 0;
-    flowT[i] = t;
-    const u = 1 - t;
-    _v.set(0, 0, 0)
-      .addScaledVector(ed.a, u * u)
-      .addScaledVector(ed.b, 2 * u * t)
-      .addScaledVector(ed.c, t * t);
-    p.setXYZ(i, _v.x, _v.y, _v.z);
-  }
-  p.needsUpdate = true;
-}
-
-/* ---------- 遗址石碑：34 处国家级遗址，真实经纬度 ---------- */
-const siteMeshes = [];
-(function sites() {
-  /* 真实经纬 → 平面：保留相对地理关系，等比缩放；结论不落坐标，遗址落真实坐标 */
-  const pts = SITE_EVENTS.filter(e => e.place && e.place.lat != null);
-  const lng0 = 120.45, lat0 = 40.64;
-  const kmX = 111 * Math.cos(45 * Math.PI / 180);
-  const SCALE = 0.62;
-  pts.forEach(e => {
-    const s = e;
-    const x = ((s.place.lng - lng0) * kmX) * SCALE * 0.62;
-    const z = -26 - ((s.place.lat - lat0) * 111) * SCALE * 0.62;
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(0.7, 2.1, 0.5),
-      new THREE.MeshStandardMaterial({ color: 0x8f9aa8, roughness: 0.85 }));
-    mesh.position.set(x, 1.05 + Math.max(0, noise2(x, z)) * 0.12, z);
-    const cap = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: 0xaebccb, transparent: true, opacity: 0.35,
-      depthWrite: false, blending: THREE.AdditiveBlending }));
-    cap.scale.setScalar(1.6);
-    cap.position.set(x, 2.5, z);
-    scene.add(mesh); scene.add(cap);
-    mesh.userData.site = {
-      name: s.summary, address: (s.place && (s.place.modern || s.place.name)) || '',
-      category: s.category, batch: s.batch, published: s.published,
-    };
-    siteMeshes.push(mesh);
-  });
-})();
-
-/* ---------- 对勘电弧：日期分歧的火光头顶红色脉冲弧 ---------- */
-const arcs = [];
-(function dateArcs() {
-  const CONFLICTED = new Set(['evt_1933_duolun_shoufu', 'evt_1934_tongzhangrong_xisheng', 'evt_1932_qiangfeng_fujji']);
-  fireMetas.forEach(m => {
-    if (!CONFLICTED.has(m.e.id)) return;
-    const cpts = [];
-    for (let i = 0; i <= 24; i++) {
-      const t = i / 24;
-      const x = m.x + (t - 0.5) * 9;
-      const y = m.y + 3.2 + Math.sin(t * Math.PI) * 2.6;
-      cpts.push(new THREE.Vector3(x, y, m.z));
-    }
-    const g = new THREE.BufferGeometry().setFromPoints(cpts);
-    const mat = new THREE.LineBasicMaterial({ color: 0xb23a2e, transparent: true, opacity: 0.55 });
-    scene.add(new THREE.Line(g, mat));
-    arcs.push(mat);
-  });
-})();
-
-/* ---------- 相机 ---------- */
-let theta = 0.06, phi = 1.18, radius = 74, dragging = false, px = 0, py = 0;
-let autoPan = 0;
-function applyCam() {
-  phi = Math.max(0.5, Math.min(1.45, phi));
-  radius = Math.max(24, Math.min(170, radius));
-  const cx = autoPan;
-  camera.position.set(cx + Math.sin(theta) * Math.sin(phi) * radius,
-    Math.cos(phi) * radius + 6,
-    Math.cos(theta) * Math.sin(phi) * radius);
-  camera.lookAt(cx, 2, -4);
-}
-renderer.domElement.addEventListener('pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; });
-addEventListener('pointerup', () => dragging = false);
-addEventListener('pointermove', e => {
-  if (dragging) {
-    theta -= (e.clientX - px) * 0.004;
-    phi -= (e.clientY - py) * 0.003;
-    px = e.clientX; py = e.clientY;
-    applyCam();
-  }
-  mouse.x = (e.clientX / innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / innerHeight) * 2 + 1;
-  tip.style.left = Math.min(e.clientX + 16, innerWidth - 400) + 'px';
-  tip.style.top = Math.min(e.clientY + 14, innerHeight - 220) + 'px';
-});
-addEventListener('wheel', e => { radius *= 1 + Math.sign(e.deltaY) * 0.08; applyCam(); });
-applyCam();
-
-/* ---------- 悬停 ---------- */
-const tip = document.getElementById('tip');
-const ray = new THREE.Raycaster();
-ray.params.Points.threshold = 1.6;
-const mouse = new THREE.Vector2(-9, -9);
-function esc(s) { return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
-function provBlock(p) {
-  if (!p || p.depth === 'none') return '<div class="pv">检索：尚未逐条检索，此处不冒充已查</div>';
-  const pr = (p.probes || []).map(b => '查「' + esc(b.q) + '」').join('；');
-  const ns = p.not_searched && p.not_searched.length ? '<div class="pv">未查：' + esc(p.not_searched.join('、')) + '</div>' : '';
-  return '<div class="pv">' + pr + '</div>' + ns;
-}
-function archBlock(sources) {
-  const links = (sources || []).flatMap(s => {
-    const name = (s.book || '来源').split('《')[0];
-    return [
-      s.archive && { url: s.archive, label: '本地快照' },
-      s.url && { url: s.url, label: '来源网页' },
-    ].filter(Boolean).map(link => {
-      const href = /^https?:/.test(link.url) ? link.url : '../' + link.url;
-      return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' +
-        esc(name + ' · ' + link.label) + '</a>';
-    });
-  });
-  const hasSnapshot = (sources || []).some(s => s.archive && !/^https?:/.test(s.archive));
-  return links.length ? '<div class="pv">来源核查：' + links.join(' · ') +
-    (hasSnapshot ? '（本地快照哈希见 manifest.json）' : '') + '</div>' : '';
-}
-function dvBlock(e) {
-  const dvs = (e.date_variants || []).filter(v => v.value);
-  if (dvs.length < 2) return '';
-  const uniq = [...new Map(dvs.map(v => [v.source + v.value, v])).values()].slice(0, 3);
-  return '<div class="dv"><b>对勘</b>' + uniq.map(v =>
-    esc(v.value) + '（' + esc(v.source.split('《')[0]) + '）').join('　vs　') + '</div>';
-}
-let hoverFire = -1, hoverTower = -1, hoverSite = -1;
-function pick() {
-  ray.setFromCamera(mouse, camera);
-  hoverFire = -1; hoverTower = -1; hoverSite = -1;
-  const hf = ray.intersectObject(firePoints, false);
-  if (hf.length) { hoverFire = hf[0].index; return; }
-  const hs = ray.intersectObjects(siteMeshes, false);
-  if (hs.length) { hoverSite = siteMeshes.indexOf(hs[0].object); return; }
-  let best = 1e9;
-  towers.forEach((t, i) => {
-    const v = new THREE.Vector3(t.x, t.y, t.z).project(camera);
-    if (v.z < 1) {
-      const sx = (v.x + 1) / 2 * innerWidth, sy = (-v.y + 1) / 2 * innerHeight;
-      const d2 = (sx - (mouse.x + 1) / 2 * innerWidth) ** 2 + (sy - (-mouse.y + 1) / 2 * innerHeight) ** 2;
-      if (d2 < 26 ** 2 && d2 < best) { best = d2; hoverTower = i; }
-    }
-  });
-}
-function showTip() {
-  if (hoverFire >= 0) {
-    const m = fireMetas[hoverFire], e = m.e;
-    const q = (e.sources || [])[0] || {};
-    tip.innerHTML =
-      '<div class="t">' + esc(e.event_type || '记载') + ' · ' + (e.date && e.date.start ? esc(e.date.start) : '') +
-      (e.place && e.place.name ? ' · ' + esc(e.place.name) : '') + '</div>' +
-      esc(e.summary || '') +
-      '<div class="q">「' + esc(q.quote || '') + '」<br>——' + esc(q.book || '') + '</div>' +
-      (m.n === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
-      dvBlock(e) +
-      (e.conflict_group && VERD[e.conflict_group]
-        ? '<div class="dv"><b>裁决</b>' + esc(VERD[e.conflict_group].ruling) + ' 基准 ' + esc(VERD[e.conflict_group].adopt) + '</div>' : '') +
-      archBlock(e.sources) + provBlock(e.provenance);
-    tip.classList.add('on');
-  } else if (hoverTower >= 0) {
-    const t = towers[hoverTower];
-    tip.innerHTML =
-      '<div class="t">烽燧 · ' + esc(t.s.short || '') + '</div>' + esc(t.s.full || '') +
-      '<div class="q">支撑 ' + (t.s.supports || []).length + ' 条结论 · 可靠性 ' + esc(t.s.reliability_cn || '') + '</div>';
-    tip.classList.add('on');
-  } else if (hoverSite >= 0) {
-    const s = siteMeshes[hoverSite].userData.site;
-    tip.innerHTML =
-      '<div class="t">国家级抗战遗址 · 真实坐标</div>' + esc(s.name) +
-      '<div class="q">' + esc(s.address || '') + '<br>' + esc(s.category || '') + ' · 国务院第 ' + esc(s.batch) + ' 批名录（' + esc(s.published) + '）</div>' +
-      '<div class="pv">结论不落坐标——落的是时间轴；遗址落真实经纬度，因为遗址本身就是地理证据。</div>';
-    tip.classList.add('on');
-  } else tip.classList.remove('on');
-}
-
-/* ---------- 风雪夜 / 程斌之夜 / 余烬 / 复原 ---------- */
-const KRZZ = '抗战纪念网';   // 三轮指出的最大承重来源（short 名以 structures 为准，运行时校验）
-function realShort(pre) {
-  const k = Object.keys(srcByShort).find(k => k.includes(pre));
-  return k || pre;
-}
-const CHAIN = ['evt_1938_chengbin_toudi', 'evt_1940_yangjingyu_xunguo'];   // 叛变→殉国 因果链
-let mode = 'calm', stormStart = 0;
-
-function computeDeaths(extraForce) {
-  const dead = [];
-  fireMetas.forEach((m, i) => {
-    const sup = supportsOf[m.e.id] || [];
-    const liveSup = sup.filter(ti => !isRemoved.has(towers[ti].s.short || towers[ti].s.full));
-    if (extraForce.has(m.e.id) || (sup.length && liveSup.length === 0)) dead.push(i);
-  });
-  return dead;
-}
-function startStorm(kind) {
-  if (mode !== 'calm') reset();
-  mode = kind; stormStart = performance.now() / 1000;
-  if (kind === 'storm') isRemoved.add(realShort(KRZZ));
-  if (kind === 'chengbin') {
-    isRemoved.add(realShort(KRZZ));
-    CHAIN.forEach(id => forcedOut.add(id));
-  }
-  const dead = computeDeaths(forcedOut);
-  const t0 = performance.now() / 1000;
-  dead.forEach((idx, k) => { dieT[idx] = t0 + 0.4 + k * 0.10; alive[idx] = false; });
-  /* 程斌之夜：点亮相从叛变到殉国的暗红因果边 */
-  if (kind === 'chengbin') {
-    const m1 = fireMetas.find(m => m.e.id === CHAIN[0]);
-    const m2 = fireMetas.find(m => m.e.id === CHAIN[1]);
-    if (m1 && m2) {
-      const pts = [];
-      for (let i = 0; i <= 30; i++) {
-        const t = i / 30, u = 1 - t;
-        pts.push(new THREE.Vector3(
-          u * u * m1.x + t * t * m2.x,
-          Math.max(m1.y, m2.y) + 5 + Math.sin(t * Math.PI) * 3,
-          u * u * m1.z + t * t * m2.z));
-      }
-      chainLine = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(pts),
-        new THREE.LineBasicMaterial({ color: 0xb23a2e, transparent: true, opacity: 0.8 }));
-      scene.add(chainLine);
-    }
-  }
-  /* 风起 */
-  wind = kind === 'storm' ? 2.4 : 4.2; snowRate = 4.0;
-  scene.fog.density = 0.020;
-  amb.intensity = 0.45; moon.intensity = 0.25;
-  flowMat.opacity = 0.25;
-}
-function startEmbers() {
-  if (mode !== 'calm') reset();
-  mode = 'embers'; stormStart = performance.now() / 1000;
-  fireMetas.forEach((m, i) => {
-    if (yearOf(m.e) >= 1941) { dieT[i] = stormStart + 1.0 + (i % 8) * 0.12; alive[i] = false; }
-  });
-  autoPan = fireMetas.reduce((a, m) => a + m.x, 0) / FIRE_N - SPAN / 2 + 6;
-  document.getElementById('cap').classList.add('on');
-  document.getElementById('cap').innerHTML =
-    '1941 年之后的条目在这一体验模式中熄灭。<span class="s">—— 本库 ' + FIRE_N +
-    ' 条记载中，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
-    ' 条有多家来源机构记载。机构数量不代表史源彼此独立；熄灭效果也不表示据点的实际存续时间。</span>';
-}
-function reset() {
-  mode = 'calm';
-  isRemoved.clear(); forcedOut.clear();
-  alive.fill(true); dieT.fill(Infinity);
-  wind = 0; snowRate = 1; autoPan = 0;
-  scene.fog.density = 0.010;
-  amb.intensity = 0.85; moon.intensity = 0.55;
-  flowMat.opacity = 0.9;
-  /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
-  fireMetas.forEach((m, i) => {
-    fireGeo.attributes.aSize.setX(i, 5.5 + Math.min(m.n, 5) * 4.2);
-    const c = tempOf(m.e);
-    fireGeo.attributes.aColor.setXYZ(i, c[0], c[1], c[2]);
-    groundGlows[i].material.opacity = 0.22;
-    groundGlows[i].scale.setScalar(m.n > 1 ? 6 : 3.2);
-  });
-  fireGeo.attributes.aSize.needsUpdate = true;
-  fireGeo.attributes.aColor.needsUpdate = true;
-  if (chainLine) { scene.remove(chainLine); chainLine = null; }
-  document.getElementById('cap').classList.remove('on');
-  document.getElementById('panel').classList.remove('on');
-  ['b-storm', 'b-chengbin', 'b-embers'].forEach(id => document.getElementById(id).classList.remove('on'));
-}
-let chainLine = null;
-let panelShown = false;
-function maybeSettle(now) {
-  if (panelShown || (mode !== 'storm' && mode !== 'chengbin')) return;
-  const finite = dieT.filter(Number.isFinite);
-  const last = finite.length ? Math.max(...finite) : 0;
-  if (now < last + 1.2) return;
-  panelShown = true;
-  const died = alive.filter(a => !a).length;
-  const left = FIRE_N - died;
-  const multiLeft = fireMetas.filter((m, i) => alive[i] && m.n > 1).length;
-  document.getElementById('b-' + (mode === 'storm' ? 'storm' : 'chengbin')).classList.add('on');
-  const lines = mode === 'storm'
-    ? '<em>' + realShort(KRZZ) + '</em> 被抽离，它独自支撑的 ' + died +
-      ' 条记载失去全部库内依据。同一根柱子在 2D 承重结构里抽掉，熄灭的是同一批火——两套视图共用同一套数据。'
-    : '程斌叛变 → 第一路军密营体系暴露 → 杨靖宇 1940 年 2 月 23 日殉国。<br>' +
-      '这条因果链上的火熄得更多——<em>这不是比喻，是数据里的事实边</em>。' +
-      '<br>叛徒带走的不是火力，是「看不见的据点」之所以安全的全部前提。';
-  document.getElementById('p-h').textContent = mode === 'storm' ? '风 雪 夜 · 结 算' : '程 斌 之 夜 · 结 算';
-  document.getElementById('p-big').innerHTML = '熄灭 <b>' + died + '</b> 条 · 幸存 <b>' + left + '</b> 条（其中多家来源机构记载 ' + multiLeft + ' 条）';
-  document.getElementById('p-lines').innerHTML = lines +
-    '<br><span style="opacity:.6;font-size:11px">熄灭依据是支撑关系计算；来源记录数量不等于独立史源数量。</span>';
-  document.getElementById('panel').classList.add('on');
-}
-document.getElementById('b-storm').onclick = () => startStorm('storm');
-document.getElementById('b-chengbin').onclick = () => startStorm('chengbin');
-document.getElementById('b-embers').onclick = () => startEmbers();
-document.getElementById('b-reset').onclick = reset;
-document.getElementById('p-close').onclick = reset;
-
-/* ---------- 熄灭动画 ---------- */
-function dieStep(now) {
-  const col = fireGeo.attributes.aColor, siz = fireGeo.attributes.aSize;
-  let dirty = false;
-  fireMetas.forEach((m, i) => {
-    if (alive[i]) return;
-    const k = (now - dieT[i]) / 1.6;              // 1.6s 熄灭
-    if (k < 0) return;
-    dirty = true;
-    const base = 5.5 + Math.min(m.n, 5) * 4.2;
-    const f = Math.max(0, 1 - k);
-    siz.setX(i, Math.max(k >= 1 ? 0 : base * f * (1 - 0.4 * Math.sin(k * 9)), 0));
-    const c0 = tempOf(m.e);
-    col.setXYZ(i, c0[0] * f + 0.35 * (1 - f), c0[1] * f + 0.18 * (1 - f), c0[2] * f + 0.10 * (1 - f));
-    groundGlows[i].material.opacity = Math.max(0, 0.22 * f);
-    groundGlows[i].scale.setScalar(Math.max(0.01, (m.n > 1 ? 6 : 3.2) * Math.max(f, 0.01)));
-  });
-  if (dirty) { col.needsUpdate = true; siz.needsUpdate = true; }
-}
-
-/* ---------- 主循环 ---------- */
-const stat = document.getElementById('stat');
-const clock = new THREE.Clock();
-let last = 0, arcT = 0;
-function loop() {
-  requestAnimationFrame(loop);
-  const now = performance.now() / 1000;
-  const dt = Math.min(clock.getDelta(), 0.05);
-  const t = clock.getElapsedTime();
-  fireMat.uniforms.uTime.value = t;
-  arcT += dt;
-  arcs.forEach((m, i) => { m.opacity = 0.35 + 0.3 * Math.abs(Math.sin(arcT * 2.2 + i)); });
-  snowStep(t);
-  flowStep(dt);
-  dieStep(now);
-  maybeSettle(now);
-  if (mode === 'embers') autoPan += dt * 1.6;
-  if (!dragging) applyCam();
-  pick(); showTip();
-  const aliveN = alive.filter(Boolean).length;
-  stat.textContent = mode === 'calm'
-    ? '灯火 ' + FIRE_N + ' · 烽燧 ' + towers.length + ' · 遗址 ' + siteMeshes.length + '（真实坐标） · 流光 ' + flowN
-    : (mode === 'embers' ? '余烬：1941 后的火，和仍然亮着的证据' : '风雪中的雪原：幸存灯火 ' + aliveN + ' / ' + FIRE_N);
-  renderer.render(scene, camera);
-}
-loop();
-setTimeout(() => document.getElementById('loading').classList.add('off'), 350);
-addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
-</script>
+<script src="sanctuary.js" defer></script>
 </body>
 </html>

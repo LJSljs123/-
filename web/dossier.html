@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
-  --bg:#0c0a08; --panel:#12100d; --ink:#e7dfd0; --dim:#9a8f7c;
-  --faint:#6a6154; --red:#b23a2e; --gold:#c8a24a;
-  --line:rgba(200,162,74,.16); --line-soft:rgba(200,162,74,.08);
+  color-scheme:dark;
+  --bg:#10080b; --panel:#160a0e; --ink:#e7dfd0; --dim:#9a8f7c;
+  --faint:#6a6154; --red:#e34a43; --gold:#d88d7b;
+  --line:rgba(227,74,67,.2); --line-soft:rgba(227,74,67,.1);
   --serif:"Source Han Serif SC","Noto Serif CJK SC","Songti SC","STSong",SimSun,serif;
   --mono:"Cascadia Mono","Consolas","SF Mono",ui-monospace,monospace;
 }
@@ -19,7 +20,7 @@ body{
   background:var(--bg); color:var(--ink);
   font-family:var(--serif); font-size:16px; line-height:1.95;
   -webkit-font-smoothing:antialiased;
-  background-image:radial-gradient(120% 90% at 50% 0%,rgba(200,162,74,.045),transparent 60%);
+  background-image:radial-gradient(120% 90% at 50% 0%,rgba(227,74,67,.06),transparent 60%);
 }
 ::selection{background:rgba(178,58,46,.35)}
 
@@ -208,10 +209,21 @@ footer button:hover{color:var(--gold);border-color:var(--line)}
 footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:14px}
 
 @media(max-width:760px){
-  main{padding:36px 20px 160px}
+  main{max-width:none;padding:36px 20px 160px}
   .docket h1{font-size:25px}
-  header{padding:13px 18px;gap:14px}
-  .brand span{display:none}
+  header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:34px 34px;gap:4px 7px;padding:8px 10px}
+  .brand{grid-column:1;grid-row:1;font-size:14px}
+  .brand span{display:inline;font-size:10px;margin-left:4px}
+  #nav{grid-column:1/-1;grid-row:2;display:flex;flex-wrap:nowrap;gap:6px;width:100%;max-width:100%;margin:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+  #nav button{flex:0 0 auto;padding:4px 8px;font-size:10px}
+  header a.go{margin:0;padding:5px 6px;font-size:9px;letter-spacing:0}
+  header a.go[href="sanctuary.html"]{grid-column:2;grid-row:1;justify-self:end}
+  header a.go[href="index.html"]{grid-column:3;grid-row:1;justify-self:end}
+  footer{height:auto;min-height:64px;display:flex;flex-wrap:wrap;gap:7px;padding:8px 10px}
+  footer .dot{display:none}
+  footer .st{font-size:10px}
+  footer button{margin-left:auto;padding:5px 9px;font-size:10px}
+  footer .kbd{display:none}
   .stamp{display:none}
   .ass .row{grid-template-columns:52px 1fr;gap:8px}
   .ass .s{grid-column:2;justify-self:start}
@@ -224,6 +236,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
 <header>
   <div class="brand">密营<span>卷宗</span></div>
   <nav id="nav"></nav>
+  <a class="go" href="sanctuary.html">3D 燎原</a>
   <a class="go" href="index.html">← 承重结构</a>
 </header>
 

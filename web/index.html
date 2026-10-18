@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
+  color-scheme:dark;
   --bg:#0a0908; --ink:#e7dfd0; --dim:#9a8f7c; --faint:#6a6154;
-  --gold:#c8a24a; --red:#b23a2e; --line:rgba(200,162,74,.16);
+  --gold:#dc897a; --red:#ed5145; --line:rgba(237,81,69,.19);
   --serif:"Source Han Serif SC","Noto Serif CJK SC","Songti SC",SimSun,serif;
   --mono:"Cascadia Mono","Consolas",ui-monospace,monospace;
 }
@@ -155,6 +156,32 @@ a.go{
   border-radius:2px;white-space:nowrap;transition:.18s
 }
 a.go:hover{color:var(--gold);border-color:var(--gold)}
+@media(max-width:760px){
+  header{height:78px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:39px 28px;gap:0;padding:5px 12px}
+  .brand{grid-row:1;grid-column:1;font-size:14px;letter-spacing:.16em}
+  .brand span{font-size:10px;letter-spacing:.1em;margin-left:5px}
+  .meta{grid-row:2;grid-column:1/-1;display:flex;justify-content:space-between;gap:5px;width:100%;margin:0;font-size:8px;letter-spacing:0}
+  .meta b{font-size:10px}
+  #live{grid-row:1;grid-column:2;font-size:9px;padding:4px 7px}
+  main{inset:236px 0 108px;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  #stage{width:1600px;height:822px;max-width:none}
+  main{scrollbar-color:rgba(220,137,122,.45) #0b0909;scrollbar-width:thin}
+  main::-webkit-scrollbar{width:5px;height:5px}
+  main::-webkit-scrollbar-thumb{background:rgba(220,137,122,.45);border-radius:5px}
+  #caption{left:10px;top:88px;width:min(300px,calc(100vw - 20px));max-height:138px;overflow:auto;padding:11px 13px}
+  #caption .big{font-size:29px}
+  #caption .lead{font-size:10px;line-height:1.55;margin-top:6px}
+  #caption hr{margin:7px 0}
+  #caption .txt{font-size:10px;line-height:1.55}
+  #caption .cov{font-size:8px;line-height:1.55}
+  footer{height:108px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(32px,1fr) 36px;gap:5px;padding:7px 10px 9px}
+  footer .note{grid-column:1/-1;grid-row:1;min-width:0;font-size:10px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  footer .note::after{content:' · 手机可双向滑动查看结构';color:var(--gold)}
+  footer button{grid-column:1;grid-row:2;margin:0;padding:5px 4px;font-size:9px}
+  footer a.go{margin:0;padding:6px 3px;text-align:center;font-size:9px;letter-spacing:0}
+  footer a.go:nth-of-type(1){grid-column:2;grid-row:2}
+  footer a.go:nth-of-type(2){grid-column:3;grid-row:2}
+}
 </style>
 </head>
 <body>
@@ -619,6 +646,9 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   }
 
   draw();
+  if (matchMedia('(max-width:760px)').matches) {
+    requestAnimationFrame(() => { document.querySelector('main').scrollLeft = 300; });
+  }
 })();
 </script>
 </body>
