@@ -1,4 +1,4 @@
-/* 密营 · 燎原：史料关系驱动的红色三维场景与 WebXR 体验。 */
+/* 密营 · 燎原：史料关系驱动的东北抗联三维场景与 WebXR 体验。 */
 (function () {
 'use strict';
 const fallback = document.getElementById('fallback');
@@ -34,15 +34,15 @@ function noise2(x, z) {
        + Math.sin((x + z) * 0.11) * 2.4;
 }
 const TEMP = {
-  '牺牲': [1.00, 0.16, 0.12], '惨案': [1.00, 0.06, 0.10],
-  '战斗': [1.00, 0.12, 0.07], '会议': [1.00, 0.34, 0.12],
-  '宣言': [0.96, 0.10, 0.13], '建军': [1.00, 0.24, 0.08],
-  '叛变': [0.62, 0.07, 0.12],
+  '牺牲': [1.00, 0.42, 0.20], '惨案': [0.92, 0.28, 0.20],
+  '战斗': [1.00, 0.48, 0.20], '会议': [1.00, 0.68, 0.34],
+  '宣言': [0.92, 0.48, 0.26], '建军': [1.00, 0.58, 0.24],
+  '叛变': [0.62, 0.34, 0.26],
 };
 function tempOf(e) {
   const t = e.event_type || '';
   for (const k in TEMP) if (t.includes(k)) return TEMP[k];
-  return [1.0, 0.18, 0.10];
+  return [1.0, 0.52, 0.26];
 }
 
 /* ---------- 灯火落位 ---------- */
@@ -66,8 +66,9 @@ function nSrc(e) { return nSources[e.id] != null ? nSources[e.id] : ((e.sources 
 
 /* ---------- 场景基座 ---------- */
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x17090d);
-scene.fog = new THREE.FogExp2(0x210b10, 0.006);
+const DEFAULT_SKY = 0x182127, DEFAULT_FOG = 0x263038;
+scene.background = new THREE.Color(DEFAULT_SKY);
+scene.fog = new THREE.FogExp2(DEFAULT_FOG, 0.006);
 const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 600);
 let renderer;
 try {
@@ -78,7 +79,7 @@ try {
 const mobile = matchMedia('(max-width: 760px), (pointer: coarse)').matches;
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile ? 1.25 : 1.7));
 renderer.setSize(innerWidth, innerHeight);
-renderer.setClearColor(0x17090d);
+renderer.setClearColor(DEFAULT_SKY);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.98;
@@ -98,14 +99,14 @@ renderer.domElement.addEventListener('webglcontextlost', event => {
 });
 renderer.domElement.addEventListener('webglcontextrestored', () => location.reload());
 
-const amb = new THREE.AmbientLight(0x8d2938, 0.72);
+const amb = new THREE.AmbientLight(0x9fadb0, 0.78);
 scene.add(amb);
-const moon = new THREE.DirectionalLight(0xf1c9b2, 0.72);
+const moon = new THREE.DirectionalLight(0xdce5e7, 0.92);
 moon.position.set(-40, 70, -30);
 scene.add(moon);
-const redFill = new THREE.DirectionalLight(0xb51d31, 0.5);
-redFill.position.set(44, 22, 32);
-scene.add(redFill);
+const warmFill = new THREE.DirectionalLight(0xc79a6a, 0.24);
+warmFill.position.set(44, 22, 32);
+scene.add(warmFill);
 
 /* ---------- 夜空 ---------- */
 (function stars() {
@@ -120,7 +121,7 @@ scene.add(redFill);
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0xf1b6a4, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.82 })));
+    color: 0xdce6e9, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.7 })));
 })();
 
 /* ---------- 雪原 ---------- */
@@ -135,7 +136,7 @@ function terrainHeight(x, z) {
   g.rotateX(-Math.PI / 2);
   const p = g.attributes.position;
   const colors = new Float32Array(p.count * 3);
-  const low = new THREE.Color(0x291c22), high = new THREE.Color(0x594047), color = new THREE.Color();
+  const low = new THREE.Color(0x53616a), high = new THREE.Color(0xc4cdd0), color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
     const y = terrainHeight(x, z);
@@ -156,9 +157,9 @@ function buildRidge(centerZ, layer) {
   g.rotateX(-Math.PI / 2);
   const p = g.attributes.position;
   const colors = new Float32Array(p.count * 3);
-  const base = new THREE.Color(layer ? 0x251017 : 0x391119);
-  const peak = new THREE.Color(layer ? 0x54202a : 0x873039);
-  const snowColor = new THREE.Color(0xb98b81);
+  const base = new THREE.Color(layer ? 0x202a30 : 0x2c383d);
+  const peak = new THREE.Color(layer ? 0x4c5a60 : 0x647175);
+  const snowColor = new THREE.Color(0xd5dcdd);
   const color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
@@ -182,17 +183,42 @@ buildRidge(-126, 0);
 buildRidge(-163, 1);
 buildRidge(126, 0);
 
+function spruceBough(radius, height, seed) {
+  const radial = 36, levels = [0, 0.12, 0.28, 0.44, 0.62, 0.80, 1];
+  const rings = [0.42, 0.72, 1.0, 0.84, 0.67, 0.42, 0.01];
+  const vertices = [], indices = [];
+  for (let j = 0; j < levels.length; j++) {
+    for (let i = 0; i <= radial; i++) {
+      const a = i / radial * Math.PI * 2;
+      const branch = 0.91 + 0.09 * Math.cos(a * 9 + seed + j * 0.7);
+      const scallop = 0.95 + 0.05 * Math.cos(a * 18 + seed * 0.5);
+      const r = radius * rings[j] * branch * scallop;
+      vertices.push(Math.cos(a) * r, levels[j] * height, Math.sin(a) * r);
+    }
+  }
+  for (let j = 0; j < levels.length - 1; j++) {
+    for (let i = 0; i < radial; i++) {
+      const a = j * (radial + 1) + i, b = a + radial + 1;
+      indices.push(a, b, a + 1, a + 1, b, b + 1);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  g.setIndex(indices); g.computeVertexNormals();
+  return g;
+}
+
 (function buildForest() {
   const count = mobile ? 280 : 520;
-  const foliageMaterial = new THREE.MeshStandardMaterial({ color: 0x51232d, roughness: 1, flatShading: true });
+  const foliageMaterial = new THREE.MeshStandardMaterial({ color: 0x26372f, roughness: 0.96 });
   const foliage = [
-    new THREE.InstancedMesh(new THREE.ConeGeometry(2.35, 5.4, 7), foliageMaterial, count),
-    new THREE.InstancedMesh(new THREE.ConeGeometry(1.9, 4.2, 7), foliageMaterial, count),
-    new THREE.InstancedMesh(new THREE.ConeGeometry(1.45, 3.2, 7), foliageMaterial, count),
+    new THREE.InstancedMesh(spruceBough(3.0, 4.5, 0.2), foliageMaterial, count),
+    new THREE.InstancedMesh(spruceBough(2.4, 4.0, 1.4), foliageMaterial, count),
+    new THREE.InstancedMesh(spruceBough(1.7, 3.3, 2.8), foliageMaterial, count),
   ];
   const trunks = new THREE.InstancedMesh(
-    new THREE.CylinderGeometry(0.13, 0.27, 2.2, 5),
-    new THREE.MeshStandardMaterial({ color: 0x261014, roughness: 1, flatShading: true }), count);
+    new THREE.CylinderGeometry(0.13, 0.27, 2.2, 7),
+    new THREE.MeshStandardMaterial({ color: 0x30271f, roughness: 1, flatShading: true }), count);
   const dummy = new THREE.Object3D();
   let seed = 74291;
   const rnd = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
@@ -202,8 +228,8 @@ buildRidge(126, 0);
     const s = 0.62 + rnd() * 0.82;
     const y = terrainHeight(x, z);
     dummy.rotation.set(0, rnd() * Math.PI, 0);
-    const tint = new THREE.Color().setHSL(0.98 + rnd() * 0.025, 0.5, 0.18 + rnd() * 0.1);
-    const heights = [2.7, 4.55, 6.05];
+    const tint = new THREE.Color().setHSL(0.30 + rnd() * 0.045, 0.30 + rnd() * 0.12, 0.16 + rnd() * 0.10);
+    const heights = [2.25, 4.55, 6.5];
     foliage.forEach((layer, j) => {
       dummy.position.set(x, y + heights[j] * s, z);
       dummy.scale.set(s, s, s); dummy.updateMatrix();
@@ -289,10 +315,10 @@ const towerMeshes = [];
     const ground = terrainHeight(x, z);
     const body = new THREE.Mesh(
       new THREE.CylinderGeometry(0.38 + w * 0.02, 0.55 + w * 0.025, h, 7),
-      new THREE.MeshStandardMaterial({ color: 0x45141d, emissive: 0x1c0509, emissiveIntensity: 0.38, roughness: 0.9 }));
+      new THREE.MeshStandardMaterial({ color: 0x39352d, emissive: 0x201a12, emissiveIntensity: 0.24, roughness: 0.92 }));
     body.position.set(x, ground + h / 2, z);
     const top = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: (s.exclusive || 0) ? 0xe34a43 : 0xc8a24a,
+      map: glowTex, color: (s.exclusive || 0) ? 0xd08c67 : 0xd6bd7e,
       transparent: true, opacity: w ? 0.9 : 0.4, depthWrite: false,
       blending: THREE.AdditiveBlending }));
     top.scale.setScalar(3 + Math.min(w, 30) * 0.25);
@@ -373,7 +399,7 @@ const firePoints = scene.children[scene.children.length - 1];
 /* 火光底部的地面光斑（Sprite，熄灭时同步缩小） */
 const groundGlows = fireMetas.map(m => {
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: glowTex, color: 0xe84a40, transparent: true, opacity: 0.18,
+    map: glowTex, color: 0xe9ad65, transparent: true, opacity: 0.16,
     depthWrite: false, blending: THREE.AdditiveBlending }));
   sp.scale.setScalar(m.n > 1 ? 6 : 3.2);
   sp.position.set(m.x, terrainHeight(m.x, m.z) + 0.15, m.z);
@@ -381,7 +407,7 @@ const groundGlows = fireMetas.map(m => {
   return sp;
 });
 
-/* 红色时间光幕：只标记当前叙事年份，不连接历史事件。 */
+/* 琥珀时间光幕：只标记当前叙事年份，不连接历史事件。 */
 const storyGate = new THREE.Group();
 const gateMaterial = new THREE.ShaderMaterial({
   uniforms: { uTime: { value: 0 }, uPulse: { value: 0 } },
@@ -393,7 +419,7 @@ const gateMaterial = new THREE.ShaderMaterial({
       float height = smoothstep(0.0, 0.12, vUv.y) * (1.0 - smoothstep(0.72, 1.0, vUv.y));
       float scan = 0.58 + 0.42 * sin(vUv.y * 14.0 - uTime * 1.7);
       float a = edge * height * scan * (0.10 + uPulse * 0.09);
-      gl_FragColor = vec4(1.0, 0.035, 0.065, a);
+      gl_FragColor = vec4(0.92, 0.54, 0.31, a);
     }`,
   transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
 });
@@ -401,11 +427,11 @@ const gateCurtain = new THREE.Mesh(new THREE.PlaneGeometry(44, 54), gateMaterial
 gateCurtain.rotation.y = Math.PI / 2;
 gateCurtain.position.y = 27;
 const gateHalo = new THREE.Mesh(new THREE.TorusGeometry(17, 0.12, 8, 96),
-  new THREE.MeshBasicMaterial({ color: 0xff3b3d, transparent: true, opacity: 0.68, depthWrite: false, blending: THREE.AdditiveBlending }));
+  new THREE.MeshBasicMaterial({ color: 0xc98361, transparent: true, opacity: 0.46, depthWrite: false, blending: THREE.AdditiveBlending }));
 gateHalo.rotation.y = Math.PI / 2;
 gateHalo.position.y = 24;
 const gateFloor = new THREE.Mesh(new THREE.TorusGeometry(16, 0.08, 6, 96),
-  new THREE.MeshBasicMaterial({ color: 0xe3423e, transparent: true, opacity: 0.34, depthWrite: false, blending: THREE.AdditiveBlending }));
+  new THREE.MeshBasicMaterial({ color: 0xd8b273, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending }));
 gateFloor.rotation.x = -Math.PI / 2;
 gateFloor.position.y = 0.16;
 storyGate.add(gateCurtain, gateHalo, gateFloor);
@@ -431,7 +457,7 @@ for (let i = 0; i < flowN; i++) {
 }
 flowGeo.setAttribute('position', new THREE.BufferAttribute(flowPos, 3));
 const flowMat = new THREE.PointsMaterial({
-  map: glowTex, color: 0xe85b4e, size: 1.05, transparent: true, opacity: 0.85,
+  map: glowTex, color: 0xd1a16c, size: 1.05, transparent: true, opacity: 0.78,
   depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
 const flowPoints = new THREE.Points(flowGeo, flowMat);
 scene.add(flowPoints);
@@ -472,11 +498,11 @@ const siteMeshes = [];
     const z = projected[index].z * scale + 50;
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(0.7, 2.1, 0.5),
-      new THREE.MeshStandardMaterial({ color: 0xa6544e, emissive: 0x3b0d12, emissiveIntensity: 0.22, roughness: 0.85 }));
+      new THREE.MeshStandardMaterial({ color: 0x66736d, emissive: 0x18211d, emissiveIntensity: 0.18, roughness: 0.88 }));
     const ground = terrainHeight(x, z);
     mesh.position.set(x, ground + 1.05, z);
     const cap = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: 0xaebccb, transparent: true, opacity: 0.35,
+      map: glowTex, color: 0xc4ceca, transparent: true, opacity: 0.32,
       depthWrite: false, blending: THREE.AdditiveBlending }));
     cap.scale.setScalar(1.6);
     cap.position.set(x, ground + 2.5, z);
@@ -490,7 +516,7 @@ const siteMeshes = [];
   });
 })();
 
-/* ---------- 对勘电弧：日期分歧的火光头顶红色脉冲弧 ---------- */
+/* ---------- 对勘电弧：日期分歧的火光头顶琥珀脉冲弧 ---------- */
 const arcs = [];
 (function dateArcs() {
   const CONFLICTED = new Set(EVENTS.filter(e =>
@@ -506,11 +532,349 @@ const arcs = [];
       cpts.push(new THREE.Vector3(x, y, m.z));
     }
     const g = new THREE.BufferGeometry().setFromPoints(cpts);
-    const mat = new THREE.LineBasicMaterial({ color: 0xb23a2e, transparent: true, opacity: 0.55 });
+    const mat = new THREE.LineBasicMaterial({ color: 0xc28b67, transparent: true, opacity: 0.55 });
     scene.add(new THREE.Line(g, mat));
     arcs.push(mat);
   });
 })();
+
+/* ---------- 三军被服厂：史料锚定的合成密营场景 ---------- */
+const factoryGroup = new THREE.Group();
+factoryGroup.visible = false;
+scene.add(factoryGroup);
+let factoryMode = false;
+const factoryVisibility = new Map();
+function weaveTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#b2a487'; ctx.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 256; i += 4) {
+    ctx.strokeStyle = i % 8 ? 'rgba(35,34,27,.13)' : 'rgba(231,224,199,.10)';
+    ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 256); ctx.stroke();
+    ctx.strokeStyle = i % 8 ? 'rgba(231,224,199,.10)' : 'rgba(35,34,27,.13)';
+    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(256, i); ctx.stroke();
+  }
+  for (let i = 0; i < 2600; i++) {
+    const x = Math.random() * 256, y = Math.random() * 256;
+    ctx.fillStyle = i % 2 ? 'rgba(25,25,20,.10)' : 'rgba(245,237,215,.11)';
+    ctx.fillRect(x, y, 1 + Math.random() * 2, 1);
+  }
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(2, 2); t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return t;
+}
+function timberTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#68513c'; ctx.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 55; i++) {
+    const y = Math.random() * 256, w = 18 + Math.random() * 210;
+    ctx.strokeStyle = i % 3 ? 'rgba(36,28,21,.20)' : 'rgba(191,152,105,.18)';
+    ctx.lineWidth = 1 + Math.random() * 2; ctx.beginPath();
+    ctx.moveTo(Math.random() * 18, y); ctx.bezierCurveTo(w * .25, y - 3, w * .65, y + 3, w, y); ctx.stroke();
+  }
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(2, 1); t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return t;
+}
+const clothMap = weaveTexture(), woodMap = timberTexture();
+const FM = {
+  wood: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.035, color: 0xa08a70, roughness: 0.92 }),
+  woodDark: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.04, color: 0x68513c, roughness: 0.96 }),
+  woodLight: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.025, color: 0xb39a75, roughness: 0.9 }),
+  cloth: new THREE.MeshStandardMaterial({ map: clothMap, bumpMap: clothMap, bumpScale: 0.018, color: 0xe0d2b1, roughness: 1 }),
+  dyed: new THREE.MeshStandardMaterial({ map: clothMap, bumpMap: clothMap, bumpScale: 0.02, color: 0x7c875a, roughness: 1 }),
+  coat: new THREE.MeshStandardMaterial({ bumpMap: clothMap, bumpScale: 0.026, color: 0x78806d, roughness: 1 }),
+  coatAlt: new THREE.MeshStandardMaterial({ bumpMap: clothMap, bumpScale: 0.02, color: 0x9a8e6d, roughness: 1 }),
+  skin: new THREE.MeshStandardMaterial({ color: 0x9d745d, roughness: 0.78 }),
+  hair: new THREE.MeshStandardMaterial({ color: 0x292522, roughness: 0.9 }),
+  iron: new THREE.MeshStandardMaterial({ color: 0x242725, metalness: 0.72, roughness: 0.38 }),
+  ironWear: new THREE.MeshStandardMaterial({ color: 0x766c59, metalness: 0.62, roughness: 0.52 }),
+  leather: new THREE.MeshStandardMaterial({ color: 0x40372e, roughness: 0.88 }),
+  earth: new THREE.MeshStandardMaterial({ color: 0x625a45, roughness: 1 }),
+  leaf: new THREE.MeshStandardMaterial({ color: 0x466044, roughness: 0.96 }),
+  leafLight: new THREE.MeshStandardMaterial({ color: 0x63734d, roughness: 0.96 }),
+  glow: new THREE.MeshStandardMaterial({ color: 0xb17b40, emissive: 0x8c5021, emissiveIntensity: 1.1, roughness: 0.65 }),
+};
+function fBox(parent, w, h, d, material, x, y, z, rx = 0, ry = 0, rz = 0) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+  mesh.position.set(x, y, z); mesh.rotation.set(rx, ry, rz); parent.add(mesh); return mesh;
+}
+function fSphere(parent, material, x, y, z, sx, sy, sz, seg = 16) {
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, seg, Math.max(8, seg >> 1)), material);
+  mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz); parent.add(mesh); return mesh;
+}
+function fCylinder(parent, r1, r2, length, material, x, y, z, axis = 'y', segments = 12) {
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, length, segments), material);
+  if (axis === 'x') mesh.rotation.z = Math.PI / 2;
+  if (axis === 'z') mesh.rotation.x = Math.PI / 2;
+  mesh.position.set(x, y, z); parent.add(mesh); return mesh;
+}
+function fLink(parent, a, b, radius, material, segments = 8) {
+  const start = new THREE.Vector3(a[0], a[1], a[2]), end = new THREE.Vector3(b[0], b[1], b[2]);
+  const delta = new THREE.Vector3().subVectors(end, start);
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.88, radius, delta.length(), segments), material);
+  mesh.position.copy(start).add(end).multiplyScalar(0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
+  parent.add(mesh); return mesh;
+}
+function fTube(parent, points, radius, material, sides = 6) {
+  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(p[0], p[1], p[2])));
+  const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, Math.max(12, points.length * 5), radius, sides, false), material);
+  parent.add(mesh); return mesh;
+}
+function buildFootMachine(parent, x, z, scale = 1) {
+  const m = new THREE.Group(); m.position.set(x, 0, z); m.scale.setScalar(scale); parent.add(m);
+  const tabletop = fBox(m, 3.15, 0.18, 1.5, FM.woodDark, 0, 1.52, 0);
+  tabletop.castShadow = true;
+  [-1.25, 1.25].forEach(px => [-0.52, 0.52].forEach(pz => {
+    fLink(m, [px * 0.94, 0.04, pz], [px, 1.46, pz], 0.075, FM.ironWear);
+  }));
+  fLink(m, [-1.2, 0.12, -0.52], [1.2, 0.12, -0.52], 0.06, FM.ironWear);
+  fLink(m, [-1.2, 0.12, 0.52], [1.2, 0.12, 0.52], 0.06, FM.ironWear);
+  fBox(m, 0.92, 0.09, 0.74, FM.iron, 0.1, 0.52, 0.05, 0, 0, -0.08);
+  fLink(m, [0.1, 0.6, 0], [0.88, 0.82, 0], 0.045, FM.ironWear);
+  fLink(m, [0.88, 0.82, 0], [1.38, 0.96, 0], 0.045, FM.ironWear);
+  fLink(m, [1.38, 0.96, 0], [1.45, 1.36, 0], 0.045, FM.ironWear);
+  const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.055, 8, 32), FM.iron);
+  wheel.position.set(1.48, 1.95, -0.03); wheel.rotation.y = Math.PI / 2; m.add(wheel);
+  fCylinder(m, 0.065, 0.065, 0.18, FM.ironWear, 1.48, 1.95, -0.03, 'x');
+  for (let i = 0; i < 8; i++) {
+    const a = i / 8 * Math.PI * 2;
+    fLink(m, [1.48, 1.95, -0.03], [1.48, 1.95 + Math.sin(a) * 0.43, -0.03 + Math.cos(a) * 0.43], 0.022, FM.ironWear, 6);
+  }
+  fSphere(m, FM.ironWear, 1.48, 1.95, -0.03, 0.095, 0.095, 0.095, 10);
+  fSphere(m, FM.iron, 0.02, 1.75, -0.05, 0.63, 0.19, 0.24, 18);
+  fCylinder(m, 0.16, 0.24, 0.46, FM.iron, -0.48, 1.76, -0.05, 'y', 16);
+  fSphere(m, FM.iron, -0.54, 1.98, -0.05, 0.19, 0.2, 0.17, 14);
+  fBox(m, 0.52, 0.21, 0.24, FM.iron, 0.34, 1.91, -0.05);
+  fCylinder(m, 0.034, 0.034, 0.55, FM.ironWear, 0.42, 1.58, 0.03, 'y', 8);
+  fLink(m, [0.42, 1.38, -0.04], [0.42, 1.46, 0.18], 0.035, FM.ironWear, 6);
+  fCylinder(m, 0.035, 0.035, 0.11, FM.ironWear, 0.41, 1.38, 0.12, 'x', 8);
+  fCylinder(m, 0.10, 0.10, 0.23, FM.woodDark, -0.4, 2.04, -0.05, 'y', 12);
+  fCylinder(m, 0.035, 0.035, 0.13, FM.ironWear, -0.4, 2.21, -0.05, 'y', 8);
+  const belt = new THREE.Mesh(new THREE.TorusGeometry(0.67, 0.022, 5, 32, Math.PI * 1.65), FM.leather);
+  belt.position.set(0.82, 1.55, -0.03); belt.rotation.z = Math.PI / 2; m.add(belt);
+  fBox(m, 0.72, 0.045, 0.42, FM.iron, 0.1, 1.635, 0.02);
+  return m;
+}
+function buildWorker(parent, x, z, options = {}) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = options.turn || 0;
+  const s = options.scale || 1, seated = Boolean(options.seated); g.scale.setScalar(s); parent.add(g);
+  const jacket = options.jacket || FM.coat;
+  fSphere(g, jacket, 0, seated ? 1.58 : 1.87, 0, 0.57, 0.72, 0.38, 20);
+  fSphere(g, FM.coatAlt, 0, seated ? 1.1 : 1.27, 0.01, 0.51, 0.28, 0.36, 16);
+  fSphere(g, FM.coat, 0, seated ? 2.06 : 2.36, 0.02, 0.68, 0.22, 0.36, 16);
+  fBox(g, 0.08, 0.82, 0.025, FM.cloth, 0, seated ? 1.66 : 1.95, 0.369, 0, 0, 0.03);
+  const headY = seated ? 2.55 : 2.85;
+  fSphere(g, FM.skin, 0, headY, 0.04, 0.29, 0.37, 0.29, 20);
+  fSphere(g, FM.hair, 0, headY + 0.25, -0.035, 0.31, 0.22, 0.3, 18);
+  fSphere(g, FM.coatAlt, 0, headY + 0.29, 0.06, 0.33, 0.11, 0.31, 16);
+  fSphere(g, FM.skin, 0, headY - 0.26, 0.04, 0.24, 0.11, 0.23, 14);
+  fSphere(g, FM.skin, 0, headY - 0.01, 0.31, 0.035, 0.045, 0.035, 10);
+  fSphere(g, FM.hair, -0.105, headY + 0.06, 0.29, 0.09, 0.022, 0.03, 10);
+  fSphere(g, FM.hair, 0.105, headY + 0.06, 0.29, 0.09, 0.022, 0.03, 10);
+  if (seated) {
+    fCylinder(g, 0.36, 0.4, 0.48, FM.woodDark, 0, 0.56, -0.08, 'y', 12);
+    for (const side of [-1, 1]) fLink(g, [side * 0.24, 0.08, -0.29], [side * 0.3, 0.51, -0.08], 0.045, FM.woodLight);
+  }
+  for (const side of [-1, 1]) {
+    if (seated) {
+      fLink(g, [side * 0.2, 1.02, 0.04], [side * 0.31, 0.72, 0.62], 0.17, FM.coatAlt, 10);
+      fLink(g, [side * 0.31, 0.72, 0.62], [side * 0.34, 0.28, 0.78], 0.12, jacket, 9);
+      fSphere(g, FM.leather, side * 0.34, 0.13, 0.86, 0.21, 0.11, 0.34, 12);
+    } else {
+      fSphere(g, FM.coatAlt, side * 0.18, 1.16, 0.02, 0.25, 0.38, 0.29, 14);
+      fLink(g, [side * 0.19, 0.99, 0.06], [side * 0.23, 0.34, 0.30], 0.16, jacket, 10);
+      fSphere(g, FM.leather, side * 0.23, 0.13, 0.42, 0.25, 0.12, 0.40, 14);
+    }
+    const shoulderY = seated ? 2.08 : 2.38, elbowY = seated ? 1.72 : 1.96;
+    fLink(g, [side * 0.48, shoulderY, 0], [side * 0.53, elbowY, 0.27], 0.15, jacket, 10);
+    const handX = options.work ? 0.68 + side * 0.12 : side * 0.54;
+    const handY = options.work ? 1.52 : 1.57;
+    const handZ = options.work ? 1.48 : 0.37;
+    fLink(g, [side * 0.53, elbowY, 0.27], [handX, handY, handZ], 0.115, jacket, 10);
+    fSphere(g, FM.skin, handX, handY, handZ + 0.08, 0.15, 0.10, 0.15, 12);
+    for (let finger = -1; finger <= 1; finger++) {
+      fLink(g, [handX + finger * 0.045, handY - 0.015, handZ + 0.14],
+        [handX + finger * 0.055, handY - 0.06, handZ + 0.22], 0.023, FM.skin, 5);
+    }
+  }
+  for (let i = 0; i < 5; i++) {
+    fBox(g, 0.025, 0.025, 0.014, FM.woodLight, -0.19 + i * 0.095, seated ? 1.78 : 2.07, 0.377);
+  }
+  fBox(g, 0.27, 0.22, 0.018, FM.dyed, 0.27, seated ? 1.63 : 1.92, 0.34, 0, 0, -0.1);
+  fBox(g, 0.24, 0.07, 0.02, FM.cloth, -0.3, seated ? 1.38 : 1.63, 0.34, 0, 0, 0.04);
+  return g;
+}
+function buildCabin(parent, x, z, scale, openFront) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(scale); parent.add(g);
+  const w = 8.6, d = 5.8, logR = 0.22, rows = 10;
+  for (let row = 0; row < rows; row++) {
+    const y = 0.38 + row * 0.28;
+    if (openFront && row < 7) {
+      fCylinder(g, logR, logR * 1.05, 3.0, row % 3 ? FM.woodDark : FM.wood, -2.75, y, d / 2, 'x', 14);
+      fCylinder(g, logR, logR * 1.03, 3.0, row % 3 ? FM.wood : FM.woodDark, 2.75, y, d / 2, 'x', 14);
+    } else fCylinder(g, logR, logR * 1.04, w, row % 3 ? FM.woodDark : FM.wood, 0, y, d / 2, 'x', 14);
+    fCylinder(g, logR, logR * 1.03, w, row % 2 ? FM.wood : FM.woodDark, 0, y, -d / 2, 'x', 14);
+    for (const side of [-1, 1]) {
+      fCylinder(g, logR, logR * 1.02, d, row % 3 ? FM.wood : FM.woodDark, side * w / 2, y, 0, 'z', 14);
+    }
+  }
+  fBox(g, w + 0.5, 0.22, d + 0.35, FM.woodDark, 0, 0.22, 0);
+  fBox(g, 0.16, 2.3, 0.2, FM.woodLight, -1.07, 1.42, d / 2 + 0.08);
+  fBox(g, 0.16, 2.3, 0.2, FM.woodLight, 1.07, 1.42, d / 2 + 0.08);
+  fCylinder(g, 0.16, 0.16, 2.3, FM.woodDark, 0, 2.65, d / 2 + 0.06, 'x', 10);
+  for (const side of [-1, 1]) {
+    const roof = fBox(g, 5.35, 0.2, d + 0.9, FM.woodDark, side * 2.12, 3.85, 0, 0, 0, side * -0.47);
+    roof.castShadow = true;
+    for (let board = 0; board < 5; board++) {
+      const bx = side * (0.25 + board * 0.9);
+      fBox(g, 0.08, 0.1, d + 1.0, FM.woodLight, bx, 3.92 - board * 0.20, 0, 0, 0, side * -0.47);
+    }
+    fLink(g, [side * 0.1, 5.02, -d / 2 - 0.25], [side * 4.2, 2.85, -d / 2 - 0.25], 0.11, FM.woodLight, 10);
+    fLink(g, [side * 0.1, 5.02, d / 2 + 0.25], [side * 4.2, 2.85, d / 2 + 0.25], 0.11, FM.woodLight, 10);
+  }
+  fCylinder(g, 0.11, 0.15, 1.25, FM.woodDark, -2.9, 3.05, -1.75, 'y', 12);
+  return g;
+}
+function buildKettle(parent, x, y, z) {
+  fSphere(parent, FM.iron, x, y, z, 0.45, 0.36, 0.36, 18);
+  fCylinder(parent, 0.32, 0.34, 0.09, FM.ironWear, x, y + 0.30, z, 'y', 14);
+  fCylinder(parent, 0.24, 0.24, 0.07, FM.iron, x, y + 0.38, z, 'y', 12);
+  fLink(parent, [x - 0.31, y + 0.35, z], [x - 0.54, y + 0.66, z], 0.045, FM.ironWear);
+  fLink(parent, [x + 0.31, y + 0.35, z], [x + 0.52, y + 0.61, z], 0.045, FM.ironWear);
+  fTube(parent, [[x - 0.54, y + 0.66, z], [x - 0.35, y + 0.87, z], [x, y + 0.92, z], [x + 0.34, y + 0.82, z], [x + 0.52, y + 0.61, z]], 0.04, FM.ironWear);
+  fLink(parent, [x + 0.36, y + 0.08, z], [x + 0.76, y + 0.2, z], 0.09, FM.iron);
+}
+function buildCampTrees(parent) {
+  const count = 34, dummy = new THREE.Object3D(); let seed = 3181, placed = 0;
+  const rnd = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
+  const tiers = [
+    new THREE.InstancedMesh(spruceBough(2.05, 3.8, 0.5), FM.leaf, count),
+    new THREE.InstancedMesh(spruceBough(1.55, 3.1, 1.6), FM.leafLight, count),
+    new THREE.InstancedMesh(spruceBough(1.1, 2.5, 2.7), FM.leaf, count),
+  ];
+  const trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.16, 0.26, 5.2, 8), FM.woodDark, count);
+  for (let i = 0; i < count; i++) {
+    const a = rnd() * Math.PI * 2, r = 15 + rnd() * 14, x = Math.cos(a) * r, z = Math.sin(a) * r - 4;
+    if (Math.abs(x) < 15) continue;
+    const s = 0.48 + rnd() * 0.40;
+    tiers.forEach((mesh, j) => {
+      dummy.position.set(x, 0.9 + j * 1.55, z); dummy.rotation.set(0, rnd() * 6.28, 0);
+      dummy.scale.set(s * (1 - j * 0.12), s * (1 - j * 0.12), s * (1 - j * 0.12)); dummy.updateMatrix();
+      mesh.setMatrixAt(placed, dummy.matrix);
+      mesh.setColorAt(placed, new THREE.Color().setHSL(0.27 + rnd() * 0.07, 0.28 + rnd() * 0.12, 0.14 + rnd() * 0.10));
+    });
+    dummy.position.set(x, 2.25 * s, z); dummy.rotation.set(0, 0, 0); dummy.scale.set(s, s, s); dummy.updateMatrix();
+    trunks.setMatrixAt(placed, dummy.matrix);
+    placed++;
+  }
+  [...tiers, trunks].forEach(mesh => { mesh.count = placed; mesh.instanceMatrix.needsUpdate = true; parent.add(mesh); });
+}
+function groundTexture() {
+  const size = 256, canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
+  const context = canvas.getContext('2d'), pixels = context.createImageData(size, size);
+  function noise(u, v, cells, seed) {
+    const px = u * cells, py = v * cells, x = Math.floor(px), y = Math.floor(py);
+    const sx = (px - x) ** 2 * (3 - 2 * (px - x)), sy = (py - y) ** 2 * (3 - 2 * (py - y));
+    const hash = (ix, iy) => {
+      const h = Math.sin((((ix % cells) + cells) % cells + seed) * 127.1 + (((iy % cells) + cells) % cells + seed) * 311.7) * 43758.5453;
+      return (h - Math.floor(h)) * 2 - 1;
+    };
+    const a = hash(x, y), b = hash(x + 1, y), c = hash(x, y + 1), d = hash(x + 1, y + 1);
+    return (a + (b - a) * sx) * (1 - sy) + (c + (d - c) * sx) * sy;
+  }
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+    const u = x / size, v = y / size;
+    const noiseValue = 0.62 * noise(u, v, 8, 1) + 0.28 * noise(u, v, 24, 2) + 0.10 * noise(u, v, 72, 3);
+    const i = (y * size + x) * 4, value = Math.round(220 + noiseValue * 15 + noise(u, v, 192, 4) * 2);
+    pixels.data[i] = value + 2; pixels.data[i + 1] = value; pixels.data[i + 2] = value - 15; pixels.data[i + 3] = 255;
+  }
+  context.putImageData(pixels, 0, 0);
+  const texture = new THREE.CanvasTexture(canvas); texture.encoding = THREE.sRGBEncoding;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping; texture.repeat.set(18, 18);
+  texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return texture;
+}
+(function buildFactoryVignette() {
+  const groundGeometry = new THREE.PlaneGeometry(150, 150, 72, 72);
+  groundGeometry.rotateX(-Math.PI / 2);
+  const groundPositions = groundGeometry.attributes.position;
+  const groundColors = new Float32Array(groundPositions.count * 3);
+  const moss = new THREE.Color(0x59654a).convertSRGBToLinear();
+  const forestFloor = new THREE.Color(0x303a2d).convertSRGBToLinear(), groundColor = new THREE.Color();
+  for (let i = 0; i < groundPositions.count; i++) {
+    const x = groundPositions.getX(i), z = groundPositions.getZ(i);
+    groundPositions.setY(i, -0.11 + Math.sin(x * 0.13) * Math.cos(z * 0.11) * 0.09);
+    const edge = Math.max(0, Math.min(1, (Math.hypot(x, z + 3) - 10) / 42));
+    groundColor.copy(moss).lerp(forestFloor, edge * 0.9);
+    groundColors.set([groundColor.r, groundColor.g, groundColor.b], i * 3);
+  }
+  groundGeometry.setAttribute('color', new THREE.BufferAttribute(groundColors, 3));
+  groundGeometry.computeVertexNormals();
+  factoryGroup.add(new THREE.Mesh(groundGeometry, new THREE.MeshStandardMaterial({ map: groundTexture(), vertexColors: true, roughness: 1 })));
+  buildCampTrees(factoryGroup);
+  buildCabin(factoryGroup, 0, -3.5, 1, true);
+  buildCabin(factoryGroup, -11.0, -10.5, 0.48, false);
+  buildCabin(factoryGroup, 10.8, -11.5, 0.44, false);
+  buildCabin(factoryGroup, 12.2, 5.0, 0.40, false);
+  fBox(factoryGroup, 4.4, 0.12, 1.8, FM.woodDark, -0.4, 1.35, 0.05);
+  fBox(factoryGroup, 4.0, 0.06, 1.65, FM.woodLight, -0.4, 1.45, 0.05);
+  [-2.0, 1.2].forEach(x => [-0.55, 0.65].forEach(z => fLink(factoryGroup, [x, 0.1, z], [x, 1.35, z], 0.08, FM.woodDark)));
+  buildFootMachine(factoryGroup, 0.3, -0.25, 0.9);
+  buildWorker(factoryGroup, -0.8, 0.45, { work: true, seated: true, turn: Math.PI / 2, scale: 0.96, jacket: FM.coat });
+  buildWorker(factoryGroup, 1.5, -1.4, { turn: 0.4, scale: 0.95, jacket: FM.coatAlt });
+  fBox(factoryGroup, 1.2, 0.18, 0.8, FM.cloth, -0.4, 1.57, -0.05, 0.04, 0.1, -0.06);
+  fBox(factoryGroup, 0.86, 0.12, 0.66, FM.dyed, -0.48, 1.72, -0.03, -0.03, -0.06, 0.08);
+  fBox(factoryGroup, 0.48, 0.05, 0.12, FM.cloth, -1.3, 1.56, 0.28, 0, 0.2, 0.08);
+  fBox(factoryGroup, 0.44, 0.045, 0.12, FM.dyed, -1.32, 1.61, 0.28, 0, 0.2, 0.08);
+  buildKettle(factoryGroup, 2.65, 1.58, -0.2);
+  fCylinder(factoryGroup, 0.36, 0.33, 0.38, FM.woodDark, -3.1, 0.2, -0.5, 'y', 12);
+  fBox(factoryGroup, 0.78, 0.44, 0.58, FM.leather, -3.1, 0.64, -0.5, 0.04, -0.16, 0.02);
+  fBox(factoryGroup, 0.34, 0.36, 0.28, FM.iron, -3.1, 0.36, -0.5, 0.02, 0.2, 0);
+  const lamp = new THREE.Group(); lamp.position.set(2.1, 3.25, 0.1); factoryGroup.add(lamp);
+  fLink(lamp, [0, 0.18, 0], [0, -0.25, 0], 0.024, FM.ironWear);
+  fCylinder(lamp, 0.12, 0.16, 0.32, FM.glow, 0, -0.47, 0, 'y', 10);
+  fSphere(lamp, FM.glow, 0, -0.47, 0, 0.14, 0.18, 0.14, 12);
+  const lampLight = new THREE.PointLight(0xffc47b, 1.1, 10, 2); lampLight.position.set(0, -0.45, 0); lamp.add(lampLight);
+  const factoryKeyLight = new THREE.DirectionalLight(0xffd8ad, 0.52);
+  factoryKeyLight.position.set(-4, 7, 8); factoryGroup.add(factoryKeyLight);
+  buildKettle(factoryGroup, -3.3, 1.53, -0.55);
+  fTube(factoryGroup, [[-7, 0.04, 3], [-5, 0.07, 2.4], [-3.8, 0.04, 1.8]], 0.025, FM.woodDark, 6);
+})();
+function mergeFactoryMeshes(root) {
+  root.updateMatrixWorld(true);
+  const batches = new Map(), sourceMeshes = [];
+  root.traverse(object => {
+    if (!object.isMesh || object.isInstancedMesh || Array.isArray(object.material)) return;
+    const source = object.geometry;
+    const geometry = source.index ? source.toNonIndexed() : source.clone();
+    geometry.applyMatrix4(object.matrixWorld);
+    if (!geometry.attributes.normal) geometry.computeVertexNormals();
+    const key = object.material;
+    if (!batches.has(key)) batches.set(key, { positions: [], normals: [], uvs: [], colors: [] });
+    const batch = batches.get(key), pos = geometry.attributes.position, normal = geometry.attributes.normal, uv = geometry.attributes.uv, color = geometry.attributes.color;
+    for (let i = 0; i < pos.count; i++) {
+      batch.positions.push(pos.getX(i), pos.getY(i), pos.getZ(i));
+      batch.normals.push(normal.getX(i), normal.getY(i), normal.getZ(i));
+      if (uv) batch.uvs.push(uv.getX(i), uv.getY(i));
+      if (color) batch.colors.push(color.getX(i), color.getY(i), color.getZ(i));
+    }
+    geometry.dispose(); sourceMeshes.push(object);
+  });
+  for (const [material, batch] of batches) {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(batch.positions, 3));
+    geometry.setAttribute('normal', new THREE.Float32BufferAttribute(batch.normals, 3));
+    if (batch.uvs.length) geometry.setAttribute('uv', new THREE.Float32BufferAttribute(batch.uvs, 2));
+    if (batch.colors.length) geometry.setAttribute('color', new THREE.Float32BufferAttribute(batch.colors, 3));
+    geometry.computeBoundingSphere();
+    root.add(new THREE.Mesh(geometry, material));
+  }
+  sourceMeshes.forEach(mesh => { mesh.parent.remove(mesh); mesh.geometry.dispose(); });
+}
+mergeFactoryMeshes(factoryGroup);
 
 /* ---------- 相机 ---------- */
 let theta = 0.06, phi = 1.18, radius = mobile ? 67 : 74, dragging = false, px = 0, py = 0;
@@ -524,7 +888,7 @@ function pointerGap() {
 }
 function applyCam() {
   phi = Math.max(0.5, Math.min(1.45, phi));
-  radius = Math.max(24, Math.min(170, radius));
+  radius = Math.max(factoryMode ? 10 : 24, Math.min(170, radius));
   const cx = autoPan;
   camera.position.set(cx + Math.sin(theta) * Math.sin(phi) * radius,
     Math.cos(phi) * radius + 6,
@@ -572,7 +936,7 @@ addEventListener('pointermove', e => {
     activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (e.pointerType === 'touch' && activePointers.size >= 2) {
       const gap = pointerGap();
-      if (pinchDistance > 0 && gap > 0) radius = Math.max(22, Math.min(170, radius * pinchDistance / gap));
+      if (pinchDistance > 0 && gap > 0) radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * pinchDistance / gap));
       pinchDistance = gap; pointerOrigin = null; dragging = false; applyCam(); return;
     }
   }
@@ -589,7 +953,7 @@ addEventListener('pointermove', e => {
   tip.style.left = Math.min(e.clientX + 16, innerWidth - 400) + 'px';
   tip.style.top = Math.min(e.clientY + 14, innerHeight - 220) + 'px';
 });
-addEventListener('wheel', e => { stopTour(); radius = Math.max(22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam(); }, { passive: true });
+addEventListener('wheel', e => { stopTour(); radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam(); }, { passive: true });
 applyCam();
 
 /* ---------- 悬停 ---------- */
@@ -629,6 +993,7 @@ function dvBlock(e) {
 }
 let hoverFire = -1, hoverTower = -1, hoverSite = -1;
 function pick() {
+  if (factoryMode) { hoverFire = -1; hoverTower = -1; hoverSite = -1; return; }
   ray.setFromCamera(mouse, camera);
   hoverFire = -1; hoverTower = -1; hoverSite = -1;
   const hf = ray.intersectObject(firePoints, false);
@@ -835,8 +1200,42 @@ function startEmbers() {
     '本库 ' + FIRE_N + ' 条记载中，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
     ' 条有多家来源机构记载。机构数量不代表史源彼此独立；熄灭效果也不表示据点的实际存续时间。');
 }
+function restoreFactoryView() {
+  if (!factoryMode) return;
+  factoryVisibility.forEach((visible, object) => { object.visible = visible; });
+  factoryVisibility.clear();
+  factoryMode = false; factoryGroup.visible = false;
+  document.body.classList.remove('factory-active');
+  scene.background.set(DEFAULT_SKY); scene.fog.color.set(DEFAULT_FOG);
+}
+function focusFactory() {
+  if (factoryMode) { reset(); return; }
+  stopTour();
+  if (mode !== 'calm') reset();
+  hideStory();
+  factoryVisibility.clear();
+  const keep = new Set([amb, moon, warmFill, factoryGroup]);
+  scene.children.forEach(object => {
+    if (keep.has(object)) return;
+    factoryVisibility.set(object, object.visible);
+    object.visible = false;
+  });
+  factoryGroup.visible = true; factoryMode = true; mode = 'factory';
+  document.body.classList.add('factory-active');
+  document.getElementById('b-factory').classList.add('on');
+  document.getElementById('b-factory').setAttribute('aria-pressed', 'true');
+  scene.background.set(0x24332e); scene.fog.color.set(0x33423a); scene.fog.density = 0.009;
+  amb.intensity = 0.82; moon.intensity = 0.62; warmFill.intensity = 0.34;
+  autoPan = 0; autoPanZ = -3.6; targetY = 2.0;
+  theta = 0.16; phi = 1.35; radius = mobile ? 20 : 16;
+  applyCam();
+  setCaption('针线与守望 · 1936—1937',
+    '1936 年 8 月，抗联第三军在小西林河上游密林深处建立被服厂。15 名成员中 13 人为女性，其中 11 人是朝鲜族。厂里只有一台旧日本缝纫机，大多数衣物靠手工缝制；缴获布料用黄菠萝树皮和柞树皮染成黄绿色。1937 年 4 月密营遭告密，人员与物资连夜转移；留守的“小把头”遇袭牺牲，四间木刻楞房屋被焚。',
+    '史料：黑龙江省文化和旅游厅 /《黑龙江日报》 · 人物、院落布局与陈设为合成示意');
+}
 function reset() {
   if (tour.active) stopTour();
+  restoreFactoryView();
   tour.elapsed = 0; tour.stage = -1; tour.goal = null;
   mode = 'calm';
   selectedSource = -1;
@@ -846,7 +1245,8 @@ function reset() {
   panelShown = false;
   wind = 0; snowRate = 1; autoPan = 0; autoPanZ = -4; targetY = 2;
   scene.fog.density = 0.006;
-  amb.intensity = 0.72; moon.intensity = 0.72;
+  amb.intensity = 0.78; moon.intensity = 0.92;
+  warmFill.intensity = 0.24;
   flowMat.opacity = 0.9;
   theta = 0.06; phi = 1.18; radius = mobile ? 67 : 74;
   /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
@@ -867,7 +1267,8 @@ function reset() {
   }
   document.getElementById('panel').classList.remove('on');
   xrCard.visible = false;
-  ['b-storm', 'b-chengbin', 'b-embers'].forEach(id => document.getElementById(id).classList.remove('on'));
+  ['b-storm', 'b-chengbin', 'b-embers', 'b-factory'].forEach(id => document.getElementById(id).classList.remove('on'));
+  document.getElementById('b-factory').setAttribute('aria-pressed', 'false');
   if (!renderer.xr.isPresenting) applyCam();
 }
 let chainLine = null;
@@ -892,7 +1293,7 @@ function showPeopleThread() {
     }
     chainLine = new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineDashedMaterial({ color: 0xe34a43, transparent: true, opacity: 0.9, dashSize: 1.2, gapSize: 0.8 }));
+      new THREE.LineDashedMaterial({ color: 0xc28b67, transparent: true, opacity: 0.82, dashSize: 1.2, gapSize: 0.8 }));
     chainLine.computeLineDistances(); scene.add(chainLine);
     autoPan = (m1.x + m2.x) / 2; autoPanZ = (m1.z + m2.z) / 2;
     targetY = (m1.y + m2.y) / 2; radius = 54; theta = 0.12; phi = 1.1; applyCam();
@@ -928,6 +1329,7 @@ function maybeSettle(now) {
 document.getElementById('b-storm').onclick = () => startStorm();
 document.getElementById('b-chengbin').onclick = showPeopleThread;
 document.getElementById('b-embers').onclick = () => startEmbers();
+document.getElementById('b-factory').onclick = focusFactory;
 document.getElementById('b-reset').onclick = reset;
 document.getElementById('p-close').onclick = reset;
 
@@ -1056,7 +1458,7 @@ function xrCardText(title, summary, quote, source) {
   const c = xrContext;
   c.clearRect(0, 0, 1024, 512);
   c.fillStyle = 'rgba(22,7,12,.95)'; c.fillRect(0, 0, 1024, 512);
-  c.strokeStyle = '#e34a43'; c.lineWidth = 5; c.strokeRect(8, 8, 1008, 496);
+  c.strokeStyle = '#c79a6a'; c.lineWidth = 5; c.strokeRect(8, 8, 1008, 496);
   c.fillStyle = '#e4bd78'; c.font = '600 28px serif'; c.fillText(String(title || '').slice(0, 42), 42, 64);
   c.fillStyle = '#fff0e6'; c.font = '34px serif'; c.fillText(String(summary || '').slice(0, 44), 42, 136);
   c.fillStyle = '#f1c58e'; c.font = '25px serif'; c.fillText(String(quote || '').slice(0, 58), 42, 244);
@@ -1121,7 +1523,7 @@ for (let i = 0; i < 2; i++) {
   const controller = renderer.xr.getController(i);
   const pointer = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -1)]),
-    new THREE.LineBasicMaterial({ color: 0xff554d, transparent: true, opacity: 0.8 })
+    new THREE.LineBasicMaterial({ color: 0xd6c49a, transparent: true, opacity: 0.8 })
   );
   pointer.scale.z = 75; pointer.frustumCulled = false;
   controller.add(pointer);
@@ -1237,7 +1639,8 @@ function loop() {
     ? (document.body.classList.contains('story-active')
       ? '剧情 ' + String(Math.max(0, tour.stage) + 1).padStart(2, '0') + ' / 08 · ' + (tour.active ? '实时推进' : '可选章节继续浏览')
       : '灯火 ' + FIRE_N + ' · 烽燧 ' + towers.length + ' · 遗址 ' + siteMeshes.length + '（经纬投影） · 流光 ' + flowN)
-    : (mode === 'embers' ? '余烬：1941 后的火，和仍然亮着的证据'
+    : (mode === 'factory' ? '被服厂复合视觉示意 · 史料交互场景'
+      : mode === 'embers' ? '余烬：1941 后的火，和仍然亮着的证据'
       : mode === 'people' ? '人物脉络：虚线并置，不参与支撑关系与熄灭计算'
         : '风雪中的雪原：幸存灯火 ' + aliveN + ' / ' + FIRE_N);
   if (stat.textContent !== statusText) stat.textContent = statusText;
