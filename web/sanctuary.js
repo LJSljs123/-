@@ -1932,10 +1932,27 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
+/* P2-20：页面隐藏即暂停。故事时钟基于 performance.now，
+   切后台期间仍在走，不暂停的话回来会直接跳过好几幕。 */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) return;
+  if (tour.active) stopTour();
+  if (factoryTour.active) stopFactoryTour();
+});
+
 /* 直达某一幕：sanctuary.html?factory=1&chapter=7
    用途：截图验收（第七幕必须是空台）、答辩时按需跳段，不必逐幕点。 */
 (function deepLink() {
   const q = new URLSearchParams(location.search);
+  const mode = q.get('mode');
+  // ?mode=storm|chengbin|embers —— 截图与答辩直达某一展示状态
+  if (mode && ['storm', 'chengbin', 'embers'].includes(mode)) {
+    setTimeout(() => {
+      const btn = document.getElementById('b-' + mode);
+      if (btn) btn.click();
+    }, 500);
+    return;
+  }
   if (q.get('factory') !== '1' && !q.get('chapter')) return;
   const n = Math.max(1, Math.min(FACTORY_CHAPTERS.length,
     parseInt(q.get('chapter') || '1', 10) || 1));

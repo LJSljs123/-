@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>密营 · 燎原 — 作品说明</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: #1a1a1a; background: #fff;
+    font-family: "Source Han Serif SC", "Songti SC", SimSun, serif;
+    font-size: 10.5pt; line-height: 1.85;
+  }
+  h1, h2, h3 { font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; }
+  h1 { font-size: 22pt; margin: 0 0 6mm; letter-spacing: .04em; }
+  h2 { font-size: 14pt; margin: 9mm 0 3mm; padding-bottom: 2mm;
+       border-bottom: 1px solid #d8cfc0; letter-spacing: .06em; }
+  h3 { font-size: 11.5pt; margin: 6mm 0 2mm; color: #333; }
+  p { margin: 0 0 3mm; text-align: justify; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.6mm; }
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; }
+  th, td { border: 1px solid #d8cfc0; padding: 2.2mm 2.6mm; text-align: left; vertical-align: top; }
+  th { background: #f4f1ea; font-weight: 600; font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: #f4f1ea; padding: .4mm 1.2mm; }
+  .cover { height: 240mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+  .cover .kicker { font-family: Consolas, monospace; font-size: 9pt; letter-spacing: .3em; color: #8a6d3b; margin-bottom: 8mm; }
+  .cover .sub { font-size: 12pt; color: #555; margin-top: 4mm; letter-spacing: .1em; }
+  .cover .meta { margin-top: 40mm; font-size: 9.5pt; color: #666; line-height: 2.1; }
+  .lead { font-size: 11pt; color: #2b2b2b; border-left: 3px solid #8a6d3b; padding-left: 4mm; margin: 4mm 0 6mm; }
+  .note { font-size: 9pt; color: #666; background: #f8f6f1; padding: 3mm 4mm; border-left: 2px solid #d8cfc0; margin: 3mm 0 5mm; }
+  .page-break { page-break-before: always; }
+  .refs p { font-size: 9pt; text-indent: -6mm; padding-left: 6mm; margin-bottom: 2mm; line-height: 1.7; }
+  .kv { font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; font-size: 9.5pt; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="kicker">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛</div>
+  <h1>密营 · 燎原</h1>
+  <div class="sub">以抗联第三军被服厂为核心的互动纪念展演</div>
+  <div class="sub" style="font-size:10.5pt;color:#777;">红色之旅 · 追梦铸魂</div>
+  <div class="meta">
+    作品说明<br>
+    版本：2026-10-18<br>
+    形态：纯静态 Web（2D 证据结构 / 卷宗 / 3D 与 WebXR）<br>
+    数据：66 条记载 · 33 家来源机构 · 13 个灯下案
+  </div>
+</div>
+
+<h2>一、一句话与三句话</h2>
+<p class="lead">一句话：<strong>审的是记载，不是历史。</strong></p>
+<p>三句话：一座藏在林海里的被服厂，用一针一线支撑了前线；它被发现、被焚毁，只留下一处空下来的工作台；我们把每一句关于它的话，都接回能查的出处上。</p>
+<p>观众先看完 88 秒的故事，再沿同一件事打开原文——看清哪些是记载、哪些是设计、哪些还没有答案。核查本身，就是纪念的方式。</p>
+
+<h2>二、要解决的问题</h2>
+<p>红色展陈长期在展示结论：抗联苦战十四年、杨靖宇壮烈殉国。这些结论成立，但支撑它们的推理链条通常被藏在展板背后。历史学的工作是「证据 → 推断 → 结论」，展陈往往只给最后一步。</p>
+<p>数字人文项目常见另一种偏差：把「我检索过」写成「史料如此」，把「几家转引」算成「多方互证」。作品要处理的就是这两件事——把中间两步摊开，并把「不知道」当作一等公民。</p>
+<p>被服厂是一个合适的切口：它足够具体（15 人、一台旧缝纫机、树皮染布），又有完整的因果链（建立 → 生产 → 告密 → 转移 → 留守者牺牲 → 遗址复建），并且公开材料足以支撑一条可核查的叙事。</p>
+
+<h2>三、观众看到什么</h2>
+<table>
+  <tr><th style="width:22%">入口</th><th style="width:34%">内容</th><th>观众要完成的事</th></tr>
+  <tr><td>《针线与守望》<br>88 秒 / 8 幕</td><td>被服厂的建立、15 名成员、唯一一台缝纫机、树皮染布、联席会议、告密与转移、留守者牺牲与房屋焚毁、遗址保护</td><td>看懂「供给劳动」与「抗日斗争」的关系；每幕可展开该幕的主张与逐字引文</td></tr>
+  <tr><td>2D 承重结构</td><td>66 条记载 × 33 家来源机构的支撑关系；点掉一家机构，看哪些记录随之失去可用来源</td><td>理解「一条记载由谁支撑」；抽离后能分清失去的是日期、地点还是数值</td></tr>
+  <tr><td>卷宗（13 案）</td><td>拆解 → 辑录 → 对勘 → 存疑四段轨迹；8 案库内记载相合、4 案分歧、1 案孤证</td><td>看到推理过程与结案状态；理解「记载相合」不等于「可以定谳」</td></tr>
+  <tr><td>3D / WebXR</td><td>雪原灯火（66 座）、来源烽燧（33 座）、遗址坐标锚点（34 处）、风雪试验、余烬导览</td><td>把承重结构变成可走进去的空间；头显可用手柄查看证据卡</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h2>四、核心机制：证据链与边界</h2>
+<h3>4.1 四层结构</h3>
+<p class="kv">文档 → 原文片段 → 原子主张 → 章节 / 卷宗 / 图形</p>
+<p>每层有稳定 ID，显示名不作外键。主故事的 8 章 10 条主张写在 <code>data/curated/story_claims.json</code>，每条带逐字引文与「记载 / 设计」边界；构建脚本校验引文能否在存档原文中逐字定位，不通过则构建失败。</p>
+
+<h3>4.2 日期支持关系按精度计算</h3>
+<p>一条记载被多家来源支撑，不等于每家都支持它的日期。作品对每条来源逐条判定六种状态：未载、明确相合、范围相容、范围不符、互斥、另一动作；另设「考订说明」（引文里出现的是被考订的错误值）与「起始年表述」两类豁免。</p>
+<p>例：东北抗联教导旅成立一案，库内 5 条来源中只有 2 家明确记到「8 月」，2 家记的是「编成/改编」（与本条主张的「成立」不是同一动作），1 家未载。因此该案标注为「8 月（主张精度：月）→ 仅 2 家明确相合」，而不是「来源记载相合」。</p>
+
+<h3>4.3 月精度不冒充日</h3>
+<p>原文只写「6 月」时，系统不会补成「6 月 1 日」再与「7 月 12 日」算相差 41 天。两个日期精度不同时，结论是「不可比（精度不同）」——先对齐精度，再谈差多少。</p>
+
+<h3>4.4 数值裁决链</h3>
+<p>两组兵力分歧（抗联鼎盛 3 万 / 4.5 万；义勇军 30 万 / 50 万）给出裁决：采哪一口径、依据是什么、另一说如何处置、什么条件下可推翻。裁决状态分「已核」与「待核验编辑假说」——没有原文定位的口径解释被隔离为假说，不得当作事实陈述。</p>
+
+<h2>五、数据与统计口径</h2>
+<table>
+  <tr><th style="width:38%">指标</th><th style="width:20%">当前值</th><th>口径</th></tr>
+  <tr><td>事件记载</td><td>66 条</td><td>1931–1945，事件库记录</td></tr>
+  <tr><td>来源机构</td><td>33 家</td><td>按机构名归并，不按书名全串归并</td></tr>
+  <tr><td>两家以上机构记载</td><td>55 条（83%）</td><td>不等于独立史源互证</td></tr>
+  <tr><td>单一机构记载</td><td>11 条（17%）</td><td>页面明示「库内仅此一处记载」</td></tr>
+  <tr><td>A 类一手档案支撑</td><td>0 / 66</td><td>当前数据集的主要证据缺口，在关键位置可见</td></tr>
+  <tr><td>检索覆盖</td><td>深查 47 / 浅查 19 / 未查 0</td><td>每条记载都有检索记录</td></tr>
+  <tr><td>存档快照</td><td>39 条（35 份可读）</td><td>HTML + 纯文本 + 抓取时间 + SHA256</td></tr>
+  <tr><td>灯下案</td><td>13 案</td><td>8 库内记载相合 / 4 分歧 / 1 孤证；相合不等于定谳</td></tr>
+  <tr><td>校验问题</td><td>0</td><td><code>src/conflicts.py</code> 全库校验</td></tr>
+</table>
+<div class="note">「多机构记载」只说明本库收录结构，不构成来源独立性判断。同一本书的不同转引版本被归并到同一机构，避免一票算两票。</div>
+
+<div class="page-break"></div>
+<h2>六、技术实现</h2>
+<h3>6.1 形态与构建</h3>
+<p>纯静态前端，无框架、无后端、运行时不调用大模型 API。数据管线为 Python 离线脚本：</p>
+<p><code>events.json → conflicts.py → build_cases.py → build_structures.py → build_web.py</code>，另有 <code>build_story.py</code> 生成主故事主张集。</p>
+<p>所有指标由脚本计算后注入页面，不手填；构建产物为 <code>web/data.js</code>、<code>web/structures.js</code>、<code>web/cases.js</code>、<code>web/story.js</code>。</p>
+
+<h3>6.2 3D 与 WebXR</h3>
+<ul>
+  <li>Three.js r150（MIT，库文件随附许可头），66 座灯火与 33 座烽燧使用实例化渲染；流光粒子 284 条。</li>
+  <li>场景状态与字幕同源：第 6 幕物资已转移、第 7 幕人物与布料移出画面（<code>scene{workers, props}</code>），画面状态可用 <code>body[data-scene-workers]</code> 断言。</li>
+  <li>WebXR：双目渲染、手柄指向选取、地面瞬移、世界空间证据卡；未用实体头显验收前不宣称真机效果。</li>
+  <li>章节深链 <code>?factory=1&amp;chapter=7</code>，答辩可按需跳段。</li>
+</ul>
+
+<h3>6.3 可访问性</h3>
+<ul>
+  <li>2D 画布按内容包围盒动态计算（2124px），33 家来源与 66 条记载全部可达；提供「适应宽度 / 原尺寸」切换。</li>
+  <li>悬停只做预览；点击或 Enter 打开固定详情，出处链接可点，Escape 关闭并还焦。</li>
+  <li>手机端正文卡改底部抽屉、正文折叠 3 行可展开；概念图手机默认收起。</li>
+  <li>尊重 <code>prefers-reduced-motion</code>：减少动态效果时不自动运镜，保留字幕与逐幕亮灯。</li>
+</ul>
+
+<h2>七、原创贡献与学生工作</h2>
+<p>本作品的原创性不在「用了什么技术」，而在<strong>把核查机制做成了可看、可点、可回放的产品结构</strong>：</p>
+<ol>
+  <li><strong>证据模型</strong>：文档 → 引文 → 原子主张 → 章节/卷宗/图形四层，配稳定 ID 与边界标注（记载 / 设计 / 假说）。</li>
+  <li><strong>逐精度比对规则</strong>：六态日期支持判定 + 两类豁免，解决「一家到日、几家到月被判成共识」的常见错误。</li>
+  <li><strong>可审计的负证据</strong>：检索记录附原始页面快照与哈希，评委可点开核对抓取时刻的页面。</li>
+  <li><strong>叙事与证据同源</strong>：主故事每幕的主张、引文、视觉边界写在同一份 JSON，3D 不硬编码正文。</li>
+  <li><strong>空间化的承重结构</strong>：抽离来源后熄灭多少灯火由支撑关系实时计算，不是预设动画。</li>
+</ol>
+<p>具体分工：策划与叙事结构、数据模型与统计口径、规则脚本、前端与 3D 场景整合、验收标准由学生完成；AI 辅助检索比对、代码编写与概念图生成，逐项记录于《AI 使用说明》。</p>
+
+<h2>八、研究局限</h2>
+<ul>
+  <li><strong>无一手档案</strong>：66 条记载全部来自公开二手材料，A 类档案为 0。作品能证明「库内记载如何相合或分歧」，不能证明「历史事实如此」。</li>
+  <li><strong>来源独立性未判定</strong>：多家机构可能转引同一底本；本库只按机构归并计数，不做谱系考证。</li>
+  <li><strong>3D 为合成示意</strong>：程序化场景不是遗址扫描；房屋间数、院落布局、机器形制均标注为设计选型。</li>
+  <li><strong>读速与理解未做真人验证</strong>：88 秒 8 幕的阅读负荷需真实观众测试，当前只有设计判断。</li>
+  <li><strong>性能未做真机实测</strong>：中端核显与手机的帧率、头显的舒适度均待实测，现有结论仅来自桌面浏览器。</li>
+</ul>
+
+<div class="page-break"></div>
+<h2>九、引用与来源</h2>
+<div class="refs">
+  <p>[1] 黑龙江省文化和旅游厅. 抗联三军被服厂密营 密林深处的供给基地[EB/OL]. (2025-08-19)[2026-10-18]. https://wlt.hlj.gov.cn/wlt/c114274/202508/c00_31866464.shtml.</p>
+  <p>[2] 孔令波. 东北抗日联军人数考[J]. 军事历史, 1986(4).</p>
+  <p>[3] 中国人民解放军国防部. 童长荣[EB/OL]. [2026-10-18]. https://www.mod.gov.cn/.</p>
+  <p>[4] 抗日战争纪念网. 东北抗联大事记（1931—1945）[EB/OL]. [2026-10-18]. https://www.krzzjn.com/.</p>
+  <p>[5] 中国军网. 不熄的火种——东北抗联教导旅组建始末[EB/OL]. (2020-08-18)[2026-10-18]. http://www.81.cn/.</p>
+  <p>[6] 辽宁日报. 大事记[N/OL]. (2025-09-18)[2026-10-18]. https://epaper.lnd.com.cn/.</p>
+  <p>[7] 国家图书馆. 抗联简史[EB/OL]. 抗战胜利 80 周年专题. [2026-10-18]. http://www.nlc.cn/.</p>
+  <p>[8] 中央纪委国家监委网站. 八女投江[EB/OL]. (2018-11-09)[2026-10-18]. https://www.ccdi.gov.cn/.</p>
+  <p>[9] 新华社. 八女投江：乌斯浑河畔的青春绝唱[EB/OL]. (2025-09-04)[2026-10-18]. https://www.news.cn/.</p>
+  <p>[10] Three.js. r150[CP/OL]. MIT License. https://threejs.org/.</p>
+</div>
+<div class="note">完整来源清单（33 家机构、66 条记载逐条引文）见仓库 <code>data/curated/events.json</code> 与 <code>data/probe_archive/manifest.json</code>；每条引文均可在本地快照中逐字定位。</div>
+
+<h2>十、复核方式</h2>
+<p>在干净目录下依次运行：</p>
+<p><code>python src/conflicts.py data/curated/events.json -o data/curated/conflicts.json</code><br>
+<code>python src/build_cases.py</code><br>
+<code>python src/build_structures.py</code><br>
+<code>python src/build_web.py data/curated/events.json data/curated/conflicts.json</code><br>
+<code>python src/build_story.py</code><br>
+<code>python src/verify_quotes.py</code></p>
+<p>期望结果：66 条事件、33 家机构、校验问题 0、主故事 10 条主张引文全部可对照。随后直接打开 <code>web/index.html</code>、<code>web/dossier.html</code>、<code>web/sanctuary.html</code>。</p>
+
+<h2>十一、结语</h2>
+<p>这座被服厂没有留下照片。我们知道的，是 15 个人、一台旧机器、树皮染出的黄绿色，和一间被烧掉的房子。</p>
+<p>作品不替这些记载下结论，只把它们摊开：哪一句有出处，哪一句是推测，哪一句还没有答案。然后，把那个空下来的工作台留在画面里。</p>
+<p style="margin-top:8mm;font-size:11pt;letter-spacing:.08em;"><strong>核查，是纪念的一种方式。</strong></p>
+
+</body>
+</html>

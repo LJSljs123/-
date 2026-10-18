@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -49,6 +50,33 @@ def short_src(s: str) -> str:
     if head in SHORT_OVERRIDE:
         return SHORT_OVERRIDE[head]
     return head or s[:18]
+
+
+# P1-09：来源 → 原子主张的关联。
+# 覆盖图原来只表示「这条来源支撑这条记录」，但一条来源可能只支持年份、
+# 不支持地点（教导旅「北野营」就是这类）。这里逐条判断引文实际包含哪类信息，
+# 抽离来源时才能分开说「失去日期支撑」还是「失去地点支撑」。
+DATE_RE = re.compile(r"\d{4}\s*年|\d{1,2}\s*月")
+MEASURE_RE = re.compile(r"万人|余人|人数|兵力|\d+\s*名|\d+\s*人")
+PLACE_SUFFIX_RE = re.compile(r"[县镇村沟河山营屯岛堡]")
+
+
+def claim_fields(quote: str, event: dict) -> list[str]:
+    """引文里实际出现了哪几类信息：date / place / measure。"""
+    q = str(quote or "")
+    out = []
+    if DATE_RE.search(q):
+        out.append("date")
+    p = event.get("place") or {}
+    names = [p.get("modern") or "", p.get("name") or ""]
+    hit_place = any(n and len(n) >= 2 and n[:2] in q for n in names)
+    if not hit_place and PLACE_SUFFIX_RE.search(q):
+        hit_place = True
+    if hit_place:
+        out.append("place")
+    if MEASURE_RE.search(q):
+        out.append("measure")
+    return out
 
 
 def _prov_summary(prov: dict) -> dict:
@@ -110,7 +138,15 @@ def main() -> int:
                 keys.append(k)
         d = e.get("date") or {}
         p = e.get("place") or {}
+        # 分项支撑：哪些来源的引文里真的出现了日期/地点/数值
+        field_support = {"date": [], "place": [], "measure": []}
+        for s in e.get("sources", []):
+            k = short_src(s.get("book"))
+            for f in claim_fields(s.get("quote") or "", e):
+                if k and k not in field_support[f]:
+                    field_support[f].append(k)
         conclusions.append({
+            "field_support": field_support,
             "id": e["id"],
             "claim": e.get("summary") or e["id"],
             "year": int(str(d.get("start"))[:4] or 0),

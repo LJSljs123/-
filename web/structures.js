@@ -674,6 +674,14 @@ window.__MIYING_STRUCT__ = {
  ],
  "conclusions": [
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1931_mgzsw_xuanyan",
    "claim": "中共满洲省委发表宣言，指出日本帝国主义武装占领满洲。",
    "year": 1931,
@@ -725,6 +733,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1931_beiping_jiuguohui",
    "claim": "东北民众抗日救国会在北平成立。",
    "year": 1931,
@@ -766,6 +783,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1931_jinzhou_huangxiansheng",
    "claim": "黄显声在锦州组织抗日武装，开始编组东北民众自卫义勇军。",
    "year": 1931,
@@ -808,6 +834,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1931_jiangqiao_kangzhan",
    "claim": "江桥抗战爆发，马占山率部在嫩江桥阻击日军，至11月18日撤退。",
    "year": 1931,
@@ -862,6 +899,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1931_gelin_gaibian",
    "claim": "各地绿林武装、大刀会等纷纷改编为抗日义勇军。",
    "year": 1931,
@@ -901,6 +945,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_jinxi_gujia",
    "claim": "锦西义勇军击毙日军联队长古贺传太郎。",
    "year": 1932,
@@ -953,6 +1008,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_wangdelin_jiuguojun",
    "claim": "王德林在吉林成立中国国民救国军。",
    "year": 1932,
@@ -1006,6 +1072,21 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "黑龙江省文化和旅游厅",
+     "东北烈士纪念馆馆藏说明",
+     "黑龙江省档案馆"
+    ],
+    "place": [
+     "黑龙江省文化和旅游厅",
+     "黑龙江省档案馆"
+    ],
+    "measure": [
+     "黑龙江省文化和旅游厅"
+    ]
+   },
    "id": "evt_1932_mgzsw_gaoshu",
    "claim": "中共满洲省委发表《告满洲各地义勇军书》。",
    "year": 1932,
@@ -1079,6 +1160,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_huanren_tangjuwu",
    "claim": "唐聚五在桓仁成立辽宁民众自卫军。",
    "year": 1932,
@@ -1133,6 +1225,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1932_junqu_gaibian",
    "claim": "辽宁、热边、蒙边和吉林南部地区义勇军被统一改编为5个军区。",
    "year": 1932,
@@ -1174,6 +1273,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_rehe_baoweizhan",
    "claim": "热河保卫战爆发。",
    "year": 1933,
@@ -1214,6 +1322,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_changcheng_kangzhan",
    "claim": "长城抗战爆发。",
    "year": 1933,
@@ -1254,6 +1371,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "察哈尔抗战遗址展陈"
+    ],
+    "place": [
+     "辽宁日报",
+     "察哈尔抗战遗址展陈"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_duolun_shoufu",
    "claim": "抗日同盟军收复多伦等地。",
    "year": 1933,
@@ -1306,6 +1434,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "中央档案馆"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1933_mgzsw_gaominzhong",
    "claim": "中共满洲省委发表《为反对日本强盗围剿东北义勇军告东北民众书》。",
    "year": 1933,
@@ -1368,6 +1504,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1934_yangjingyu_zongzhihuibu",
    "claim": "杨靖宇成立东北抗日联合军总指挥部，收编多支义勇军。",
    "year": 1934,
@@ -1420,6 +1566,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1934_gaoxingya_xisheng",
    "claim": "辽宁救国军旅长高兴亚牺牲。",
    "year": 1934,
@@ -1462,6 +1615,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "央视网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1934_dengtiemei_beibu",
    "claim": "东北民众自卫军司令邓铁梅被捕，9月牺牲。",
    "year": 1934,
@@ -1526,6 +1687,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1934_zhaoshangzhi_hadong",
    "claim": "赵尚志成立东北反日游击队哈东支队。",
    "year": 1934,
@@ -1579,6 +1748,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1934_huanren_shoubian",
    "claim": "杨靖宇在桓仁收编山林队，扩大抗日武装力量。",
    "year": 1934,
@@ -1622,6 +1800,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1934_diyijun_chengli",
    "claim": "东北人民革命军第一军成立。",
    "year": 1934,
@@ -1672,6 +1858,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [],
+    "place": [],
+    "measure": [
+     "辽宁日报"
+    ]
+   },
    "id": "evt_1934_yiyongjun_yubu",
    "claim": "东北抗日义勇军余部十余万人仍在坚持战斗。",
    "year": 1934,
@@ -1712,6 +1905,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1935_disanjun_chengli",
    "claim": "东北反日游击队哈东支队改编为东北人民革命军第三军。",
    "year": 1935,
@@ -1764,6 +1967,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1935_diwujun_chengli",
    "claim": "绥宁反日同盟军正式改编为东北反日联合军第五军。",
    "year": 1935,
@@ -1814,6 +2025,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1935_bayi_xuanyan",
    "claim": "中共中央草拟《八一宣言》，号召一致抗日。",
    "year": 1935,
@@ -1864,6 +2083,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "本溪县人民政府“铭记历史 缅怀先烈”专栏"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1936_tongyi_jianzhi",
    "claim": "《东北抗日联军统一军队建制宣言》发表。",
    "year": 1936,
@@ -1925,6 +2152,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1936_gejun_chengli",
    "claim": "东北抗日联军各军陆续成立，收编大量抗日义勇军余部。",
    "year": 1936,
@@ -1975,6 +2211,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1937_youjizhan",
    "claim": "东北抗联各部在东北坚持游击战，配合全国抗战。",
    "year": 1937,
@@ -2025,6 +2268,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1938_liujie_zhidian",
    "claim": "中共六届六中全会致电慰问东北抗日联军和义勇军。",
    "year": 1938,
@@ -2075,6 +2325,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1939_nanman_huiyi",
    "claim": "中共南满省委和第一路军主要领导干部会议召开，决定化整为零、分散游击。",
    "year": 1939,
@@ -2125,6 +2384,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "measure": []
+   },
    "id": "evt_1940_yangjingyu_xunguo",
    "claim": "东北抗联第一路军总司令兼政委杨靖宇壮烈殉国。",
    "year": 1940,
@@ -2190,6 +2461,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1941_wangyachen_xisheng",
    "claim": "东北抗联第十军军长汪雅臣、副军长张忠喜牺牲。",
    "year": 1941,
@@ -2243,6 +2523,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": [
+     "抗战纪念网"
+    ]
+   },
    "id": "evt_1941_zhaoshangzhi_xiaobudui",
    "claim": "赵尚志率小部队在萝北、汤原、鹤立一带活动。",
    "year": 1941,
@@ -2295,6 +2587,21 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "抗战纪念网",
+     "赵尚志馆",
+     "南京大屠杀馆"
+    ],
+    "place": [
+     "抗战纪念网",
+     "赵尚志馆"
+    ],
+    "measure": [
+     "南京大屠杀馆"
+    ]
+   },
    "id": "evt_1942_zhaoshangzhi_xisheng",
    "claim": "东北抗联第二路军副总指挥赵尚志身负重伤牺牲。",
    "year": 1942,
@@ -2371,6 +2678,21 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报",
+     "彭施鲁",
+     "国图",
+     "抗战纪念网"
+    ],
+    "place": [
+     "辽宁日报",
+     "彭施鲁",
+     "国图",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1942_jiaodaolv_chengli",
    "claim": "东北抗日联军教导旅在北野营正式成立。",
    "year": 1942,
@@ -2456,6 +2778,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报"
+    ],
+    "measure": []
+   },
    "id": "evt_1943_hulin_raohe",
    "claim": "教导旅派小部队到虎林、饶河县开展抗日活动。",
    "year": 1943,
@@ -2495,6 +2826,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [
+     "辽宁日报",
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1944_yanxi",
    "claim": "教导旅在野营驻地附近进行实战军事演习。",
    "year": 1944,
@@ -2545,6 +2886,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "辽宁日报"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1945_riben_touxiang",
    "claim": "日本宣布无条件投降。",
    "year": 1945,
@@ -2593,6 +2941,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [],
+    "place": [
+     "人民日报",
+     "国图"
+    ],
+    "measure": [
+     "人民日报",
+     "国图"
+    ]
+   },
    "id": "evt_1936_kanglian_dingsheng",
    "claim": "东北抗日联军编成11个军，进入鼎盛时期，活动范围遍及东南满、吉东、北满70余县。",
    "year": 1936,
@@ -2659,6 +3018,21 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "莆田博物馆",
+     "国图"
+    ],
+    "place": [
+     "莆田博物馆",
+     "国图"
+    ],
+    "measure": [
+     "抗战纪念网",
+     "莆田博物馆",
+     "国图"
+    ]
+   },
    "id": "evt_1932_yiyongjun_dingsheng",
    "claim": "东北抗日义勇军进入鼎盛时期，总人数达到历史最高。",
    "year": 1932,
@@ -2742,6 +3116,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "人民网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1931_zgzy_jueyi",
    "claim": "中共中央作出《关于日本帝国主义强占满洲的决议》，这是九一八事变后中共中央最早的系统性决议之一。",
    "year": 1931,
@@ -2793,6 +3174,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "中国军网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "measure": []
+   },
    "id": "evt_1931_dengtiemei_ziweijun",
    "claim": "邓铁梅在凤城小汤沟建立东北民众自卫军，为东北民众自发抗日的代表性起点。",
    "year": 1931,
@@ -2844,6 +3235,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "团结网",
+     "抗战纪念网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1932_jilin_ziweijun",
    "claim": "以李杜为总司令的吉林自卫军成立，成为吉林抗日武装的主力。",
    "year": 1932,
@@ -2905,6 +3304,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "团结网"
+    ],
+    "place": [],
+    "measure": [
+     "团结网"
+    ]
+   },
    "id": "evt_1932_haerbin_shishou",
    "claim": "哈尔滨失守，吉林自卫军外围作战失败。",
    "year": 1932,
@@ -2956,6 +3364,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "人民网-中国共产党新闻网"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1932_weiman_chengli",
    "claim": "伪满洲国成立，傀儡政权发表“建国宣言”，东北沦陷进入新阶段。",
    "year": 1932,
@@ -3007,6 +3422,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "团结网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "团结网"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_qiangfeng_fujji",
    "claim": "李延禄率救国军补充团在宁安县墙缝一带伏击日军上田支队，为镜泊湖连环战的首役。",
    "year": 1932,
@@ -3058,6 +3483,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "吉林省地方志编纂委员会"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_panshi_yiyongjun",
    "claim": "在中共磐石中心县委领导下，磐石工农反日义勇军正式成立，为南满游击队的基干。",
    "year": 1932,
@@ -3109,6 +3543,14 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国防部",
+     "贵州省国防动员办公室"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1932_bayan_youjidui",
    "claim": "巴彦游击队（东北工农义勇军江北骑兵独立师）正式成立，张甲洲任总指挥；赵尚志后到该部工作。",
    "year": 1932,
@@ -3171,6 +3613,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "抚顺平顶山惨案纪念馆"
+    ],
+    "place": [
+     "抗战纪念网",
+     "抚顺平顶山惨案纪念馆"
+    ],
+    "measure": [
+     "抗战纪念网"
+    ]
+   },
    "id": "evt_1932_pingdingshan",
    "claim": "日军驻抚顺守备队、宪兵队制造平顶山惨案，屠杀和平居民3000余人。",
    "year": 1932,
@@ -3230,6 +3684,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "百家号"
+    ],
+    "place": [
+     "吉林省地方志编纂委员会"
+    ],
+    "measure": []
+   },
    "id": "evt_1932_yangjingyu_panshi",
    "claim": "中共满洲省委派杨靖宇到南满磐石巡视工作，将磐石游击队改编为中国工农红军第三十二军南满游击总队。",
    "year": 1932,
@@ -3294,6 +3757,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国防部"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1933_126_zhishixin",
    "claim": "中共驻共产国际代表团发出《一·二六指示信》，提出与各种抗日武装建立统一战线，是东北抗日策略的转折点。",
    "year": 1933,
@@ -3345,6 +3815,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_yitianuzhu",
    "claim": "日军间岛辎重队日共党员伊田助男以汽车载十万发子弹送交反日游击队，未找到游击队后留下遗书自尽。",
    "year": 1933,
@@ -3403,6 +3880,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "百家号"
+    ],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_dyj_dulishi",
    "claim": "南满游击队在磐石玻璃河套改编为东北人民革命军第一军独立师，杨靖宇任师长兼政委。",
    "year": 1933,
@@ -3456,6 +3942,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "人民网-党史频道"
+    ],
+    "place": [
+     "抗战纪念网",
+     "人民网-党史频道"
+    ],
+    "measure": []
+   },
    "id": "evt_1933_zhuhe_youjidui",
    "claim": "珠河东北反日游击队在中东路南三股流宣告成立，赵尚志任队长，为第三军的前身。",
    "year": 1933,
@@ -3509,6 +4005,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "中国军网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "measure": []
+   },
    "id": "evt_1934_tulongshan",
    "claim": "依兰土龙山农民反抗日伪缴枪收地举行暴动，击毙日军联队长饭冢朝吾大佐，随后整编为东北民众救国军（谢文东为总司令）。",
    "year": 1934,
@@ -3568,6 +4074,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国防部",
+     "杨靖宇烈士陵园暨东北抗日联军纪念馆"
+    ],
+    "place": [
+     "抗战纪念网",
+     "国防部",
+     "杨靖宇烈士陵园暨东北抗日联军纪念馆"
+    ],
+    "measure": []
+   },
    "id": "evt_1934_tongzhangrong_xisheng",
    "claim": "中共东满特委书记童长荣率队在汪清十里坪庙沟附近与日伪军激战，壮烈牺牲。",
    "year": 1934,
@@ -3632,6 +4150,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "吉林省纪委监委网站",
+     "杨靖宇烈士陵园暨东北抗日联军纪念馆"
+    ],
+    "place": [
+     "杨靖宇烈士陵园暨东北抗日联军纪念馆"
+    ],
+    "measure": []
+   },
    "id": "evt_1935_lihongguang_xisheng",
    "claim": "第一军第一师师长李红光在兴京与日军交战中负重伤，次日牺牲。",
    "year": 1935,
@@ -3696,6 +4224,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国图"
+    ],
+    "place": [],
+    "measure": []
+   },
    "id": "evt_1935_dierjun_chengli",
    "claim": "东北人民革命军第二军发表成立宣言，王德泰任军长，魏拯民任政治委员。",
    "year": 1935,
@@ -3750,6 +4285,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "抗战纪念网",
+     "退役军人事务部",
+     "共产党员网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "共产党员网"
+    ],
+    "measure": []
+   },
    "id": "evt_1935_zhao_yiman",
    "claim": "第三军二团政治部主任赵一曼在战斗中身负重伤被俘，1936年8月2日英勇就义。",
    "year": 1935,
@@ -3814,6 +4361,17 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "place": [
+     "抗战纪念网",
+     "中国军网"
+    ],
+    "measure": []
+   },
    "id": "evt_1936_yijun_xizheng",
    "claim": "第一军第一师自和尚帽子出发向辽西远征，7月15日在本溪摩天岭与日军激战获胜，师参谋长李敏焕牺牲；西征部队后为敌所阻陆续回师。",
    "year": 1936,
@@ -3865,6 +4423,15 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国防部"
+    ],
+    "place": [
+     "国防部"
+    ],
+    "measure": []
+   },
    "id": "evt_1936_xiayunjie_xisheng",
    "claim": "第六军军长夏云杰率队在汤原西北活动时遭敌伏击身受重伤，26日牺牲。",
    "year": 1936,
@@ -3918,6 +4485,16 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "国图"
+    ],
+    "place": [
+     "抗战纪念网",
+     "国图"
+    ],
+    "measure": []
+   },
    "id": "evt_1936_wangdetai_xisheng",
    "claim": "第二军军长王德泰率军部及第四师一部在濛江县小汤河活动时遭敌袭击，壮烈牺牲，魏拯民继任军长。",
    "year": 1936,
@@ -3983,6 +4560,13 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [],
+    "place": [
+     "抗战纪念网"
+    ],
+    "measure": []
+   },
    "id": "evt_1937_songtieyan_xisheng",
    "claim": "第一军第一师建立在本溪县和尚帽子的密营遭日伪军包围，战斗中一军政治部主任宋铁岩壮烈牺牲。",
    "year": 1937,
@@ -4036,6 +4620,19 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "北安市人民政府",
+     "百家号"
+    ],
+    "place": [
+     "北安市人民政府",
+     "百家号"
+    ],
+    "measure": [
+     "百家号"
+    ]
+   },
    "id": "evt_1937_bingtangzi",
    "claim": "赵尚志率第三军西征部队在通北冰趟子设伏，重创日伪军。",
    "year": 1937,
@@ -4100,6 +4697,22 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "百家号",
+     "郑州大学"
+    ],
+    "place": [
+     "抗战纪念网",
+     "百家号",
+     "郑州大学"
+    ],
+    "measure": [
+     "抗战纪念网",
+     "百家号",
+     "郑州大学"
+    ]
+   },
    "id": "evt_1938_shier_lieshi",
    "claim": "留守五军后方密营的五军三师八团一连在宝清县小孤山与敌军激战，12名战士壮烈牺牲。此战后小孤山被命名为“十二烈士山”。",
    "year": 1938,
@@ -4170,6 +4783,18 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "百家号"
+    ],
+    "place": [
+     "抗战纪念网",
+     "百家号"
+    ],
+    "measure": [
+     "百家号"
+    ]
+   },
    "id": "evt_1938_chengbin_toudi",
    "claim": "第一军一师师长程斌在本溪挟迫本部投敌，第一路军遭受最严重的内部损失。",
    "year": 1938,
@@ -4223,6 +4848,22 @@ window.__MIYING_STRUCT__ = {
    ]
   },
   {
+   "field_support": {
+    "date": [
+     "新华社",
+     "中央纪委国家监委网站"
+    ],
+    "place": [
+     "抗战纪念网",
+     "新华社",
+     "中央纪委国家监委网站"
+    ],
+    "measure": [
+     "抗战纪念网",
+     "新华社",
+     "中央纪委国家监委网站"
+    ]
+   },
    "id": "evt_1938_banv_toujiang",
    "claim": "第五军一师西征部队回返途中，在乌斯浑河渡口与敌遭遇，妇女团指导员冷云等8名女战士弹尽后投江殉国，史称“八女投江”。",
    "year": 1938,
