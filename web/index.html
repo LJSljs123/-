@@ -198,6 +198,15 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   footer a.go:nth-of-type(1){grid-column:2;grid-row:2}
   footer a.go:nth-of-type(2){grid-column:3;grid-row:2}
 }
+/* C2 年份聚焦 */
+.tick{cursor:pointer}
+.tick-hidden{opacity:.38}
+.tick.on{fill:var(--gold);font-weight:600}
+.tick-hit{cursor:pointer}
+.cnode.dim,.edge.dim{opacity:.12;pointer-events:none}
+.src.dim{opacity:.22}
+.src.dim .bar-hit{pointer-events:none}
+
 /* C1：开场层——评委点开链接的前 10 秒决定他是否认真看。
    先给一个具体问题（记载相差一个月），再给两个入口；不先给数据图。 */
 #intro{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
@@ -388,6 +397,8 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   /* ---------- 缩放：适应宽度 / 原尺寸 ---------- */
   const zoomBtn = document.getElementById('zoom');
   let fitMode = window.innerWidth > 1100;
+  /* C2 年份聚焦：点年份只看该年——66 个节点同时亮，谁也读不清 */
+  let focusYear = null;
   function applyZoom() {
     const vb = (stage.getAttribute('viewBox') || '0 0 1600 822').split(/\s+/);
     const vbW = parseFloat(vb[2]) || 1600;
@@ -433,12 +444,24 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
       }));
 
       const isLast = yi === years.length - 1;
-      if (cx - lastLabelX < MIN_LABEL_GAP && !isLast) return;
-      lastLabelX = cx;
+      const showLabel = !(cx - lastLabelX < MIN_LABEL_GAP && !isLast);
+      if (showLabel) lastLabelX = cx;
 
       const t = el('text', { x: cx, y: Y_TICK, 'text-anchor': 'middle', class: 'tick' });
       t.textContent = y;
+      if (!showLabel) t.classList.add('tick-hidden');
       gTick.appendChild(t);
+
+      /* 点击热区：所有年份都可聚焦，包括因拥挤而被隔位隐藏的 */
+      const hit = el('rect', {
+        x: cx - 24, y: Y_TICK - 22, width: 48, height: 32,
+        fill: 'transparent', class: 'tick-hit'
+      });
+      hit.addEventListener('click', () => {
+        focusYear = focusYear === String(y) ? null : String(y);
+        applyYearFocus();
+      });
+      gTick.appendChild(hit);
     });
     stage.appendChild(gTick);
 
@@ -647,6 +670,27 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     live.classList.add('bad');
   }
 
+  /* C2：年份聚焦——其余年份的节点、支撑线、来源柱淡出，来源柱只保留
+     「支撑过该年至少一条记录」的。再点同一年份或复位按钮恢复。 */
+  function applyYearFocus() {
+    stage.querySelectorAll('.cnode').forEach(g => {
+      const c = CON.find(x => x.id === g.dataset.id);
+      g.classList.toggle('dim', !!(focusYear && c && String(c.year) !== focusYear));
+    });
+    stage.querySelectorAll('.edge').forEach(p2 => {
+      const c = CON.find(x => x.id === p2.dataset.con);
+      p2.classList.toggle('dim', !!(focusYear && c && String(c.year) !== focusYear));
+    });
+    stage.querySelectorAll('.src').forEach(g => {
+      const has = focusYear && CON.some(c =>
+        String(c.year) === focusYear && c.supports.includes(g.dataset.key));
+      g.classList.toggle('dim', !!focusYear && !has);
+    });
+    stage.querySelectorAll('.tick').forEach(tx => {
+      tx.classList.toggle('on', tx.textContent === focusYear);
+    });
+  }
+
   /* ---------- 浮层：预览（不可点）与固定详情（可点） ---------- */
   let pinned = false;
   let pinnedNode = null;
@@ -752,6 +796,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
         const k = g.dataset.key;
         removed.has(k) ? removed.delete(k) : removed.add(k);
         refresh();
+        applyYearFocus();
       });
       g.addEventListener('mouseenter', () => {
         stage.querySelectorAll('.edge').forEach(p =>
@@ -803,7 +848,12 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     tip.style.top = y + 'px';
   }
 
-  document.getElementById('reset').onclick = () => { removed.clear(); refresh(); };
+  document.getElementById('reset').onclick = () => {
+    removed.clear();
+    focusYear = null;
+    refresh();
+    applyYearFocus();
+  };
 
   document.getElementById('m-conc').textContent = STATS.conclusions || CON.length;
   document.getElementById('m-src').textContent = STATS.sources || SRC.length;
