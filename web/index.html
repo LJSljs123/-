@@ -239,12 +239,12 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   <div class="in-card">
     <div class="in-kicker">同一件事 · 三种记载</div>
     <div class="in-dates">
-      <span>年表　　　<b>1934 年 4 月 21 日</b></span>
-      <span>国防部　　<b>1934 年 3 月 21 日</b></span>
-      <span>纪念馆　　<b>4 月 21 日</b></span>
+      <span>抗战纪念网　　　<b>1934 年 4 月 21 日</b></span>
+      <span>国防部　　　　　<b>1934 年 3 月 21 日</b></span>
+      <span>杨靖宇烈士陵园　<b>1934 年 3 月 21 日</b></span>
     </div>
-    <h1>记载相差一个月。</h1>
-    <p>这是同一个人、同一次牺牲。我们不替你判断哪一天是对的——我们把每一条记载的出处摊开，让你看见依据站在哪里、又在哪里站不住。</p>
+    <h1>同一次牺牲，记载相差一个月。</h1>
+    <p>两家权威机构记 3 月 21 日，一家记 4 月 21 日。本库不替它们折中，也不为多数派背书——我们把每一条记载的出处摊开，让你看见依据站在哪里、又在哪里站不住。</p>
     <div class="in-acts">
       <a class="primary" href="sanctuary.html?factory=1&amp;chapter=1">看故事 · 88 秒 →</a>
       <button type="button" id="in-skip">直接查证据 →</button>
@@ -887,7 +887,12 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   const introEl = document.getElementById('intro');
   const introSkip = document.getElementById('in-skip');
   if (introSkip && introEl) {
-    introSkip.addEventListener('click', () => introEl.classList.add('gone'));
+    introSkip.addEventListener('click', () => {
+      introEl.classList.add('gone');
+      /* 提出的问题（1934 的分歧）直接落到证据上：关闭开场即聚焦该年 */
+      focusYear = '1934';
+      applyYearFocus();
+    });
   }
 
   /* Escape 关闭固定详情；点画布空白处同样关闭 */

@@ -567,6 +567,16 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         return v[:4] + "年（年精度）"
 
     # 只有双方都到日，天数差才有意义；否则只能说精度不同
+    # 冲突对只有 a/b 两家，但 date_variants 里可能有第三家与某一方同值——
+    # 2:1 的结构必须让评委看见，否则「两家权威对一家」会被读成「1:1 各执一词」
+    all_variants = ev.get("date_variants") or []
+    support_a = [short_src(v["source"]) for v in all_variants
+                 if v.get("value") == a["value"] and short_src(v["source"]) != ga]
+    support_b = [short_src(v["source"]) for v in all_variants
+                 if v.get("value") == b["value"] and short_src(v["source"]) != gb]
+    support_line = (f"支持分布：{ga}{'、'.join([''] + support_a) if support_a else ''} 记 {claim_label(a)}；"
+                    f"{gb}{'、'.join([''] + support_b) if support_b else ''} 记 {claim_label(b)}")
+
     both_day = (a.get("precision") == "day" and b.get("precision") == "day")
     if both_day:
         gap_text = f"{dv[0]['gap_days']} 天（整月级）" if dv[0]["gap_days"] >= 15 else f"{dv[0]['gap_days']} 天"
@@ -581,11 +591,14 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         "lines": [f"「{subject}{act}于何时」拆成两条互斥的日期主张：",
                   f"主张甲：{a['source']} 记 {claim_label(a)}；",
                   f"主张乙：{b['source']} 记 {claim_label(b)}。",
-                  gap_text + "。"],
+                  gap_text + "。",
+                  support_line + "。"],
         "assertions": [
             {"k": "事件本体", "v": ev.get("summary", ""), "state": "确定"},
             {"k": "主张甲", "v": f"{claim_label(a)}（{ga}）", "state": "存疑"},
             {"k": "主张乙", "v": f"{claim_label(b)}（{gb}）", "state": "存疑"},
+            {"k": "支持分布", "v": f"甲 {1 + len(support_a)} 家 · 乙 {1 + len(support_b)} 家",
+             "state": "确定"},
             {"k": "分歧量级", "v": gap_value, "state": "确定" if both_day else "较粗"},
         ],
     }
@@ -602,10 +615,19 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
                 "url": meta.get("url"), "archive": meta.get("archive"),
                 "reliability": meta.get("reliability") or "B",
                 "value": claim["value"], "unit": "date", "is_primary": False}
+    evidence_cards = [evd(a), evd(b)]
+    for v in all_variants:
+        src_short = short_src(v["source"])
+        if (v.get("value") == b["value"] and src_short != gb) or \
+           (v.get("value") == a["value"] and src_short != ga):
+            evidence_cards.append(evd(v))
+    n_cards = len(evidence_cards)
     retrieve = {
         "kind": "retrieve", "agent": "辑录",
-        "lines": ["库内对同一条事实给出了两条日期主张。以下原文逐字照录，未作改写。"],
-        "evidence": [evd(a), evd(b)],
+        "lines": [f"库内对同一条事实给出了 {n_cards} 条日期主张"
+                  f"（{'、'.join(sorted({c['short'] for c in evidence_cards}))}）。"
+                  "以下原文逐字照录，未作改写。"],
+        "evidence": evidence_cards,
         "side": [],
     }
 

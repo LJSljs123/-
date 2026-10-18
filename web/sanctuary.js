@@ -896,8 +896,9 @@ function groundTexture() {
     const h = new THREE.Group();
     h.position.set(spot.x, 1.46 + spot.lift, spot.z);
     h.rotation.y = spot.rot;
-    // 前臂从画面外伸进来
+    // 前臂从桌外伸进来；臂根处加袖口环，避免读成「悬空断臂」
     fLink(h, [0.02, 0.19, 0.92], [0, 0.11, 0.10], 0.105, FM.coatAlt, 10);
+    fCylinder(h, 0.125, 0.115, 0.16, FM.coat, 0, 0.145, 0.30, 'z', 10);
     fSphere(h, FM.skin, 0, 0.095, 0.01, 0.15, 0.065, 0.125, 14);
     for (let f = -2; f <= 2; f++) {
       fLink(h, [f * 0.048, 0.085, -0.09], [f * 0.056, 0.035, -0.23], 0.021, FM.skin, 5);
@@ -1443,7 +1444,6 @@ document.getElementById('factory-citation').addEventListener('click', () => {
 
 /* P1-12：章节状态同时控制画面与字幕。
    第六幕物资被带走、第七幕人走台空——不靠镜头角度遮掩，直接改场景状态。 */
-let sceneFade = { workers: 1, props: 1 };
 function applyFactoryScene(scene) {
   if (!scene) return;
   const targetW = scene.workers ? 1 : 0;
@@ -1454,8 +1454,6 @@ function applyFactoryScene(scene) {
   if (factoryProps) factoryProps.visible = targetP > 0.01;
   if (factoryHands) factoryHands.visible = targetH > 0.01;
   if (factoryCloth) factoryCloth.visible = targetC > 0.01;
-  sceneFade.workers = targetW;
-  sceneFade.props = targetP;
   // 可观测状态：截图验收与自动化检查都靠它，避免「文案说空、画面有人」
   document.body.dataset.sceneWorkers = targetW ? 'on' : 'off';
   document.body.dataset.sceneProps = targetP ? 'on' : 'off';
