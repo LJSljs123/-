@@ -4,7 +4,7 @@
 const fallback = document.getElementById('fallback');
 const loading = document.getElementById('loading');
 if (!window.THREE || !window.WebGLRenderingContext) {
-  fallback.classList.add('on'); loading.classList.add('off'); return;
+  fallback.classList.add('on'); loading.classList.add('off'); loading.setAttribute('aria-hidden', 'true'); return;
 }
 const D = window.__MIYING__, S = window.__MIYING_STRUCT__;
 const EVENTS = (D.events || []).filter(e => e.layer === 'event');
@@ -23,6 +23,17 @@ const STORY_CHAPTERS = [
   { title: '不替证据画线', from: 1938, to: 1940, ids: ['evt_1938_chengbin_toudi', 'evt_1940_yangjingyu_xunguo'], camera: [0.04, 1.06, 48], body: '1938 年有程斌率部投敌的记载；1940 年有杨靖宇牺牲的记载。先后相邻不等于因果关系；数据库没有建立事件级因果边，本片也不补画这条线。' },
   { title: '时间继续向前', from: 1941, to: 1945, ids: ['evt_1941_zhaoshangzhi_xiaobudui', 'evt_1945_riben_touxiang'], camera: [0.02, 1.1, 52], body: '1941 年，赵尚志率小部队活动仍见于记录；1945 年，日本宣布无条件投降。我们把镜头推到这条时间线的末页，再回看每一条记录怎样留下来。' },
   { title: '把出处留在故事里', from: 1945, to: 1945, ids: ['evt_1945_riben_touxiang'], camera: [0.04, 1.08, 100], closing: true, body: '' },
+];
+const FACTORY_SECONDS = 11;
+const FACTORY_CHAPTERS = [
+  { title: '密林深处，一处供给基地', date: '1936 年 8 月', body: '为解决抗联部队物资补给，第三军决定在小西林河上游密林深处的老道庙沟、娘娘宫一线建立被服厂。隐蔽的山林里，一间为前线缝制衣物的工厂开始运转。', camera: [0.16, 1.35, 16, 0, -3.6, 2.0] },
+  { title: '十五名成员', date: '1936 年 8 月', body: '被服厂由 15 人组成。除阎把头和负责裁剪的“小把头”外，其余 13 人都是女性，其中 11 人是朝鲜族。画面中的匿名手部只是视觉示意，不对应任何一位历史人物，也不按比例再现全体成员。', camera: [0.28, 1.42, 9, 0, -0.2, 1.7] },
+  { title: '只有一台旧缝纫机', date: '1936 年 8 月', body: '厂里只有一台旧日本缝纫机。单衣、棉衣主要靠手工缝制。机器之外，更多工作落在一针一线之间。', camera: [0.08, 1.48, 10, 0.2, -0.1, 1.2] },
+  { title: '把布料染成山林的颜色', date: '1936 年 8 月', body: '衣料多为缴获来的白花其布。成员就地取材，用黄菠萝树皮和柞树皮熬水作染料，把白布染成接近山林的黄绿色，再制成军衣。', camera: [0.48, 1.4, 10, -0.9, -0.3, 1.5] },
+  { title: '针线旁的组织工作', date: '1936 年 9 月 18 日', body: '珠河、汤原中心县委和抗联第三、六军党委有关人员在被服厂密营召开联席会议，历时三天，选举成立中共北满临时省委。这里既承担物资供给，也见证北满抗日斗争的组织建设。', camera: [-0.2, 1.32, 10, 0, -0.7, 1.6] },
+  { title: '警讯传来，人员与物资转移', date: '1937 年 4 月', body: '被服厂被“老白党”发现并告密。阎把头将消息告知厂长陈静山；陈静山率人员连夜转移，将物资运至张木营子抗联密营。叙事不补写未见于来源的路线、对白或敌我部署。', camera: [0.12, 1.25, 13, 1.2, -2.4, 2.0] },
+  { title: '留下来的针脚', date: '1937 年 4 月', body: '留守的“小把头”未能及时撤离，当晚遭到袭击并牺牲，四间木刻楞房屋被焚。镜头停在空下来的工作台，不重演战斗，也不把牺牲变成视觉奇观。', camera: [0.12, 1.2, 17, 0, -2.8, 2.1] },
+  { title: '回到今天，继续查证', date: '遗址保护与再建', body: '公开报道记载：遗址于 2006 年被确定为伊春市级文物保护单位，2013 年在原地按原貌复建。眼前的三维空间和概念画是合成示意，不是遗址扫描；我们把可核的文字和出处留给观众。', camera: [-0.24, 1.32, 21, 0, -3.5, 2.1] },
 ];
 document.getElementById('m-events').textContent = EVENTS.length;
 document.getElementById('m-sources').textContent = (S.sources || []).length;
@@ -66,7 +77,7 @@ function nSrc(e) { return nSources[e.id] != null ? nSources[e.id] : ((e.sources 
 
 /* ---------- 场景基座 ---------- */
 const scene = new THREE.Scene();
-const DEFAULT_SKY = 0x182127, DEFAULT_FOG = 0x263038;
+const DEFAULT_SKY = 0x0d171b, DEFAULT_FOG = 0x172326;
 scene.background = new THREE.Color(DEFAULT_SKY);
 scene.fog = new THREE.FogExp2(DEFAULT_FOG, 0.006);
 const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 600);
@@ -74,7 +85,7 @@ let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 } catch (_) {
-  fallback.classList.add('on'); loading.classList.add('off'); return;
+  fallback.classList.add('on'); loading.classList.add('off'); loading.setAttribute('aria-hidden', 'true'); return;
 }
 const mobile = matchMedia('(max-width: 760px), (pointer: coarse)').matches;
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile ? 1.25 : 1.7));
@@ -82,7 +93,7 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setClearColor(DEFAULT_SKY);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.98;
+renderer.toneMappingExposure = 0.76;
 renderer.xr.enabled = true;
 if (renderer.xr.setReferenceSpaceType) renderer.xr.setReferenceSpaceType('local-floor');
 if (renderer.xr.setFoveation) renderer.xr.setFoveation(mobile ? 0.82 : 0.68);
@@ -99,18 +110,18 @@ renderer.domElement.addEventListener('webglcontextlost', event => {
 });
 renderer.domElement.addEventListener('webglcontextrestored', () => location.reload());
 
-const amb = new THREE.AmbientLight(0x9fadb0, 0.78);
+const amb = new THREE.AmbientLight(0x71847e, 0.38);
 scene.add(amb);
-const moon = new THREE.DirectionalLight(0xdce5e7, 0.92);
+const moon = new THREE.DirectionalLight(0xa8b9b6, 0.43);
 moon.position.set(-40, 70, -30);
 scene.add(moon);
-const warmFill = new THREE.DirectionalLight(0xc79a6a, 0.24);
+const warmFill = new THREE.DirectionalLight(0xa27a52, 0.09);
 warmFill.position.set(44, 22, 32);
 scene.add(warmFill);
 
 /* ---------- 夜空 ---------- */
 (function stars() {
-  const N = 1400, pos = new Float32Array(N * 3);
+  const N = mobile ? 460 : 900, pos = new Float32Array(N * 3);
   for (let i = 0; i < N; i++) {
     const th = Math.random() * Math.PI * 2, ph = Math.acos(Math.random() * 0.85);
     const r = 260;
@@ -121,7 +132,7 @@ scene.add(warmFill);
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0xdce6e9, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.7 })));
+    color: 0xaebfbd, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.30 })));
 })();
 
 /* ---------- 雪原 ---------- */
@@ -136,7 +147,7 @@ function terrainHeight(x, z) {
   g.rotateX(-Math.PI / 2);
   const p = g.attributes.position;
   const colors = new Float32Array(p.count * 3);
-  const low = new THREE.Color(0x53616a), high = new THREE.Color(0xc4cdd0), color = new THREE.Color();
+  const low = new THREE.Color(0x202f33), high = new THREE.Color(0x596b69), color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
     const y = terrainHeight(x, z);
@@ -159,7 +170,7 @@ function buildRidge(centerZ, layer) {
   const colors = new Float32Array(p.count * 3);
   const base = new THREE.Color(layer ? 0x202a30 : 0x2c383d);
   const peak = new THREE.Color(layer ? 0x4c5a60 : 0x647175);
-  const snowColor = new THREE.Color(0xd5dcdd);
+  const snowColor = new THREE.Color(0x9daaa6);
   const color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
@@ -244,7 +255,7 @@ function spruceBough(radius, height, seed) {
 })();
 
 /* ---------- 落雪 ---------- */
-const SNOW_N = mobile ? 2600 : 6200;
+const SNOW_N = mobile ? 700 : 1800;
 const snowGeo = new THREE.BufferGeometry();
 const snowPos = new Float32Array(SNOW_N * 3);
 const snowSeed = new Float32Array(SNOW_N);
@@ -275,14 +286,14 @@ const snowMaterial = new THREE.ShaderMaterial({
     varying float vAlpha;
     void main(){
       float d=length(gl_PointCoord-0.5);
-      float a=(1.0-smoothstep(0.06,0.5,d))*vAlpha*0.48;
-      gl_FragColor=vec4(0.92,0.78,0.76,a);
+      float a=(1.0-smoothstep(0.06,0.5,d))*vAlpha*0.24;
+      gl_FragColor=vec4(0.70,0.79,0.78,a*0.72);
     }`,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
 });
 const snow = new THREE.Points(snowGeo, snowMaterial);
 scene.add(snow);
-let wind = 0, snowRate = 1;
+let wind = 0, snowRate = 0.72;
 function snowStep(t) {
   snowMaterial.uniforms.uTime.value = t;
   snowMaterial.uniforms.uWind.value = wind;
@@ -319,7 +330,7 @@ const towerMeshes = [];
     body.position.set(x, ground + h / 2, z);
     const top = new THREE.Sprite(new THREE.SpriteMaterial({
       map: glowTex, color: (s.exclusive || 0) ? 0xd08c67 : 0xd6bd7e,
-      transparent: true, opacity: w ? 0.9 : 0.4, depthWrite: false,
+      transparent: true, opacity: w ? 0.72 : 0.35, depthWrite: false,
       blending: THREE.AdditiveBlending }));
     top.scale.setScalar(3 + Math.min(w, 30) * 0.25);
     top.position.set(x, ground + h + 1.6, z);
@@ -350,7 +361,7 @@ EVENTS.forEach((e, i) => {
   fPos.set([x, y, z], i * 3);
   fCol.set(tempOf(e), i * 3);
   const n = Math.min(nSrc(e), 5);
-  fSize[i] = 5.5 + n * 4.2;
+  fSize[i] = 3.8 + n * 2.3;
   fYear[i] = yearOf(e);
   fPhase[i] = (i * 2654435761 % 1000) / 1000 * 6.283;
   fireMetas.push({ e, x, y, z, n, idx: i });
@@ -374,7 +385,7 @@ const fireMat = new THREE.ShaderMaterial({
       float focus = exp(-abs(aYear - uStoryYear) * 1.15);
       vStory = mix(1.0, (0.18 + 0.82 * revealed) * (0.28 + 0.72 * focus), uStoryMode);
       vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = clamp(aSize * vF * mix(1.0, 0.72 + 0.28 * focus, uStoryMode) * (90.0 / -mv.z), 1.2, 32.0);
+      gl_PointSize = clamp(aSize * vF * mix(1.0, 0.72 + 0.28 * focus, uStoryMode) * (90.0 / -mv.z), 1.2, 24.0);
       gl_Position = projectionMatrix * mv;
     }`,
   fragmentShader: `
@@ -389,8 +400,8 @@ const fireMat = new THREE.ShaderMaterial({
       float tip = 1.0 - smoothstep(0.88, 1.0, height);
       float a = body * base * tip;
       float core = 1.0 - smoothstep(0.015, width * 0.58, abs(uv.x - 0.5));
-      vec3 flame = mix(vC, vec3(1.0, 0.42, 0.15), core * 0.38);
-      gl_FragColor = vec4(flame * (0.68 + 0.2 * vF), a * vStory);
+      vec3 flame = mix(vC, vec3(0.96, 0.48, 0.21), core * 0.24);
+      gl_FragColor = vec4(flame * (0.48 + 0.14 * vF), a * vStory * 0.82);
     }`,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
 });
@@ -399,7 +410,7 @@ const firePoints = scene.children[scene.children.length - 1];
 /* 火光底部的地面光斑（Sprite，熄灭时同步缩小） */
 const groundGlows = fireMetas.map(m => {
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: glowTex, color: 0xe9ad65, transparent: true, opacity: 0.16,
+    map: glowTex, color: 0xd49450, transparent: true, opacity: 0.11,
     depthWrite: false, blending: THREE.AdditiveBlending }));
   sp.scale.setScalar(m.n > 1 ? 6 : 3.2);
   sp.position.set(m.x, terrainHeight(m.x, m.z) + 0.15, m.z);
@@ -446,7 +457,7 @@ towers.forEach((t, ti) => (t.s.supports || []).forEach(eid => {
   edges.push({ ti, m, a: new THREE.Vector3(t.x, t.y, t.z), c: new THREE.Vector3(m.x, m.y + 0.5, m.z),
     b: new THREE.Vector3((t.x + m.x) / 2, Math.max(t.y, m.y) + 7 + Math.abs(t.x - m.x) * 0.12, (t.z + m.z) / 2) });
 }));
-const FLOW_PER = 3;
+const FLOW_PER = 2;
 const flowN = edges.length * FLOW_PER;
 const flowGeo = new THREE.BufferGeometry();
 const flowPos = new Float32Array(flowN * 3);
@@ -457,7 +468,7 @@ for (let i = 0; i < flowN; i++) {
 }
 flowGeo.setAttribute('position', new THREE.BufferAttribute(flowPos, 3));
 const flowMat = new THREE.PointsMaterial({
-  map: glowTex, color: 0xd1a16c, size: 1.05, transparent: true, opacity: 0.78,
+  map: glowTex, color: 0xb98755, size: 0.82, transparent: true, opacity: 0.42,
   depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
 const flowPoints = new THREE.Points(flowGeo, flowMat);
 scene.add(flowPoints);
@@ -502,7 +513,7 @@ const siteMeshes = [];
     const ground = terrainHeight(x, z);
     mesh.position.set(x, ground + 1.05, z);
     const cap = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: 0xc4ceca, transparent: true, opacity: 0.32,
+      map: glowTex, color: 0x9faeaa, transparent: true, opacity: 0.23,
       depthWrite: false, blending: THREE.AdditiveBlending }));
     cap.scale.setScalar(1.6);
     cap.position.set(x, ground + 2.5, z);
@@ -532,7 +543,7 @@ const arcs = [];
       cpts.push(new THREE.Vector3(x, y, m.z));
     }
     const g = new THREE.BufferGeometry().setFromPoints(cpts);
-    const mat = new THREE.LineBasicMaterial({ color: 0xc28b67, transparent: true, opacity: 0.55 });
+    const mat = new THREE.LineBasicMaterial({ color: 0xb9876a, transparent: true, opacity: 0.36 });
     scene.add(new THREE.Line(g, mat));
     arcs.push(mat);
   });
@@ -748,7 +759,7 @@ function buildKettle(parent, x, y, z) {
   fLink(parent, [x + 0.36, y + 0.08, z], [x + 0.76, y + 0.2, z], 0.09, FM.iron);
 }
 function buildCampTrees(parent) {
-  const count = 34, dummy = new THREE.Object3D(); let seed = 3181, placed = 0;
+  const count = 86, dummy = new THREE.Object3D(); let seed = 3181, placed = 0;
   const rnd = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
   const tiers = [
     new THREE.InstancedMesh(spruceBough(2.05, 3.8, 0.5), FM.leaf, count),
@@ -788,8 +799,8 @@ function groundTexture() {
   for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
     const u = x / size, v = y / size;
     const noiseValue = 0.62 * noise(u, v, 8, 1) + 0.28 * noise(u, v, 24, 2) + 0.10 * noise(u, v, 72, 3);
-    const i = (y * size + x) * 4, value = Math.round(220 + noiseValue * 15 + noise(u, v, 192, 4) * 2);
-    pixels.data[i] = value + 2; pixels.data[i + 1] = value; pixels.data[i + 2] = value - 15; pixels.data[i + 3] = 255;
+    const i = (y * size + x) * 4, value = Math.round(148 + noiseValue * 24 + noise(u, v, 192, 4) * 8);
+    pixels.data[i] = value + 2; pixels.data[i + 1] = value; pixels.data[i + 2] = Math.max(0, value - 13); pixels.data[i + 3] = 255;
   }
   context.putImageData(pixels, 0, 0);
   const texture = new THREE.CanvasTexture(canvas); texture.encoding = THREE.sRGBEncoding;
@@ -802,8 +813,8 @@ function groundTexture() {
   groundGeometry.rotateX(-Math.PI / 2);
   const groundPositions = groundGeometry.attributes.position;
   const groundColors = new Float32Array(groundPositions.count * 3);
-  const moss = new THREE.Color(0x59654a).convertSRGBToLinear();
-  const forestFloor = new THREE.Color(0x303a2d).convertSRGBToLinear(), groundColor = new THREE.Color();
+  const moss = new THREE.Color(0x40533b).convertSRGBToLinear();
+  const forestFloor = new THREE.Color(0x26342a).convertSRGBToLinear(), groundColor = new THREE.Color();
   for (let i = 0; i < groundPositions.count; i++) {
     const x = groundPositions.getX(i), z = groundPositions.getZ(i);
     groundPositions.setY(i, -0.11 + Math.sin(x * 0.13) * Math.cos(z * 0.11) * 0.09);
@@ -897,6 +908,7 @@ function applyCam() {
 }
 renderer.domElement.addEventListener('pointerdown', e => {
   stopTour();
+  stopFactoryTour();
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   renderer.domElement.setPointerCapture(e.pointerId);
   if (e.pointerType === 'touch' && activePointers.size >= 2) {
@@ -953,7 +965,10 @@ addEventListener('pointermove', e => {
   tip.style.left = Math.min(e.clientX + 16, innerWidth - 400) + 'px';
   tip.style.top = Math.min(e.clientY + 14, innerHeight - 220) + 'px';
 });
-addEventListener('wheel', e => { stopTour(); radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam(); }, { passive: true });
+addEventListener('wheel', e => {
+  if (e.target.closest && e.target.closest('#cap, #ctrl')) return;
+  stopTour(); stopFactoryTour(); radius = Math.max(factoryMode ? 10 : 22, Math.min(170, radius * (1 + Math.sign(e.deltaY) * 0.08))); applyCam();
+}, { passive: true });
 applyCam();
 
 /* ---------- 悬停 ---------- */
@@ -1051,12 +1066,17 @@ const storyStep = document.getElementById('cap-step');
 const storyTitle = document.getElementById('cap-title');
 const storyBody = document.getElementById('cap-copy');
 const storySource = document.getElementById('cap-source');
+const factoryCitation = document.getElementById('factory-citation');
+const factoryStoryArt = document.getElementById('factory-story-art');
 const storyClock = document.getElementById('cap-clock');
 const storyProgressBar = document.getElementById('cap-progress');
 const storyNav = document.getElementById('cap-nav');
 const storyProgress = [...document.querySelectorAll('#cap-progress button')];
 const storyPrev = document.getElementById('b-story-prev');
 const storyNext = document.getElementById('b-story-next');
+const factoryPlayButton = document.getElementById('b-factory-play');
+const factoryTour = { active: false, started: 0, elapsed: 0, index: -1 };
+let factoryCameraGoal = null;
 let storyGlowYear = NaN;
 function yearToX(year) {
   return ((year - YEAR0) / Math.max(1, YEAR1 - YEAR0) - 0.5) * SPAN;
@@ -1074,6 +1094,12 @@ function updateStoryGlow(year) {
 function storyClockText(seconds) {
   const n = Math.max(0, Math.min(STORY_CHAPTERS.length * STORY_SECONDS, Math.floor(seconds)));
   return Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0') + ' / 1:20';
+}
+function factoryClockText(seconds) {
+  const elapsed = Math.max(0, Math.min(FACTORY_CHAPTERS.length * FACTORY_SECONDS, Math.floor(seconds)));
+  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const time = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
+  return time(elapsed) + ' / ' + time(total);
 }
 function updateStoryProgress(elapsed) {
   const index = Math.max(0, Math.min(STORY_CHAPTERS.length - 1, Math.floor(elapsed / STORY_SECONDS)));
@@ -1112,6 +1138,13 @@ function renderStoryChapter(index) {
   storyGate.position.set(yearToX(tour.year), terrainHeight(yearToX(tour.year), 0), 0);
   storyStep.textContent = '第 ' + String(index + 1).padStart(2, '0') + ' 幕 / 08  ·  ' + chapter.from + (chapter.to !== chapter.from ? '—' + chapter.to : '');
   storyTitle.textContent = chapter.title;
+  factoryCitation.hidden = true;
+  factoryStoryArt.hidden = true;
+  factoryPlayButton.hidden = true;
+  storyProgress.forEach((button, i) => {
+    button.title = '第 ' + (i + 1) + ' 幕';
+    button.setAttribute('aria-label', '跳到第 ' + (i + 1) + ' 幕');
+  });
   if (chapter.closing) {
     const multi = EVENTS.filter(e => nSrc(e) > 1).length;
     const firstHand = EVENTS.filter(e => (e.sources || []).some(s => s.reliability === 'A')).length;
@@ -1137,11 +1170,17 @@ function setCaption(title, copy, note) {
   storyTitle.textContent = '';
   storyBody.textContent = copy || '';
   storySource.textContent = note || '';
+  factoryCitation.hidden = true;
+  factoryStoryArt.hidden = true;
+  factoryPlayButton.hidden = true;
   storyProgress.forEach(button => button.classList.remove('past', 'current'));
 }
 function hideStory() {
   tour.active = false; tour.elapsed = 0; tour.stage = -1; tour.goal = null;
   storyCap.classList.remove('on');
+  factoryCitation.hidden = true;
+  factoryStoryArt.hidden = true;
+  factoryPlayButton.hidden = true;
   storyProgressBar.hidden = true;
   storyNav.hidden = true;
   document.body.classList.remove('story-active');
@@ -1151,7 +1190,7 @@ function hideStory() {
   storyGlowYear = NaN;
   groundGlows.forEach(glow => { glow.material.opacity = 0.18; });
   const button = document.getElementById('b-tour');
-  button.textContent = '剧情漫游'; button.classList.remove('on');
+  button.textContent = '史料时间线'; button.classList.remove('on');
 }
 function stopTour(label) {
   if (!tour.active) return;
@@ -1202,11 +1241,101 @@ function startEmbers() {
 }
 function restoreFactoryView() {
   if (!factoryMode) return;
+  factoryTour.active = false; factoryTour.elapsed = 0; factoryTour.index = -1; factoryCameraGoal = null;
   factoryVisibility.forEach((visible, object) => { object.visible = visible; });
   factoryVisibility.clear();
   factoryMode = false; factoryGroup.visible = false;
   document.body.classList.remove('factory-active');
   scene.background.set(DEFAULT_SKY); scene.fog.color.set(DEFAULT_FOG);
+}
+function updateFactoryProgress() {
+  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const elapsed = Math.max(0, Math.min(total, factoryTour.elapsed));
+  const index = Math.min(FACTORY_CHAPTERS.length - 1, Math.floor(elapsed / FACTORY_SECONDS));
+  const within = elapsed >= total ? 1 : Math.max(0, Math.min(1, (elapsed - index * FACTORY_SECONDS) / FACTORY_SECONDS));
+  storyProgress.forEach((button, i) => {
+    const fill = i < index ? 1 : i === index ? within : 0;
+    button.style.setProperty('--fill', (fill * 100) + '%');
+    button.classList.toggle('past', i < index);
+    button.classList.toggle('current', i === index);
+    if (i === index) button.setAttribute('aria-current', 'step');
+    else button.removeAttribute('aria-current');
+  });
+  storyClock.textContent = factoryClockText(elapsed);
+  storyPrev.disabled = index === 0;
+  storyNext.disabled = index === FACTORY_CHAPTERS.length - 1;
+  factoryPlayButton.textContent = factoryTour.active ? '暂停故事' : (elapsed >= total ? '重播 88 秒故事' : '播放 88 秒故事');
+}
+function renderFactoryChapter(index) {
+  const chapter = FACTORY_CHAPTERS[index];
+  if (!chapter) return;
+  factoryTour.index = index;
+  storyCap.classList.add('on');
+  storyProgressBar.hidden = false;
+  storyNav.hidden = false;
+  factoryPlayButton.hidden = false;
+  factoryStoryArt.hidden = false;
+  storyStep.textContent = '针线与守望 · 第 ' + String(index + 1).padStart(2, '0') + ' 幕 / 08 · ' + chapter.date;
+  storyTitle.textContent = chapter.title;
+  storyBody.textContent = chapter.body;
+  storySource.textContent = '史实依据：黑龙江省文化和旅游厅转载《黑龙江日报》；画面为合成视觉示意。';
+  factoryCitation.hidden = false;
+  storyProgress.forEach((button, i) => {
+    button.title = FACTORY_CHAPTERS[i].title;
+    button.setAttribute('aria-label', '跳到被服厂故事第 ' + (i + 1) + ' 幕：' + FACTORY_CHAPTERS[i].title);
+  });
+  const [nextTheta, nextPhi, nextRadius, x, z, y] = chapter.camera;
+  factoryCameraGoal = reducedMotion ? null : { theta: nextTheta, phi: nextPhi, radius: nextRadius, x, z, y };
+  updateFactoryProgress();
+}
+function setFactoryChapter(index) {
+  const next = Math.max(0, Math.min(FACTORY_CHAPTERS.length - 1, index));
+  factoryTour.active = false;
+  factoryTour.elapsed = next * FACTORY_SECONDS;
+  renderFactoryChapter(next);
+}
+function stopFactoryTour() {
+  if (factoryTour.active) {
+    const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+    factoryTour.elapsed = Math.max(0, Math.min(total, performance.now() / 1000 - factoryTour.started));
+    factoryTour.active = false;
+    updateFactoryProgress();
+  }
+  factoryCameraGoal = null;
+}
+function toggleFactoryTour() {
+  if (!factoryMode) return;
+  const now = performance.now() / 1000;
+  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  if (factoryTour.active) {
+    factoryTour.elapsed = Math.max(0, Math.min(total, now - factoryTour.started));
+    factoryTour.active = false;
+  } else {
+    if (factoryTour.elapsed >= total) factoryTour.elapsed = 0;
+    factoryTour.started = now - factoryTour.elapsed;
+    factoryTour.active = true;
+    factoryTourStep(now, 0);
+  }
+  updateFactoryProgress();
+}
+function factoryTourStep(now) {
+  if (!factoryMode || !factoryTour.active) return;
+  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  factoryTour.elapsed = Math.max(0, Math.min(total, now - factoryTour.started));
+  const index = Math.min(FACTORY_CHAPTERS.length - 1, Math.floor(factoryTour.elapsed / FACTORY_SECONDS));
+  if (index !== factoryTour.index) renderFactoryChapter(index);
+  if (factoryTour.elapsed >= total) factoryTour.active = false;
+  updateFactoryProgress();
+}
+function factoryCameraStep(dt) {
+  if (!factoryMode || !factoryCameraGoal || reducedMotion || renderer.xr.isPresenting) return;
+  const goal = factoryCameraGoal;
+  const k = 1 - Math.exp(-dt * 1.05);
+  autoPan += (goal.x - autoPan) * k;
+  autoPanZ += (goal.z - autoPanZ) * k;
+  targetY += (goal.y - targetY) * k;
+  const angle = Math.atan2(Math.sin(goal.theta - theta), Math.cos(goal.theta - theta));
+  theta += angle * k; phi += (goal.phi - phi) * k; radius += (goal.radius - radius) * k;
 }
 function focusFactory() {
   if (factoryMode) { reset(); return; }
@@ -1224,14 +1353,13 @@ function focusFactory() {
   document.body.classList.add('factory-active');
   document.getElementById('b-factory').classList.add('on');
   document.getElementById('b-factory').setAttribute('aria-pressed', 'true');
-  scene.background.set(0x24332e); scene.fog.color.set(0x33423a); scene.fog.density = 0.009;
-  amb.intensity = 0.82; moon.intensity = 0.62; warmFill.intensity = 0.34;
+  scene.background.set(0x172520); scene.fog.color.set(0x25342b); scene.fog.density = 0.013;
+  amb.intensity = 0.64; moon.intensity = 0.48; warmFill.intensity = 0.28;
   autoPan = 0; autoPanZ = -3.6; targetY = 2.0;
   theta = 0.16; phi = 1.35; radius = mobile ? 20 : 16;
   applyCam();
-  setCaption('针线与守望 · 1936—1937',
-    '1936 年 8 月，抗联第三军在小西林河上游密林深处建立被服厂。15 名成员中 13 人为女性，其中 11 人是朝鲜族。厂里只有一台旧日本缝纫机，大多数衣物靠手工缝制；缴获布料用黄菠萝树皮和柞树皮染成黄绿色。1937 年 4 月密营遭告密，人员与物资连夜转移；留守的“小把头”遇袭牺牲，四间木刻楞房屋被焚。',
-    '史料：黑龙江省文化和旅游厅 /《黑龙江日报》 · 人物、院落布局与陈设为合成示意');
+  factoryTour.active = false; factoryTour.elapsed = 0; factoryTour.index = -1;
+  renderFactoryChapter(0);
 }
 function reset() {
   if (tour.active) stopTour();
@@ -1247,11 +1375,11 @@ function reset() {
   scene.fog.density = 0.006;
   amb.intensity = 0.78; moon.intensity = 0.92;
   warmFill.intensity = 0.24;
-  flowMat.opacity = 0.9;
+  flowMat.opacity = 0.42;
   theta = 0.06; phi = 1.18; radius = mobile ? 67 : 74;
   /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
   fireMetas.forEach((m, i) => {
-    fireGeo.attributes.aSize.setX(i, 5.5 + Math.min(m.n, 5) * 4.2);
+    fireGeo.attributes.aSize.setX(i, 3.8 + Math.min(m.n, 5) * 2.3);
     const c = tempOf(m.e);
     fireGeo.attributes.aColor.setXYZ(i, c[0], c[1], c[2]);
     groundGlows[i].material.opacity = 0.18;
@@ -1330,6 +1458,8 @@ document.getElementById('b-storm').onclick = () => startStorm();
 document.getElementById('b-chengbin').onclick = showPeopleThread;
 document.getElementById('b-embers').onclick = () => startEmbers();
 document.getElementById('b-factory').onclick = focusFactory;
+document.getElementById('b-enter-factory').onclick = focusFactory;
+factoryPlayButton.addEventListener('click', toggleFactoryTour);
 document.getElementById('b-reset').onclick = reset;
 document.getElementById('p-close').onclick = reset;
 
@@ -1396,9 +1526,13 @@ tourButton.addEventListener('click', () => {
   document.body.classList.add('story-active');
   tourStep(now, 0);
 });
-storyProgress.forEach((button, index) => button.addEventListener('click', () => jumpToChapter(index)));
-storyPrev.addEventListener('click', () => jumpToChapter(Math.min(STORY_CHAPTERS.length - 1, Math.floor(tour.elapsed / STORY_SECONDS)) - 1));
-storyNext.addEventListener('click', () => jumpToChapter(Math.min(STORY_CHAPTERS.length - 1, Math.floor(tour.elapsed / STORY_SECONDS)) + 1));
+storyProgress.forEach((button, index) => button.addEventListener('click', () => factoryMode ? setFactoryChapter(index) : jumpToChapter(index)));
+storyPrev.addEventListener('click', () => factoryMode
+  ? setFactoryChapter(factoryTour.index - 1)
+  : jumpToChapter(Math.min(STORY_CHAPTERS.length - 1, Math.floor(tour.elapsed / STORY_SECONDS)) - 1));
+storyNext.addEventListener('click', () => factoryMode
+  ? setFactoryChapter(factoryTour.index + 1)
+  : jumpToChapter(Math.min(STORY_CHAPTERS.length - 1, Math.floor(tour.elapsed / STORY_SECONDS)) + 1));
 
 /* 手机方向传感器环视：只提供 3DoF 朝向，不称作头显 VR。 */
 const gyroButton = document.getElementById('b-gyro');
@@ -1555,6 +1689,7 @@ async function detectXR() {
 }
 renderer.xr.addEventListener('sessionstart', () => {
   stopTour('继续剧情');
+  stopFactoryTour();
   stopGyro();
   for (const controller of xrControllers) controller.visible = true;
   const features = xrSession && xrSession.enabledFeatures || [];
@@ -1599,7 +1734,7 @@ function dieStep(now) {
       : (now - dieT[i]) / 1.6;                   // 减少动态效果时保留分段时序并直接熄灭
     if (k < 0) return;
     dirty = true;
-    const base = 5.5 + Math.min(m.n, 5) * 4.2;
+    const base = 3.8 + Math.min(m.n, 5) * 2.3;
     const f = Math.max(0, 1 - k);
     siz.setX(i, Math.max(k >= 1 ? 0 : base * f * (1 - 0.4 * Math.sin(k * 9)), 0));
     const c0 = tempOf(m.e);
@@ -1627,6 +1762,8 @@ function loop() {
   dieStep(now);
   maybeSettle(now);
   if (!renderer.xr.isPresenting) {
+    factoryTourStep(now);
+    factoryCameraStep(dt);
     tourStep(now, dt);
     if (mode === 'embers') autoPan += dt * 1.6;
     if (!dragging) applyCam();
@@ -1639,7 +1776,7 @@ function loop() {
     ? (document.body.classList.contains('story-active')
       ? '剧情 ' + String(Math.max(0, tour.stage) + 1).padStart(2, '0') + ' / 08 · ' + (tour.active ? '实时推进' : '可选章节继续浏览')
       : '灯火 ' + FIRE_N + ' · 烽燧 ' + towers.length + ' · 遗址 ' + siteMeshes.length + '（经纬投影） · 流光 ' + flowN)
-    : (mode === 'factory' ? '被服厂复合视觉示意 · 史料交互场景'
+    : (mode === 'factory' ? '针线与守望 · 第 ' + String(Math.max(0, factoryTour.index) + 1).padStart(2, '0') + ' 幕 / 08 · ' + (factoryTour.active ? '自动漫游' : '可逐幕查阅')
       : mode === 'embers' ? '余烬：1941 后的火，和仍然亮着的证据'
       : mode === 'people' ? '人物脉络：虚线并置，不参与支撑关系与熄灭计算'
         : '风雪中的雪原：幸存灯火 ' + aliveN + ' / ' + FIRE_N);
@@ -1647,7 +1784,10 @@ function loop() {
   renderer.render(scene, camera);
 }
 renderer.setAnimationLoop(loop);
-setTimeout(() => document.getElementById('loading').classList.add('off'), 350);
+setTimeout(() => {
+  loading.classList.add('off');
+  loading.setAttribute('aria-hidden', 'true');
+}, 350);
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();

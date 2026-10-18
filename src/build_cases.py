@@ -98,19 +98,26 @@ def build_decompose(ev: dict, claim_value, claim_unit: str) -> dict:
     quote_all = " ".join(s.get("quote", "") for s in ev.get("sources", []))
 
     prec_cn = {"day": "日", "month": "月", "year": "年"}.get(d.get("precision"), "年")
-    time_state = {"day": "确定", "month": "较粗", "year": "模糊"}.get(d.get("precision"), "模糊")
+    time_state = {"day": "记录精确到日", "month": "记录精确到月", "year": "记录仅到年"}.get(
+        d.get("precision"), "时点待核")
     if hits(quote_all, VAGUE_TIME):
-        time_state = "模糊"
+        time_state = "原文时点表述较宽"
 
     place_text, place_state = place_label(p)
+    place_state_label = {"确定": "遗址级位置", "较粗": "县级位置", "模糊": "省级范围",
+                         "缺失": "未载地点"}.get(place_state, "位置精度待核")
 
     approx = hits(quote_all, APPROX)
-    value_state = "约数" if approx else "确定"
+    value_state = "存在分歧且为约数" if approx else "存在分歧"
+    subjects = list(ev.get("units") or []) + list(ev.get("persons") or [])
+    subject_value = "、".join(ev.get("units") or ev.get("persons") or []) or "（原文未点名）"
+    subject_state = ("来源引文提及" if subjects and all(s and s in quote_all for s in subjects)
+                     else "主体需逐项核查" if subjects else "原文未点名")
 
     assertions = [
-        {"k": "主体", "v": "、".join(ev.get("units") or []) or "（原文未点名）", "state": "确定"},
+        {"k": "主体", "v": subject_value, "state": subject_state},
         {"k": "时点", "v": f"{date_label(d)}（仅到{prec_cn}）", "state": time_state},
-        {"k": "地点", "v": place_text, "state": place_state},
+        {"k": "地点", "v": place_text, "state": place_state_label},
         {"k": "数值", "v": f"{fmt(claim_value)} {claim_unit}", "state": value_state},
     ]
 
@@ -118,13 +125,14 @@ def build_decompose(ev: dict, claim_value, claim_unit: str) -> dict:
         f"命题拆成 {len(assertions)} 个原子断言。任何一个不成立，命题就不能成立。",
     ]
     vt = hits(quote_all, VAGUE_TIME)
-    if time_state == "模糊":
+    if time_state in {"记录仅到年", "时点待核", "原文时点表述较宽"}:
         tag = "".join(f"「{w}」" for w in vt) if vt else f"仅到{prec_cn}"
         lines.append(f"时点{tag}，没有落到具体年月——"
                      f"这会是后面所有分歧的源头，因为不同来源可能各自指向不同年份。")
     if approx:
         lines.append(f"原文出现「{'」「'.join(approx)}」，说明这个数字本身是约数。"
                      f"把它当成精确值来比较，方法上就已经失真。")
+    lines.append("本案数值已出现互异主张；拆解展示的是库内记录精度，不将主张写成已证实事实。")
 
     return {"kind": "decompose", "agent": "拆解", "lines": lines, "assertions": assertions}
 
