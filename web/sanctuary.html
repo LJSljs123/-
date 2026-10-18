@@ -121,7 +121,7 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #cap-progress button::before { content: ""; position: absolute; inset: 11px 0; border-radius: 2px; background: linear-gradient(90deg, rgba(210, 160, 129, .92) var(--fill, 0%), rgba(214, 196, 154, .17) var(--fill, 0%)); }
 #cap-progress button.current::before { box-shadow: 0 0 12px rgba(210, 160, 129, .42); }
 #cap-progress button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-#cap-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; color: #cbb5a8; font: 9px/1.5 ui-monospace, Consolas, monospace; }
+#cap-nav { position: sticky; bottom: -13px; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 7px -2px -4px; padding: 5px 2px 2px; background: linear-gradient(180deg, rgba(21, 29, 29, .76), rgba(17, 24, 25, .98) 28%); color: #cbb5a8; font: 9px/1.5 ui-monospace, Consolas, monospace; }
 #cap-nav button { min-height: 25px; padding: 3px 9px; border: 1px solid rgba(228, 189, 120, .2); background: rgba(71, 16, 23, .46); color: #f1ddd0; cursor: pointer; }
 #cap-nav button:disabled { opacity: .4; cursor: default; }
 #cap-clock { flex: 1 1 auto; text-align: center; }
@@ -271,7 +271,7 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   </div>
   <div id="cap-nav" hidden>
     <button id="b-story-prev" type="button" aria-label="上一幕">上一幕</button>
-    <button id="b-factory-play" type="button" hidden>播放 88 秒故事</button>
+    <button id="b-factory-play" type="button" title="自动节奏固定 88 秒，每幕 11 秒；可随时暂停或手动翻幕" hidden>播放 88 秒故事</button>
     <span id="cap-clock">0:00 / 1:20</span>
     <button id="b-story-next" type="button" aria-label="下一幕">下一幕</button>
   </div>

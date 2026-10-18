@@ -110,12 +110,17 @@ renderer.domElement.addEventListener('webglcontextlost', event => {
 });
 renderer.domElement.addEventListener('webglcontextrestored', () => location.reload());
 
-const amb = new THREE.AmbientLight(0x71847e, 0.38);
+const LIGHTING = Object.freeze({
+  calm: Object.freeze({ ambient: 0.38, moon: 0.43, warm: 0.09 }),
+  storm: Object.freeze({ ambient: 0.45, moon: 0.25 }),
+  factory: Object.freeze({ ambient: 0.64, moon: 0.48, warm: 0.28 }),
+});
+const amb = new THREE.AmbientLight(0x71847e, LIGHTING.calm.ambient);
 scene.add(amb);
-const moon = new THREE.DirectionalLight(0xa8b9b6, 0.43);
+const moon = new THREE.DirectionalLight(0xa8b9b6, LIGHTING.calm.moon);
 moon.position.set(-40, 70, -30);
 scene.add(moon);
-const warmFill = new THREE.DirectionalLight(0xa27a52, 0.09);
+const warmFill = new THREE.DirectionalLight(0xa27a52, LIGHTING.calm.warm);
 warmFill.position.set(44, 22, 32);
 scene.add(warmFill);
 
@@ -1223,7 +1228,7 @@ function startStorm(sourceIndex, fromTour) {
   /* 风起 */
   wind = 2.4; snowRate = 4.0;
   scene.fog.density = 0.020;
-  amb.intensity = 0.45; moon.intensity = 0.25;
+  amb.intensity = LIGHTING.storm.ambient; moon.intensity = LIGHTING.storm.moon;
   flowMat.opacity = 0.25;
 }
 function startEmbers() {
@@ -1354,7 +1359,9 @@ function focusFactory() {
   document.getElementById('b-factory').classList.add('on');
   document.getElementById('b-factory').setAttribute('aria-pressed', 'true');
   scene.background.set(0x172520); scene.fog.color.set(0x25342b); scene.fog.density = 0.013;
-  amb.intensity = 0.64; moon.intensity = 0.48; warmFill.intensity = 0.28;
+  amb.intensity = LIGHTING.factory.ambient;
+  moon.intensity = LIGHTING.factory.moon;
+  warmFill.intensity = LIGHTING.factory.warm;
   autoPan = 0; autoPanZ = -3.6; targetY = 2.0;
   theta = 0.16; phi = 1.35; radius = mobile ? 20 : 16;
   applyCam();
@@ -1373,8 +1380,9 @@ function reset() {
   panelShown = false;
   wind = 0; snowRate = 1; autoPan = 0; autoPanZ = -4; targetY = 2;
   scene.fog.density = 0.006;
-  amb.intensity = 0.78; moon.intensity = 0.92;
-  warmFill.intensity = 0.24;
+  amb.intensity = LIGHTING.calm.ambient;
+  moon.intensity = LIGHTING.calm.moon;
+  warmFill.intensity = LIGHTING.calm.warm;
   flowMat.opacity = 0.42;
   theta = 0.06; phi = 1.18; radius = mobile ? 67 : 74;
   /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
