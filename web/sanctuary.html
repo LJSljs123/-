@@ -94,6 +94,10 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #tip .w { margin-top: 6px; color: var(--accent-light); font-size: 11px; }
 #tip .dv { margin-top: 7px; padding: 6px 9px; border-left: 2px solid var(--accent); background: rgba(119, 96, 69, .16); font-size: 11px; }
 #tip .dv b { margin-right: 6px; color: var(--accent-light); letter-spacing: .12em; }
+#tip .dv .vs { font-style: normal; margin-right: 5px; padding: 1px 5px; border-radius: 2px; font-size: 10px; letter-spacing: .04em; }
+#tip .dv .vs.hyp { background: rgba(196, 120, 60, .24); color: #e6b98c; border: 1px solid rgba(196, 120, 60, .5); }
+#tip .dv .vs.ok { background: rgba(110, 160, 120, .2); color: #aecfba; border: 1px solid rgba(110, 160, 120, .45); }
+#tip .dv .vh { display: block; margin-top: 4px; color: #cb9a63; }
 #panel { inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(8, 12, 14, .76); backdrop-filter: blur(7px); }
 #panel.on { display: flex; }
 #panel .card { width: min(560px, 100%); max-height: min(86vh, 680px); overflow: auto; padding: clamp(22px, 4vw, 42px); border: 1px solid rgba(214, 196, 154, .5); background: linear-gradient(155deg, rgba(39, 47, 44, .99), rgba(15, 21, 23, .99) 62%); box-shadow: 0 26px 100px rgba(0,0,0,.68), 0 0 50px rgba(67,83,74,.14); }
@@ -115,6 +119,19 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #factory-story-art[hidden] { display: none !important; }
 #factory-citation { display: block; margin-top: 7px; color: var(--gold); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; }
 #factory-citation[hidden], #b-factory-play[hidden] { display: none !important; }
+#story-claims-btn { display: inline-block; margin-top: 8px; padding: 3px 9px; border: 1px solid rgba(214, 196, 154, .4); background: transparent; color: var(--gold); font: 10px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .08em; cursor: pointer; }
+#story-claims-btn[hidden] { display: none !important; }
+#story-claims-btn:hover, #story-claims-btn[aria-expanded="true"] { background: rgba(214, 196, 154, .12); }
+#story-claims { margin-top: 8px; padding: 9px 11px; border-left: 2px solid rgba(214, 196, 154, .4); background: rgba(20, 26, 26, .6); max-height: 30vh; overflow: auto; }
+#story-claims[hidden] { display: none !important; }
+#story-claims .cl { padding: 6px 0; border-bottom: 1px solid rgba(214, 196, 154, .12); font-size: 11px; line-height: 1.75; }
+#story-claims .cl:last-child { border-bottom: 0; }
+#story-claims .ct { color: var(--paper); }
+#story-claims .cq { margin-top: 3px; color: #cbbfa8; font-size: 10.5px; }
+#story-claims .bd { display: inline-block; margin-right: 5px; padding: 0 4px; border-radius: 2px; font-size: 9.5px; letter-spacing: .04em; }
+#story-claims .bd.rec { background: rgba(110, 160, 120, .18); color: #aecfba; border: 1px solid rgba(110, 160, 120, .4); }
+#story-claims .bd.des { background: rgba(196, 120, 60, .2); color: #e0b080; border: 1px solid rgba(196, 120, 60, .45); }
+#story-claims .vs-note { margin-top: 7px; color: var(--faint); font-size: 10px; line-height: 1.7; }
 #cap-progress { display: grid; grid-template-columns: repeat(8, minmax(10px, 1fr)); gap: 5px; margin-top: 12px; }
 #cap-progress[hidden], #cap-nav[hidden] { display: none; }
 #cap-progress button { position: relative; height: 26px; min-height: 26px; padding: 0; border: 0; background: transparent; cursor: pointer; }
@@ -258,6 +275,8 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
     <p id="cap-copy"></p>
     <small id="cap-source" class="s"></small>
     <a id="factory-citation" href="https://wlt.hlj.gov.cn/wlt/c114274/202508/c00_31866464.shtml" target="_blank" rel="noopener noreferrer" hidden>查阅黑龙江省文化和旅游厅转载《黑龙江日报》原文</a>
+    <button type="button" id="story-claims-btn" hidden aria-expanded="false" aria-controls="story-claims">本章主张与引文</button>
+    <div id="story-claims" hidden aria-label="本章主张与原文引文"></div>
   </div>
   <div id="cap-progress" role="group" aria-label="剧情分幕">
     <button type="button" aria-label="跳到第一幕" title="第一幕"></button>
@@ -281,6 +300,7 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
 <script src="vendor/three.min.js"></script>
 <script src="data.js"></script>
 <script src="structures.js"></script>
+<script src="story.js"></script>
 <script src="sanctuary.js" defer></script>
 </body>
 </html>

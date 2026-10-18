@@ -1,0 +1,65 @@
+- generic [ref=f22e1]:
+  - banner [ref=f22e2]:
+    - generic [ref=f22e3]: 密营卷宗
+    - navigation [ref=f22e4]:
+      - button "KL-001" [ref=f22e5] [cursor=pointer]
+      - button "KL-002" [active] [ref=f22e6] [cursor=pointer]
+      - button "KL-003" [ref=f22e7] [cursor=pointer]
+      - button "KL-004" [ref=f22e8] [cursor=pointer]
+      - button "KL-005" [ref=f22e9] [cursor=pointer]
+      - button "KL-006" [ref=f22e10] [cursor=pointer]
+      - button "KL-007" [ref=f22e11] [cursor=pointer]
+      - button "KL-008" [ref=f22e12] [cursor=pointer]
+      - button "KL-009" [ref=f22e13] [cursor=pointer]
+      - button "KL-010" [ref=f22e14] [cursor=pointer]
+      - button "KL-011" [ref=f22e15] [cursor=pointer]
+      - button "KL-012" [ref=f22e16] [cursor=pointer]
+      - button "KL-013" [ref=f22e17] [cursor=pointer]
+    - link "3D 燎原" [ref=f22e18] [cursor=pointer]:
+      - /url: sanctuary.html
+    - link "← 承重结构" [ref=f22e19] [cursor=pointer]:
+      - /url: index.html
+  - main [ref=f22e20]:
+    - generic [ref=f22e32]:
+      - generic [ref=f22e33]: KL-002 · 库内记载相合
+      - heading "《告满洲各地义勇军书》发表于何时" [level=1] [ref=f22e34]
+      - generic [ref=f22e35]:
+        - generic [ref=f22e36]: 被审命题
+        - text: 《告满洲各地义勇军书》于1932年发表
+    - generic [ref=f22e37]:
+      - generic [ref=f22e38]:
+        - generic [ref=f22e39]: 拆解
+        - generic [ref=f22e40]: 只拆解，不判断
+      - generic [ref=f22e41]: 命题拆成 4 个原子断言。本次有 4 条来源记录可比对；来源机构数不等于独立史源数。
+      - generic [ref=f22e42]:
+        - generic [ref=f22e43]:
+          - generic [ref=f22e44]: 主体
+          - generic [ref=f22e45]: 《告满洲各地义勇军书》
+          - generic [ref=f22e46]: 来源记载相合
+        - generic [ref=f22e47]:
+          - generic [ref=f22e48]: 时点
+          - generic [ref=f22e49]: 1932年（4 条来源均记此年）
+          - generic [ref=f22e50]: 来源记载相合
+        - generic [ref=f22e51]:
+          - generic [ref=f22e52]: 月日
+          - generic [ref=f22e53]: 3月31日
+          - generic [ref=f22e54]: 来源记载相合
+        - generic [ref=f22e55]:
+          - generic [ref=f22e56]: 地点
+          - generic [ref=f22e57]: 原文未载地点
+          - generic [ref=f22e58]: 缺失
+    - generic [ref=f22e59]:
+      - generic [ref=f22e60]:
+        - generic [ref=f22e61]: 辑录
+        - generic [ref=f22e62]: 只引用，不生成
+      - generic [ref=f22e63]: 库内共 4 条记载，均指向同一事件。原文逐字照录。
+      - generic [ref=f22e64]:
+        - generic [ref=f22e65]:
+          - generic [ref=f22e66]: 辽宁日报
+          - generic [ref=f22e67]: 2025-09-18
+          - generic [ref=f22e68]: B 学术著作/权威报道
+        - generic [ref=f22e69]: 「3月31日：中共满洲省委发表《告满洲各地义勇军书》。」
+  - contentinfo [ref=f22e26]:
+    - generic [ref=f22e28]: 推理中
+    - button "跳过动画" [ref=f22e29] [cursor=pointer]
+    - generic [ref=f22e30]: 空格 跳过 · ←→ 换案

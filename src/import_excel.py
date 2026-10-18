@@ -94,7 +94,11 @@ def read_measure(r: list, idx: int, eid: str, book: str, page: str,
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("xlsx", type=Path, nargs="?", default=ROOT / "data" / "curated" / "史料录入模板.xlsx")
-    ap.add_argument("-o", "--out", type=Path, default=ROOT / "data" / "curated" / "events.json")
+    ap.add_argument("-o", "--out", type=Path,
+                    default=ROOT / "data" / "staging" / "events.from_xlsx.json",
+                    help="默认写 data/staging/，不覆盖正式库")
+    ap.add_argument("--force", action="store_true",
+                    help="允许写入 data/curated/（会先备份原文件）；否则拒绝")
     args = ap.parse_args()
 
     if not args.xlsx.exists():
@@ -182,6 +186,21 @@ def main() -> int:
             merged[eid]["measures"].append(m)
 
     events = list(merged.values())
+
+    # P0-10：旧录入表不能静默覆盖正式库。curated 只接受 --force，且先备份。
+    out_resolved = args.out.resolve()
+    curated_dir = (ROOT / "data" / "curated").resolve()
+    if curated_dir in out_resolved.parents:
+        if not args.force:
+            print("拒绝写入 data/curated/：该目录是正式库，须显式 --force。")
+            print("默认请写到 data/staging/，人工比对后再替换。")
+            return 2
+        if args.out.exists():
+            backup = args.out.with_suffix(args.out.suffix + ".bak")
+            backup.write_text(args.out.read_text(encoding="utf-8"), encoding="utf-8")
+            print(f"已备份原文件 → {backup}")
+
+    args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(
             {
@@ -200,7 +219,9 @@ def main() -> int:
     if len(problems) > 30:
         print(f"  ... 另有 {len(problems) - 30} 条")
     print(f"已写出 {args.out}")
-    return 0
+    if args.out.resolve().parent.name == "staging":
+        print("注意：这是 staging 副本，正式库未被改动。人工比对后再替换 data/curated/events.json。")
+    return 1 if problems else 0
 
 
 if __name__ == "__main__":

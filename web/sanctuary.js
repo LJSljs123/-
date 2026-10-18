@@ -6,7 +6,19 @@ const loading = document.getElementById('loading');
 if (!window.THREE || !window.WebGLRenderingContext) {
   fallback.classList.add('on'); loading.classList.add('off'); loading.setAttribute('aria-hidden', 'true'); return;
 }
-const D = window.__MIYING__, S = window.__MIYING_STRUCT__;
+const D = window.__MIYING__, S = window.__MIYING_STRUCT__, STORY = window.__MIYING_STORY__;
+// P1-21：依赖缺失不能停在加载罩上，要给诊断编号与可操作退路
+if (!D || !S || !STORY) {
+  const miss = [!D && 'data.js', !S && 'structures.js', !STORY && 'story.js'].filter(Boolean).join('、');
+  fallback.querySelector('.card').innerHTML =
+    '<h2>数据未加载</h2><p>缺少：' + miss + '（诊断 M-DATA-01）。<br>' +
+    '请确认这些文件与 sanctuary.html 在同一目录，或重新运行构建脚本生成。</p>' +
+    '<a href="index.html">打开 2D 证据结构</a>';
+  fallback.classList.add('on');
+  loading.classList.add('off');
+  loading.setAttribute('aria-hidden', 'true');
+  return;
+}
 const EVENTS = (D.events || []).filter(e => e.layer === 'event');
 const SITE_EVENTS = (D.events || []).filter(e => e.layer === 'site');   // 遗址：build_web 已并入 events，layer=site
 const SITES_WITH_COORDS = SITE_EVENTS.filter(e => e.place && e.place.lat != null && e.place.lng != null);
@@ -25,16 +37,13 @@ const STORY_CHAPTERS = [
   { title: '把出处留在故事里', from: 1945, to: 1945, ids: ['evt_1945_riben_touxiang'], camera: [0.04, 1.08, 100], closing: true, body: '' },
 ];
 const FACTORY_SECONDS = 11;
-const FACTORY_CHAPTERS = [
-  { title: '密林深处，一处供给基地', date: '1936 年 8 月', body: '为解决抗联部队物资补给，第三军决定在小西林河上游密林深处的老道庙沟、娘娘宫一线建立被服厂。隐蔽的山林里，一间为前线缝制衣物的工厂开始运转。', camera: [0.16, 1.35, 16, 0, -3.6, 2.0] },
-  { title: '十五名成员', date: '1936 年 8 月', body: '被服厂由 15 人组成。除阎把头和负责裁剪的“小把头”外，其余 13 人都是女性，其中 11 人是朝鲜族。画面中的匿名手部只是视觉示意，不对应任何一位历史人物，也不按比例再现全体成员。', camera: [0.28, 1.42, 9, 0, -0.2, 1.7] },
-  { title: '只有一台旧缝纫机', date: '1936 年 8 月', body: '厂里只有一台旧日本缝纫机。单衣、棉衣主要靠手工缝制。机器之外，更多工作落在一针一线之间。', camera: [0.08, 1.48, 10, 0.2, -0.1, 1.2] },
-  { title: '把布料染成山林的颜色', date: '1936 年 8 月', body: '衣料多为缴获来的白花其布。成员就地取材，用黄菠萝树皮和柞树皮熬水作染料，把白布染成接近山林的黄绿色，再制成军衣。', camera: [0.48, 1.4, 10, -0.9, -0.3, 1.5] },
-  { title: '针线旁的组织工作', date: '1936 年 9 月 18 日', body: '珠河、汤原中心县委和抗联第三、六军党委有关人员在被服厂密营召开联席会议，历时三天，选举成立中共北满临时省委。这里既承担物资供给，也见证北满抗日斗争的组织建设。', camera: [-0.2, 1.32, 10, 0, -0.7, 1.6] },
-  { title: '警讯传来，人员与物资转移', date: '1937 年 4 月', body: '被服厂被“老白党”发现并告密。阎把头将消息告知厂长陈静山；陈静山率人员连夜转移，将物资运至张木营子抗联密营。叙事不补写未见于来源的路线、对白或敌我部署。', camera: [0.12, 1.25, 13, 1.2, -2.4, 2.0] },
-  { title: '留下来的针脚', date: '1937 年 4 月', body: '留守的“小把头”未能及时撤离，当晚遭到袭击并牺牲，四间木刻楞房屋被焚。镜头停在空下来的工作台，不重演战斗，也不把牺牲变成视觉奇观。', camera: [0.12, 1.2, 17, 0, -2.8, 2.1] },
-  { title: '回到今天，继续查证', date: '遗址保护与再建', body: '公开报道记载：遗址于 2006 年被确定为伊春市级文物保护单位，2013 年在原地按原貌复建。眼前的三维空间和概念画是合成示意，不是遗址扫描；我们把可核的文字和出处留给观众。', camera: [-0.24, 1.32, 21, 0, -3.5, 2.1] },
-];
+// 文字、引文、视觉边界一律来自 data/curated/story_claims.json（构建为 story.js）；
+// 本文件只保留镜头与交互，不再复制一份事实文本。
+const FACTORY_CHAPTERS = (STORY.chapters || []).map(ch => ({
+  no: ch.no, title: ch.title, date: ch.date, body: ch.body, camera: ch.camera,
+  claims: ch.claims || [], visual: ch.visual || '',
+}));
+const STORY_SOURCE = STORY.source || {};
 document.getElementById('m-events').textContent = EVENTS.length;
 document.getElementById('m-sources').textContent = (S.sources || []).length;
 document.getElementById('m-sites').textContent = SITES_WITH_COORDS.length;
@@ -1042,7 +1051,12 @@ function showTip() {
       (m.n === 1 ? '<div class="w">库内目前只有一家来源机构记载；不等于历史只有这一种记载。</div>' : '') +
       dvBlock(e) +
       (e.conflict_group && VERD[e.conflict_group]
-        ? '<div class="dv"><b>裁决</b>' + esc(VERD[e.conflict_group].ruling) + ' 基准 ' + esc(VERD[e.conflict_group].adopt) + '</div>' : '') +
+        ? '<div class="dv"><b>裁决</b><i class="vs ' +
+          (VERD[e.conflict_group].status === 'verified' ? 'ok">已核' : 'hyp">待核验编辑假说') +
+          '</i>' + esc(VERD[e.conflict_group].ruling) + ' 基准 ' + esc(VERD[e.conflict_group].adopt) +
+          (VERD[e.conflict_group].hypothesis
+            ? '<br><span class="vh">编辑假说（未核）：' + esc(VERD[e.conflict_group].hypothesis) + '</span>' : '') +
+          '</div>' : '') +
       archBlock(e.sources) + provBlock(e.provenance);
     tip.classList.add('on');
   } else if (hoverTower >= 0) {
@@ -1271,6 +1285,49 @@ function updateFactoryProgress() {
   storyNext.disabled = index === FACTORY_CHAPTERS.length - 1;
   factoryPlayButton.textContent = factoryTour.active ? '暂停故事' : (elapsed >= total ? '重播 88 秒故事' : '播放 88 秒故事');
 }
+/* ---------- 本章主张与引文（P0-08：故事—出处闭环） ---------- */
+const claimsBtn = document.getElementById('story-claims-btn');
+const claimsPanel = document.getElementById('story-claims');
+let claimsOpen = false;
+let claimsResume = false;
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function renderChapterClaims(chapter) {
+  const list = (chapter && chapter.claims) || [];
+  claimsBtn.hidden = !list.length;
+  claimsBtn.textContent = '本章 ' + list.length + ' 条主张与引文' + (claimsOpen ? ' ▾' : ' ▸');
+  claimsBtn.setAttribute('aria-expanded', claimsOpen ? 'true' : 'false');
+  claimsPanel.hidden = !claimsOpen;
+  if (!list.length) { claimsPanel.innerHTML = ''; return; }
+  claimsPanel.innerHTML = list.map(c =>
+    '<div class="cl"><div class="ct"><i class="bd ' +
+      (c.boundary === '记载' ? 'rec">记载' : 'des">设计') + '</i>' + escHtml(c.text) + '</div>' +
+    '<div class="cq">「' + escHtml(c.quote) + '」</div></div>'
+  ).join('') + (chapter.visual
+    ? '<div class="vs-note">视觉边界：' + escHtml(chapter.visual) + '</div>' : '');
+}
+
+claimsBtn.addEventListener('click', () => {
+  claimsOpen = !claimsOpen;
+  if (claimsOpen) {
+    claimsResume = factoryTour.active;
+    if (factoryTour.active) stopFactoryTour();          // 打开出处即暂停
+  } else if (claimsResume) {
+    claimsResume = false;
+    toggleFactoryTour();                                 // 收起后从原位续播
+  }
+  renderChapterClaims(FACTORY_CHAPTERS[factoryTour.index]);
+});
+
+// 外链打开也会离开画面：同样先暂停，回来时停在原章原秒
+document.getElementById('factory-citation').addEventListener('click', () => {
+  if (factoryTour.active) stopFactoryTour();
+});
+
 function renderFactoryChapter(index) {
   const chapter = FACTORY_CHAPTERS[index];
   if (!chapter) return;
@@ -1283,8 +1340,12 @@ function renderFactoryChapter(index) {
   storyStep.textContent = '针线与守望 · 第 ' + String(index + 1).padStart(2, '0') + ' 幕 / 08 · ' + chapter.date;
   storyTitle.textContent = chapter.title;
   storyBody.textContent = chapter.body;
-  storySource.textContent = '史实依据：黑龙江省文化和旅游厅转载《黑龙江日报》；画面为合成视觉示意。';
+  const nClaims = (chapter.claims || []).length;
+  storySource.textContent = '本章 ' + nClaims + ' 条主张 · 出处：' +
+    (STORY_SOURCE.org || '黑龙江日报转载') + (STORY_SOURCE.published ? '（' + STORY_SOURCE.published + '）' : '') +
+    '；画面为合成视觉示意。';
   factoryCitation.hidden = false;
+  renderChapterClaims(chapter);
   storyProgress.forEach((button, i) => {
     button.title = FACTORY_CHAPTERS[i].title;
     button.setAttribute('aria-label', '跳到被服厂故事第 ' + (i + 1) + ' 幕：' + FACTORY_CHAPTERS[i].title);
@@ -1295,6 +1356,8 @@ function renderFactoryChapter(index) {
 }
 function setFactoryChapter(index) {
   const next = Math.max(0, Math.min(FACTORY_CHAPTERS.length - 1, index));
+  claimsOpen = false;
+  claimsResume = false;
   factoryTour.active = false;
   factoryTour.elapsed = next * FACTORY_SECONDS;
   renderFactoryChapter(next);

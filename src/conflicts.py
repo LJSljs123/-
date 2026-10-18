@@ -293,7 +293,7 @@ def date_variant_diffs(events: list[dict]) -> list[dict]:
             if days > 30:
                 sev = "high"
             elif days > 3:
-                sev = "mid"
+                sev = "medium"
             else:
                 sev = "low"
             if kind == "precision":

@@ -1,0 +1,35 @@
+- generic [active] [ref=f4e1]:
+  - link "跳到场景控制" [ref=f4e2] [cursor=pointer]:
+    - /url: "#ctrl"
+  - banner:
+    - generic:
+      - generic [aria-hidden]:
+        - generic: 火
+      - generic:
+        - generic: 东北抗联 · 1931—1945
+        - heading "密营 · 燎原" [level=1]
+        - generic: 66 条记载 · 33 家来源机构 · 34 处有坐标遗址
+    - navigation "作品视图" [ref=f4e3]:
+      - link "证据结构" [ref=f4e4] [cursor=pointer]:
+        - /url: index.html
+      - link "灯下卷宗" [ref=f4e5] [cursor=pointer]:
+        - /url: dossier.html
+  - generic [ref=f4e6]:
+    - button "未检测到 VR 头显" [disabled] [ref=f4e7]
+    - status [ref=f4e8]: 请用 Quest / Pico 等支持 WebXR 的头显浏览器打开 HTTPS 页面。
+  - region "场景说明":
+    - generic: 红色烽火 · 证据链空间
+    - heading "每一簇火光， 都由记载托起。" [level=2]: 每一簇火光，都由记载托起。
+    - paragraph: 抽掉一个来源，看看哪些记载会失去库内支撑。火光表现证据关系，不代表历史据点的真实分布或存续状态。
+  - status: 灯火 66 · 烽燧 33 · 遗址 34（真实坐标） · 流光 426
+  - toolbar "场景演示控制" [ref=f4e9]:
+    - button "自动导览" [ref=f4e10] [cursor=pointer]
+    - button "风雪试验" [ref=f4e11] [cursor=pointer]
+    - button "人物脉络" [ref=f4e12] [cursor=pointer]
+    - button "十四年 · 余烬" [ref=f4e13] [cursor=pointer]
+    - button "复原" [ref=f4e14] [cursor=pointer]
+  - status
+  - status [ref=f4e15]:
+    - generic [ref=f4e17]: 密 营 · 燎 原
+    - generic [ref=f4e18]: 正在点亮红色证据链……
+  - img "东北抗联史料来源关系三维场景" [ref=f4e19]

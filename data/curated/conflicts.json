@@ -322,7 +322,7 @@
         "precision": "day",
         "source": "团结网《镜泊湖连环战的历史考证》"
       },
-      "severity": "mid"
+      "severity": "medium"
     },
     {
       "event_id": "evt_1938_liujie_zhidian",

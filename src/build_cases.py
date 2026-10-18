@@ -28,6 +28,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EVENTS = ROOT / "data" / "curated" / "events.json"
 CONF = ROOT / "data" / "curated" / "conflicts.json"
+VERDICTS_PATH = ROOT / "data" / "curated" / "verdicts.json"
 OUT = ROOT / "data" / "curated" / "cases.json"
 
 # 时点模糊的语汇。原文出现这些词，说明命题本身没落在具体某一天。
@@ -100,6 +101,179 @@ def short_src(s: str) -> str:
     s = str(s or "")
     head = s.split("《")[0].split("（")[0].strip()
     return head or s[:16]
+
+
+# ---------------------------------------------------------------- 日期支持关系
+# P0-02：不能用「来源条数」代替「逐条比对」，也不能把一家到日、几家到月
+# 判成「来源记载相合」。四态：未载 / 范围相容 / 明确相合 / 互斥，
+# 另加一态「另一动作」——编成与成立是不同动作，不可直接判矛盾。
+
+SEASON_MONTHS = {"春": (3, 4, 5), "夏": (6, 7, 8),
+                 "秋": (9, 10, 11), "冬": (12, 1, 2)}
+FORM_ACTION_WORDS = ("编为", "编成", "改编", "合编", "整编")
+FOUND_ACTION_WORDS = ("成立", "建立", "组建")
+# 考订型引文：引文里出现的是「被考订的错误值」，不能当成该来源的主张
+CORRECTION_WORDS = ("笔误", "应为", "实为", "显然", "误记", "疑为", "当为", "系误", "有误")
+# 起始年表述：「自 1931 年起……发表」说的是起点，不是该文件的发表年
+RANGE_PREFIX = re.compile(r"自\s*\d{4}\s*年起")
+
+
+def parse_time_claim(text: str) -> dict | None:
+    """从引文解析时间表达，返回最细精度的 {precision,y,m,d,season,expr}。
+
+    只取第一处时间表达：同一条引文里可能同时写「7月22日编成」与「8月1日成立」，
+    取第一个会把建军日当成成立日——调用方需先用 action_kind 排除动作不符的来源。
+    """
+    t = str(text or "")
+    m = re.search(r"(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日", t)
+    if m:
+        mm, dd = int(m.group(2)), int(m.group(3))
+        return {"precision": "day", "y": int(m.group(1)), "m": mm, "d": dd,
+                "expr": f"{mm}月{dd}日"}
+    m = re.search(r"(\d{4})\s*年\s*(\d{1,2})\s*月", t)
+    if m:
+        mm = int(m.group(2))
+        return {"precision": "month", "y": int(m.group(1)), "m": mm, "d": None,
+                "expr": f"{mm}月"}
+    m = re.search(r"(\d{4})\s*年\s*(春|夏|秋|冬)", t)
+    if m:
+        return {"precision": "season", "y": int(m.group(1)), "m": None, "d": None,
+                "season": m.group(2), "expr": f"{m.group(2)}季"}
+    m = re.search(r"(\d{1,2})\s*月\s*(\d{1,2})\s*日", t)
+    if m:
+        mm, dd = int(m.group(1)), int(m.group(2))
+        return {"precision": "day", "y": None, "m": mm, "d": dd,
+                "expr": f"{mm}月{dd}日"}
+    m = re.search(r"(\d{1,2})\s*月", t)
+    if m:
+        mm = int(m.group(1))
+        return {"precision": "month", "y": None, "m": mm, "d": None,
+                "expr": f"{mm}月"}
+    m = re.search(r"(\d{4})\s*年", t)
+    if m:
+        return {"precision": "year", "y": int(m.group(1)), "m": None, "d": None,
+                "expr": f"{m.group(1)}年"}
+    return None
+
+
+def action_kind(text: str) -> str | None:
+    """粗分动作类别：编成 / 成立。两者是不同动作，不可直接判成日期矛盾。"""
+    t = str(text or "")
+    if any(w in t for w in FORM_ACTION_WORDS):
+        return "编成"
+    if any(w in t for w in FOUND_ACTION_WORDS):
+        return "成立"
+    return None
+
+
+def date_support(ev: dict) -> dict:
+    """逐来源 × 逐精度计算日期支持关系。
+
+    返回 {"claim": {...}, "rows": [...], "counts": {...},
+          "year_counts": {...}, "state": str}
+    rows 每项：{short, expr, precision, state}，state ∈
+    未载 / 明确相合 / 范围相容 / 范围不符 / 互斥 / 另一动作
+    """
+    d = ev.get("date") or {}
+    start = str(d.get("start") or "")
+    prec = d.get("precision") or "year"
+    try:
+        cy = int(start[:4])
+        cm = int(start[5:7]) if len(start) >= 7 else None
+        cd = int(start[8:10]) if len(start) >= 10 else None
+    except ValueError:
+        cy, cm, cd = None, None, None
+
+    claim_act = action_kind(ev.get("summary") or "")
+    rows = []
+    year_exact = year_off = year_none = 0
+
+    for s in ev.get("sources", []):
+        quote = s.get("quote") or ""
+        tc = parse_time_claim(quote)
+        short = short_src(s.get("book"))
+        if tc is None:
+            year_none += 1
+            rows.append({"short": short, "expr": "未载具体时间",
+                         "precision": "none", "state": "未载"})
+            continue
+        # 考订说明 / 起始年表述：引文里的年份不是该来源对「本条主张」的记载
+        if any(w in quote for w in CORRECTION_WORDS):
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"], "state": "考订说明"})
+            continue
+        if RANGE_PREFIX.search(quote):
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"], "state": "起始年表述"})
+            continue
+        # 年份先单独记账：即便月日互斥，年份是否明载也要分开说
+        if tc["y"] is None:
+            year_none += 1
+        elif cy and tc["y"] != cy:
+            year_off += 1
+        else:
+            year_exact += 1
+        # 动作不符：先判，避免把「编成」的日期当成「成立」的日期比对
+        src_act = action_kind(quote)
+        if claim_act and src_act and src_act != claim_act:
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"], "state": "另一动作"})
+            continue
+        if tc["y"] and cy and tc["y"] != cy:
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"], "state": "互斥"})
+            continue
+        if tc["precision"] == "year":
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": "year", "state": "范围相容"})
+            continue
+        if tc["precision"] == "season":
+            months = SEASON_MONTHS.get(tc["season"], ())
+            ok = cm is not None and cm in months
+            rows.append({"short": short, "expr": tc["expr"], "precision": "season",
+                         "state": "范围相容" if ok else "范围不符"})
+            continue
+        if tc["precision"] == "month":
+            same = cm is not None and tc["m"] == cm
+            rows.append({"short": short, "expr": tc["expr"], "precision": "month",
+                         "state": "明确相合" if same else "互斥"})
+            continue
+        # 到日：主张到日则须月日全同；主张只到月，则同月即支持（更细的来源支持更粗的主张）
+        if prec == "day":
+            same = (cm == tc["m"] and cd == tc["d"])
+        else:
+            same = (cm is not None and tc["m"] == cm)
+        rows.append({"short": short, "expr": tc["expr"], "precision": "day",
+                     "state": "明确相合" if same else "互斥"})
+
+    counts = {}
+    for r in rows:
+        counts[r["state"]] = counts.get(r["state"], 0) + 1
+
+    # 汇总状态：只认「明确相合」为支持；其余逐类陈述，绝不合并成「相合」
+    exact = counts.get("明确相合", 0)
+    compat = counts.get("范围相容", 0)
+    total = len(rows)
+    if counts.get("互斥"):
+        state = f"{counts['互斥']} 家记载与主张不符"
+    elif exact and (exact + compat) == total:
+        state = f"{exact} 家明确相合" + (f"（{compat} 家更粗但相容）" if compat else "")
+    elif exact:
+        state = (f"仅 {exact} 家明确相合；"
+                 + "、".join(f"{counts[k]} 家{k}" for k in
+                            ("范围相容", "范围不符", "另一动作", "考订说明",
+                             "起始年表述", "未载") if counts.get(k)))
+    elif compat:
+        state = f"无明确到该精度的记载；{compat} 家范围相容"
+    else:
+        state = "无来源支持该精度"
+
+    return {"claim": {"y": cy, "m": cm, "d": cd, "precision": prec},
+            "rows": rows, "counts": counts,
+            "year_counts": {"exact": year_exact, "off": year_off, "none": year_none},
+            "state": state}
+
+
 
 
 def place_label(p: dict) -> tuple[str, str]:
@@ -380,21 +554,39 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
     a, b = dv[0]["a"], dv[0]["b"]
     ga, gb = a["source"].split("《")[0], b["source"].split("《")[0]
 
+    # P0-03：月精度不能伪装成「6 月 1 日」。原文只写「6月」，补位的 01 不是史料。
+    def claim_label(c: dict) -> str:
+        v = str(c.get("value") or "")
+        if c.get("precision") == "day":
+            return v + "（日精度）"
+        if c.get("precision") == "month":
+            try:
+                return f"{v[:4]}年{int(v[5:7])}月（月精度，原文未到日）"
+            except ValueError:
+                return v + "（月精度）"
+        return v[:4] + "年（年精度）"
+
+    # 只有双方都到日，天数差才有意义；否则只能说精度不同
+    both_day = (a.get("precision") == "day" and b.get("precision") == "day")
+    if both_day:
+        gap_text = f"{dv[0]['gap_days']} 天（整月级）" if dv[0]["gap_days"] >= 15 else f"{dv[0]['gap_days']} 天"
+        gap_value = f"{dv[0]['gap_days']} 天"
+    else:
+        gap_text = "精度不同（一方到月、一方到日），不计算天数差——先对齐精度，再谈差多少"
+        gap_value = "不可比（精度不同）"
+
     # 拆解：把「X 于何时」拆成双方各自的主张
     decompose = {
         "kind": "decompose", "agent": "拆解",
         "lines": [f"「{subject}{act}于何时」拆成两条互斥的日期主张：",
-                  f"主张甲：{a['source']} 记 {a['value']}（精度：{'日' if a['precision']=='day' else '月'}）；",
-                  f"主张乙：{b['source']} 记 {b['value']}（精度：{'日' if b['precision']=='day' else '月'}）。",
-                  "两条主张相差 "
-                  + (f"{dv[0]['gap_days']} 天（整月级）" if dv[0]['gap_days'] >= 15
-                     else f"{dv[0]['gap_days']} 天")
-                  + "，在本库的日期层级上不能同时成立。"],
+                  f"主张甲：{a['source']} 记 {claim_label(a)}；",
+                  f"主张乙：{b['source']} 记 {claim_label(b)}。",
+                  gap_text + "。"],
         "assertions": [
             {"k": "事件本体", "v": ev.get("summary", ""), "state": "确定"},
-            {"k": "主张甲", "v": f"{a['value']}（{ga}）", "state": "存疑"},
-            {"k": "主张乙", "v": f"{b['value']}（{gb}）", "state": "存疑"},
-            {"k": "分歧量级", "v": f"{dv[0]['gap_days']} 天", "state": "确定"},
+            {"k": "主张甲", "v": f"{claim_label(a)}（{ga}）", "state": "存疑"},
+            {"k": "主张乙", "v": f"{claim_label(b)}（{gb}）", "state": "存疑"},
+            {"k": "分歧量级", "v": gap_value, "state": "确定" if both_day else "较粗"},
         ],
     }
 
@@ -404,10 +596,11 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         quotes_by_src.setdefault(s.get("book", ""), s.get("quote", ""))
     def evd(claim):
         bk = claim["source"]
-        return {"book": bk, "short": short_src(bk), "page": "",
-                "quote": quotes_by_src.get(bk, "（该来源以日期主张入链，原文引文见事件层）"),
-                "reliability": next((s.get("reliability") for s in ev.get("sources", [])
-                                     if s.get("book") == bk), "B"),
+        meta = next((s for s in ev.get("sources", []) if s.get("book") == bk), {})
+        return {"book": bk, "short": short_src(bk), "page": meta.get("page") or "",
+                "quote": quotes_by_src.get(bk) or "引文未在事件层定位——该来源只以日期主张入链，需回补原文",
+                "url": meta.get("url"), "archive": meta.get("archive"),
+                "reliability": meta.get("reliability") or "B",
                 "value": claim["value"], "unit": "date", "is_primary": False}
     retrieve = {
         "kind": "retrieve", "agent": "辑录",
@@ -430,7 +623,7 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
     if w_a != w_b:
         ch.append({
             "code": "R10", "name": "机构权重不对称",
-            "severity": "mid",
+            "severity": "medium",
             "text": ("分歧一方为国防部门/官方纪念机构，另一方为媒体年表——"
                      "但这不构成裁决：年表同样有档案出处，且单方权威转述也可能沿用一处笔误。"
                      "权重只改变候选倾向，不替代证据。"),
@@ -596,57 +789,62 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
     } for s in ev.get("sources", [])]
     has_primary = any(s.get("reliability") == "A" for s in srcs)
 
-    # 月日层面：优先用来源级日期主张（date_variants）。
-    # 从 quote 里正则抠时间不可靠——纪念网同一条里既有「7月22日编成」
-    # 又有「8月1日成立」，正则取第一个就会把建军日当成成立日。
-    variants = ev.get("date_variants") or []
-    if variants:
-        exprs = [{"short": short_src(v.get("source")),
-                  "expr": md_label(v.get("value", ""), v.get("precision"))}
-                 for v in variants]
-        day_vals = sorted({v["value"] for v in variants if v.get("precision") == "day"})
-        if len(day_vals) == 1:
-            distinct = {md_label(day_vals[0], "day")}
-        elif len(day_vals) > 1:
-            distinct = {md_label(v, "day") for v in day_vals}
-        else:
-            distinct = sorted({md_label(v.get("value", ""), "month") for v in variants})
+    # P0-02：逐来源 × 逐精度算支持关系，不用来源条数代替逐条比对。
+    # 「一家到日、几家到月」不是「来源记载相合」——只有明确到该精度才叫支持；
+    # 到月/到季的来源只能算「范围相容」，动作不同的（编成 vs 成立）算「另一动作」。
+    ds = date_support(ev)
+    cnt = ds["counts"]
+    yc = ds["year_counts"]
+    md_prec = d.get("precision") or "year"
+    if md_prec == "day":
+        md_value = f"{ds['claim']['m']}月{ds['claim']['d']}日"
+    elif md_prec == "month":
+        md_value = f"{ds['claim']['m']}月"
     else:
-        exprs = []
-        for s in ev.get("sources", []):
-            q = s.get("quote", "")
-            found = re.findall(r"\d{1,2}月\d{1,2}日|\d{1,2}月|(?:春|夏|秋|冬)季?|年初|年底", q)
-            exprs.append({"short": short_src(s.get("book")),
-                          "expr": found[0] if found else "未载具体时间"})
-        distinct = {e["expr"] for e in exprs}
+        md_value = "原文仅到年"
+    year_state = (f"{yc['exact']}/{len(srcs)} 家明载该年"
+                  + (f"，{yc['none']} 家未载年份" if yc["none"] else "")
+                  + (f"，{yc['off']} 家记他年" if yc["off"] else ""))
     assertions = [
         {"k": "主体", "v": subject, "state": "确定" if has_primary else "来源记载相合"},
-        {"k": "时点", "v": f"{year}年（{len(srcs)} 条来源均记此年）",
+        {"k": "时点", "v": f"{year}年（{year_state}）",
          "state": "确定" if has_primary else "来源记载相合"},
-        {"k": "月日", "v": "／".join(sorted(distinct)),
-         "state": ("较粗" if len(distinct) > 1 else "确定") if has_primary
-                   else ("来源记载有差异" if len(distinct) > 1 else "来源记载相合")},
+        {"k": "月日", "v": f"{md_value}（本库主张精度：{prec_cn}）", "state": ds["state"]},
         {"k": "地点", "v": place_text,
          "state": place_state if has_primary or place_state != "确定" else "来源记载"},
     ]
 
     ch = []
-    # 分歧分两种，不能混：精度不同是「记得粗」，日值不同是「记得不一样」。
-    if len(distinct) > 1:
-        if variants and len(day_vals) > 1:
-            ch.append({
-                "code": "R9", "name": "日期记载不一致", "severity": "medium",
-                "text": f"{len(day_vals)} 条来源都精确到日，却给出不同的日子："
-                        + "、".join(f"「{e['expr']}」({e['short']})" for e in exprs)
-                        + "。这不是精度问题，是记载本身对不上——系统只定到月，日子留作悬案。",
-            })
-        else:
-            ch.append({
-                "code": "R8", "name": "时间精度不一致", "severity": "medium",
-                "text": f"{len(srcs)} 条来源对年份没有分歧，但月日停在不同的精度上："
-                        + "、".join(f"「{e['expr']}」({e['short']})" for e in exprs)
-                        + "。这不是矛盾，是粗细不同——粗的让位于细的，但细的一方仍需第二家佐证。",
-            })
+    if cnt.get("互斥"):
+        bad = [r for r in ds["rows"] if r["state"] == "互斥"]
+        ch.append({
+            "code": "R9", "name": "日期记载不一致", "severity": "medium",
+            "text": f"{len(bad)} 家来源给出与主张不符的时间："
+                    + "、".join(f"「{r['expr']}」({r['short']})" for r in bad)
+                    + "。这不是精度问题，是记载本身对不上——系统不替它们折中。",
+        })
+    if cnt.get("范围不符"):
+        bad = [r for r in ds["rows"] if r["state"] == "范围不符"]
+        ch.append({
+            "code": "R10", "name": "精度范围不相容", "severity": "medium",
+            "text": "、".join(f"「{r['expr']}」({r['short']})" for r in bad)
+                    + f" 的时段不含主张的{md_value}。季节/区间是粗精度，但粗精度也可能与细主张冲突。",
+        })
+    if cnt.get("另一动作"):
+        bad = [r for r in ds["rows"] if r["state"] == "另一动作"]
+        ch.append({
+            "code": "R11", "name": "动作不同，不作日期比对", "severity": "low",
+            "text": "、".join(f"「{r['expr']}」({r['short']})" for r in bad)
+                    + " 记的是「编成/改编」，与本条主张的「成立」不是同一动作，"
+                      "既不计入支持，也不判为矛盾——需要档案确认两者是否为同一事件。",
+        })
+    if cnt.get("明确相合", 0) == 1 and cnt.get("范围相容"):
+        only = [r for r in ds["rows"] if r["state"] == "明确相合"][0]
+        ch.append({
+            "code": "R12", "name": "仅一家明确到该精度", "severity": "medium",
+            "text": f"只有「{only['short']}」明确记到 {md_value}；其余来源更粗（相容但不支持该精度）。"
+                    "所以这是「一家明确 + 数家相容」，不是「来源记载相合」。",
+        })
     if not has_primary:
         ch.append({
             "code": "R3", "name": "库内无一手档案", "severity": "medium",
@@ -655,23 +853,32 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
         })
 
     if not has_primary:
-        status, status_cn = "consistent", "库内年份记载相合 · 未达定谳"
+        status = "consistent"
+        # 状态文案必须反映逐条比对结果：1 家明确 ≠ 记载相合
+        if cnt.get("互斥") or cnt.get("范围不符"):
+            status_cn = "库内年份相合 · 月日有分歧 · 未达定谳"
+        elif cnt.get("明确相合", 0) >= 2:
+            status_cn = f"库内 {cnt['明确相合']} 家记载相合 · 未达定谳"
+        elif cnt.get("明确相合", 0) == 1:
+            status_cn = "仅 1 家明确到该精度 · 未达定谳"
+        else:
+            status_cn = "库内年份记载相合 · 未达定谳"
         missing = ["需可核验的一手档案或命令原件，才能支持历史层面的定谳"]
-        if len(distinct) > 1:
-            missing.insert(0, "月日记载差异需原始档案或命令原件才能消除")
-    elif variants and len(day_vals) == 1:
-        status, status_cn, missing = "settled", "可以定谳", []
-    elif len(distinct) > 1:
+        if cnt.get("互斥") or cnt.get("范围不符") or cnt.get("明确相合", 0) < 2:
+            missing.insert(0, "月日主张缺少第二家明确记载，需原始档案或命令原件才能补足")
+    elif cnt.get("互斥"):
         status, status_cn = "settled", "可以定谳 · 限于月"
         missing = ["日层面的分歧需原始档案或命令原件才能消除"]
-    elif d.get("precision") == "day":
+    elif md_prec == "day" and cnt.get("明确相合", 0) >= 2:
         status, status_cn, missing = "settled", "可以定谳", []
     else:
         status = "settled"
         status_cn = f"可以定谳 · 限于{prec_cn}"
         missing = []
 
-    conservative = (f"库内 {len(srcs)} 条来源记录均记载「{year}年」；来源机构数不等于独立史源数。")
+    conservative = (f"库内 {len(srcs)} 条来源记录中，{yc['exact']} 家明载「{year}年」"
+                    + (f"、{yc['none']} 家未载年份" if yc["none"] else "")
+                    + "；来源机构数不等于独立史源数。")
     if has_primary:
         conservative += "该结论仅在页面标明的时间精度范围内成立。"
     else:
@@ -722,6 +929,10 @@ def main() -> int:
 
     # 消费冲突报告：高严重度日期分歧的事件不做定谳案，单独立日期悬案
     conf = json.loads(CONF.read_text(encoding="utf-8")) if CONF.exists() else {}
+    # 数值裁决链：三视图必须同源——卷宗也读同一份 verdicts
+    verdicts = {}
+    if VERDICTS_PATH.exists():
+        verdicts = json.loads(VERDICTS_PATH.read_text(encoding="utf-8")).get("verdicts", {})
     high_date = {}   # event_id -> [date_variant 冲突条目]
     for dv in conf.get("date_variants", []):
         if dv.get("severity") == "high":
@@ -790,6 +1001,7 @@ def main() -> int:
             "unit": unit,
             "values": vals,
             "summary": e.get("summary"),
+            "verdict": verdicts.get(e.get("conflict_group") or ""),
             "steps": [decompose, retrieve, examine, register],
         })
 

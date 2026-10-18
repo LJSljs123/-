@@ -159,6 +159,18 @@ main{max-width:790px;margin:0 auto;padding:64px 34px 180px}
 .verdict .cc .h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
   color:var(--faint);margin-bottom:8px}
 
+/* 数值裁决链（与 2D/3D 同源） */
+.vd{position:relative;margin-top:10px;padding:18px 22px;border:1px solid rgba(196,120,60,.26);
+  background:rgba(196,120,60,.045);font-size:13px;line-height:1.9;color:var(--dim)}
+.vd .h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--gold);margin-bottom:10px}
+.vd .vs{font-style:normal;margin-left:8px;padding:1px 6px;border-radius:2px;font-size:10px;letter-spacing:.04em}
+.vd .vs.hyp{background:rgba(196,120,60,.22);color:#e0b080;border:1px solid rgba(196,120,60,.45)}
+.vd .vs.ok{background:rgba(110,160,120,.18);color:#a8c8b0;border:1px solid rgba(110,160,120,.4)}
+.vd .row{margin-top:6px}
+.vd .row b{display:inline-block;min-width:4.6em;margin-right:8px;font-weight:400;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--faint)}
+.vd .row.hyp{color:#cf9a63}
+
 .stamp{
   position:absolute;right:24px;top:22px;
   width:70px;height:70px;
@@ -445,6 +457,25 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
             esc(step.conservative) + '</div>';
         sec.appendChild(v);
         await reveal(v, 300);
+
+        /* 数值裁决链：与 2D 浮层、3D 悬浮同源同状态，避免三视图说法不一 */
+        if (c.verdict) {
+          const vd = document.createElement('div');
+          vd.className = 'vd';
+          const hyp = c.verdict.status !== 'verified';
+          vd.innerHTML =
+            '<div class="h">数值裁决链' +
+              (hyp ? '<i class="vs hyp">待核验编辑假说</i>' : '<i class="vs ok">已核</i>') +
+            '</div>' +
+            '<div class="row"><b>基准值</b>' + esc(c.verdict.adopt) + '　' + esc(c.verdict.ruling) + '</div>' +
+            '<div class="row"><b>依据</b>' + esc(c.verdict.basis) + '</div>' +
+            '<div class="row"><b>另说</b>' + esc(c.verdict.other) + '</div>' +
+            (c.verdict.hypothesis
+              ? '<div class="row hyp"><b>编辑假说（未核）</b>' + esc(c.verdict.hypothesis) + '</div>' : '') +
+            '<div class="row"><b>推翻条件</b>' + esc(c.verdict.upgraded) + '</div>';
+          sec.appendChild(vd);
+          await reveal(vd, 240);
+        }
       }
     }
 

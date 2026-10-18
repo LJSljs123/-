@@ -1,0 +1,30 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]: 密营卷宗
+    - navigation [ref=e4]:
+      - button "KL-001" [ref=e5] [cursor=pointer]
+      - button "KL-002" [ref=e6] [cursor=pointer]
+      - button "KL-003" [ref=e7] [cursor=pointer]
+      - button "KL-004" [ref=e8] [cursor=pointer]
+      - button "KL-005" [ref=e9] [cursor=pointer]
+      - button "KL-006" [ref=e10] [cursor=pointer]
+      - button "KL-007" [ref=e11] [cursor=pointer]
+      - button "KL-008" [ref=e12] [cursor=pointer]
+      - button "KL-009" [ref=e13] [cursor=pointer]
+      - button "KL-010" [ref=e14] [cursor=pointer]
+      - button "KL-011" [ref=e15] [cursor=pointer]
+      - button "KL-012" [ref=e16] [cursor=pointer]
+      - button "KL-013" [ref=e17] [cursor=pointer]
+    - link "← 承重结构" [ref=e18] [cursor=pointer]:
+      - /url: index.html
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]: KL-001 · 库内记载相合
+      - heading "东北抗日联军教导旅成立于何时" [level=1] [ref=e22]
+      - generic [ref=e23]:
+        - generic [ref=e24]: 被审命题
+        - text: 东北抗日联军教导旅于1942年成立
+  - contentinfo [ref=e25]:
+    - generic [ref=e27]: 推理中
+    - button "跳过动画" [ref=e28] [cursor=pointer]
+    - generic [ref=e29]: 空格 跳过 · ←→ 换案

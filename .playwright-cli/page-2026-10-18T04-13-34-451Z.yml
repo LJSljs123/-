@@ -1,0 +1,20 @@
+- generic [active] [ref=f3e1]:
+  - generic:
+    - generic:
+      - heading "密营 · 燎原" [level=1]
+      - generic: 66 座灯火 = 66 条可核查记载 · 33 座烽燧 = 33 家来源机构 · 石碑 = 34 处国家级遗址（真实坐标）
+    - generic [ref=f3e2]:
+      - link "← 2D 承重结构" [ref=f3e3] [cursor=pointer]:
+        - /url: index.html
+      - link "灯下案卷宗" [ref=f3e4] [cursor=pointer]:
+        - /url: dossier.html
+      - text: 拖拽环视 · 滚轮推近 · 悬停火光查看引文与来源核查
+  - generic: 灯火 66 · 烽燧 33 · 遗址 34（真实坐标） · 流光 426
+  - generic [ref=f3e5]:
+    - button "风雪夜" [ref=f3e6] [cursor=pointer]
+    - button "程斌之夜" [ref=f3e7] [cursor=pointer]
+    - button "十四年 · 余烬" [ref=f3e8] [cursor=pointer]
+    - button "复原" [ref=f3e9] [cursor=pointer]
+  - generic [ref=f3e10]:
+    - generic [ref=f3e11]: 密 营 · 燎 原
+    - generic [ref=f3e12]: 正在点灯……

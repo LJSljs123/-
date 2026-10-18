@@ -31,6 +31,8 @@ header{
 .meta b{color:var(--ink);font-weight:500;font-size:13px;margin-right:3px}
 .meta .alarm b{color:var(--red)}
 
+#zoom{background:none;border:1px solid var(--line);color:var(--faint);font:10px/1.6 ui-monospace,Consolas,monospace;letter-spacing:.08em;padding:3px 8px;border-radius:2px;cursor:pointer;margin-left:8px}
+#zoom:hover{color:var(--gold);border-color:var(--gold)}
 #live{
   font-family:var(--mono);font-size:12px;letter-spacing:.06em;
   padding:5px 13px;border:1px solid var(--line);border-radius:2px;
@@ -38,7 +40,7 @@ header{
 }
 #live.bad{color:var(--red);border-color:rgba(178,58,46,.5);background:rgba(178,58,46,.08)}
 
-main{position:fixed;inset:56px 0 62px 0}
+main{position:fixed;inset:56px 0 62px 0;overflow:auto;overscroll-behavior:contain}
 svg{width:100%;height:100%;display:block}
 
 /* ---------- 结论：从基线长出的芦苇 ---------- */
@@ -131,7 +133,16 @@ svg{width:100%;height:100%;display:block}
 #tip .pv.ns{border-top:0;padding-top:2px;margin-top:3px;color:var(--faint);opacity:.8}
 #tip .pv.arch{border-top:0;padding-top:2px;margin-top:3px;font-size:11px}
 #tip .pv.arch a{color:var(--gold,#c8a24a);text-decoration:none;border-bottom:1px dotted rgba(200,162,74,.5)}
+#tip.pinned{pointer-events:auto;left:auto!important;top:auto!important;right:20px;bottom:74px;
+  max-height:min(64vh,580px);overflow:auto;box-shadow:0 22px 64px rgba(0,0,0,.6),0 0 0 1px rgba(200,162,74,.22)}
+#tip .pinclose{float:right;margin-left:10px;cursor:pointer;font-size:16px;line-height:1;
+  color:var(--faint);padding:0 2px}
+#tip .pinclose:hover{color:var(--gold)}
 #tip .v{margin-top:8px;padding:7px 9px;border-left:2px solid var(--gold);background:rgba(200,162,74,.07);font-size:11px;line-height:1.7}
+#tip .vs{font-style:normal;margin:0 5px 0 4px;padding:1px 5px;border-radius:2px;font-size:10px;letter-spacing:.4px}
+#tip .vs.hyp{background:rgba(196,120,60,.22);color:#e0b080;border:1px solid rgba(196,120,60,.45)}
+#tip .vs.ok{background:rgba(110,160,120,.18);color:#a8c8b0;border:1px solid rgba(110,160,120,.4)}
+#tip .vh{display:block;margin-top:4px;color:#c9945e;opacity:.9}
 #tip .v b{color:var(--gold);letter-spacing:2px;margin-right:6px}
 #tip .v span{opacity:.65}
 
@@ -164,7 +175,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   .meta b{font-size:10px}
   #live{grid-row:1;grid-column:2;font-size:9px;padding:4px 7px}
   main{inset:236px 0 108px;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-  #stage{width:1600px;height:822px;max-width:none}
+  #stage{width:100%;height:auto;max-width:none;display:block}
   main{scrollbar-color:rgba(220,137,122,.45) #0b0909;scrollbar-width:thin}
   main::-webkit-scrollbar{width:5px;height:5px}
   main::-webkit-scrollbar-thumb{background:rgba(220,137,122,.45);border-radius:5px}
@@ -195,6 +206,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     <span class="alarm"><b id="m-a">0</b>条有一手档案</span>
   </div>
   <div id="live">0 / 0 有支撑</div>
+  <button type="button" id="zoom" title="切换适应宽度 / 原尺寸">原尺寸 1:1</button>
 </header>
 
 <main><svg id="stage" viewBox="0 0 1600 822" preserveAspectRatio="xMidYMid meet"></svg></main>
@@ -322,8 +334,37 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   });
 
   /* ---------- 绘制 ---------- */
+  /* ---------- 缩放：适应宽度 / 原尺寸 ---------- */
+  const zoomBtn = document.getElementById('zoom');
+  let fitMode = window.innerWidth > 1100;
+  function applyZoom() {
+    const vb = (stage.getAttribute('viewBox') || '0 0 1600 822').split(/\s+/);
+    const vbW = parseFloat(vb[2]) || 1600;
+    const vbH = parseFloat(vb[3]) || 822;
+    if (fitMode) {
+      stage.style.width = '100%';
+      stage.style.height = 'auto';
+      zoomBtn.textContent = '原尺寸 1:1';
+      zoomBtn.setAttribute('aria-pressed', 'false');
+    } else {
+      stage.style.width = vbW + 'px';
+      stage.style.height = vbH + 'px';
+      zoomBtn.textContent = '适应宽度';
+      zoomBtn.setAttribute('aria-pressed', 'true');
+    }
+  }
+  if (zoomBtn) {
+    zoomBtn.addEventListener('click', () => { fitMode = !fitMode; applyZoom(); });
+  }
+
   function draw() {
     stage.innerHTML = '';
+
+    /* P1-06：画布按真实内容包围盒计算。
+       旧 viewBox 固定 1600，而 66 条结论排到 x≈2060、33 根来源柱同宽，
+       右侧内容被裁掉且不可滚动——33 家来源里有 21 根根本看不见。 */
+    const VB_W = Math.ceil(X1 + 64);
+    stage.setAttribute('viewBox', '0 0 ' + VB_W + ' 822');
 
     /* 年份刻度 + 竖发丝线。
        1937–1945 每年只有一条记载，刻度会挤成一团，因此按最小间距隔位显示，
@@ -544,6 +585,87 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     live.classList.add('bad');
   }
 
+  /* ---------- 浮层：预览（不可点）与固定详情（可点） ---------- */
+  let pinned = false;
+  let pinnedNode = null;
+
+  function cnodeHTML(c) {
+    const srcs = (c.sources || []).map(s => s.book).join('、');
+    const quote = (c.sources || [])[0];
+    const archLinks = (c.sources || []).flatMap(s => {
+      const name = (s.book || '来源').split('《')[0];
+      const links = [];
+      if (s.archive) links.push({ url: s.archive, label: '本地快照' });
+      if (s.url) links.push({ url: s.url, label: '来源网页' });
+      return links.map(link => {
+        const href = /^https?:/.test(link.url) ? link.url : '../' + link.url;
+        return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' +
+          esc(name + ' · ' + link.label) + '</a>';
+      });
+    });
+    const hasSnapshot = (c.sources || []).some(s => s.archive && !/^https?:/.test(s.archive));
+    const archiveBlock = archLinks.length
+      ? '<div class="pv arch">来源核查：' + archLinks.join(' · ') +
+        (hasSnapshot ? '（本地快照哈希见 manifest.json）' : '') + '</div>'
+      : '';
+    const verdictBlock = (c.conflict_group && STATS.verdicts && STATS.verdicts[c.conflict_group])
+      ? (() => {
+          const v = STATS.verdicts[c.conflict_group];
+          const tag = v.status === 'verified'
+            ? '<i class="vs ok">已核</i>'
+            : '<i class="vs hyp">待核验编辑假说</i>';
+          return '<div class="v"><b>裁决</b>' + tag + esc(v.ruling) + ' 基准值 <b>' + esc(v.adopt) +
+            '</b><br>' + esc(v.basis) + '<br><span>' + esc(v.other) + '</span>' +
+            (v.hypothesis ? '<br><span class="vh">编辑假说（未核）：' + esc(v.hypothesis) + '</span>' : '') +
+            '<br><span>' + esc(v.upgraded) + '</span></div>';
+        })()
+      : '';
+    return '<div class="t">' + esc(c.event_type || '记载') + ' · ' + c.year +
+        (c.place ? ' · ' + esc(c.place) : '') +
+        '<span class="pinclose" role="button" tabindex="0" aria-label="关闭详情">×</span></div>' +
+      esc(c.claim) +
+      '<div class="q">' + (quote ? '「' + esc(quote.quote || '') + '」<br>——' + esc(quote.book) : esc(srcs)) + '</div>' +
+      (c.supports.length === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
+      verdictBlock + archiveBlock + provBlock(c.prov);
+  }
+
+  function showTip(c, e) {
+    tip.innerHTML = cnodeHTML(c);
+    tip.classList.add('on');
+    if (e) moveTip(e);
+  }
+
+  function pinTip(c) {
+    pinned = true;
+    pinnedNode = c.id;
+    tip.classList.add('pinned');
+    tip.innerHTML = cnodeHTML(c);
+    tip.classList.add('on');
+    tip.style.left = '';
+    tip.style.top = '';
+    const closeBtn = tip.querySelector('.pinclose');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', unpin);
+      closeBtn.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); unpin(); }
+      });
+    }
+    tip.focus && tip.focus();
+  }
+
+  function unpin() {
+    if (!pinned) return;
+    pinned = false;
+    const node = pinnedNode;
+    pinnedNode = null;
+    tip.classList.remove('pinned');
+    tip.classList.remove('on');
+    if (node) {
+      const g = stage.querySelector('.cnode[data-id="' + node + '"]');
+      if (g) g.classList.remove('hot');
+    }
+  }
+
   /* ---------- 交互 ---------- */
   function bind() {
     stage.querySelectorAll('.src').forEach(g => {
@@ -566,46 +688,29 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
     stage.querySelectorAll('.cnode').forEach(g => {
       const c = CON.find(x => x.id === g.dataset.id);
       if (!c) return;
+      /* P1-07：hover 只做预览（浮层不可点）；点击 / Enter 打开固定详情，
+         浮层才接收指针事件——否则出处链接永远点不到。 */
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      g.setAttribute('aria-label', (c.claim || '记载') + '；按 Enter 查看原文与出处');
       g.addEventListener('mouseenter', e => {
         g.classList.add('hot');
-        const srcs = (c.sources || []).map(s => s.book).join('、');
-        const quote = (c.sources || [])[0];
-        const archLinks = (c.sources || []).flatMap(s => {
-          const name = (s.book || '来源').split('《')[0];
-          const links = [];
-          if (s.archive) links.push({ url: s.archive, label: '本地快照' });
-          if (s.url) links.push({ url: s.url, label: '来源网页' });
-          return links.map(link => {
-            const href = /^https?:/.test(link.url) ? link.url : '../' + link.url;
-            return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' +
-              esc(name + ' · ' + link.label) + '</a>';
-          });
-        });
-        const hasSnapshot = (c.sources || []).some(s => s.archive && !/^https?:/.test(s.archive));
-        const archiveBlock = archLinks.length
-          ? '<div class="pv arch">来源核查：' + archLinks.join(' · ') +
-            (hasSnapshot ? '（本地快照哈希见 manifest.json）' : '') + '</div>'
-          : '';
-        tip.innerHTML =
-          '<div class="t">' + esc(c.event_type || '记载') + ' · ' + c.year +
-            (c.place ? ' · ' + esc(c.place) : '') + '</div>' +
-          esc(c.claim) +
-          '<div class="q">' + (quote ? '「' + esc(quote.quote || '') + '」<br>——' + esc(quote.book) : esc(srcs)) + '</div>' +
-          (c.supports.length === 1 ? '<div class="w">库内仅此一处记载</div>' : '') +
-          (c.conflict_group && STATS.verdicts && STATS.verdicts[c.conflict_group]
-            ? (() => { const v = STATS.verdicts[c.conflict_group];
-                return '<div class="v"><b>裁决</b>' + esc(v.ruling) + ' 基准值 <b>' + esc(v.adopt) +
-                  '</b><br>' + esc(v.basis) + '<br><span>' + esc(v.other) + '　' + esc(v.upgraded) + '</span></div>'; })()
-            : '') +
-          archiveBlock +
-          provBlock(c.prov);
-        tip.classList.add('on');
-        moveTip(e);
+        if (!pinned) showTip(c, e);
       });
-      g.addEventListener('mousemove', moveTip);
+      g.addEventListener('mousemove', e => { if (!pinned) moveTip(e); });
       g.addEventListener('mouseleave', () => {
         g.classList.remove('hot');
-        tip.classList.remove('on');
+        if (!pinned) tip.classList.remove('on');
+      });
+      g.addEventListener('click', e => {
+        e.stopPropagation();
+        pinTip(c);
+      });
+      g.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          pinTip(c);
+        }
       });
     });
   }
@@ -646,6 +751,13 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   }
 
   draw();
+  applyZoom();
+
+  /* Escape 关闭固定详情；点画布空白处同样关闭 */
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') unpin(); });
+  document.querySelector('main').addEventListener('click', e => {
+    if (e.target === stage) unpin();
+  });
   if (matchMedia('(max-width:760px)').matches) {
     requestAnimationFrame(() => { document.querySelector('main').scrollLeft = 300; });
   }
