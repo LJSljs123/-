@@ -1137,6 +1137,28 @@ function dateLabel(value, precision) {
   if (p === 'day' && month && day) return year + '年' + Number(month) + '月' + Number(day) + '日';
   return year + (month ? '年' + Number(month) + '月' : '年') + '（日期精度缺项）';
 }
+function eventDateLabel(value) {
+  if (!value) return '';
+  const startRaw = String(value.start || '').trim();
+  const endRaw = String(value.end || '').trim();
+  const start = dateLabel(startRaw, value.precision);
+  if (!endRaw || endRaw === startRaw) return start;
+  const end = dateLabel(endRaw, value.precision);
+  const sameYear = startRaw.slice(0, 4) === endRaw.slice(0, 4);
+  if (value.precision === 'year') {
+    return sameYear ? start : startRaw.slice(0, 4) + '年—' + endRaw.slice(0, 4) + '年（整年范围）';
+  }
+  if (value.precision === 'month') {
+    const startMonth = Number(startRaw.slice(5, 7));
+    const endMonth = Number(endRaw.slice(5, 7));
+    if (startRaw.slice(0, 7) === endRaw.slice(0, 7)) return start;
+    const range = sameYear
+      ? startRaw.slice(0, 4) + '年' + startMonth + '月—' + endMonth + '月'
+      : startRaw.slice(0, 4) + '年' + startMonth + '月—' + endRaw.slice(0, 4) + '年' + endMonth + '月';
+    return range + '（整月范围）';
+  }
+  return start + '—' + (sameYear ? end.replace(/^\d{4}年/, '') : end);
+}
 function provBlock(p) {
   if (!p || p.depth === 'none') return '<div class="pv">检索：尚未逐条检索，此处不冒充已查</div>';
   const pr = (p.probes || []).map(b => '查「' + esc(b.q) + '」').join('；');
@@ -1190,7 +1212,7 @@ function showTip() {
     const m = fireMetas[hoverFire], e = m.e;
     const q = (e.sources || [])[0] || {};
     tip.innerHTML =
-      '<div class="t">' + esc(e.event_type || '记载') + ' · ' + esc(dateLabel(e.date && e.date.start, e.date && e.date.precision)) +
+      '<div class="t">' + esc(e.event_type || '记载') + ' · ' + esc(eventDateLabel(e.date)) +
       (e.place && e.place.name ? ' · ' + esc(e.place.name) : '') + '</div>' +
       esc(e.summary || '') +
       '<div class="q">「' + esc(q.quote || '') + '」<br>——' + esc(q.book || '') + '</div>' +
@@ -2051,7 +2073,7 @@ function controllerSelect(controller, controllerIndex, handedness) {
     const fire = xrRay.intersectObject(firePoints, false)[0];
     if (fire && fire.index != null) {
       const m = fireMetas[fire.index], q = (m.e.sources || [])[0] || {};
-      xrCardText((m.e.event_type || '记载') + ' · ' + dateLabel(m.e.date && m.e.date.start, m.e.date && m.e.date.precision), m.e.summary, q.quote, q.book);
+      xrCardText((m.e.event_type || '记载') + ' · ' + eventDateLabel(m.e.date), m.e.summary, q.quote, q.book);
       return;
     }
   }

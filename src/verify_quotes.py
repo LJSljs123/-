@@ -30,6 +30,16 @@ def normalized(text: str) -> str:
     return "".join(c for c in text if not c.isspace() and not unicodedata.category(c).startswith("P"))
 
 
+def segments_match_in_order(haystack: str, segments: list[str]) -> bool:
+    cursor = 0
+    for segment in segments:
+        position = haystack.find(segment, cursor)
+        if position < 0:
+            return False
+        cursor = position + len(segment)
+    return bool(segments)
+
+
 def main() -> int:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     raw = json.loads(EVENTS.read_text(encoding="utf-8"))
@@ -38,12 +48,22 @@ def main() -> int:
     checked = 0
     source_digest_checked = 0
     repository_digest_checked = 0
+    source_total = 0
+    local_snapshot_refs = 0
+    url_only = 0
+    no_url_or_snapshot = 0
 
     for event in events:
         for index, source in enumerate(event.get("sources") or []):
+            source_total += 1
             archive = source.get("archive")
             if not archive:
+                if source.get("url"):
+                    url_only += 1
+                else:
+                    no_url_or_snapshot += 1
                 continue
+            local_snapshot_refs += 1
             if not isinstance(archive, str) or not archive.endswith(".html"):
                 errors.append(f"{event['id']} source[{index}]: archive 必须指向本地 HTML 快照")
                 continue
@@ -90,8 +110,8 @@ def main() -> int:
             quote = source.get("quote") or ""
             segments = [normalized(part) for part in re.split(r"(?:…+|\.{2,}|．{2,})", quote)]
             segments = [part for part in segments if len(part) >= 12]
-            if not segments or not all(part in haystack for part in segments):
-                errors.append(f"{event['id']} source[{index}]: 引文片段未在本地文本中命中（{slug}）")
+            if not segments_match_in_order(haystack, segments):
+                errors.append(f"{event['id']} source[{index}]: 引文片段未按顺序在本地文本中命中（{slug}）")
                 continue
             checked += 1
             if digest_kind == "source":
@@ -99,8 +119,10 @@ def main() -> int:
             else:
                 repository_digest_checked += 1
 
-    print(f"引文存档核查：{checked} 条通过（原始摘要 {source_digest_checked}，"
-          f"Git 检出副本摘要 {repository_digest_checked}），{len(errors)} 条失败")
+    print(f"引文存档覆盖：来源总数 {source_total} 条；声明本地快照 {local_snapshot_refs} 条，"
+          f"其中通过核验 {checked} 条（原始摘要 {source_digest_checked}，"
+          f"Git 检出副本摘要 {repository_digest_checked}），失败 {local_snapshot_refs - checked} 条；"
+          f"仅 URL {url_only} 条；无 URL/快照 {no_url_or_snapshot} 条")
     for error in errors:
         print(f"[FAIL] {error}")
 

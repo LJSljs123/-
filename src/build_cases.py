@@ -21,6 +21,8 @@
 from __future__ import annotations
 
 import argparse
+from calendar import monthrange
+from datetime import date
 import json
 import re
 from pathlib import Path
@@ -28,6 +30,7 @@ from pathlib import Path
 import sys as _sys
 _sys.path.insert(0, str(Path(__file__).resolve().parent))
 from short_names import SHORT_OVERRIDE
+from safe_write import atomic_write_text
 
 ROOT = Path(__file__).resolve().parent.parent
 EVENTS = ROOT / "data" / "curated" / "events.json"
@@ -82,7 +85,27 @@ def fmt(n) -> str:
 def date_label(d: dict) -> str:
     """1936-01-01 + precision=year 显示成「1936年」，不暴露补位的 01。"""
     s = str(d.get("start") or "")
+    end = str(d.get("end") or "")
     p = d.get("precision")
+    if end and end != s:
+        if p == "day":
+            start_md, end_md = md_label(s, "day"), md_label(end, "day")
+            if s[:4] == end[:4]:
+                return f"{s[:4]}年{start_md}—{end_md}"
+            return f"{s[:4]}年{start_md}—{end[:4]}年{end_md}"
+        if p == "month":
+            start_label = f"{s[:4]}年{int(s[5:7])}月"
+            end_label = f"{end[:4]}年{int(end[5:7])}月"
+            if s[:7] == end[:7]:
+                return start_label
+            if s[:4] == end[:4]:
+                return f"{start_label}—{int(end[5:7])}月"
+            return f"{start_label}—{end_label}"
+        if p == "year":
+            if s[:4] == end[:4]:
+                return s[:4] + "年"
+            return f"{s[:4]}年—{end[:4]}年"
+        return f"{s}—{end}"
     if p == "year":
         return s[:4] + "年"
     if p == "month":
@@ -98,6 +121,21 @@ def md_label(iso: str, prec: str | None) -> str:
     except (ValueError, IndexError):
         return str(iso)
     return f"{m}月{d}日" if prec == "day" else f"{m}月"
+
+
+def date_interval_md_label(d: dict) -> str:
+    """在月日断言中保留非单日事件的完整起止范围。"""
+    start = str(d.get("start") or "")
+    end = str(d.get("end") or "")
+    precision = d.get("precision") or "year"
+    if not end or end == start:
+        return md_label(start, precision)
+    if precision == "day":
+        start_md, end_md = md_label(start, "day"), md_label(end, "day")
+        if start[:4] == end[:4]:
+            return f"{start_md}—{end_md}"
+        return f"{start[:4]}年{start_md}—{end[:4]}年{end_md}"
+    return date_label(d)
 
 
 def short_src(s: str) -> str:
@@ -163,6 +201,55 @@ def parse_time_claim(text: str) -> dict | None:
     return None
 
 
+def event_source_time_claim(ev: dict, source: dict) -> tuple[dict | None, dict | None]:
+    """对赵一曼被俘案只解析已核定的页眉月份 + 引文首日，避免吸入后文就义日。"""
+    quote = str(source.get("quote") or "")
+    if ev.get("id") == "evt_1935_zhao_yiman":
+        page_time = parse_time_claim(source.get("page"))
+        leading_day = re.match(r"^\s*(\d{1,2})日(?=\s|[，。；、])", quote)
+        event_date = ev.get("date") or {}
+        if (page_time and page_time["precision"] == "month"
+                and page_time["y"] == int(str(event_date.get("start") or "0")[:4])
+                and page_time["m"] == int(str(event_date.get("start") or "0000-00")[5:7])
+                and leading_day):
+            day = int(leading_day.group(1))
+            return ({"precision": "day", "y": page_time["y"], "m": page_time["m"],
+                     "d": day, "expr": f"{page_time['m']}月{day}日"}, None)
+        if ("1936年8月2日" in quote
+                and any(word in quote for word in ("遗言", "就义", "杀害"))
+                and not any(word in quote for word in ("被俘", "被捕", "落入敌手"))):
+            return None, {"expr": "该来源所引为1936年就义事迹，未载被俘日期",
+                          "precision": "none", "state": "未载"}
+    return parse_time_claim(quote), None
+
+
+def time_claim_spans(tc: dict, default_year: int | None) -> list[tuple[date, date]]:
+    """将来源时间精度转换为可比较区间。"""
+    year = tc.get("y") or default_year
+    if not year:
+        return []
+    precision = tc.get("precision")
+    try:
+        if precision == "day":
+            point = date(year, int(tc["m"]), int(tc["d"]))
+            return [(point, point)]
+        if precision == "month":
+            month = int(tc["m"])
+            return [(date(year, month, 1), date(year, month, monthrange(year, month)[1]))]
+        if precision == "year":
+            return [(date(year, 1, 1), date(year, 12, 31))]
+        if precision == "season":
+            spans = []
+            for month in SEASON_MONTHS.get(tc.get("season"), ()):
+                month_year = year + 1 if tc.get("season") == "冬" and month < 3 else year
+                spans.append((date(month_year, month, 1),
+                              date(month_year, month, monthrange(month_year, month)[1])))
+            return spans
+    except (TypeError, ValueError):
+        return []
+    return []
+
+
 def action_kind(text: str) -> str | None:
     """粗分动作类别：编成 / 成立。两者是不同动作，不可直接判成日期矛盾。"""
     t = str(text or "")
@@ -202,6 +289,7 @@ def date_support(ev: dict) -> dict:
     """
     d = ev.get("date") or {}
     start = str(d.get("start") or "")
+    end = str(d.get("end") or "")
     prec = d.get("precision") or "year"
     try:
         cy = int(start[:4])
@@ -209,6 +297,14 @@ def date_support(ev: dict) -> dict:
         cd = int(start[8:10]) if len(start) >= 10 else None
     except ValueError:
         cy, cm, cd = None, None, None
+    try:
+        claim_start = date.fromisoformat(start[:10])
+        claim_end = date.fromisoformat(end[:10]) if end else claim_start
+    except ValueError:
+        claim_start = claim_end = None
+    has_interval = bool(claim_start and claim_end and claim_end > claim_start)
+    claim_years = (set(range(claim_start.year, claim_end.year + 1))
+                   if has_interval else ({cy} if cy else set()))
 
     claim_act = action_kind(ev.get("summary") or "")
     rows = []
@@ -216,8 +312,12 @@ def date_support(ev: dict) -> dict:
 
     for s in ev.get("sources", []):
         quote = s.get("quote") or ""
-        tc = parse_time_claim(quote)
+        tc, contextual_row = event_source_time_claim(ev, s)
         short = short_src(s.get("book"))
+        if contextual_row:
+            rows.append({"short": short, **contextual_row})
+            year_none += 1
+            continue
         if tc is None:
             year_none += 1
             rows.append({"short": short, "expr": "未载具体时间",
@@ -235,7 +335,7 @@ def date_support(ev: dict) -> dict:
         # 年份先单独记账：即便月日互斥，年份是否明载也要分开说
         if tc["y"] is None:
             year_none += 1
-        elif cy and tc["y"] != cy:
+        elif claim_years and tc["y"] not in claim_years:
             year_off += 1
         else:
             year_exact += 1
@@ -245,9 +345,23 @@ def date_support(ev: dict) -> dict:
             rows.append({"short": short, "expr": tc["expr"],
                          "precision": tc["precision"], "state": "另一动作"})
             continue
-        if tc["y"] and cy and tc["y"] != cy:
+        if tc["y"] and claim_years and tc["y"] not in claim_years:
             rows.append({"short": short, "expr": tc["expr"],
                          "precision": tc["precision"], "state": "互斥"})
+            continue
+        if has_interval:
+            default_years = claim_years or ({cy} if cy else set())
+            source_spans = [span for year in default_years
+                            for span in time_claim_spans(tc, year)]
+            overlaps = any(a <= claim_end and b >= claim_start for a, b in source_spans)
+            if tc["y"] and claim_years and tc["y"] not in claim_years:
+                state = "互斥"
+            elif overlaps:
+                state = "范围相容"
+            else:
+                state = "范围不符"
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"], "state": state})
             continue
         # 年精度主张覆盖全年；同年更细的来源属于相容证据，不得与 1 月 1 日比较。
         if prec == "year":
@@ -868,12 +982,8 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
     cnt = ds["counts"]
     yc = ds["year_counts"]
     md_prec = d.get("precision") or "year"
-    if md_prec == "day":
-        md_value = f"{ds['claim']['m']}月{ds['claim']['d']}日"
-    elif md_prec == "month":
-        md_value = f"{ds['claim']['m']}月"
-    else:
-        md_value = "原文仅到年"
+    md_value = (date_interval_md_label(d) if md_prec in ("day", "month")
+                else "原文仅到年")
     year_state = (f"{yc['exact']}/{len(srcs)} 家明载该年"
                   + (f"，{yc['none']} 家未载年份" if yc["none"] else "")
                   + (f"，{yc['off']} 家记他年" if yc["off"] else ""))
@@ -1111,14 +1221,14 @@ def main() -> int:
         "cases": cases,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    atomic_write_text(args.out, json.dumps(payload, ensure_ascii=False, indent=1))
 
     if args.web:
         args.web.parent.mkdir(parents=True, exist_ok=True)
-        args.web.write_text(
+        atomic_write_text(
+            args.web,
             "window.__MIYING_CASES__ = "
             + json.dumps(payload, ensure_ascii=False, indent=1) + ";\n",
-            encoding="utf-8",
         )
 
     print(f"生成 {len(cases)} 个灯下案 → {args.out}")

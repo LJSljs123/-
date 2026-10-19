@@ -16,6 +16,9 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+from safe_write import atomic_write_text
 
 
 def year_of(e: dict) -> int:
@@ -118,7 +121,7 @@ def main() -> int:
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     js = "window.__MIYING__ = " + json.dumps(payload, ensure_ascii=False, indent=1) + ";\n"
-    args.out.write_text(js, encoding="utf-8")
+    atomic_write_text(args.out, js)
 
     m = payload["meta"]
     print(f"已写出 {args.out}")
