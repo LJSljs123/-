@@ -87,6 +87,9 @@ main{max-width:790px;margin:0 auto;padding:64px 34px 180px}
 
 .line{color:var(--ink);margin-bottom:9px;font-size:15px;line-height:1.95}
 .line.dim{color:var(--dim);font-size:14px}
+.journey-boundary{margin:12px 0;padding:10px 13px;border-left:2px solid #d08a3e;background:rgba(208,138,62,.08);color:var(--paper);font-size:12px;line-height:1.8}
+.journey-boundary b{color:#d08a3e;font-weight:500;letter-spacing:.08em}
+.journey-support{border-left:2px solid #d08a3e;padding-left:10px;color:var(--paper)}
 
 /* 断言表 */
 .ass{margin-top:14px;border-top:1px solid var(--line-soft)}
@@ -262,6 +265,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
 </footer>
 
 <script src="cases.js"></script>
+<script src="story-trail.js"></script>
 <script>
 (function () {
   const D = window.__MIYING_CASES__ || { cases: [] };
@@ -274,6 +278,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
   let fast = false;
   let token = 0;                    // 切换案子时作废旧动画
   let revealed = 0, totalBlocks = 0;
+  let journeyObserver = null;
 
   const sleep = ms => new Promise(r => setTimeout(r, fast ? 0 : ms));
 
@@ -335,7 +340,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
       n += (s.evidence || []).length;
       n += (s.side || []).length;
       n += (s.challenges || []).length;
-      if (s.kind === 'register') n += 4;
+      if (s.kind === 'register') n += c.case_no === 'KL-012' ? 5 : 4;
     });
     return n;
   }
@@ -349,6 +354,8 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
   }
 
   async function render(c, my) {
+    if (journeyObserver) journeyObserver.disconnect();
+    let journeySupportNode = null;
     doc.innerHTML = '';
     revealed = 0;
     totalBlocks = countBlocks(c);
@@ -388,6 +395,10 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
       for (const ln of step.lines || []) {
         const p = document.createElement('div');
         p.className = 'line';
+        if (c.case_no === 'KL-012' && step.kind === 'decompose' && ln.startsWith('支持分布：')) {
+          p.classList.add('journey-support');
+          journeySupportNode = p;
+        }
         p.textContent = ln;
         sec.appendChild(p);
         await reveal(p, 90);
@@ -471,6 +482,26 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
             esc(step.conservative) + '</div>';
         sec.appendChild(v);
         await reveal(v, 300);
+        if (c.case_no === 'KL-012') {
+          if (my !== token) return;
+          const boundary = document.createElement('div');
+          boundary.className = 'journey-boundary';
+          boundary.innerHTML = '<b>视觉边界</b>　来源数量与机构权重不能替代原始档案；本案呈现三条公开记载的分歧，不把多数说法改写成定论。';
+          sec.appendChild(boundary);
+          await reveal(boundary, 100);
+          const observed = new Set();
+          journeyObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting && entry.intersectionRatio >= 0.6) observed.add(entry.target);
+            });
+            if (journeySupportNode && observed.has(journeySupportNode) && observed.has(boundary)) {
+              if (window.MIYING_TRAIL) window.MIYING_TRAIL.complete(3);
+              journeyObserver.disconnect();
+            }
+          }, { root: doc, threshold: 0.6 });
+          if (journeySupportNode) journeyObserver.observe(journeySupportNode);
+          journeyObserver.observe(boundary);
+        }
 
         /* 数值裁决链：与 2D 浮层、3D 悬浮同源同状态，避免三视图说法不一 */
         if (c.verdict) {
@@ -517,6 +548,7 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
     token++;
     const my = token;
     fast = false;
+    if (cases[i] && cases[i].case_no === 'KL-012' && window.MIYING_TRAIL) window.MIYING_TRAIL.complete(2);
     [...nav.children].forEach((b, j) => b.classList.toggle('on', j === i));
     render(cases[i], my);
     if (location.hash !== '#c' + i) history.replaceState(null, '', '#c' + i);
@@ -551,8 +583,10 @@ footer .kbd{font-family:var(--mono);font-size:10px;color:var(--faint);margin-lef
     return i < 0 ? 0 : i;
   }
 
+  const requestedCase = new URLSearchParams(location.search).get('case');
+  const requestedIndex = requestedCase ? cases.findIndex(c => c.case_no === requestedCase) : -1;
   const m = (location.hash || '').match(/#c(\d+)/);
-  go(m ? Math.min(+m[1], cases.length - 1) : 0);
+  go(requestedIndex >= 0 ? requestedIndex : m ? Math.min(+m[1], cases.length - 1) : 0);
 })();
 </script>
 </body>

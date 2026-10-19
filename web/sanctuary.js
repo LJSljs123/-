@@ -20,6 +20,7 @@ if (!D || !S || !STORY) {
   return;
 }
 const EVENTS = (D.events || []).filter(e => e.layer === 'event');
+const CASES = (window.__MIYING_CASES__ || {}).cases || [];
 const SITE_EVENTS = (D.events || []).filter(e => e.layer === 'site');   // 遗址：build_web 已并入 events，layer=site
 const SITES_WITH_COORDS = SITE_EVENTS.filter(e => e.place && e.place.lat != null && e.place.lng != null);
 const YEAR0 = D.meta.year_min, YEAR1 = D.meta.year_max;
@@ -38,14 +39,25 @@ const STORY_CHAPTERS = [
   { title: '时间继续向前', from: 1941, to: 1945, ids: ['evt_1941_zhaoshangzhi_xiaobudui', 'evt_1945_riben_touxiang'], camera: [0.02, 1.1, 52], body: '1941 年，赵尚志率小部队活动仍见于记录；1945 年，日本宣布无条件投降。我们把镜头推到这条时间线的末页，再回看每一条记录怎样留下来。' },
   { title: '把出处留在故事里', from: 1945, to: 1945, ids: ['evt_1945_riben_touxiang'], camera: [0.04, 1.08, 100], closing: true, body: '' },
 ];
-const FACTORY_SECONDS = 11;
 // 文字、引文、视觉边界一律来自 data/curated/story_claims.json（构建为 story.js）；
 // 本文件只保留镜头与交互，不再复制一份事实文本。
 const FACTORY_CHAPTERS = (STORY.chapters || []).map(ch => ({
-  no: ch.no, title: ch.title, date: ch.date, body: ch.body, camera: ch.camera,
+  no: ch.no, title: ch.title, date: ch.date, body: ch.body, duration: ch.duration, camera: ch.camera,
   claims: ch.claims || [], visual: ch.visual || '',
   scene: ch.scene || { workers: true, props: true },
 }));
+const FACTORY_TOTAL_SECONDS = FACTORY_CHAPTERS.reduce((sum, chapter) => sum + chapter.duration, 0);
+function factoryChapterOffset(index) {
+  return FACTORY_CHAPTERS.slice(0, Math.max(0, index)).reduce((sum, chapter) => sum + chapter.duration, 0);
+}
+function factoryChapterAt(seconds) {
+  let offset = 0;
+  for (let i = 0; i < FACTORY_CHAPTERS.length; i++) {
+    offset += FACTORY_CHAPTERS[i].duration;
+    if (seconds < offset) return i;
+  }
+  return Math.max(0, FACTORY_CHAPTERS.length - 1);
+}
 const STORY_SOURCE = STORY.source || {};
 document.getElementById('m-events').textContent = EVENTS.length;
 document.getElementById('m-sources').textContent = (S.sources || []).length;
@@ -118,6 +130,21 @@ renderer.domElement.id = 'world';
 renderer.domElement.setAttribute('role', 'img');
 renderer.domElement.setAttribute('aria-label', '东北抗联史料来源关系三维场景');
 document.body.appendChild(renderer.domElement);
+const factoryGrain = document.createElement('div');
+factoryGrain.id = 'factory-grain';
+factoryGrain.setAttribute('aria-hidden', 'true');
+const grainCanvas = document.createElement('canvas'); grainCanvas.width = grainCanvas.height = 192;
+const grainContext = grainCanvas.getContext('2d'), grainPixels = grainContext.createImageData(192, 192);
+let grainSeed = 1945;
+for (let i = 0; i < grainPixels.data.length; i += 4) {
+  grainSeed = (Math.imul(grainSeed, 1664525) + 1013904223) >>> 0;
+  const shade = 204 + (grainSeed % 52);
+  grainPixels.data[i] = shade; grainPixels.data[i + 1] = shade - 2; grainPixels.data[i + 2] = shade - 11;
+  grainPixels.data[i + 3] = 190;
+}
+grainContext.putImageData(grainPixels, 0, 0);
+factoryGrain.style.backgroundImage = 'radial-gradient(ellipse at center, transparent 54%, rgba(10,12,11,.55) 100%), url(' + grainCanvas.toDataURL('image/png') + ')';
+document.body.appendChild(factoryGrain);
 renderer.domElement.addEventListener('webglcontextlost', event => {
   event.preventDefault();
   fallback.classList.add('on');
@@ -129,7 +156,7 @@ renderer.domElement.addEventListener('webglcontextrestored', () => location.relo
 const LIGHTING = Object.freeze({
   calm: Object.freeze({ ambient: 0.38, moon: 0.43, warm: 0.09 }),
   storm: Object.freeze({ ambient: 0.45, moon: 0.25 }),
-  factory: Object.freeze({ ambient: 0.64, moon: 0.48, warm: 0.28 }),
+  factory: Object.freeze({ ambient: 0.25, moon: 0, warm: 0 }),
 });
 const amb = new THREE.AmbientLight(0x71847e, LIGHTING.calm.ambient);
 scene.add(amb);
@@ -579,6 +606,8 @@ let factoryProps = null;
 let factoryHands = null;   // A4：第 2 幕的「多双手」——不建全身，避免「说 15 人只有 2 人」
 let factoryCloth = null;   // 第 2 幕铺开的大块布，给手一个落点
 let factoryGroundMesh = null;
+let factoryCoat = null, factoryDocuments = null, factoryTransfer = null, factorySteam = null, factoryMacro = null, factoryEmptyLight = null;
+let factoryCabins = null, factoryWorkbench = null, factoryMachine = null, factoryKettles = null, factoryTeaPot = null, factoryLamp = null, factoryKeyLight = null;
 factoryGroup.visible = false;
 scene.add(factoryGroup);
 let factoryMode = false;
@@ -590,16 +619,16 @@ function weaveTexture() {
   const S = TEX_SIZE;
   const c = document.createElement('canvas'); c.width = c.height = S;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#b2a487'; ctx.fillRect(0, 0, S, S);
+  ctx.fillStyle = '#E8E2D4'; ctx.fillRect(0, 0, S, S);
   for (let i = 0; i < S; i += 8) {
-    ctx.strokeStyle = i % 16 ? 'rgba(35,34,27,.13)' : 'rgba(231,224,199,.10)';
+    ctx.strokeStyle = i % 16 ? 'rgba(10,12,11,.23)' : 'rgba(58,66,60,.18)';
     ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, S); ctx.stroke();
-    ctx.strokeStyle = i % 16 ? 'rgba(231,224,199,.10)' : 'rgba(35,34,27,.13)';
+    ctx.strokeStyle = i % 16 ? 'rgba(58,66,60,.18)' : 'rgba(10,12,11,.23)';
     ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(S, i); ctx.stroke();
   }
   for (let i = 0; i < 10400; i++) {
     const x = Math.random() * S, y = Math.random() * S;
-    ctx.fillStyle = i % 2 ? 'rgba(25,25,20,.10)' : 'rgba(245,237,215,.11)';
+    ctx.fillStyle = i % 2 ? 'rgba(10,12,11,.13)' : 'rgba(232,226,212,.18)';
     ctx.fillRect(x, y, 2 + Math.random() * 3, 1);
   }
   const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -610,10 +639,10 @@ function timberTexture() {
   const S = TEX_SIZE;
   const c = document.createElement('canvas'); c.width = c.height = S;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#68513c'; ctx.fillRect(0, 0, S, S);
+  ctx.fillStyle = '#3A423C'; ctx.fillRect(0, 0, S, S);
   for (let i = 0; i < 110; i++) {
     const y = Math.random() * S, w = 36 + Math.random() * 420;
-    ctx.strokeStyle = i % 3 ? 'rgba(36,28,21,.20)' : 'rgba(191,152,105,.18)';
+    ctx.strokeStyle = i % 3 ? 'rgba(10,12,11,.50)' : 'rgba(232,226,212,.32)';
     ctx.lineWidth = 2 + Math.random() * 3; ctx.beginPath();
     ctx.moveTo(Math.random() * 36, y); ctx.bezierCurveTo(w * .25, y - 6, w * .65, y + 6, w, y); ctx.stroke();
   }
@@ -623,22 +652,23 @@ function timberTexture() {
 }
 const clothMap = weaveTexture(), woodMap = timberTexture();
 const FM = {
-  wood: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.035, color: 0xa08a70, roughness: 0.92 }),
-  woodDark: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.04, color: 0x68513c, roughness: 0.96 }),
-  woodLight: new THREE.MeshStandardMaterial({ map: woodMap, bumpMap: woodMap, bumpScale: 0.025, color: 0xb39a75, roughness: 0.9 }),
-  cloth: new THREE.MeshStandardMaterial({ map: clothMap, bumpMap: clothMap, bumpScale: 0.018, color: 0xe0d2b1, roughness: 1 }),
-  dyed: new THREE.MeshStandardMaterial({ map: clothMap, bumpMap: clothMap, bumpScale: 0.02, color: 0x7c875a, roughness: 1 }),
-  coat: new THREE.MeshStandardMaterial({ bumpMap: clothMap, bumpScale: 0.026, color: 0x78806d, roughness: 1 }),
-  coatAlt: new THREE.MeshStandardMaterial({ bumpMap: clothMap, bumpScale: 0.02, color: 0x9a8e6d, roughness: 1 }),
-  skin: new THREE.MeshStandardMaterial({ color: 0x9d745d, roughness: 0.78 }),
-  hair: new THREE.MeshStandardMaterial({ color: 0x292522, roughness: 0.9 }),
-  iron: new THREE.MeshStandardMaterial({ color: 0x242725, metalness: 0.72, roughness: 0.38 }),
-  ironWear: new THREE.MeshStandardMaterial({ color: 0x766c59, metalness: 0.62, roughness: 0.52 }),
-  leather: new THREE.MeshStandardMaterial({ color: 0x40372e, roughness: 0.88 }),
-  earth: new THREE.MeshStandardMaterial({ color: 0x625a45, roughness: 1 }),
-  leaf: new THREE.MeshStandardMaterial({ color: 0x466044, roughness: 0.96 }),
-  leafLight: new THREE.MeshStandardMaterial({ color: 0x63734d, roughness: 0.96 }),
-  glow: new THREE.MeshStandardMaterial({ color: 0xb17b40, emissive: 0x8c5021, emissiveIntensity: 1.1, roughness: 0.65 }),
+  wood: new THREE.MeshLambertMaterial({ map: woodMap, color: 0xffffff }),
+  woodDark: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
+  woodLight: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
+  cloth: new THREE.MeshLambertMaterial({ map: clothMap, color: 0xffffff }),
+  dyed: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
+  coat: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
+  coatAlt: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
+  snow: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
+  silhouette: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
+  hand: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
+  iron: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
+  ironWear: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
+  leather: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
+  earth: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
+  leaf: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
+  leafLight: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
+  glow: new THREE.MeshBasicMaterial({ color: 0xd08a3e }),
 };
 function fBox(parent, w, h, d, material, x, y, z, rx = 0, ry = 0, rz = 0) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
@@ -711,13 +741,7 @@ function buildWorker(parent, x, z, options = {}) {
   fSphere(g, FM.coat, 0, seated ? 2.06 : 2.36, 0.02, 0.68, 0.22, 0.36, 16);
   fBox(g, 0.08, 0.82, 0.025, FM.cloth, 0, seated ? 1.66 : 1.95, 0.369, 0, 0, 0.03);
   const headY = seated ? 2.55 : 2.85;
-  fSphere(g, FM.skin, 0, headY, 0.04, 0.29, 0.37, 0.29, 20);
-  fSphere(g, FM.hair, 0, headY + 0.25, -0.035, 0.31, 0.22, 0.3, 18);
-  fSphere(g, FM.coatAlt, 0, headY + 0.29, 0.06, 0.33, 0.11, 0.31, 16);
-  fSphere(g, FM.skin, 0, headY - 0.26, 0.04, 0.24, 0.11, 0.23, 14);
-  fSphere(g, FM.skin, 0, headY - 0.01, 0.31, 0.035, 0.045, 0.035, 10);
-  fSphere(g, FM.hair, -0.105, headY + 0.06, 0.29, 0.09, 0.022, 0.03, 10);
-  fSphere(g, FM.hair, 0.105, headY + 0.06, 0.29, 0.09, 0.022, 0.03, 10);
+  fSphere(g, FM.silhouette, 0, headY, 0.04, 0.29, 0.37, 0.29, 16);
   if (seated) {
     fCylinder(g, 0.36, 0.4, 0.48, FM.woodDark, 0, 0.56, -0.08, 'y', 12);
     for (const side of [-1, 1]) fLink(g, [side * 0.24, 0.08, -0.29], [side * 0.3, 0.51, -0.08], 0.045, FM.woodLight);
@@ -741,10 +765,10 @@ function buildWorker(parent, x, z, options = {}) {
     const handY = options.work ? 1.60 : 1.57;
     const handZ = options.work ? 1.52 + side * 0.14 : 0.37;
     fLink(g, [side * 0.53, elbowY, 0.27], [handX, handY, handZ], 0.115, jacket, 10);
-    fSphere(g, FM.skin, handX, handY, handZ + 0.08, 0.15, 0.10, 0.15, 12);
+    fSphere(g, FM.hand, handX, handY, handZ + 0.08, 0.15, 0.10, 0.15, 12);
     for (let finger = -1; finger <= 1; finger++) {
       fLink(g, [handX + finger * 0.045, handY - 0.015, handZ + 0.14],
-        [handX + finger * 0.055, handY - 0.06, handZ + 0.22], 0.023, FM.skin, 5);
+        [handX + finger * 0.055, handY - 0.06, handZ + 0.22], 0.023, FM.hand, 5);
     }
   }
   for (let i = 0; i < 5; i++) {
@@ -811,7 +835,7 @@ function buildCampTrees(parent) {
       dummy.position.set(x, 0.9 + j * 1.55, z); dummy.rotation.set(0, rnd() * 6.28, 0);
       dummy.scale.set(s * (1 - j * 0.12), s * (1 - j * 0.12), s * (1 - j * 0.12)); dummy.updateMatrix();
       mesh.setMatrixAt(placed, dummy.matrix);
-      mesh.setColorAt(placed, new THREE.Color().setHSL(0.27 + rnd() * 0.07, 0.28 + rnd() * 0.12, 0.14 + rnd() * 0.10));
+      mesh.setColorAt(placed, new THREE.Color(j === 1 ? 0x3a423c : 0x1c211e));
     });
     dummy.position.set(x, 2.25 * s, z); dummy.rotation.set(0, 0, 0); dummy.scale.set(s, s, s); dummy.updateMatrix();
     trunks.setMatrixAt(placed, dummy.matrix);
@@ -835,8 +859,8 @@ function groundTexture() {
   for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
     const u = x / size, v = y / size;
     const noiseValue = 0.62 * noise(u, v, 8, 1) + 0.28 * noise(u, v, 24, 2) + 0.10 * noise(u, v, 72, 3);
-    const i = (y * size + x) * 4, value = Math.round(148 + noiseValue * 24 + noise(u, v, 192, 4) * 8);
-    pixels.data[i] = value + 2; pixels.data[i + 1] = value; pixels.data[i + 2] = Math.max(0, value - 13); pixels.data[i + 3] = 255;
+    const i = (y * size + x) * 4, value = Math.round(54 + noiseValue * 10 + noise(u, v, 192, 4) * 4);
+    pixels.data[i] = value; pixels.data[i + 1] = value; pixels.data[i + 2] = value; pixels.data[i + 3] = 255;
   }
   context.putImageData(pixels, 0, 0);
   const texture = new THREE.CanvasTexture(canvas); texture.encoding = THREE.sRGBEncoding;
@@ -852,8 +876,8 @@ function factoryGroundHeight(x, z) {
   groundGeometry.rotateX(-Math.PI / 2);
   const groundPositions = groundGeometry.attributes.position;
   const groundColors = new Float32Array(groundPositions.count * 3);
-  const moss = new THREE.Color(0x40533b).convertSRGBToLinear();
-  const forestFloor = new THREE.Color(0x26342a).convertSRGBToLinear(), groundColor = new THREE.Color();
+  const moss = new THREE.Color(0x3a423c).convertSRGBToLinear();
+  const forestFloor = new THREE.Color(0x1c211e).convertSRGBToLinear(), groundColor = new THREE.Color();
   for (let i = 0; i < groundPositions.count; i++) {
     const x = groundPositions.getX(i), z = groundPositions.getZ(i);
     groundPositions.setY(i, factoryGroundHeight(x, z));
@@ -863,18 +887,21 @@ function factoryGroundHeight(x, z) {
   }
   groundGeometry.setAttribute('color', new THREE.BufferAttribute(groundColors, 3));
   groundGeometry.computeVertexNormals();
-  factoryGroundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshStandardMaterial({ map: groundTexture(), vertexColors: true, roughness: 1 }));
+  factoryGroundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshLambertMaterial({ map: groundTexture(), vertexColors: true }));
   factoryGroundMesh.name = 'factory-ground';
   factoryGroup.add(factoryGroundMesh);
   buildCampTrees(factoryGroup);
-  buildCabin(factoryGroup, 0, -3.5, 1, true);
-  buildCabin(factoryGroup, -11.0, -10.5, 0.48, false);
-  buildCabin(factoryGroup, 10.8, -11.5, 0.44, false);
-  buildCabin(factoryGroup, 12.2, 5.0, 0.40, false);
-  fBox(factoryGroup, 4.4, 0.12, 1.8, FM.woodDark, -0.4, 1.35, 0.05);
-  fBox(factoryGroup, 4.0, 0.06, 1.65, FM.woodLight, -0.4, 1.45, 0.05);
-  [-2.0, 1.2].forEach(x => [-0.55, 0.65].forEach(z => fLink(factoryGroup, [x, 0.1, z], [x, 1.35, z], 0.08, FM.woodDark)));
-  buildFootMachine(factoryGroup, 0.3, -0.25, 0.9);
+  factoryCabins = new THREE.Group(); factoryCabins.name = 'symbolic-camp-buildings'; factoryGroup.add(factoryCabins);
+  buildCabin(factoryCabins, 0, -3.5, 1, true);
+  buildCabin(factoryCabins, -11.0, -10.5, 0.48, false);
+  buildCabin(factoryCabins, 10.8, -11.5, 0.44, false);
+  buildCabin(factoryCabins, 12.2, 5.0, 0.40, false);
+  factoryWorkbench = new THREE.Group(); factoryWorkbench.name = 'empty-workbench'; factoryGroup.add(factoryWorkbench);
+  fBox(factoryWorkbench, 4.4, 0.12, 1.8, FM.woodDark, -0.4, 1.35, 0.05);
+  fBox(factoryWorkbench, 4.0, 0.06, 1.65, FM.wood, -0.4, 1.45, 0.05);
+  [-2.0, 1.2].forEach(x => [-0.55, 0.65].forEach(z => fLink(factoryWorkbench, [x, 0.1, z], [x, 1.35, z], 0.08, FM.woodDark)));
+  factoryMachine = new THREE.Group(); factoryMachine.name = 'single-sewing-machine'; factoryGroup.add(factoryMachine);
+  buildFootMachine(factoryMachine, 0.3, -0.25, 0.9);
   factoryWorkers = new THREE.Group();
   factoryWorkers.name = 'workers';
   factoryGroup.add(factoryWorkers);
@@ -909,9 +936,9 @@ function factoryGroundHeight(x, z) {
     // 前臂从桌外伸进来；臂根处加袖口环，避免读成「悬空断臂」
     fLink(h, [0.02, 0.19, 0.92], [0, 0.11, 0.10], 0.105, FM.coatAlt, 10);
     fCylinder(h, 0.125, 0.115, 0.16, FM.coat, 0, 0.145, 0.30, 'z', 10);
-    fSphere(h, FM.skin, 0, 0.095, 0.01, 0.15, 0.065, 0.125, 14);
+    fSphere(h, FM.hand, 0, 0.095, 0.01, 0.15, 0.065, 0.125, 14);
     for (let f = -2; f <= 2; f++) {
-      fLink(h, [f * 0.048, 0.085, -0.09], [f * 0.056, 0.035, -0.23], 0.021, FM.skin, 5);
+      fLink(h, [f * 0.048, 0.085, -0.09], [f * 0.056, 0.035, -0.23], 0.021, FM.hand, 5);
     }
     factoryHands.add(h);
   });
@@ -925,25 +952,114 @@ function factoryGroundHeight(x, z) {
   fBox(factoryProps, 0.44, 0.045, 0.12, FM.dyed, -1.32, 1.483, 0.28, 0, 0.2, 0.08);
   /* P1-13 支撑检查：桌面顶面 y=1.41，x∈[-2.6,1.8]，z∈[-0.85,0.95]。
      原壶位 x=2.65 / -3.3 在桌外悬空——移回桌面内，壶底（y-0.36）落在台面上。 */
-  buildKettle(factoryGroup, 1.25, 1.77, -0.25);
+  factoryKettles = new THREE.Group(); factoryKettles.name = 'dye-pot'; factoryGroup.add(factoryKettles);
+  buildKettle(factoryKettles, 1.25, 1.77, -0.25);
+  factoryTeaPot = new THREE.Group(); factoryTeaPot.name = 'tea-pot'; factoryGroup.add(factoryTeaPot);
+  buildKettle(factoryTeaPot, -2.10, 1.77, -0.45);
   /* 独立摆放在地面的木桶、皮箱与铁件为可搬运储物物资，随转移状态隐藏 */
   fCylinder(factoryProps, 0.36, 0.33, 0.38, FM.woodDark, -3.1, 0.2, -0.5, 'y', 12);
   fBox(factoryProps, 0.78, 0.44, 0.58, FM.leather, -3.1, 0.64, -0.5, 0.04, -0.16, 0.02);
   fBox(factoryProps, 0.34, 0.36, 0.28, FM.iron, -3.1, 0.36, -0.5, 0.02, 0.2, 0);
-  const lamp = new THREE.Group(); lamp.position.set(2.1, 3.25, 0.1); factoryGroup.add(lamp);
-  fLink(lamp, [0, 0.18, 0], [0, -0.25, 0], 0.024, FM.ironWear);
-  fCylinder(lamp, 0.12, 0.16, 0.32, FM.glow, 0, -0.47, 0, 'y', 10);
-  fSphere(lamp, FM.glow, 0, -0.47, 0, 0.14, 0.18, 0.14, 12);
-  const lampLight = new THREE.PointLight(0xffc47b, 1.1, 10, 2); lampLight.position.set(0, -0.45, 0); lamp.add(lampLight);
-  const factoryKeyLight = new THREE.DirectionalLight(0xffd8ad, 0.52);
-  factoryKeyLight.position.set(-4, 7, 8); factoryGroup.add(factoryKeyLight);
-  buildKettle(factoryGroup, -2.10, 1.77, -0.45);
+  factoryLamp = new THREE.Group(); factoryLamp.name = 'amber-lamp'; factoryLamp.position.set(2.1, 3.25, 0.1); factoryGroup.add(factoryLamp);
+  fLink(factoryLamp, [0, 0.18, 0], [0, -0.25, 0], 0.024, FM.ironWear);
+  fCylinder(factoryLamp, 0.12, 0.16, 0.32, FM.glow, 0, -0.47, 0, 'y', 10);
+  fSphere(factoryLamp, FM.glow, 0, -0.47, 0, 0.14, 0.18, 0.14, 12);
+  const lampLight = new THREE.PointLight(0xd08a3e, 2.2, 12, 2);
+  lampLight.position.set(0, -0.45, 0); factoryLamp.add(lampLight);
+  factoryGroup.add(new THREE.HemisphereLight(0x1c211e, 0x0a0c0b, 0.25));
+  factoryKeyLight = new THREE.DirectionalLight(0xfff2dc, 1.6);
+  factoryKeyLight.position.set(-0.6, 0.75, 0.3);
+  factoryKeyLight.castShadow = true;
+  factoryKeyLight.shadow.mapSize.set(1024, 1024);
+  factoryKeyLight.shadow.camera.left = -20; factoryKeyLight.shadow.camera.right = 20;
+  factoryKeyLight.shadow.camera.top = 20; factoryKeyLight.shadow.camera.bottom = -20;
+  factoryKeyLight.shadow.camera.near = 0.1; factoryKeyLight.shadow.camera.far = 60;
+  factoryKeyLight.shadow.bias = -0.0002;
+  factoryKeyLight.shadow.camera.updateProjectionMatrix();
+  factoryGroup.add(factoryKeyLight);
   fTube(factoryGroup, [[-7, 0.04, 3], [-5, 0.07, 2.4], [-3.8, 0.04, 1.8]], 0.025, FM.woodDark, 6);
+
+  factoryCoat = new THREE.Group(); factoryCoat.name = 'coat-silhouette'; factoryGroup.add(factoryCoat);
+  const coatShape = new THREE.Shape();
+  coatShape.moveTo(-0.42, -0.72); coatShape.lineTo(-0.60, -0.18); coatShape.lineTo(-1.02, -0.48);
+  coatShape.lineTo(-0.78, 0.18); coatShape.lineTo(-0.42, 0.50); coatShape.lineTo(-0.20, 0.34);
+  coatShape.lineTo(0, 0.52); coatShape.lineTo(0.22, 0.34); coatShape.lineTo(0.44, 0.50);
+  coatShape.lineTo(0.78, 0.18); coatShape.lineTo(1.02, -0.48); coatShape.lineTo(0.60, -0.18);
+  coatShape.lineTo(0.42, -0.72); coatShape.closePath();
+  const snowPatch = new THREE.Mesh(new THREE.CircleGeometry(1.6, 48), FM.snow);
+  snowPatch.rotation.x = -Math.PI / 2; snowPatch.position.y = -0.065; factoryCoat.add(snowPatch);
+  const coatMesh = new THREE.Mesh(new THREE.ShapeGeometry(coatShape), FM.coat);
+  coatMesh.scale.setScalar(1.25);
+  coatMesh.rotation.x = -Math.PI / 2; coatMesh.position.set(-0.3, -0.04, 0.05); factoryCoat.add(coatMesh);
+  const seam = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(-0.22, -0.025, -0.50), new THREE.Vector3(-0.18, -0.025, -0.26),
+    new THREE.Vector3(-0.15, -0.025, 0.02), new THREE.Vector3(-0.12, -0.025, 0.26),
+  ]);
+  factoryCoat.position.set(-2.6, 0, 2.35);
+  factoryCoat.add(new THREE.Line(seam, new THREE.LineBasicMaterial({ color: 0xd08a3e, transparent: true, opacity: 0.75 })));
+
+  factoryDocuments = new THREE.Group(); factoryDocuments.name = 'paper-and-pencil'; factoryGroup.add(factoryDocuments);
+  const paper = new THREE.Mesh(new THREE.PlaneGeometry(0.92, 0.62), new THREE.MeshBasicMaterial({ color: 0xe8e2d4, side: THREE.DoubleSide }));
+  paper.rotation.set(-Math.PI / 2, 0, -0.12); paper.position.set(-0.55, 1.49, -0.08); factoryDocuments.add(paper);
+  fLink(factoryDocuments, [-0.05, 1.51, 0.18], [0.58, 1.51, 0.02], 0.018, FM.ironWear, 5);
+
+  factoryMacro = new THREE.Group(); factoryMacro.name = 'needle-hand-closeup'; factoryGroup.add(factoryMacro);
+  fBox(factoryMacro, 0.92, 0.026, 0.64, FM.cloth, 0.48, 1.635, 0.08);
+  fLink(factoryMacro, [1.42, 1.68, 0.34], [1.08, 1.68, 0.24], 0.09, FM.coat, 8);
+  fSphere(factoryMacro, FM.hand, 0.94, 1.68, 0.20, 0.19, 0.055, 0.14, 12);
+  for (let i = 0; i < 4; i++) {
+    const z = 0.06 + i * 0.075;
+    fLink(factoryMacro, [0.82, 1.685, z], [0.50 + Math.abs(i - 1.5) * 0.025, 1.67, z - 0.015], 0.022, FM.hand, 5);
+  }
+  fLink(factoryMacro, [0.98, 1.68, 0.30], [0.78, 1.67, 0.41], 0.024, FM.hand, 5);
+  const needleStitches = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0.28, 1.653, 0.07), new THREE.Vector3(0.32, 1.653, 0.07),
+    new THREE.Vector3(0.36, 1.653, 0.07), new THREE.Vector3(0.40, 1.653, 0.07),
+  ]);
+  factoryMacro.add(new THREE.Line(needleStitches, new THREE.LineBasicMaterial({ color: 0xd08a3e, transparent: true, opacity: 0.85 })));
+
+  factoryTransfer = new THREE.Group(); factoryTransfer.name = 'symbolic-footprints'; factoryGroup.add(factoryTransfer);
+  const footprintShape = new THREE.Shape();
+  footprintShape.moveTo(-0.11, -0.20); footprintShape.quadraticCurveTo(-0.15, -0.06, -0.12, 0.10);
+  footprintShape.quadraticCurveTo(-0.10, 0.22, 0, 0.24); footprintShape.quadraticCurveTo(0.10, 0.22, 0.12, 0.10);
+  footprintShape.quadraticCurveTo(0.15, -0.06, 0.11, -0.20); footprintShape.quadraticCurveTo(0, -0.27, -0.11, -0.20);
+  const footprintGeometry = new THREE.ShapeGeometry(footprintShape);
+  footprintGeometry.rotateX(-Math.PI / 2);
+  const footprintMaterial = new THREE.MeshBasicMaterial({ color: 0x8a9086, side: THREE.DoubleSide });
+  for (let i = 0; i < 8; i++) {
+    const print = new THREE.Mesh(footprintGeometry, footprintMaterial);
+    const side = i % 2 ? 0.15 : -0.15;
+    print.position.set(0.42 + side + (i >> 1) * 0.06, -0.07, 0.7 + i * 0.72);
+    print.rotation.y = i % 2 ? 0.34 : -0.34; factoryTransfer.add(print);
+  }
+
+  const steamCanvas = document.createElement('canvas'); steamCanvas.width = steamCanvas.height = 64;
+  const steamContext = steamCanvas.getContext('2d');
+  const steamGradient = steamContext.createRadialGradient(32, 32, 2, 32, 32, 31);
+  steamGradient.addColorStop(0, 'rgba(232,226,212,.48)');
+  steamGradient.addColorStop(0.36, 'rgba(232,226,212,.28)');
+  steamGradient.addColorStop(1, 'rgba(232,226,212,0)');
+  steamContext.fillStyle = steamGradient; steamContext.fillRect(0, 0, 64, 64);
+  const steamMap = new THREE.CanvasTexture(steamCanvas); steamMap.encoding = THREE.sRGBEncoding;
+  factorySteam = new THREE.Group(); factorySteam.name = 'dye-steam';
+  factorySteam.position.set(1.25, 2.20, -0.25); factoryGroup.add(factorySteam);
+  for (let i = 0; i < 8; i++) {
+    const puff = new THREE.Sprite(new THREE.SpriteMaterial({ map: steamMap, color: 0xe8e2d4, transparent: true, opacity: 0.68, depthWrite: false }));
+    puff.scale.set(0.38 + (i % 3) * 0.08, 0.42 + (i % 3) * 0.09, 1);
+    puff.position.set(Math.sin(i * 1.9) * 0.16, i * 0.13, Math.cos(i * 1.4) * 0.09);
+    factorySteam.add(puff);
+  }
+
+  factoryEmptyLight = new THREE.Group(); factoryEmptyLight.name = 'empty-stage-light-patch'; factoryGroup.add(factoryEmptyLight);
+  const beamShape = new THREE.Shape();
+  beamShape.moveTo(-0.24, 1.8); beamShape.lineTo(0.28, 1.8); beamShape.lineTo(1.08, -1.8); beamShape.lineTo(-1.12, -1.8); beamShape.closePath();
+  const beam = new THREE.Mesh(new THREE.ShapeGeometry(beamShape), new THREE.MeshBasicMaterial({ color: 0x8a9086, side: THREE.DoubleSide }));
+  beam.rotation.x = -Math.PI / 2; beam.position.set(0.3, -0.075, 0.35); factoryEmptyLight.add(beam);
 })();
 function mergeFactoryMeshes(root) {
   root.updateMatrixWorld(true);
   const batches = new Map(), sourceMeshes = [];
-  const keepGroups = new Set([factoryWorkers, factoryProps, factoryHands, factoryCloth].filter(Boolean));
+  const keepGroups = new Set([factoryWorkers, factoryProps, factoryHands, factoryCloth, factoryCabins, factoryWorkbench, factoryMachine, factoryKettles, factoryTeaPot, factoryLamp, factoryCoat, factoryDocuments, factoryTransfer, factorySteam, factoryMacro, factoryEmptyLight].filter(Boolean));
   root.traverse(object => {
     if (!object.isMesh || object.isInstancedMesh || Array.isArray(object.material)) return;
     if (object === factoryGroundMesh) return;
@@ -978,6 +1094,15 @@ function mergeFactoryMeshes(root) {
   sourceMeshes.forEach(mesh => { mesh.parent.remove(mesh); mesh.geometry.dispose(); });
 }
 mergeFactoryMeshes(factoryGroup);
+factoryGroup.traverse(object => {
+  if (!object.isMesh) return;
+  object.castShadow = !object.isInstancedMesh && object !== factoryGroundMesh;
+  object.receiveShadow = object !== factoryGroundMesh;
+});
+factoryGroundMesh.receiveShadow = true;
+factoryWorkers.traverse(object => { if (object.isMesh) object.castShadow = true; });
+factoryMachine.traverse(object => { if (object.isMesh) object.castShadow = true; });
+factorySteam.traverse(object => { if (object.isMesh) object.castShadow = false; });
 
 /* ---------- 相机 ---------- */
 let theta = 0.06, phi = 1.18, radius = mobile ? 67 : 74, dragging = false, px = 0, py = 0;
@@ -1255,6 +1380,7 @@ const storyBody = document.getElementById('cap-copy');
 const storySource = document.getElementById('cap-source');
 const factoryCitation = document.getElementById('factory-citation');
 const factoryStoryArt = document.getElementById('factory-story-art');
+const factoryDates = document.getElementById('factory-dates');
 const storyClock = document.getElementById('cap-clock');
 const storyProgressBar = document.getElementById('cap-progress');
 const storyNav = document.getElementById('cap-nav');
@@ -1283,8 +1409,8 @@ function storyClockText(seconds) {
   return Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0') + ' / 1:20';
 }
 function factoryClockText(seconds) {
-  const elapsed = Math.max(0, Math.min(FACTORY_CHAPTERS.length * FACTORY_SECONDS, Math.floor(seconds)));
-  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const elapsed = Math.max(0, Math.min(FACTORY_TOTAL_SECONDS, Math.floor(seconds)));
+  const total = FACTORY_TOTAL_SECONDS;
   const time = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
   return time(elapsed) + ' / ' + time(total);
 }
@@ -1436,13 +1562,18 @@ function restoreFactoryView() {
   factoryVisibility.clear();
   factoryMode = false; factoryGroup.visible = false;
   document.body.classList.remove('factory-active');
+  document.body.classList.remove('factory-silence');
   scene.background.set(DEFAULT_SKY); scene.fog.color.set(DEFAULT_FOG);
+  amb.visible = true; moon.visible = true; warmFill.visible = true;
+  renderer.shadowMap.enabled = false;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
 }
 function updateFactoryProgress() {
-  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const total = FACTORY_TOTAL_SECONDS;
   const elapsed = Math.max(0, Math.min(total, factoryTour.elapsed));
-  const index = Math.min(FACTORY_CHAPTERS.length - 1, Math.floor(elapsed / FACTORY_SECONDS));
-  const within = elapsed >= total ? 1 : Math.max(0, Math.min(1, (elapsed - index * FACTORY_SECONDS) / FACTORY_SECONDS));
+  const index = factoryChapterAt(elapsed);
+  const chapter = FACTORY_CHAPTERS[index];
+  const within = elapsed >= total ? 1 : Math.max(0, Math.min(1, (elapsed - factoryChapterOffset(index)) / chapter.duration));
   storyProgress.forEach((button, i) => {
     const fill = i < index ? 1 : i === index ? within : 0;
     button.style.setProperty('--fill', (fill * 100) + '%');
@@ -1541,16 +1672,33 @@ function applyFactoryScene(scene) {
   if (factoryProps) factoryProps.visible = targetP > 0.01;
   if (factoryHands) factoryHands.visible = targetH > 0.01;
   if (factoryCloth) factoryCloth.visible = targetC > 0.01;
+  if (factoryCoat) factoryCoat.visible = Boolean(scene.coat);
+  if (factoryDocuments) factoryDocuments.visible = Boolean(scene.documents);
+  if (factoryTransfer) factoryTransfer.visible = Boolean(scene.transfer);
+  if (factoryCabins) factoryCabins.visible = scene.cabins !== false;
+  if (factorySteam) factorySteam.visible = Boolean(scene.steam);
+  if (factoryMacro) factoryMacro.visible = Boolean(scene.macro);
+  if (factoryEmptyLight) factoryEmptyLight.visible = Boolean(scene.lightPatch);
+  if (factoryWorkbench) factoryWorkbench.visible = scene.workbench !== false;
+  if (factoryMachine) factoryMachine.visible = scene.machine !== false;
+  if (factoryKettles) factoryKettles.visible = Boolean(scene.kettle);
+  if (factoryTeaPot) factoryTeaPot.visible = Boolean(scene.teaPot);
+  if (factoryLamp) factoryLamp.visible = scene.lamp !== false;
+  if (renderer.shadowMap.enabled) renderer.shadowMap.needsUpdate = true;
   // 可观测状态：截图验收与自动化检查都靠它，避免「文案说空、画面有人」
   document.body.dataset.sceneWorkers = targetW ? 'on' : 'off';
   document.body.dataset.sceneProps = targetP ? 'on' : 'off';
   document.body.dataset.sceneHands = targetH ? 'on' : 'off';
+  document.body.dataset.sceneCabins = scene.cabins === false ? 'off' : 'on';
+  document.body.dataset.sceneEmpty = scene.empty ? 'on' : 'off';
 }
 
 function renderFactoryChapter(index) {
   const chapter = FACTORY_CHAPTERS[index];
   if (!chapter) return;
   factoryTour.index = index;
+  storyCap.classList.remove('factory-silence');
+  storyTitle.hidden = false; storySource.hidden = false;
   storyCap.classList.add('on');
   storyProgressBar.hidden = false;
   storyNav.hidden = false;
@@ -1559,6 +1707,15 @@ function renderFactoryChapter(index) {
   storyStep.textContent = '针线与守望 · 第 ' + String(index + 1).padStart(2, '0') + ' 幕 / 08 · ' + chapter.date;
   storyTitle.textContent = chapter.title;
   storyBody.textContent = chapter.body;
+  storyCap.classList.remove('factory-silence');
+  const dateCase = chapter.no === 8 ? CASES.find(c => c.case_no === 'KL-012') : null;
+  const dateEvidence = dateCase && (dateCase.steps || []).find(step => step.kind === 'retrieve');
+  factoryDates.hidden = !dateEvidence;
+  factoryDates.innerHTML = dateEvidence
+    ? '<div class="fd-title">查证延伸 · KL-012 童长荣牺牲日期</div>' +
+      (dateEvidence.evidence || []).map(item => '<div class="fd-row"><span>' + escHtml(item.short || item.book) + '</span><b>' + escHtml(item.value || '日期未录入') + '</b></div>').join('') +
+      '<a href="dossier.html?case=KL-012">打开卷宗，核对原文与证据边界 →</a>'
+    : '';
   const nClaims = (chapter.claims || []).length;
   storySource.textContent = '本章 ' + nClaims + ' 条主张 · 出处：' +
     (STORY_SOURCE.org || '黑龙江日报转载') + (STORY_SOURCE.published ? '（' + STORY_SOURCE.published + '）' : '') +
@@ -1589,12 +1746,12 @@ function setFactoryChapter(index) {
   claimsOpen = false;
   claimsResume = false;
   factoryTour.active = false;
-  factoryTour.elapsed = next * FACTORY_SECONDS;
+  factoryTour.elapsed = factoryChapterOffset(next);
   renderFactoryChapter(next);
 }
 function stopFactoryTour() {
   if (factoryTour.active) {
-    const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+    const total = FACTORY_TOTAL_SECONDS;
     factoryTour.elapsed = Math.max(0, Math.min(total, performance.now() / 1000 - factoryTour.started));
     factoryTour.active = false;
     updateFactoryProgress();
@@ -1606,7 +1763,7 @@ function toggleFactoryTour() {
   stopGyro('剧情操作已接管；手机 3DoF 环视已关闭。');
   gyroPoseHold = false;
   const now = performance.now() / 1000;
-  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const total = FACTORY_TOTAL_SECONDS;
   if (factoryTour.active) {
     factoryTour.elapsed = Math.max(0, Math.min(total, now - factoryTour.started));
     factoryTour.active = false;
@@ -1620,10 +1777,26 @@ function toggleFactoryTour() {
 }
 function factoryTourStep(now) {
   if (!factoryMode || !factoryTour.active) return;
-  const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
+  const total = FACTORY_TOTAL_SECONDS;
   factoryTour.elapsed = Math.max(0, Math.min(total, now - factoryTour.started));
-  const index = Math.min(FACTORY_CHAPTERS.length - 1, Math.floor(factoryTour.elapsed / FACTORY_SECONDS));
+  const index = factoryChapterAt(factoryTour.elapsed);
   if (index !== factoryTour.index) renderFactoryChapter(index);
+  const chapter = FACTORY_CHAPTERS[index];
+  const within = factoryTour.elapsed - factoryChapterOffset(index);
+  const silence = index === 6 && within >= chapter.duration - 3;
+  storyCap.classList.toggle('factory-silence', silence);
+  if (silence) {
+    storyBody.textContent = '';
+    storyTitle.hidden = true;
+    storySource.hidden = true;
+    factoryStoryArt.hidden = true;
+    claimsBtn.hidden = true;
+    factoryDates.hidden = true;
+  } else {
+    storyTitle.hidden = false;
+    storySource.hidden = false;
+    factoryStoryArt.hidden = false;
+  }
   if (factoryTour.elapsed >= total) factoryTour.active = false;
   updateFactoryProgress();
 }
@@ -1651,13 +1824,16 @@ function focusFactory() {
     object.visible = false;
   });
   factoryGroup.visible = true; factoryMode = true; mode = 'factory';
+  amb.visible = false; moon.visible = false; warmFill.visible = false;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
+  renderer.toneMapping = THREE.NoToneMapping;
   document.body.classList.add('factory-active');
   document.getElementById('b-factory').classList.add('on');
   document.getElementById('b-factory').setAttribute('aria-pressed', 'true');
-  scene.background.set(0x172520); scene.fog.color.set(0x25342b); scene.fog.density = 0.013;
-  amb.intensity = LIGHTING.factory.ambient;
-  moon.intensity = LIGHTING.factory.moon;
-  warmFill.intensity = LIGHTING.factory.warm;
+  scene.background.set(0x0a0c0b); scene.fog.color.set(0x0a0c0b); scene.fog.density = 0.018;
   autoPan = 0; autoPanZ = -3.6; targetY = 2.0;
   theta = 0.16; phi = 1.35; radius = mobile ? 20 : 16;
   applyCam();
@@ -1677,6 +1853,11 @@ function reset() {
   panelShown = false;
   wind = 0; snowRate = 1; autoPan = 0; autoPanZ = -4; targetY = 2;
   scene.fog.density = 0.006;
+  amb.visible = true; moon.visible = true; warmFill.visible = true;
+  renderer.shadowMap.enabled = false;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  storyCap.classList.remove('factory-silence');
+  document.body.removeAttribute('data-scene-empty');
   amb.intensity = LIGHTING.calm.ambient;
   moon.intensity = LIGHTING.calm.moon;
   warmFill.intensity = LIGHTING.calm.warm;
@@ -2235,6 +2416,14 @@ function loop() {
   arcT += dt;
   arcs.forEach((m, i) => { m.opacity = 0.35 + 0.3 * Math.abs(Math.sin(arcT * 2.2 + i)); });
   snowStep(t);
+  if (factoryMode && factorySteam.visible) {
+    factorySteam.children.forEach((puff, i) => {
+      puff.position.x = Math.sin(t * 0.7 + i * 1.4) * 0.14;
+      puff.position.y = ((i * 0.15 + t * 0.18) % 1.25) - 0.08;
+      const size = 0.72 + 0.24 * Math.sin(t * 0.8 + i);
+      puff.scale.set((0.38 + (i % 3) * 0.08) * size, (0.42 + (i % 3) * 0.09) * size, 1);
+    });
+  }
   flowStep(dt);
   dieStep(now);
   maybeSettle(now);

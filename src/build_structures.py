@@ -24,6 +24,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from safe_write import atomic_write_text
 from short_names import SHORT_OVERRIDE
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -243,14 +244,13 @@ def main() -> int:
     }
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    atomic_write_text(args.out, json.dumps(payload, ensure_ascii=False, indent=1))
 
     if args.web:
         args.web.parent.mkdir(parents=True, exist_ok=True)
-        args.web.write_text(
+        atomic_write_text(args.web,
             "window.__MIYING_STRUCT__ = "
             + json.dumps(payload, ensure_ascii=False, indent=1) + ";\n",
-            encoding="utf-8",
         )
 
     st = payload["stats"]

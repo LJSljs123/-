@@ -16,6 +16,8 @@ import re
 import sys
 from pathlib import Path
 
+from safe_write import atomic_write_text
+
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "data" / "curated" / "story_claims.json"
 ARCH = ROOT / "data" / "probe_archive" / "story_beifuchang__wlt-hlj.html"
@@ -43,9 +45,17 @@ def main() -> int:
 
     problems: list[str] = []
     seen_ids: set[str] = set()
+    durations = []
     for i, ch in enumerate(chapters, start=1):
         if ch.get("no") != i:
             problems.append(f"章节号不连续：第 {i} 个章节 no={ch.get('no')}")
+        duration = ch.get("duration")
+        if not isinstance(duration, int) or duration <= 0:
+            problems.append(f"第 {i} 章时长必须是正整数秒")
+        else:
+            durations.append(duration)
+        if len(str(ch.get("body") or "")) > 55:
+            problems.append(f"第 {i} 章正文超过 55 字")
         for c in ch.get("claims") or []:
             cid = c.get("id") or ""
             if not cid:
@@ -55,6 +65,12 @@ def main() -> int:
             seen_ids.add(cid)
             if not (c.get("quote") or "").strip():
                 problems.append(f"{cid} 缺 quote")
+
+    if len(chapters) != 8:
+        problems.append(f"分幕数量必须为 8，当前为 {len(chapters)}")
+    total_duration = sum(durations)
+    if len(durations) == len(chapters) and total_duration != 88:
+        problems.append(f"故事总时长必须为 88 秒，当前为 {total_duration} 秒")
 
     # 引文可对照：必须能在存档原文里逐字找到
     if ARCH.exists():
@@ -78,15 +94,14 @@ def main() -> int:
         "_note": "由 src/build_story.py 从 story_claims.json 生成，勿手工编辑。",
         "source": story.get("source"),
         "chapters": chapters,
-        "stats": {"chapters": len(chapters), "claims": claims},
+        "stats": {"chapters": len(chapters), "claims": claims, "duration_seconds": total_duration},
     }
-    OUT.write_text(
+    atomic_write_text(OUT,
         "window.__MIYING_STORY__ = "
         + json.dumps(payload, ensure_ascii=False, indent=1)
         + ";\n",
-        encoding="utf-8",
     )
-    print(f"{len(chapters)} 章 / {claims} 条主张，引文全部可对照 → {OUT}")
+    print(f"{len(chapters)} 章 / {total_duration} 秒 / {claims} 条主张，引文全部可对照 → {OUT}")
     return 0
 
 

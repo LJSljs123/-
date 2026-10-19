@@ -160,6 +160,8 @@ footer{
 footer .note{font-size:12.5px;color:var(--dim);line-height:1.55}
 footer .note b{color:var(--gold);font-weight:500}
 footer .note em{color:var(--red);font-style:normal;font-family:var(--mono);font-size:14px}
+footer #journey-status{flex:1;color:var(--gold);font-size:11px;line-height:1.5}
+footer #journey-status[hidden]{display:none}
 footer button{
   margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
   background:transparent;color:var(--dim);border:1px solid var(--line);
@@ -193,6 +195,7 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   footer{height:108px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(32px,1fr) 36px;gap:5px;padding:7px 10px 9px}
   footer .note{grid-column:1/-1;grid-row:1;min-width:0;font-size:10px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
   footer .note::after{content:' · 手机可双向滑动查看结构';color:var(--gold)}
+  footer #journey-status{grid-column:1/-1;grid-row:1;align-self:center;font-size:10px;line-height:1.45}
   footer button{grid-column:1;grid-row:2;margin:0;padding:5px 4px;font-size:9px}
   footer a.go{margin:0;padding:6px 3px;text-align:center;font-size:9px;letter-spacing:0}
   footer a.go:nth-of-type(1){grid-column:2;grid-row:2}
@@ -280,19 +283,21 @@ a.go:hover{color:var(--gold);border-color:var(--gold)}
   <div class="note" id="note">
     点击下方任意来源机构，把它抽掉，看哪些结论同时失去依据。
   </div>
+  <div id="journey-status" hidden aria-live="polite"></div>
   <details id="scope">
     <summary>范围声明</summary>
     <p>本库不收档案原件，收的是公开记载之间的对位关系。0 条一手档案不是缺陷，是范围声明——它决定了我们只谈「记载如何相合或分歧」，不谈「历史事实如此」。</p>
   </details>
   <button id="reset">复位</button>
   <a class="go" href="sanctuary.html">3D 燎原 →</a>
-  <a class="go" href="dossier.html">卷宗视图 →</a>
+  <a class="go" href="dossier.html?case=KL-012">卷宗视图 →</a>
 </footer>
 
 <div id="tip"></div>
 
 <script src="structures.js"></script>
 <script src="cases.js"></script>
+<script src="story-trail.js"></script>
 <script>
 (function () {
   const D = window.__MIYING_STRUCT__ || {};

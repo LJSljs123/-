@@ -35,6 +35,8 @@ a { color: var(--gold); text-decoration: none; }
 a:hover { color: var(--accent-light); }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 #world { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; touch-action: none; }
+#factory-grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; background-size: 100% 100%, 192px 192px; mix-blend-mode: screen; transition: opacity .35s ease; }
+body.factory-active #factory-grain { opacity: .08; }
 #hud, #tools, #ctrl, #stat, #tip, #panel, #cap, #loading, #fallback { position: fixed; z-index: 2; }
 #hud {
   inset: 0 0 auto; display: grid; grid-template-columns: minmax(260px, 1fr) auto;
@@ -115,8 +117,15 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #cap .s { display: block; margin-top: 6px; color: #d8c5b7; font-size: 10px; letter-spacing: .025em; }
 #factory-story-art { position: relative; margin: -15px -19px 12px; overflow: hidden; aspect-ratio: 16 / 7; background: #17201f; }
 #factory-story-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 62% 53%; }
+body.factory-active #factory-story-art { display: none; }
 #factory-story-art figcaption { position: absolute; right: 10px; bottom: 7px; color: #f0e7d6; font: 9px/1.4 ui-monospace, Consolas, monospace; text-shadow: 0 1px 5px #000; }
 #factory-story-art[hidden] { display: none !important; }
+#factory-dates { margin: 8px 0; padding: 8px 10px; border-left: 2px solid #d08a3e; background: rgba(10,12,11,.78); color: #e8e2d4; font-size: 10px; line-height: 1.65; }
+#factory-dates[hidden] { display: none !important; }
+#factory-dates .fd-title { margin-bottom: 4px; color: #d08a3e; font: 9px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+#factory-dates .fd-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(138,144,134,.22); }
+#factory-dates .fd-row b { color: #e8e2d4; font: 600 10px/1.65 ui-monospace, Consolas, monospace; white-space: nowrap; }
+#factory-dates a { display: inline-block; margin-top: 5px; color: #d08a3e; text-decoration: underline; text-underline-offset: 2px; }
 #factory-citation { display: block; margin-top: 7px; color: var(--gold); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; }
 #factory-citation[hidden], #b-factory-play[hidden] { display: none !important; }
 #story-claims-btn { display: inline-block; margin-top: 8px; padding: 3px 9px; border: 1px solid rgba(214, 196, 154, .4); background: transparent; color: var(--gold); font: 10px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .08em; cursor: pointer; }
@@ -144,6 +153,7 @@ h1 { margin: 3px 0 0; color: var(--paper); font-size: clamp(20px, 2vw, 27px); fo
 #cap-clock { flex: 1 1 auto; text-align: center; }
 body.story-active .brief, body.story-active #tools, body.factory-active .brief { opacity: 0; visibility: hidden; }
 body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto; left: auto; width: min(430px, 35vw); max-height: min(72vh, 670px); transform: translateY(-50%); }
+body.factory-active #cap.factory-silence { opacity: 0; visibility: hidden; pointer-events: none; }
 #loading { inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 13px; background: radial-gradient(ellipse at center, #303b39, #151d20 58%, #0a0e11); transition: opacity .7s ease; }
 #loading.off { opacity: 0; pointer-events: none; }
 #loading .mark { width: 34px; height: 34px; border: 1px solid var(--accent-light); transform: rotate(45deg); animation: pulse 1.8s ease-in-out infinite; }
@@ -185,6 +195,8 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   body.factory-active #cap { top: auto; right: 8px; bottom: 104px; left: 8px; width: auto; max-height: 34vh; transform: none; }
   body.factory-active #cap.expanded { max-height: 62vh; }
   #factory-story-art { display: none; }
+  #factory-dates { font-size: 9px; }
+  #factory-dates .fd-row b { font-size: 9px; }
   #cap p { font-size: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   #cap.expanded p { display: block; -webkit-line-clamp: unset; max-height: 38vh; overflow: auto; }
   #cap h2::after { content: " ▾"; font-size: 10px; color: var(--gold); opacity: .8; }
@@ -203,7 +215,7 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   #ctrl { width: calc(100vw - 14px); }
   #ctrl button { font-size: 9px; letter-spacing: 0; }
   #cap { bottom: 132px; width: calc(100vw - 16px); max-height: 30vh; padding: 10px 12px 8px; }
-  body.factory-active #cap { top: auto; right: 6px; bottom: 100px; left: 6px; width: auto; max-height: 32vh; padding: 10px 12px 8px; transform: none; }
+  body.factory-active #cap { top: auto; right: 6px; bottom: 100px; left: 6px; width: auto; max-height: 37vh; padding: 10px 12px 8px; transform: none; }
   body.factory-active #cap.expanded { max-height: 58vh; }
   #factory-story-art { margin: -10px -12px 8px; aspect-ratio: 16 / 5; }
   #cap h2 { font-size: 15px; }
@@ -276,6 +288,7 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
     <img src="assets/needle-watch-keyart.png" alt="无具体人物指认的被服厂缝制场景艺术示意">
     <figcaption>AI 辅助创作 · 艺术示意，非史料影像</figcaption>
   </figure>
+  <div id="factory-dates" hidden aria-label="KL-012 童长荣牺牲日期的三条来源记载"></div>
   <div id="cap-narration" role="status" aria-live="polite" aria-atomic="true">
     <div id="cap-step"></div>
     <h2 id="cap-title"></h2>
@@ -297,8 +310,8 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
   </div>
   <div id="cap-nav" hidden>
     <button id="b-story-prev" type="button" aria-label="上一幕">上一幕</button>
-    <button id="b-factory-play" type="button" title="自动节奏固定 88 秒，每幕 11 秒；可随时暂停或手动翻幕" hidden>播放 88 秒故事</button>
-    <span id="cap-clock">0:00 / 1:20</span>
+    <button id="b-factory-play" type="button" title="自动节奏固定 88 秒，每幕按叙事节奏分配时长；可随时暂停或手动翻幕" hidden>播放 88 秒故事</button>
+    <span id="cap-clock">0:00 / 1:28</span>
     <button id="b-story-next" type="button" aria-label="下一幕">下一幕</button>
   </div>
 </section>
@@ -307,7 +320,9 @@ body.factory-active #cap { top: 50%; right: clamp(18px, 3vw, 48px); bottom: auto
 <script src="vendor/three.min.js"></script>
 <script src="data.js"></script>
 <script src="structures.js"></script>
+<script src="cases.js"></script>
 <script src="story.js"></script>
+<script src="story-trail.js"></script>
 <script src="sanctuary.js" defer></script>
 </body>
 </html>
