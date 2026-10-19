@@ -572,7 +572,7 @@ const arcs = [];
 
 /* ---------- 三军被服厂：史料锚定的合成密营场景 ---------- */
 const factoryGroup = new THREE.Group();
-/* P1-12：工人与道具必须能独立控制——第七幕要真的「空下来」。
+/* P1-12：工人与可搬运布料、物资必须能独立控制；固定陈设不随物资状态消失。
    合并静态环境时跳过这些节点，否则人会被焊进大网格里永远删不掉。 */
 let factoryWorkers = null;
 let factoryProps = null;
@@ -880,7 +880,7 @@ function factoryGroundHeight(x, z) {
   factoryGroup.add(factoryWorkers);
   buildWorker(factoryWorkers, -0.8, 0.45, { work: true, seated: true, turn: Math.PI / 2, scale: 0.96, jacket: FM.coat });
   buildWorker(factoryWorkers, 1.5, -1.4, { turn: 0.4, scale: 0.95, jacket: FM.coatAlt });
-  /* 可被「转移」带走的布包与半成品：与桌面区分，第七幕要能收走 */
+  /* 可被「转移」带走的布料与半成品；缝纫机、茶壶、灯台等固定陈设留在场景组 */
   factoryProps = new THREE.Group();
   factoryProps.name = 'props';
   factoryGroup.add(factoryProps);
@@ -1506,8 +1506,8 @@ document.getElementById('factory-citation').addEventListener('click', () => {
   if (factoryTour.active) stopFactoryTour();
 });
 
-/* P1-12：章节状态同时控制画面与字幕。
-   第六幕物资被带走、第七幕人走台空——不靠镜头角度遮掩，直接改场景状态。 */
+/* 章节状态同时控制画面与字幕。
+   第六幕人员与可搬运物资移出画面；第七幕不补画人物，固定陈设仍保留。 */
 function applyFactoryScene(scene) {
   if (!scene) return;
   const targetW = scene.workers ? 1 : 0;
