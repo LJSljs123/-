@@ -28,6 +28,7 @@ const VERD = (D.meta && D.meta.verdicts) || {};
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // 截图/自动化验收用：相机不做补间，直接落到本章构图
 const INSTANT_CAMERA = new URLSearchParams(location.search).get('instant') === '1';
+const WOODCUT = Object.freeze({ ink: 0x0a0c0b, soot: 0x1c211e, ash: 0x3a423c, dust: 0x8a9086, paper: 0xe8e2d4, ember: 0xd08a3e });
 const STORY_SECONDS = 10;
 const STORY_CHAPTERS = [
   { title: '从一条记载出发', from: 1931, to: 1931, ids: ['evt_1931_mgzsw_xuanyan'], camera: [0.08, 1.04, 44], body: '1931 年 9 月 19 日，中共满洲省委发表宣言，指出日本帝国主义武装占领满洲。我们先从这条记载出发，沿着出处进入这段历史。' },
@@ -68,17 +69,7 @@ function noise2(x, z) {
        + Math.sin(z * 0.28 + Math.sin(x * 0.17) * 1.7) * 1.1
        + Math.sin((x + z) * 0.11) * 2.4;
 }
-const TEMP = {
-  '牺牲': [1.00, 0.42, 0.20], '惨案': [0.92, 0.28, 0.20],
-  '战斗': [1.00, 0.48, 0.20], '会议': [1.00, 0.68, 0.34],
-  '宣言': [0.92, 0.48, 0.26], '建军': [1.00, 0.58, 0.24],
-  '叛变': [0.62, 0.34, 0.26],
-};
-function tempOf(e) {
-  const t = e.event_type || '';
-  for (const k in TEMP) if (t.includes(k)) return TEMP[k];
-  return [1.0, 0.52, 0.26];
-}
+function tempOf() { return [0.82, 0.54, 0.24]; }
 
 /* ---------- 灯火落位 ---------- */
 const SPAN = 64;
@@ -101,7 +92,7 @@ function nSrc(e) { return nSources[e.id] != null ? nSources[e.id] : ((e.sources 
 
 /* ---------- 场景基座 ---------- */
 const scene = new THREE.Scene();
-const DEFAULT_SKY = 0x0d171b, DEFAULT_FOG = 0x172326;
+const DEFAULT_SKY = WOODCUT.ink, DEFAULT_FOG = WOODCUT.soot;
 scene.background = new THREE.Color(DEFAULT_SKY);
 scene.fog = new THREE.FogExp2(DEFAULT_FOG, 0.006);
 const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 600);
@@ -116,12 +107,12 @@ try {
   fallback.classList.add('on'); loading.classList.add('off'); loading.setAttribute('aria-hidden', 'true'); return;
 }
 const mobile = matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+let qualityTier = mobile ? 1 : 0;
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile ? 1.25 : 1.7));
 renderer.setSize(innerWidth, innerHeight);
 renderer.setClearColor(DEFAULT_SKY);
 renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.76;
+renderer.toneMapping = THREE.NoToneMapping;
 renderer.xr.enabled = true;
 if (renderer.xr.setReferenceSpaceType) renderer.xr.setReferenceSpaceType('local-floor');
 if (renderer.xr.setFoveation) renderer.xr.setFoveation(mobile ? 0.82 : 0.68);
@@ -130,21 +121,61 @@ renderer.domElement.id = 'world';
 renderer.domElement.setAttribute('role', 'img');
 renderer.domElement.setAttribute('aria-label', '东北抗联史料来源关系三维场景');
 document.body.appendChild(renderer.domElement);
-const factoryGrain = document.createElement('div');
-factoryGrain.id = 'factory-grain';
-factoryGrain.setAttribute('aria-hidden', 'true');
-const grainCanvas = document.createElement('canvas'); grainCanvas.width = grainCanvas.height = 192;
-const grainContext = grainCanvas.getContext('2d'), grainPixels = grainContext.createImageData(192, 192);
-let grainSeed = 1945;
-for (let i = 0; i < grainPixels.data.length; i += 4) {
-  grainSeed = (Math.imul(grainSeed, 1664525) + 1013904223) >>> 0;
-  const shade = 204 + (grainSeed % 52);
-  grainPixels.data[i] = shade; grainPixels.data[i + 1] = shade - 2; grainPixels.data[i + 2] = shade - 11;
-  grainPixels.data[i + 3] = 190;
+function seededRandom(seed) {
+  let state = seed >>> 0;
+  return () => ((state = (Math.imul(state, 1664525) + 1013904223) >>> 0) / 4294967296);
 }
-grainContext.putImageData(grainPixels, 0, 0);
-factoryGrain.style.backgroundImage = 'radial-gradient(ellipse at center, transparent 54%, rgba(10,12,11,.55) 100%), url(' + grainCanvas.toDataURL('image/png') + ')';
-document.body.appendChild(factoryGrain);
+function makeEtchingCanvas(size = 512) {
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d'), rnd = seededRandom(1945);
+  ctx.save(); ctx.translate(size / 2, size / 2); ctx.rotate(0.26); ctx.translate(-size / 2, -size / 2);
+  ctx.lineCap = 'butt';
+  for (let i = 0; i < 320; i++) {
+    const y = rnd() * size, x = rnd() * size, length = 34 + rnd() * 126;
+    const gap = x + rnd() * length * 0.58, gapWidth = 3 + rnd() * 15;
+    ctx.strokeStyle = rnd() > 0.73 ? 'rgba(28,33,30,.24)' : 'rgba(232,226,212,.34)';
+    ctx.lineWidth = 0.65 + rnd() * 1.25;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(gap, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gap + gapWidth, y); ctx.lineTo(x + length, y); ctx.stroke();
+  }
+  for (const angle of [0.9, -0.6]) {
+    ctx.save(); ctx.translate(size / 2, size / 2); ctx.rotate(angle); ctx.translate(-size / 2, -size / 2);
+    for (let i = 0; i < 90; i++) {
+      const x = rnd() * size, y = rnd() * size;
+      ctx.strokeStyle = 'rgba(58,66,60,.11)'; ctx.lineWidth = 0.55 + rnd() * 0.3;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 42 + rnd() * 34, y); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  ctx.restore();
+  return canvas;
+}
+function makePaperCanvas(size = 256) {
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d'), rnd = seededRandom(194508);
+  for (let i = 0; i < 920; i++) {
+    const x = rnd() * size, y = rnd() * size;
+    ctx.fillStyle = i % 4 ? 'rgba(232,226,212,.18)' : 'rgba(28,33,30,.12)';
+    ctx.fillRect(x, y, 0.5 + rnd() * 1.2, 0.5 + rnd() * 1.2);
+  }
+  return canvas;
+}
+function addWoodcutLayer(id, canvas, blend, opacity) {
+  const layer = document.createElement('div');
+  layer.id = id; layer.setAttribute('aria-hidden', 'true');
+  layer.style.backgroundImage = 'url(' + canvas.toDataURL('image/png') + ')';
+  layer.style.mixBlendMode = blend; layer.style.opacity = String(opacity);
+  document.body.appendChild(layer);
+  return layer;
+}
+const etchingCanvas = makeEtchingCanvas();
+const etchLayer = addWoodcutLayer('woodcut-etch', etchingCanvas, 'multiply', mobile ? 0.07 : 0.11);
+const registerLayer = addWoodcutLayer('woodcut-register', etchingCanvas, 'multiply', mobile ? 0.015 : 0.025);
+registerLayer.style.transform = 'translate(1px,1px)';
+const paperLayer = addWoodcutLayer('woodcut-paper', makePaperCanvas(), 'screen', mobile ? 0.025 : 0.045);
+const vignetteLayer = document.createElement('div');
+vignetteLayer.id = 'woodcut-vignette'; vignetteLayer.setAttribute('aria-hidden', 'true');
+document.body.appendChild(vignetteLayer);
 renderer.domElement.addEventListener('webglcontextlost', event => {
   event.preventDefault();
   fallback.classList.add('on');
@@ -154,18 +185,15 @@ renderer.domElement.addEventListener('webglcontextlost', event => {
 renderer.domElement.addEventListener('webglcontextrestored', () => location.reload());
 
 const LIGHTING = Object.freeze({
-  calm: Object.freeze({ ambient: 0.38, moon: 0.43, warm: 0.09 }),
-  storm: Object.freeze({ ambient: 0.45, moon: 0.25 }),
-  factory: Object.freeze({ ambient: 0.25, moon: 0, warm: 0 }),
+  calm: Object.freeze({ ambient: 0.24, moon: 1.2 }),
+  storm: Object.freeze({ ambient: 0.18, moon: 0.62 }),
+  embers: Object.freeze({ ambient: 0.16, moon: 0.72 }),
 });
-const amb = new THREE.AmbientLight(0x71847e, LIGHTING.calm.ambient);
+const amb = new THREE.HemisphereLight(WOODCUT.soot, WOODCUT.ink, LIGHTING.calm.ambient);
 scene.add(amb);
-const moon = new THREE.DirectionalLight(0xa8b9b6, LIGHTING.calm.moon);
-moon.position.set(-40, 70, -30);
+const moon = new THREE.DirectionalLight(WOODCUT.paper, LIGHTING.calm.moon);
+moon.position.set(-40, 70, 35);
 scene.add(moon);
-const warmFill = new THREE.DirectionalLight(0xa27a52, LIGHTING.calm.warm);
-warmFill.position.set(44, 22, 32);
-scene.add(warmFill);
 
 /* ---------- 夜空 ---------- */
 (function stars() {
@@ -180,7 +208,7 @@ scene.add(warmFill);
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   scene.add(new THREE.Points(g, new THREE.PointsMaterial({
-    color: 0xaebfbd, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.30 })));
+    color: WOODCUT.paper, size: 0.85, sizeAttenuation: false, transparent: true, opacity: 0.24 })));
 })();
 
 /* ---------- 雪原 ---------- */
@@ -195,18 +223,18 @@ function terrainHeight(x, z) {
   g.rotateX(-Math.PI / 2);
   const p = g.attributes.position;
   const colors = new Float32Array(p.count * 3);
-  const low = new THREE.Color(0x202f33), high = new THREE.Color(0x596b69), color = new THREE.Color();
+  const color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
     const y = terrainHeight(x, z);
     p.setY(i, y);
-    color.copy(low).lerp(high, Math.max(0, Math.min(1, (y + 5) / 24)));
+    const shade = y > 5 ? WOODCUT.dust : y > 0 ? WOODCUT.ash : WOODCUT.soot;
+    color.setHex(shade);
     colors.set([color.r, color.g, color.b], i * 3);
   }
   g.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   g.computeVertexNormals();
-  terrainMesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 0.98 }));
+  terrainMesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true }));
   scene.add(terrainMesh);
 })();
 
@@ -216,9 +244,8 @@ function buildRidge(centerZ, layer) {
   g.rotateX(-Math.PI / 2);
   const p = g.attributes.position;
   const colors = new Float32Array(p.count * 3);
-  const base = new THREE.Color(layer ? 0x202a30 : 0x2c383d);
-  const peak = new THREE.Color(layer ? 0x4c5a60 : 0x647175);
-  const snowColor = new THREE.Color(0x9daaa6);
+  const shadeNear = [WOODCUT.ink, WOODCUT.soot, WOODCUT.ash, WOODCUT.paper];
+  const shadeFar = [WOODCUT.soot, WOODCUT.ash, WOODCUT.dust, WOODCUT.paper];
   const color = new THREE.Color();
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i);
@@ -227,14 +254,14 @@ function buildRidge(centerZ, layer) {
       5 * Math.sin(x * 0.081 - layer) + 17 * Math.pow(Math.max(0, Math.sin(x * 0.022 + layer)), 3);
     const y = 8 + ridge * cross + noise2(x, z + centerZ) * 0.25;
     p.setY(i, y);
-    color.copy(base).lerp(peak, Math.min(0.8, Math.max(0, (y - 12) / 34)));
-    if (y > 31) color.lerp(snowColor, Math.min(0.3, (y - 31) / 60));
+    const grade = y > 31 ? 3 : y > 22 ? 2 : y > 13 ? 1 : 0;
+    color.setHex((layer ? shadeNear : shadeFar)[grade]);
     colors.set([color.r, color.g, color.b], i * 3);
   }
   g.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   g.computeVertexNormals();
-  const mesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 1, flatShading: true, side: THREE.DoubleSide }));
+  const mesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({
+    vertexColors: true, flatShading: true, side: THREE.DoubleSide }));
   mesh.position.z = centerZ;
   scene.add(mesh);
 }
@@ -243,7 +270,7 @@ buildRidge(-163, 1);
 buildRidge(126, 0);
 
 function spruceBough(radius, height, seed) {
-  const radial = 36, levels = [0, 0.12, 0.28, 0.44, 0.62, 0.80, 1];
+  const radial = 7, levels = [0, 0.12, 0.28, 0.44, 0.62, 0.80, 1];
   const rings = [0.42, 0.72, 1.0, 0.84, 0.67, 0.42, 0.01];
   const vertices = [], indices = [];
   for (let j = 0; j < levels.length; j++) {
@@ -267,9 +294,10 @@ function spruceBough(radius, height, seed) {
   return g;
 }
 
+const forestBatches = [];
 (function buildForest() {
   const count = mobile ? 280 : 520;
-  const foliageMaterial = new THREE.MeshStandardMaterial({ color: 0x26372f, roughness: 0.96 });
+  const foliageMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
   const foliage = [
     new THREE.InstancedMesh(spruceBough(3.0, 4.5, 0.2), foliageMaterial, count),
     new THREE.InstancedMesh(spruceBough(2.4, 4.0, 1.4), foliageMaterial, count),
@@ -277,7 +305,8 @@ function spruceBough(radius, height, seed) {
   ];
   const trunks = new THREE.InstancedMesh(
     new THREE.CylinderGeometry(0.13, 0.27, 2.2, 7),
-    new THREE.MeshStandardMaterial({ color: 0x30271f, roughness: 1, flatShading: true }), count);
+    new THREE.MeshLambertMaterial({ color: WOODCUT.ink, flatShading: true }), count);
+  const foliageGrades = [new THREE.Color(WOODCUT.ink), new THREE.Color(WOODCUT.soot), new THREE.Color(WOODCUT.ash)];
   const dummy = new THREE.Object3D();
   let seed = 74291;
   const rnd = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
@@ -287,7 +316,7 @@ function spruceBough(radius, height, seed) {
     const s = 0.62 + rnd() * 0.82;
     const y = terrainHeight(x, z);
     dummy.rotation.set(0, rnd() * Math.PI, 0);
-    const tint = new THREE.Color().setHSL(0.30 + rnd() * 0.045, 0.30 + rnd() * 0.12, 0.16 + rnd() * 0.10);
+    const tint = foliageGrades[Math.floor(rnd() * foliageGrades.length)];
     const heights = [2.25, 4.55, 6.5];
     foliage.forEach((layer, j) => {
       dummy.position.set(x, y + heights[j] * s, z);
@@ -297,8 +326,9 @@ function spruceBough(radius, height, seed) {
     dummy.position.set(x, y + 0.8 * s, z); dummy.scale.set(s, s, s); dummy.updateMatrix();
     trunks.setMatrixAt(i, dummy.matrix);
   }
-  foliage.forEach(layer => { layer.instanceMatrix.needsUpdate = true; scene.add(layer); });
+  foliage.forEach(layer => { layer.instanceMatrix.needsUpdate = true; layer.userData.qualityCount = count; forestBatches.push(layer); scene.add(layer); });
   trunks.instanceMatrix.needsUpdate = true;
+  trunks.userData.qualityCount = count; forestBatches.push(trunks);
   scene.add(trunks);
 })();
 
@@ -374,10 +404,10 @@ const towerMeshes = [];
     const ground = terrainHeight(x, z);
     const body = new THREE.Mesh(
       new THREE.CylinderGeometry(0.38 + w * 0.02, 0.55 + w * 0.025, h, 7),
-      new THREE.MeshStandardMaterial({ color: 0x39352d, emissive: 0x201a12, emissiveIntensity: 0.24, roughness: 0.92 }));
+      new THREE.MeshLambertMaterial({ color: WOODCUT.soot, emissive: WOODCUT.ink, emissiveIntensity: 0.16, flatShading: true }));
     body.position.set(x, ground + h / 2, z);
     const top = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: (s.exclusive || 0) ? 0xd08c67 : 0xd6bd7e,
+      map: glowTex, color: WOODCUT.ember,
       transparent: true, opacity: w ? 0.72 : 0.35, depthWrite: false,
       blending: THREE.AdditiveBlending }));
     top.scale.setScalar(3 + Math.min(w, 30) * 0.25);
@@ -448,7 +478,7 @@ const fireMat = new THREE.ShaderMaterial({
       float tip = 1.0 - smoothstep(0.88, 1.0, height);
       float a = body * base * tip;
       float core = 1.0 - smoothstep(0.015, width * 0.58, abs(uv.x - 0.5));
-      vec3 flame = mix(vC, vec3(0.96, 0.48, 0.21), core * 0.24);
+      vec3 flame = mix(vC, vec3(0.82, 0.54, 0.24), core * 0.18);
       gl_FragColor = vec4(flame * (0.48 + 0.14 * vF), a * vStory * 0.82);
     }`,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
@@ -458,13 +488,23 @@ const firePoints = scene.children[scene.children.length - 1];
 /* 火光底部的地面光斑（Sprite，熄灭时同步缩小） */
 const groundGlows = fireMetas.map(m => {
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: glowTex, color: 0xd49450, transparent: true, opacity: 0.11,
+    map: glowTex, color: WOODCUT.ember, transparent: true, opacity: 0.07,
     depthWrite: false, blending: THREE.AdditiveBlending }));
   sp.scale.setScalar(m.n > 1 ? 6 : 3.2);
   sp.position.set(m.x, terrainHeight(m.x, m.z) + 0.15, m.z);
   scene.add(sp);
   return sp;
 });
+const snowFireLights = [];
+const representativeFires = fireMetas.slice().sort((a, b) => a.x - b.x);
+for (let i = 0, count = Math.min(8, representativeFires.length); i < count; i++) {
+  const entry = representativeFires[Math.round(i * (representativeFires.length - 1) / Math.max(1, count - 1))];
+  const light = new THREE.PointLight(WOODCUT.ember, 0.8, 22, 2);
+  light.position.set(entry.x, entry.y + 0.35, entry.z);
+  light.userData.fireIndex = entry.idx; light.userData.baseIntensity = 0.8;
+  fireMetas[entry.idx].pointLight = light;
+  snowFireLights.push(light); scene.add(light);
+}
 
 /* 琥珀时间光幕：只标记当前叙事年份，不连接历史事件。 */
 const storyGate = new THREE.Group();
@@ -478,7 +518,7 @@ const gateMaterial = new THREE.ShaderMaterial({
       float height = smoothstep(0.0, 0.12, vUv.y) * (1.0 - smoothstep(0.72, 1.0, vUv.y));
       float scan = 0.58 + 0.42 * sin(vUv.y * 14.0 - uTime * 1.7);
       float a = edge * height * scan * (0.10 + uPulse * 0.09);
-      gl_FragColor = vec4(0.92, 0.54, 0.31, a);
+      gl_FragColor = vec4(0.82, 0.54, 0.24, a);
     }`,
   transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
 });
@@ -486,11 +526,11 @@ const gateCurtain = new THREE.Mesh(new THREE.PlaneGeometry(44, 54), gateMaterial
 gateCurtain.rotation.y = Math.PI / 2;
 gateCurtain.position.y = 27;
 const gateHalo = new THREE.Mesh(new THREE.TorusGeometry(17, 0.12, 8, 96),
-  new THREE.MeshBasicMaterial({ color: 0xc98361, transparent: true, opacity: 0.46, depthWrite: false, blending: THREE.AdditiveBlending }));
+  new THREE.MeshBasicMaterial({ color: WOODCUT.ember, transparent: true, opacity: 0.36, depthWrite: false, blending: THREE.AdditiveBlending }));
 gateHalo.rotation.y = Math.PI / 2;
 gateHalo.position.y = 24;
 const gateFloor = new THREE.Mesh(new THREE.TorusGeometry(16, 0.08, 6, 96),
-  new THREE.MeshBasicMaterial({ color: 0xd8b273, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending }));
+  new THREE.MeshBasicMaterial({ color: WOODCUT.ember, transparent: true, opacity: 0.20, depthWrite: false, blending: THREE.AdditiveBlending }));
 gateFloor.rotation.x = -Math.PI / 2;
 gateFloor.position.y = 0.16;
 storyGate.add(gateCurtain, gateHalo, gateFloor);
@@ -516,7 +556,7 @@ for (let i = 0; i < flowN; i++) {
 }
 flowGeo.setAttribute('position', new THREE.BufferAttribute(flowPos, 3));
 const flowMat = new THREE.PointsMaterial({
-  map: glowTex, color: 0xb98755, size: 0.82, transparent: true, opacity: 0.42,
+  map: glowTex, color: WOODCUT.ember, size: 0.72, transparent: true, opacity: 0.34,
   depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
 const flowPoints = new THREE.Points(flowGeo, flowMat);
 scene.add(flowPoints);
@@ -557,11 +597,11 @@ const siteMeshes = [];
     const z = projected[index].z * scale + 50;
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(0.7, 2.1, 0.5),
-      new THREE.MeshStandardMaterial({ color: 0x66736d, emissive: 0x18211d, emissiveIntensity: 0.18, roughness: 0.88 }));
+      new THREE.MeshLambertMaterial({ color: WOODCUT.dust, emissive: WOODCUT.ink, emissiveIntensity: 0.08, flatShading: true }));
     const ground = terrainHeight(x, z);
     mesh.position.set(x, ground + 1.05, z);
     const cap = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: glowTex, color: 0x9faeaa, transparent: true, opacity: 0.23,
+      map: glowTex, color: WOODCUT.ember, transparent: true, opacity: 0.20,
       depthWrite: false, blending: THREE.AdditiveBlending }));
     cap.scale.setScalar(1.6);
     cap.position.set(x, ground + 2.5, z);
@@ -591,7 +631,7 @@ const arcs = [];
       cpts.push(new THREE.Vector3(x, y, m.z));
     }
     const g = new THREE.BufferGeometry().setFromPoints(cpts);
-    const mat = new THREE.LineBasicMaterial({ color: 0xb9876a, transparent: true, opacity: 0.36 });
+    const mat = new THREE.LineBasicMaterial({ color: WOODCUT.ember, transparent: true, opacity: 0.34 });
     scene.add(new THREE.Line(g, mat));
     arcs.push(mat);
   });
@@ -639,11 +679,11 @@ function timberTexture() {
   const S = TEX_SIZE;
   const c = document.createElement('canvas'); c.width = c.height = S;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#3A423C'; ctx.fillRect(0, 0, S, S);
-  for (let i = 0; i < 110; i++) {
+  ctx.fillStyle = '#363c37'; ctx.fillRect(0, 0, S, S);
+  for (let i = 0; i < 72; i++) {
     const y = Math.random() * S, w = 36 + Math.random() * 420;
-    ctx.strokeStyle = i % 3 ? 'rgba(10,12,11,.50)' : 'rgba(232,226,212,.32)';
-    ctx.lineWidth = 2 + Math.random() * 3; ctx.beginPath();
+    ctx.strokeStyle = i % 3 ? 'rgba(10,12,11,.12)' : 'rgba(232,226,212,.08)';
+    ctx.lineWidth = 0.7 + Math.random() * 1.2; ctx.beginPath();
     ctx.moveTo(Math.random() * 36, y); ctx.bezierCurveTo(w * .25, y - 6, w * .65, y + 6, w, y); ctx.stroke();
   }
   const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -651,23 +691,26 @@ function timberTexture() {
   return t;
 }
 const clothMap = weaveTexture(), woodMap = timberTexture();
+function flatLambert(options) {
+  return new THREE.MeshLambertMaterial(Object.assign({}, options, { flatShading: true }));
+}
 const FM = {
-  wood: new THREE.MeshLambertMaterial({ map: woodMap, color: 0xffffff }),
-  woodDark: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
-  woodLight: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
-  cloth: new THREE.MeshLambertMaterial({ map: clothMap, color: 0xffffff }),
-  dyed: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
-  coat: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
-  coatAlt: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
-  snow: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
-  silhouette: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
-  hand: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
-  iron: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
-  ironWear: new THREE.MeshLambertMaterial({ color: 0x8a9086 }),
-  leather: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
-  earth: new THREE.MeshLambertMaterial({ color: 0x0a0c0b }),
-  leaf: new THREE.MeshLambertMaterial({ color: 0x1c211e }),
-  leafLight: new THREE.MeshLambertMaterial({ color: 0x3a423c }),
+  wood: flatLambert({ map: woodMap, color: 0xffffff }),
+  woodDark: flatLambert({ color: WOODCUT.soot }),
+  woodLight: flatLambert({ color: WOODCUT.ash }),
+  cloth: flatLambert({ map: clothMap, color: 0xffffff }),
+  dyed: flatLambert({ color: WOODCUT.ash }),
+  coat: flatLambert({ color: WOODCUT.soot }),
+  coatAlt: flatLambert({ color: WOODCUT.ink }),
+  snow: flatLambert({ color: WOODCUT.dust }),
+  silhouette: flatLambert({ color: WOODCUT.ink }),
+  hand: flatLambert({ color: WOODCUT.dust }),
+  iron: flatLambert({ color: WOODCUT.soot }),
+  ironWear: flatLambert({ color: WOODCUT.dust }),
+  leather: flatLambert({ color: WOODCUT.soot }),
+  earth: flatLambert({ color: WOODCUT.ink }),
+  leaf: flatLambert({ color: WOODCUT.soot }),
+  leafLight: flatLambert({ color: WOODCUT.ash }),
   glow: new THREE.MeshBasicMaterial({ color: 0xd08a3e }),
 };
 function fBox(parent, w, h, d, material, x, y, z, rx = 0, ry = 0, rz = 0) {
@@ -675,11 +718,13 @@ function fBox(parent, w, h, d, material, x, y, z, rx = 0, ry = 0, rz = 0) {
   mesh.position.set(x, y, z); mesh.rotation.set(rx, ry, rz); parent.add(mesh); return mesh;
 }
 function fSphere(parent, material, x, y, z, sx, sy, sz, seg = 16) {
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, seg, Math.max(8, seg >> 1)), material);
+  const sides = Math.max(4, Math.min(8, Math.round(seg * 0.4)));
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, sides, Math.max(4, Math.round(sides * 0.6))), material);
   mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz); parent.add(mesh); return mesh;
 }
 function fCylinder(parent, r1, r2, length, material, x, y, z, axis = 'y', segments = 12) {
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, length, segments), material);
+  const sides = Math.max(4, Math.min(8, Math.round(segments * 0.5)));
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, length, sides), material);
   if (axis === 'x') mesh.rotation.z = Math.PI / 2;
   if (axis === 'z') mesh.rotation.x = Math.PI / 2;
   mesh.position.set(x, y, z); parent.add(mesh); return mesh;
@@ -687,7 +732,8 @@ function fCylinder(parent, r1, r2, length, material, x, y, z, axis = 'y', segmen
 function fLink(parent, a, b, radius, material, segments = 8) {
   const start = new THREE.Vector3(a[0], a[1], a[2]), end = new THREE.Vector3(b[0], b[1], b[2]);
   const delta = new THREE.Vector3().subVectors(end, start);
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.88, radius, delta.length(), segments), material);
+  const sides = Math.max(4, Math.min(8, Math.round(segments * 0.5)));
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.88, radius, delta.length(), sides), material);
   mesh.position.copy(start).add(end).multiplyScalar(0.5);
   mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
   parent.add(mesh); return mesh;
@@ -710,7 +756,7 @@ function buildFootMachine(parent, x, z, scale = 1) {
   fLink(m, [0.1, 0.6, 0], [0.88, 0.82, 0], 0.045, FM.ironWear);
   fLink(m, [0.88, 0.82, 0], [1.38, 0.96, 0], 0.045, FM.ironWear);
   fLink(m, [1.38, 0.96, 0], [1.45, 1.36, 0], 0.045, FM.ironWear);
-  const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.055, 8, 32), FM.iron);
+  const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.055, 5, 14), FM.iron);
   wheel.position.set(1.48, 1.95, -0.03); wheel.rotation.y = Math.PI / 2; m.add(wheel);
   fCylinder(m, 0.065, 0.065, 0.18, FM.ironWear, 1.48, 1.95, -0.03, 'x');
   for (let i = 0; i < 8; i++) {
@@ -727,7 +773,7 @@ function buildFootMachine(parent, x, z, scale = 1) {
   fCylinder(m, 0.035, 0.035, 0.11, FM.ironWear, 0.41, 1.38, 0.12, 'x', 8);
   fCylinder(m, 0.10, 0.10, 0.23, FM.woodDark, -0.4, 2.04, -0.05, 'y', 12);
   fCylinder(m, 0.035, 0.035, 0.13, FM.ironWear, -0.4, 2.21, -0.05, 'y', 8);
-  const belt = new THREE.Mesh(new THREE.TorusGeometry(0.67, 0.022, 5, 32, Math.PI * 1.65), FM.leather);
+  const belt = new THREE.Mesh(new THREE.TorusGeometry(0.67, 0.022, 4, 16, Math.PI * 1.65), FM.leather);
   belt.position.set(0.82, 1.55, -0.03); belt.rotation.z = Math.PI / 2; m.add(belt);
   fBox(m, 0.72, 0.045, 0.42, FM.iron, 0.1, 1.635, 0.02);
   return m;
@@ -826,7 +872,7 @@ function buildCampTrees(parent) {
     new THREE.InstancedMesh(spruceBough(1.55, 3.1, 1.6), FM.leafLight, count),
     new THREE.InstancedMesh(spruceBough(1.1, 2.5, 2.7), FM.leaf, count),
   ];
-  const trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.16, 0.26, 5.2, 8), FM.woodDark, count);
+  const trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.16, 0.26, 5.2, 7), FM.woodDark, count);
   for (let i = 0; i < count; i++) {
     const a = rnd() * Math.PI * 2, r = 15 + rnd() * 14, x = Math.cos(a) * r, z = Math.sin(a) * r - 4;
     if (Math.abs(x) < 15) continue;
@@ -835,13 +881,16 @@ function buildCampTrees(parent) {
       dummy.position.set(x, 0.9 + j * 1.55, z); dummy.rotation.set(0, rnd() * 6.28, 0);
       dummy.scale.set(s * (1 - j * 0.12), s * (1 - j * 0.12), s * (1 - j * 0.12)); dummy.updateMatrix();
       mesh.setMatrixAt(placed, dummy.matrix);
-      mesh.setColorAt(placed, new THREE.Color(j === 1 ? 0x3a423c : 0x1c211e));
+      mesh.setColorAt(placed, new THREE.Color(j === 1 ? WOODCUT.ash : WOODCUT.soot));
     });
     dummy.position.set(x, 2.25 * s, z); dummy.rotation.set(0, 0, 0); dummy.scale.set(s, s, s); dummy.updateMatrix();
     trunks.setMatrixAt(placed, dummy.matrix);
     placed++;
   }
-  [...tiers, trunks].forEach(mesh => { mesh.count = placed; mesh.instanceMatrix.needsUpdate = true; parent.add(mesh); });
+  [...tiers, trunks].forEach(mesh => {
+    mesh.count = placed; mesh.userData.qualityCount = placed; mesh.instanceMatrix.needsUpdate = true;
+    forestBatches.push(mesh); parent.add(mesh);
+  });
 }
 function groundTexture() {
   const size = 256, canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
@@ -876,18 +925,18 @@ function factoryGroundHeight(x, z) {
   groundGeometry.rotateX(-Math.PI / 2);
   const groundPositions = groundGeometry.attributes.position;
   const groundColors = new Float32Array(groundPositions.count * 3);
-  const moss = new THREE.Color(0x3a423c).convertSRGBToLinear();
-  const forestFloor = new THREE.Color(0x1c211e).convertSRGBToLinear(), groundColor = new THREE.Color();
+  const groundGrades = [new THREE.Color(WOODCUT.ash), new THREE.Color(WOODCUT.soot), new THREE.Color(WOODCUT.ink)];
+  const groundColor = new THREE.Color();
   for (let i = 0; i < groundPositions.count; i++) {
     const x = groundPositions.getX(i), z = groundPositions.getZ(i);
     groundPositions.setY(i, factoryGroundHeight(x, z));
     const edge = Math.max(0, Math.min(1, (Math.hypot(x, z + 3) - 10) / 42));
-    groundColor.copy(moss).lerp(forestFloor, edge * 0.9);
+    groundColor.copy(groundGrades[edge > 0.72 ? 2 : edge > 0.28 ? 1 : 0]);
     groundColors.set([groundColor.r, groundColor.g, groundColor.b], i * 3);
   }
   groundGeometry.setAttribute('color', new THREE.BufferAttribute(groundColors, 3));
   groundGeometry.computeVertexNormals();
-  factoryGroundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshLambertMaterial({ map: groundTexture(), vertexColors: true }));
+  factoryGroundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshLambertMaterial({ map: groundTexture(), vertexColors: true, flatShading: true }));
   factoryGroundMesh.name = 'factory-ground';
   factoryGroup.add(factoryGroundMesh);
   buildCampTrees(factoryGroup);
@@ -964,13 +1013,13 @@ function factoryGroundHeight(x, z) {
   fLink(factoryLamp, [0, 0.18, 0], [0, -0.25, 0], 0.024, FM.ironWear);
   fCylinder(factoryLamp, 0.12, 0.16, 0.32, FM.glow, 0, -0.47, 0, 'y', 10);
   fSphere(factoryLamp, FM.glow, 0, -0.47, 0, 0.14, 0.18, 0.14, 12);
-  const lampLight = new THREE.PointLight(0xd08a3e, 2.2, 12, 2);
+  const lampLight = new THREE.PointLight(WOODCUT.ember, 1.6, 12, 2);
   lampLight.position.set(0, -0.45, 0); factoryLamp.add(lampLight);
-  factoryGroup.add(new THREE.HemisphereLight(0x1c211e, 0x0a0c0b, 0.25));
-  factoryKeyLight = new THREE.DirectionalLight(0xfff2dc, 1.6);
+  factoryGroup.add(new THREE.HemisphereLight(WOODCUT.soot, WOODCUT.ink, 0.25));
+  factoryKeyLight = new THREE.DirectionalLight(WOODCUT.paper, 1.3);
   factoryKeyLight.position.set(-0.6, 0.75, 0.3);
   factoryKeyLight.castShadow = true;
-  factoryKeyLight.shadow.mapSize.set(1024, 1024);
+  factoryKeyLight.shadow.mapSize.set(mobile ? 512 : 1024, mobile ? 512 : 1024);
   factoryKeyLight.shadow.camera.left = -20; factoryKeyLight.shadow.camera.right = 20;
   factoryKeyLight.shadow.camera.top = 20; factoryKeyLight.shadow.camera.bottom = -20;
   factoryKeyLight.shadow.camera.near = 0.1; factoryKeyLight.shadow.camera.far = 60;
@@ -986,7 +1035,7 @@ function factoryGroundHeight(x, z) {
   coatShape.lineTo(0, 0.52); coatShape.lineTo(0.22, 0.34); coatShape.lineTo(0.44, 0.50);
   coatShape.lineTo(0.78, 0.18); coatShape.lineTo(1.02, -0.48); coatShape.lineTo(0.60, -0.18);
   coatShape.lineTo(0.42, -0.72); coatShape.closePath();
-  const snowPatch = new THREE.Mesh(new THREE.CircleGeometry(1.6, 48), FM.snow);
+  const snowPatch = new THREE.Mesh(new THREE.CircleGeometry(1.6, 9), FM.snow);
   snowPatch.rotation.x = -Math.PI / 2; snowPatch.position.y = -0.065; factoryCoat.add(snowPatch);
   const coatMesh = new THREE.Mesh(new THREE.ShapeGeometry(coatShape), FM.coat);
   coatMesh.scale.setScalar(1.25);
@@ -1103,6 +1152,83 @@ factoryGroundMesh.receiveShadow = true;
 factoryWorkers.traverse(object => { if (object.isMesh) object.castShadow = true; });
 factoryMachine.traverse(object => { if (object.isMesh) object.castShadow = true; });
 factorySteam.traverse(object => { if (object.isMesh) object.castShadow = false; });
+
+const factoryForeground = new THREE.Group();
+factoryForeground.name = 'symbolic-near-branches'; factoryForeground.visible = false; camera.add(factoryForeground);
+const branchMaterial = new THREE.MeshBasicMaterial({ color: 0x030403, toneMapped: false });
+function rebuildFactoryForeground() {
+  while (factoryForeground.children.length) {
+    const branchMesh = factoryForeground.children[0];
+    factoryForeground.remove(branchMesh); branchMesh.geometry.dispose();
+  }
+  const depth = 2.8, halfHeight = depth * Math.tan(camera.fov * Math.PI / 360), halfWidth = halfHeight * camera.aspect;
+  const point = (x, y) => new THREE.Vector3(x, y, -depth);
+  const branch = (points, radius) => {
+    for (let i = 1; i < points.length; i++) {
+      const start = points[i - 1], end = points[i], delta = new THREE.Vector3().subVectors(end, start);
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.66, radius, delta.length(), 5), branchMaterial);
+      mesh.position.copy(start).add(end).multiplyScalar(0.5);
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
+      factoryForeground.add(mesh);
+    }
+  };
+  const left = [point(-halfWidth * 1.08, halfHeight * 1.04), point(-halfWidth * 1.01, halfHeight * 0.70),
+    point(-halfWidth * 0.98, halfHeight * 0.34), point(-halfWidth * 0.95, halfHeight * 0.02), point(-halfWidth * 0.82, -halfHeight * 0.40)];
+  branch(left, 0.038);
+  branch([left[1], point(-halfWidth * 1.08, halfHeight * 0.84)], 0.016);
+  branch([left[2], point(-halfWidth * 1.07, halfHeight * 0.48)], 0.014);
+  branch([left[3], point(-halfWidth * 1.03, -halfHeight * 0.10)], 0.013);
+  const right = [point(halfWidth * 1.10, halfHeight * 0.88), point(halfWidth * 1.03, halfHeight * 0.56),
+    point(halfWidth * 0.99, halfHeight * 0.26), point(halfWidth * 0.96, -halfHeight * 0.04)];
+  branch(right, 0.03);
+  branch([right[1], point(halfWidth * 1.07, halfHeight * 0.74)], 0.014);
+  branch([right[2], point(halfWidth * 1.06, halfHeight * 0.40)], 0.013);
+}
+rebuildFactoryForeground();
+
+function applyQualityTier() {
+  const ratios = [mobile ? 1.25 : 1.7, mobile ? 1.0 : 1.35, mobile ? 0.82 : 1.0];
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, ratios[qualityTier]));
+  renderer.domElement.style.filter = qualityTier === 2 ? 'none' : 'contrast(1.07) saturate(.88)';
+  const forestScale = [1, 0.78, 0.55][qualityTier];
+  forestBatches.forEach(mesh => { mesh.count = Math.max(1, Math.floor(mesh.userData.qualityCount * forestScale)); });
+  etchLayer.style.opacity = String([mobile ? 0.07 : 0.11, mobile ? 0.045 : 0.07, 0][qualityTier]);
+  registerLayer.style.opacity = String([0.025, 0.01, 0][qualityTier]);
+  paperLayer.style.opacity = String([mobile ? 0.025 : 0.045, 0, 0][qualityTier]);
+  if (factoryKeyLight) {
+    const size = qualityTier === 0 ? 1024 : 512;
+    if (factoryKeyLight.shadow.mapSize.x !== size) {
+      if (factoryKeyLight.shadow.map) factoryKeyLight.shadow.map.dispose();
+      factoryKeyLight.shadow.map = null;
+      factoryKeyLight.shadow.mapSize.set(size, size);
+      factoryKeyLight.shadow.camera.updateProjectionMatrix();
+    }
+    factoryKeyLight.shadow.needsUpdate = true;
+  }
+  if (factoryMode) renderer.shadowMap.enabled = qualityTier < 2;
+  document.body.dataset.qualityTier = ['high', 'medium', 'low'][qualityTier];
+}
+applyQualityTier();
+const frameProbe = { previous: performance.now(), samples: [], slowSince: 0 };
+function sampleAdaptiveQuality(now) {
+  if (document.hidden || renderer.xr.isPresenting) { frameProbe.previous = now; return; }
+  const elapsed = now - frameProbe.previous;
+  frameProbe.previous = now;
+  if (elapsed <= 0 || elapsed > 250) return;
+  frameProbe.samples.push(elapsed);
+  if (frameProbe.samples.length < 60) return;
+  frameProbe.samples.sort((a, b) => a - b);
+  const p95 = frameProbe.samples[Math.floor(frameProbe.samples.length * 0.95)];
+  frameProbe.samples.length = 0;
+  if (p95 > 33) {
+    if (!frameProbe.slowSince) frameProbe.slowSince = now;
+    else if (now - frameProbe.slowSince >= 2000 && qualityTier < 2) {
+      qualityTier++;
+      applyQualityTier();
+      frameProbe.slowSince = 0;
+    }
+  } else frameProbe.slowSince = 0;
+}
 
 /* ---------- 相机 ---------- */
 let theta = 0.06, phi = 1.18, radius = mobile ? 67 : 74, dragging = false, px = 0, py = 0;
@@ -1401,7 +1527,9 @@ function updateStoryGlow(year) {
     const eventYear = yearOf(fireMetas[i].e);
     const revealed = Math.max(0, Math.min(1, (year - eventYear + 0.2) / 0.75));
     const focus = Math.exp(-Math.abs(eventYear - year) * 0.7);
-    glow.material.opacity = 0.18 * (0.22 + 0.78 * revealed) * (0.36 + 0.64 * focus);
+    glow.material.opacity = 0.07 * (0.22 + 0.78 * revealed) * (0.36 + 0.64 * focus);
+    const light = fireMetas[i].pointLight;
+    if (light) light.intensity = light.userData.baseIntensity * (0.22 + 0.78 * revealed) * (0.36 + 0.64 * focus);
   });
 }
 function storyClockText(seconds) {
@@ -1501,7 +1629,8 @@ function hideStory() {
   fireMat.uniforms.uStoryMode.value = 0;
   fireMat.uniforms.uStoryYear.value = YEAR0;
   storyGlowYear = NaN;
-  groundGlows.forEach(glow => { glow.material.opacity = 0.18; });
+  groundGlows.forEach(glow => { glow.material.opacity = 0.07; });
+  snowFireLights.forEach(light => { light.intensity = light.userData.baseIntensity; });
   const button = document.getElementById('b-tour');
   button.textContent = '史料时间线'; button.classList.remove('on');
 }
@@ -1538,6 +1667,7 @@ function startStorm(sourceIndex, fromTour) {
   wind = 2.4; snowRate = 4.0;
   scene.fog.density = 0.020;
   amb.intensity = LIGHTING.storm.ambient; moon.intensity = LIGHTING.storm.moon;
+  snowFireLights.forEach(light => { light.userData.baseIntensity = 0.8; });
   flowMat.opacity = 0.25;
 }
 function startEmbers() {
@@ -1546,6 +1676,14 @@ function startEmbers() {
   if (mode !== 'calm') reset();
   hideStory();
   mode = 'embers'; stormStart = performance.now() / 1000;
+  amb.intensity = LIGHTING.embers.ambient; moon.intensity = LIGHTING.embers.moon;
+  moon.position.set(-24, 22, 36);
+  snowFireLights.forEach((light, i) => {
+    const fire = fireMetas[light.userData.fireIndex];
+    const survives = yearOf(fire.e) < 1941;
+    light.userData.baseIntensity = survives ? (i === 0 ? 1.4 : 0.5) : 0;
+    light.intensity = light.userData.baseIntensity;
+  });
   fireMetas.forEach((m, i) => {
     if (yearOf(m.e) >= 1941) { dieT[i] = stormStart + 1.0 + (i % 8) * 0.12; alive[i] = false; }
   });
@@ -1560,13 +1698,13 @@ function restoreFactoryView() {
   factoryTour.active = false; factoryTour.elapsed = 0; factoryTour.index = -1; factoryCameraGoal = null;
   factoryVisibility.forEach((visible, object) => { object.visible = visible; });
   factoryVisibility.clear();
-  factoryMode = false; factoryGroup.visible = false;
+  factoryMode = false; factoryGroup.visible = false; factoryForeground.visible = false;
   document.body.classList.remove('factory-active');
   document.body.classList.remove('factory-silence');
   scene.background.set(DEFAULT_SKY); scene.fog.color.set(DEFAULT_FOG);
-  amb.visible = true; moon.visible = true; warmFill.visible = true;
+  amb.visible = true; moon.visible = true;
   renderer.shadowMap.enabled = false;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = THREE.NoToneMapping;
 }
 function updateFactoryProgress() {
   const total = FACTORY_TOTAL_SECONDS;
@@ -1679,6 +1817,7 @@ function applyFactoryScene(scene) {
   if (factorySteam) factorySteam.visible = Boolean(scene.steam);
   if (factoryMacro) factoryMacro.visible = Boolean(scene.macro);
   if (factoryEmptyLight) factoryEmptyLight.visible = Boolean(scene.lightPatch);
+  factoryForeground.visible = Boolean(scene.foreground);
   if (factoryWorkbench) factoryWorkbench.visible = scene.workbench !== false;
   if (factoryMachine) factoryMachine.visible = scene.machine !== false;
   if (factoryKettles) factoryKettles.visible = Boolean(scene.kettle);
@@ -1817,15 +1956,15 @@ function focusFactory() {
   if (mode !== 'calm') reset();
   hideStory();
   factoryVisibility.clear();
-  const keep = new Set([amb, moon, warmFill, factoryGroup, xrRig]);
+  const keep = new Set([amb, moon, factoryGroup, xrRig]);
   scene.children.forEach(object => {
     if (keep.has(object)) return;
     factoryVisibility.set(object, object.visible);
     object.visible = false;
   });
   factoryGroup.visible = true; factoryMode = true; mode = 'factory';
-  amb.visible = false; moon.visible = false; warmFill.visible = false;
-  renderer.shadowMap.enabled = true;
+  amb.visible = false; moon.visible = false;
+  renderer.shadowMap.enabled = qualityTier < 2;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.shadowMap.autoUpdate = false;
   renderer.shadowMap.needsUpdate = true;
@@ -1853,22 +1992,23 @@ function reset() {
   panelShown = false;
   wind = 0; snowRate = 1; autoPan = 0; autoPanZ = -4; targetY = 2;
   scene.fog.density = 0.006;
-  amb.visible = true; moon.visible = true; warmFill.visible = true;
+  amb.visible = true; moon.visible = true;
   renderer.shadowMap.enabled = false;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = THREE.NoToneMapping;
   storyCap.classList.remove('factory-silence');
   document.body.removeAttribute('data-scene-empty');
   amb.intensity = LIGHTING.calm.ambient;
   moon.intensity = LIGHTING.calm.moon;
-  warmFill.intensity = LIGHTING.calm.warm;
-  flowMat.opacity = 0.42;
+  moon.position.set(-40, 70, 35);
+  snowFireLights.forEach(light => { light.userData.baseIntensity = 0.8; light.intensity = 0.8; });
+  flowMat.opacity = 0.34;
   theta = 0.06; phi = 1.18; radius = mobile ? 67 : 74;
   /* 火光属性整体复位（含熄灭中被改写的大小/颜色/光斑） */
   fireMetas.forEach((m, i) => {
     fireGeo.attributes.aSize.setX(i, 3.8 + Math.min(m.n, 5) * 2.3);
     const c = tempOf(m.e);
     fireGeo.attributes.aColor.setXYZ(i, c[0], c[1], c[2]);
-    groundGlows[i].material.opacity = 0.18;
+    groundGlows[i].material.opacity = 0.07;
     groundGlows[i].scale.setScalar(m.n > 1 ? 6 : 3.2);
   });
   fireGeo.attributes.aSize.needsUpdate = true;
@@ -2397,8 +2537,9 @@ function dieStep(now) {
     siz.setX(i, Math.max(k >= 1 ? 0 : base * f * (1 - 0.4 * Math.sin(k * 9)), 0));
     const c0 = tempOf(m.e);
     col.setXYZ(i, c0[0] * f + 0.35 * (1 - f), c0[1] * f + 0.18 * (1 - f), c0[2] * f + 0.10 * (1 - f));
-    groundGlows[i].material.opacity = Math.max(0, 0.18 * f);
+    groundGlows[i].material.opacity = Math.max(0, 0.07 * f);
     groundGlows[i].scale.setScalar(Math.max(0.01, (m.n > 1 ? 6 : 3.2) * Math.max(f, 0.01)));
+    if (m.pointLight) m.pointLight.intensity = m.pointLight.userData.baseIntensity * f;
   });
   if (dirty) { col.needsUpdate = true; siz.needsUpdate = true; }
 }
@@ -2408,7 +2549,9 @@ const stat = document.getElementById('stat');
 const clock = new THREE.Clock();
 let arcT = 0;
 function loop() {
-  const now = performance.now() / 1000;
+  const frameTime = performance.now();
+  sampleAdaptiveQuality(frameTime);
+  const now = frameTime / 1000;
   const dt = reducedMotion ? 0 : Math.min(clock.getDelta(), 0.05);
   const t = reducedMotion ? 0 : clock.elapsedTime;
   fireMat.uniforms.uTime.value = t;
@@ -2471,6 +2614,7 @@ addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+  rebuildFactoryForeground();
 });
 
 /* P2-20：页面隐藏即暂停。故事时钟基于 performance.now，

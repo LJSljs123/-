@@ -82,6 +82,7 @@
         "cloth": true,
         "machine": false,
         "lamp": true,
+        "foreground": true,
         "note": "手的群像不按人数比例复原"
       }
     },
@@ -116,6 +117,7 @@
         "machine": true,
         "macro": true,
         "lamp": true,
+        "foreground": true,
         "note": "机器与手工：近景看针杆与手"
       }
     },
@@ -226,6 +228,7 @@
         "transfer": true,
         "machine": false,
         "lamp": false,
+        "foreground": true,
         "note": "以抽象脚印表现转移，不还原具体路线"
       }
     },
