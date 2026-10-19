@@ -14,13 +14,14 @@
   h1, h2, h3 { font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; }
   h1 { font-size: 22pt; margin: 0 0 6mm; letter-spacing: .04em; }
   h2 { font-size: 14pt; margin: 9mm 0 3mm; padding-bottom: 2mm;
-       border-bottom: 1px solid #d8cfc0; letter-spacing: .06em; }
+       border-bottom: 1px solid #d8cfc0; letter-spacing: .06em; break-after: avoid; page-break-after: avoid; }
   h3 { font-size: 11.5pt; margin: 6mm 0 2mm; color: #333; }
-  p { margin: 0 0 3mm; text-align: justify; }
+  p { margin: 0 0 3mm; text-align: justify; break-inside: avoid; page-break-inside: avoid; }
   ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
-  li { margin-bottom: 1.6mm; }
+  li { margin-bottom: 1.6mm; break-inside: avoid; page-break-inside: avoid; }
   table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; }
   th, td { border: 1px solid #d8cfc0; padding: 2.2mm 2.6mm; text-align: left; vertical-align: top; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
   th { background: #f4f1ea; font-weight: 600; font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; }
   code { font-family: Consolas, monospace; font-size: 9pt; background: #f4f1ea; padding: .4mm 1.2mm; }
   .cover { height: 240mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
@@ -30,6 +31,10 @@
   .lead { font-size: 11pt; color: #2b2b2b; border-left: 3px solid #8a6d3b; padding-left: 4mm; margin: 4mm 0 6mm; }
   .note { font-size: 9pt; color: #666; background: #f8f6f1; padding: 3mm 4mm; border-left: 2px solid #d8cfc0; margin: 3mm 0 5mm; }
   .page-break { page-break-before: always; }
+  .closing { page-break-before: always; min-height: 240mm; display: flex; flex-direction: column; justify-content: center; }
+  .closing h2 { margin-top: 0; }
+  .closing p { max-width: 150mm; font-size: 12pt; }
+  .closing p:last-child { margin-top: 10mm; font-size: 15pt; letter-spacing: .08em; }
   .refs p { font-size: 9pt; text-indent: -6mm; padding-left: 6mm; margin-bottom: 2mm; line-height: 1.7; }
   .kv { font-family: "Source Han Sans SC", "Microsoft YaHei", sans-serif; font-size: 9.5pt; }
 </style>
@@ -43,9 +48,9 @@
   <div class="sub" style="font-size:10.5pt;color:#777;">红色之旅 · 追梦铸魂</div>
   <div class="meta">
     作品说明<br>
-    版本：2026-10-18<br>
+    版本：2026-10-19<br>
     形态：纯静态 Web（2D 证据结构 / 卷宗 / 3D 与 WebXR）<br>
-    数据：66 条记载 · 33 家来源机构 · 13 个灯下案
+    数据：66 条记载 · 33 家来源机构 · 14 个灯下案
   </div>
 </div>
 
@@ -59,13 +64,14 @@
 <p>数字人文项目常见另一种偏差：把「我检索过」写成「史料如此」，把「几家转引」算成「多方互证」。作品要处理的就是这两件事——把中间两步摊开，并把「不知道」当作一等公民。</p>
 <p>被服厂是一个合适的切口：它足够具体（15 人、一台旧缝纫机、树皮染布），又有完整的因果链（建立 → 生产 → 告密 → 转移 → 留守者牺牲 → 遗址复建），并且公开材料足以支撑一条可核查的叙事。</p>
 
+<div class="page-break"></div>
 <h2>三、观众看到什么</h2>
 <table>
   <tr><th style="width:22%">入口</th><th style="width:34%">内容</th><th>观众要完成的事</th></tr>
   <tr><td>开场</td><td>同一件事的三种记载（相差一个月）先于任何数据出现；「看故事」「查证据」两个入口</td><td>10 秒内知道这个作品在问什么</td></tr>
   <tr><td>《针线与守望》<br>88 秒 / 8 幕</td><td>被服厂的建立、15 名成员、唯一一台缝纫机、树皮染布、联席会议、告密与转移、留守者牺牲与房屋焚毁、遗址保护</td><td>看懂「供给劳动」与「抗日斗争」的关系；每幕可展开该幕的主张与逐字引文</td></tr>
   <tr><td>2D 承重结构</td><td>66 条记载 × 33 家来源机构的支撑关系；点掉一家机构，看哪些记录随之失去可用来源</td><td>理解「一条记载由谁支撑」；抽离后能分清失去的是日期、地点还是数值</td></tr>
-  <tr><td>卷宗（13 案）</td><td>拆解 → 辑录 → 对勘 → 存疑四段轨迹；8 案库内记载相合、4 案分歧、1 案孤证</td><td>看到推理过程与结案状态；理解「记载相合」不等于「可以定谳」</td></tr>
+  <tr><td>卷宗（14 案）</td><td>拆解 → 辑录 → 对勘 → 存疑四段轨迹；8 案库内记载相合、5 案分歧、1 案孤证</td><td>看到推理过程与结案状态；理解「记载相合」不等于「可以定谳」</td></tr>
   <tr><td>3D / WebXR</td><td>雪原灯火（66 座）、来源烽燧（33 座）、遗址坐标锚点（34 处）、风雪试验、余烬导览</td><td>把承重结构变成可走进去的空间；头显可用手柄查看证据卡</td></tr>
 </table>
 
@@ -80,7 +86,7 @@
 <p>例：东北抗联教导旅成立一案，库内 5 条来源中只有 2 家明确记到「8 月」，2 家记的是「编成/改编」（与本条主张的「成立」不是同一动作），1 家未载。因此该案标注为「8 月（主张精度：月）→ 仅 2 家明确相合」，而不是「来源记载相合」。</p>
 
 <h3>4.3 月精度不冒充日</h3>
-<p>原文只写「6 月」时，系统不会补成「6 月 1 日」再与「7 月 12 日」算相差 41 天。两个日期精度不同时，结论是「不可比（精度不同）」——先对齐精度，再谈差多少。</p>
+<p>原文只写「6 月」时，系统按 6 月整段日期范围处理。多伦案中，辽宁日报记「1933 年 6 月」，遗址展陈记「1933 年 7 月 12 日」；两个范围不重叠，因此记为日期分歧，但不会把补位的「6 月 1 日」拿来伪算相差 41 天。</p>
 
 <h3>4.4 数值裁决链</h3>
 <p>两组兵力分歧（抗联鼎盛 3 万 / 4.5 万；义勇军 30 万 / 50 万）给出裁决：采哪一口径、依据是什么、另一说如何处置、什么条件下可推翻。裁决状态分「已核」与「待核验编辑假说」——没有原文定位的口径解释被隔离为假说，不得当作事实陈述。</p>
@@ -95,7 +101,7 @@
   <tr><td>A 类一手档案支撑</td><td>0 / 66</td><td>当前数据集的主要证据缺口，在关键位置可见</td></tr>
   <tr><td>检索覆盖</td><td>深查 47 / 浅查 19 / 未查 0</td><td>每条记载都有检索记录</td></tr>
   <tr><td>存档快照</td><td>39 条（35 份可读）</td><td>HTML + 纯文本 + 抓取时间 + SHA256</td></tr>
-  <tr><td>灯下案</td><td>13 案</td><td>8 库内记载相合 / 4 分歧 / 1 孤证；相合不等于定谳</td></tr>
+  <tr><td>灯下案</td><td>14 案</td><td>8 库内记载相合 / 5 分歧 / 1 孤证；相合不等于定谳</td></tr>
   <tr><td>校验问题</td><td>0</td><td><code>src/conflicts.py</code> 全库校验</td></tr>
 </table>
 <div class="note">「多机构记载」只说明本库收录结构，不构成来源独立性判断。同一本书的不同转引版本被归并到同一机构，避免一票算两票。</div>
@@ -111,13 +117,14 @@
 <ul>
   <li>Three.js r150（MIT，库文件随附许可头），66 座灯火与 33 座烽燧使用实例化渲染；流光粒子 284 条。</li>
   <li>场景状态与字幕同源：第 6 幕物资已转移、第 7 幕人物与布料移出画面（<code>scene{workers, props}</code>），画面状态可用 <code>body[data-scene-workers]</code> 断言。</li>
-  <li>WebXR：双目渲染、手柄指向选取、地面瞬移、世界空间证据卡；未用实体头显验收前不宣称真机效果。</li>
+  <li>WebXR：雪原与工厂使用各自出生点、可见对象和地面；手柄指向选取、证据卡换页、卡片外扣动扳机收起并选取目标、握把地面瞬移；未用实体头显验收前不宣称真机效果。</li>
+  <li>手机方向传感器提供固定观察点 3DoF 环视；手动触控可接管，传感器中断会关闭环视；未用真机验收前不宣称设备兼容性。</li>
   <li>章节深链 <code>?factory=1&amp;chapter=7</code> 与模式深链 <code>?mode=storm</code>，答辩可按需跳段；<code>?instant=1</code> 供自动化截图断言构图。</li>
 </ul>
 
 <h3>6.3 可访问性</h3>
 <ul>
-  <li>2D 画布按内容包围盒动态计算（2124px），33 家来源与 66 条记载全部可达；提供「适应宽度 / 原尺寸」切换。</li>
+  <li>2D 画布按内容包围盒动态计算，内容最右约 2060px、viewBox 宽 2124px；33 家来源与 66 条记载全部可达；提供「适应宽度 / 原尺寸」切换。</li>
   <li>悬停只做预览；点击或 Enter 打开固定详情，出处链接可点，Escape 关闭并还焦。</li>
   <li>手机端正文卡改底部抽屉、正文折叠 3 行可展开；概念图手机默认收起。</li>
   <li>2D 提供年份聚焦：点击年份刻度只保留该年的记录与支撑来源，其余淡出。</li>
@@ -152,7 +159,7 @@
   <p>[3] 中国人民解放军国防部. 童长荣[EB/OL]. [2026-10-18]. https://www.mod.gov.cn/.</p>
   <p>[4] 抗日战争纪念网. 东北抗联大事记（1931—1945）[EB/OL]. [2026-10-18]. https://www.krzzjn.com/.</p>
   <p>[5] 中国军网. 不熄的火种——东北抗联教导旅组建始末[EB/OL]. (2020-08-18)[2026-10-18]. http://www.81.cn/.</p>
-  <p>[6] 辽宁日报. 大事记[N/OL]. (2025-09-18)[2026-10-18]. https://epaper.lnd.com.cn/.</p>
+  <p>[6] 辽宁日报. 大事记[N/OL]. (2025-09-18)[2026-10-19]. https://epaper.lnd.com.cn/lnrbepaper/pc/con/202509/18/content_300163.html.</p>
   <p>[7] 国家图书馆. 抗联简史[EB/OL]. 抗战胜利 80 周年专题. [2026-10-18]. http://www.nlc.cn/.</p>
   <p>[8] 中央纪委国家监委网站. 八女投江[EB/OL]. (2018-11-09)[2026-10-18]. https://www.ccdi.gov.cn/.</p>
   <p>[9] 新华社. 八女投江：乌斯浑河畔的青春绝唱[EB/OL]. (2025-09-04)[2026-10-18]. https://www.news.cn/.</p>
@@ -170,10 +177,12 @@
 <code>python src/verify_quotes.py</code></p>
 <p>期望结果：66 条事件、33 家机构、校验问题 0、主故事 10 条主张引文全部可对照。随后直接打开 <code>web/index.html</code>、<code>web/dossier.html</code>、<code>web/sanctuary.html</code>。</p>
 
+<section class="closing">
 <h2>十一、结语</h2>
 <p>这座被服厂没有留下照片。我们知道的，是 15 个人、一台旧机器、树皮染出的黄绿色，和一间被烧掉的房子。</p>
 <p>作品不替这些记载下结论，只把它们摊开：哪一句有出处，哪一句是推测，哪一句还没有答案。然后，把那个空下来的工作台留在画面里。</p>
-<p style="margin-top:8mm;font-size:11pt;letter-spacing:.08em;"><strong>核查，是纪念的一种方式。</strong></p>
+<p><strong>核查，是纪念的一种方式。</strong></p>
+</section>
 
 </body>
 </html>

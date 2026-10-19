@@ -76,6 +76,11 @@ def fetch(url: str) -> bytes:
     return r.stdout
 
 
+def repository_bytes(raw: bytes) -> bytes:
+    """Mirror .gitattributes text=auto eol=lf for readable HTML snapshots."""
+    return raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
 TAG = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
 TAG2 = re.compile(r"<[^>]+>")
 
@@ -121,11 +126,14 @@ def main() -> int:
             html_p = ARCH / f"{fname}.html"
             html_p.write_bytes(b)
             (ARCH / f"{fname}.txt").write_text(text, encoding="utf-8")
+            repo_b = repository_bytes(b)
             manifest[fname] = {
                 "event": eid, "url": url,
                 "fetched_at": datetime.datetime.now().isoformat(timespec="seconds"),
                 "sha256": hashlib.sha256(b).hexdigest(),
                 "bytes": len(b),
+                "repository_sha256": hashlib.sha256(repo_b).hexdigest(),
+                "repository_bytes": len(repo_b),
                 "title": title_of(text),
                 "capture_status": "readable_snapshot",
             }
@@ -135,7 +143,7 @@ def main() -> int:
             fail += 1
             print(f"FAIL {fname}: {e}")
     (ARCH / "manifest.json").write_text(
-        json.dumps({"_note": "仅 capture_status=readable_snapshot 的记录视为可用快照；其他记录保留失败元数据。", **manifest},
+        json.dumps({"_note": "仅 capture_status=readable_snapshot 的记录视为可用快照；sha256/bytes 为抓取原始摘要，repository_sha256/repository_bytes 为 Git 换行规范化后的检出副本摘要。", **manifest},
                    ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"\n{ok} ok / {fail} fail -> {ARCH}")
     return 0

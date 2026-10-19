@@ -1,5 +1,5 @@
 {
- "_note": "Only records with capture_status=readable_snapshot count as usable snapshots; other capture metadata is retained.",
+ "_note": "仅 capture_status=readable_snapshot 的记录视为可用快照；sha256/bytes 保留抓取原始字节摘要，repository_sha256/repository_bytes 仅用于 Git 换行规范化后的检出副本。",
  "evt_1931_zgzy_jueyi__renminwang-jueyi": {
   "event": "evt_1931_zgzy_jueyi",
   "url": "http://military.people.com.cn/n1/2016/0918/c1011-28721822-8.html",
@@ -25,7 +25,9 @@
   "sha256": "a2856408b67ea7a9957c400ccbcf787271fa3ff368e624e2a778ab8697909d25",
   "bytes": 12100,
   "title": "1932：李杜与哈尔滨保卫战",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "41ae4510fcbc9807178fefd2b1d7911b9eea8be478098bcfa86d77f4f9880148",
+  "repository_bytes": 12035
  },
  "evt_1932_jilin_ziweijun__krzzjn-lidu": {
   "event": "evt_1932_jilin_ziweijun",
@@ -43,7 +45,9 @@
   "sha256": "a2856408b67ea7a9957c400ccbcf787271fa3ff368e624e2a778ab8697909d25",
   "bytes": 12100,
   "title": "1932：李杜与哈尔滨保卫战",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "41ae4510fcbc9807178fefd2b1d7911b9eea8be478098bcfa86d77f4f9880148",
+  "repository_bytes": 12035
  },
  "evt_1932_qiangfeng_fujji__tuanjiewang-qiangfeng": {
   "event": "evt_1932_qiangfeng_fujji",
@@ -52,7 +56,9 @@
   "sha256": "7cf4a06be6209055ef482cd91f17d732a7327adaa1bcc11b215f6a61c0aa0913",
   "bytes": 16591,
   "title": "镜泊湖连环战的历史考证_团结网",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "5fc738bef35619878b328a2161bca56b27ed48637c01605cd91d90d5f48ff941",
+  "repository_bytes": 16493
  },
  "evt_1932_panshi_yiyongjun__jl-difangzhi-panshi": {
   "event": "evt_1932_panshi_yiyongjun",
@@ -188,7 +194,9 @@
   "sha256": "8200f1eabf76fc659c7e5207409c934575e8905f0aa0723dd2671724fbc43bd6",
   "bytes": 64823,
   "title": "李红光-杨靖宇烈士陵园暨东北抗日联军纪念馆",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "4c3a08c8712bf1606933e9617fc013a484b5d8e60a14b32cbdd5c2e6907f92bd",
+  "repository_bytes": 64789
  },
  "evt_1935_dierjun_chengli__guotu-nlc-wangdetai": {
   "event": "evt_1935_dierjun_chengli",
@@ -215,7 +223,9 @@
   "sha256": "c271d4d4b772adb1e5a116d17b00ee3a3c457661e42557092fb7adee1b7d0e80",
   "bytes": 90102,
   "title": "百年瞬间丨赵一曼_共产党员网",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "e673941ffb02648825d95388f96a86938cb43f384e3009e7b4e224fe2c489f9a",
+  "repository_bytes": 88013
  },
  "evt_1936_yijun_xizheng__junwang-liminhuan": {
   "event": "evt_1936_yijun_xizheng",
@@ -224,7 +234,9 @@
   "sha256": "81fb98500e11fbafa647451ecb0a92c95c29cbb017530844e380eac5ddb10f78",
   "bytes": 25985,
   "title": "李敏焕：抗联一军一师参谋长 - 中国军网",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "2b72b560b7083076cc2766c52777b452f846a5fc1302ffca46ca647268090445",
+  "repository_bytes": 25728
  },
  "evt_1936_xiayunjie_xisheng__guofangbu-xiayunjie": {
   "event": "evt_1936_xiayunjie_xisheng",
@@ -269,7 +281,9 @@
   "sha256": "c6fd06501976171774bad9de7bdb1e32208631fb51a8ffd0c8d4261eecf8a650",
   "bytes": 25842,
   "title": "“浴血兴安驱日寇”北安红色故事之冰趟子大捷_部门动态_北安市人民政府",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "fc89e98a2e278f74efd5b208e518324ea72cbd4d40d635de5e936067f0de9011",
+  "repository_bytes": 25440
  },
  "evt_1937_bingtangzi__baijiahao-bingtangzi": {
   "event": "evt_1937_bingtangzi",
@@ -296,7 +310,9 @@
   "sha256": "a8d6c0c5d82327d1602246d8b79017a5105f672407288143ee4e321c0162e229",
   "bytes": 42487,
   "title": "﻿",
-  "capture_status": "readable_snapshot"
+  "capture_status": "readable_snapshot",
+  "repository_sha256": "5b4f857a4364f366ff78faba47b2a872f5a9d69499dd81960df03ade20f790f6",
+  "repository_bytes": 42120
  },
  "evt_1938_chengbin_toudi__baike-chengbin": {
   "event": "evt_1938_chengbin_toudi",

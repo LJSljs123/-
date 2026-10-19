@@ -181,8 +181,15 @@ def battle_act(summary: str, et: str) -> str:
     if m:
         obj = m.group(2)
         return m.group(1) + (obj if obj and obj != "等" else "")
-    return {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕", "会议": "开会",
-            "转移": "转移", "密营建立": "建立密营"}.get(et, "成立")
+    mapped = {"牺牲": "牺牲", "战斗": "作战", "被捕": "被捕", "会议": "开会",
+              "转移": "转移", "密营建立": "建立密营"}.get(et)
+    if mapped:
+        return mapped
+    for action in ("投敌", "叛变", "投降", "发表", "发布", "被俘", "遇袭", "失守", "撤离"):
+        if action in s:
+            return action
+    # 兼容原有案名规则：没有更具体的动作和 event_type 映射时仍用“成立”。
+    return "成立"
 
 
 def date_support(ev: dict) -> dict:
@@ -242,6 +249,13 @@ def date_support(ev: dict) -> dict:
             rows.append({"short": short, "expr": tc["expr"],
                          "precision": tc["precision"], "state": "互斥"})
             continue
+        # 年精度主张覆盖全年；同年更细的来源属于相容证据，不得与 1 月 1 日比较。
+        if prec == "year":
+            same_precision = tc["precision"] == "year"
+            rows.append({"short": short, "expr": tc["expr"],
+                         "precision": tc["precision"],
+                         "state": "明确相合" if same_precision else "范围相容"})
+            continue
         if tc["precision"] == "year":
             rows.append({"short": short, "expr": tc["expr"],
                          "precision": "year", "state": "范围相容"})
@@ -254,8 +268,12 @@ def date_support(ev: dict) -> dict:
             continue
         if tc["precision"] == "month":
             same = cm is not None and tc["m"] == cm
+            if prec == "day":
+                state = "范围相容" if same else "范围不符"
+            else:
+                state = "明确相合" if same else "互斥"
             rows.append({"short": short, "expr": tc["expr"], "precision": "month",
-                         "state": "明确相合" if same else "互斥"})
+                         "state": state})
             continue
         # 到日：主张到日则须月日全同；主张只到月，则同月即支持（更细的来源支持更粗的主张）
         if prec == "day":
@@ -578,7 +596,11 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
     def claim_label(c: dict) -> str:
         v = str(c.get("value") or "")
         if c.get("precision") == "day":
-            return v + "（日精度）"
+            try:
+                year, month, day = v[:10].split("-")
+                return f"{int(year)}年{int(month)}月{int(day)}日（日精度）"
+            except ValueError:
+                return v + "（日精度）"
         if c.get("precision") == "month":
             try:
                 return f"{v[:4]}年{int(v[5:7])}月（月精度，原文未到日）"
@@ -602,8 +624,9 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         gap_text = f"{dv[0]['gap_days']} 天（整月级）" if dv[0]["gap_days"] >= 15 else f"{dv[0]['gap_days']} 天"
         gap_value = f"{dv[0]['gap_days']} 天"
     else:
-        gap_text = "精度不同（一方到月、一方到日），不计算天数差——先对齐精度，再谈差多少"
-        gap_value = "不可比（精度不同）"
+        gap_text = (f"日期范围不重叠：{claim_label(a)}与{claim_label(b)}；"
+                    "不以补位日期计算天数差")
+        gap_value = "范围不重叠（精度不同）"
 
     # 拆解：把「X 于何时」拆成双方各自的主张
     decompose = {
@@ -631,10 +654,11 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         bk = claim["source"]
         meta = next((s for s in ev.get("sources", []) if s.get("book") == bk), {})
         return {"book": bk, "short": short_src(bk), "page": meta.get("page") or "",
-                "quote": quotes_by_src.get(bk) or "引文未在事件层定位——该来源只以日期主张入链，需回补原文",
+                "quote": quotes_by_src.get(bk) or "", "quote_status": "located" if quotes_by_src.get(bk) else "unlocated",
                 "url": meta.get("url"), "archive": meta.get("archive"),
                 "reliability": meta.get("reliability") or "B",
-                "value": claim["value"], "unit": "date", "is_primary": False}
+                "value": claim["value"], "unit": "date", "precision": claim.get("precision"),
+                "is_primary": False}
     evidence_cards = [evd(a), evd(b)]
     for v in all_variants:
         src_short = short_src(v["source"])
@@ -646,7 +670,9 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         "kind": "retrieve", "agent": "辑录",
         "lines": [f"库内对同一条事实给出了 {n_cards} 条日期主张"
                   f"（{'、'.join(sorted({c['short'] for c in evidence_cards}))}）。"
-                  "以下原文逐字照录，未作改写。"],
+                  + ("以下已定位原文逐字照录，未作改写。"
+                     if all(c.get("quote_status") == "located" for c in evidence_cards)
+                     else "已定位原文逐字照录；未定位原文的日期条目会明确标出。")],
         "evidence": evidence_cards,
         "side": [],
     }
@@ -655,8 +681,10 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
     ch = [{
         "code": "R9", "name": "整月级日期分歧",
         "severity": "high",
-        "text": f"{ga} 记 {a['value']}，{gb} 记 {b['value']}，相差 {dv[0]['gap_days']} 天，"
-                "超出精度误差能解释的范围——这是实质性分歧，不是「一个记约数一个记精确数」。",
+        "text": (f"{ga}记{claim_label(a)}，{gb}记{claim_label(b)}。"
+                 + (f"相差 {dv[0]['gap_days']} 天，超出通常精度误差范围，是实质性分歧。"
+                    if both_day else
+                    "两项日期范围不重叠，是实质性分歧；不把补位日期换算成天数差。")),
     }]
     w_a = ("国防部" in ga or "纪念馆" in ga or "军网" in ga or "新华社" in ga
            or "纪委监委" in ga or "退役军人" in ga or "党史" in ga)
@@ -679,7 +707,7 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         "missing": ["事件所在省档案馆革命历史档案（闭架）",
                     "当事人回忆录纸本或烈士传记的档案级引文"],
         "conservative": (
-            f"两说并陈：{a['value']}（{ga}）与 {b['value']}（{gb}）。"
+            f"两说并陈：{claim_label(a)}（{ga}）与 {claim_label(b)}（{gb}）。"
             f"本库按「不动原记载、不加权下结论」处置——"
             f"机构权重倾向{'主张甲' if w_a and not w_b else ('主张乙' if w_b and not w_a else '双方')}，"
             f"但倾向不是定谳。任何一侧改字都会在系统里留下痕迹："
@@ -692,7 +720,7 @@ def build_date_case(ev: dict, dv: list[dict], case_no: str) -> dict:
         "case_no": case_no,
         "kind": "dispute",
         "title": f"{subject}{act}于何时（整月分歧）",
-        "claim_text": f"{subject}{act}日期：{a['value']}（{ga}）vs {b['value']}（{gb}）",
+        "claim_text": f"{subject}{act}日期：{claim_label(a)}（{ga}）vs {claim_label(b)}（{gb}）",
         "event_id": ev["id"],
         "predicate": "date.start",
         "unit": "date",
@@ -808,6 +836,9 @@ def build_settled_case(ev: dict, case_no: str) -> dict:
         m_v = re.search(r"(成立|爆发|失守|投降|殉国|会师|牺牲)", ev.get("summary") or "")
         if m_v:
             frag = (ev.get("summary") or "")[:m_v.start()]
+            # 谓语前可能包含地点（“在北野营”）或方式副词（“正式”），不能并入主体名。
+            frag = re.sub(r"在[^，。、；]+$", "", frag).rstrip()
+            frag = re.sub(r"(?:正式|先后|随后)$", "", frag).rstrip()
             subject = frag.split("的")[-1].strip("，。、； ") or "该事件"
     # 文书/宣言类事件没有人物与部队，主体从摘要里的书名号提取——
     # 否则会写成「该事件成立于何时」，案名不知所云。

@@ -93,6 +93,10 @@ const DEFAULT_SKY = 0x0d171b, DEFAULT_FOG = 0x172326;
 scene.background = new THREE.Color(DEFAULT_SKY);
 scene.fog = new THREE.FogExp2(DEFAULT_FOG, 0.006);
 const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 600);
+const xrRig = new THREE.Group();
+xrRig.name = 'xr-observer-rig';
+xrRig.add(camera);
+scene.add(xrRig);
 let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -574,6 +578,7 @@ let factoryWorkers = null;
 let factoryProps = null;
 let factoryHands = null;   // A4：第 2 幕的「多双手」——不建全身，避免「说 15 人只有 2 人」
 let factoryCloth = null;   // 第 2 幕铺开的大块布，给手一个落点
+let factoryGroundMesh = null;
 factoryGroup.visible = false;
 scene.add(factoryGroup);
 let factoryMode = false;
@@ -839,6 +844,9 @@ function groundTexture() {
   texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   return texture;
 }
+function factoryGroundHeight(x, z) {
+  return -0.11 + Math.sin(x * 0.13) * Math.cos(z * 0.11) * 0.09;
+}
 (function buildFactoryVignette() {
   const groundGeometry = new THREE.PlaneGeometry(150, 150, 72, 72);
   groundGeometry.rotateX(-Math.PI / 2);
@@ -848,14 +856,16 @@ function groundTexture() {
   const forestFloor = new THREE.Color(0x26342a).convertSRGBToLinear(), groundColor = new THREE.Color();
   for (let i = 0; i < groundPositions.count; i++) {
     const x = groundPositions.getX(i), z = groundPositions.getZ(i);
-    groundPositions.setY(i, -0.11 + Math.sin(x * 0.13) * Math.cos(z * 0.11) * 0.09);
+    groundPositions.setY(i, factoryGroundHeight(x, z));
     const edge = Math.max(0, Math.min(1, (Math.hypot(x, z + 3) - 10) / 42));
     groundColor.copy(moss).lerp(forestFloor, edge * 0.9);
     groundColors.set([groundColor.r, groundColor.g, groundColor.b], i * 3);
   }
   groundGeometry.setAttribute('color', new THREE.BufferAttribute(groundColors, 3));
   groundGeometry.computeVertexNormals();
-  factoryGroup.add(new THREE.Mesh(groundGeometry, new THREE.MeshStandardMaterial({ map: groundTexture(), vertexColors: true, roughness: 1 })));
+  factoryGroundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshStandardMaterial({ map: groundTexture(), vertexColors: true, roughness: 1 }));
+  factoryGroundMesh.name = 'factory-ground';
+  factoryGroup.add(factoryGroundMesh);
   buildCampTrees(factoryGroup);
   buildCabin(factoryGroup, 0, -3.5, 1, true);
   buildCabin(factoryGroup, -11.0, -10.5, 0.48, false);
@@ -935,6 +945,7 @@ function mergeFactoryMeshes(root) {
   const keepGroups = new Set([factoryWorkers, factoryProps, factoryHands, factoryCloth].filter(Boolean));
   root.traverse(object => {
     if (!object.isMesh || object.isInstancedMesh || Array.isArray(object.material)) return;
+    if (object === factoryGroundMesh) return;
     // 沿父链检查是否属于需要独立控制的组
     for (let p = object; p; p = p.parent) {
       if (keepGroups.has(p)) return;
@@ -971,13 +982,50 @@ mergeFactoryMeshes(factoryGroup);
 let theta = 0.06, phi = 1.18, radius = mobile ? 67 : 74, dragging = false, px = 0, py = 0;
 let pointerOrigin = null, selectedSource = -1;
 let autoPan = 0, autoPanZ = -4, targetY = 2;
+const gyroButton = document.getElementById('b-gyro');
+const vrHint = document.getElementById('vr-hint');
+gyroButton.textContent = '开启手机环视（3DoF）';
+let gyroActive = false, gyroRequesting = false, gyroTimer = 0, gyroPoseHold = false;
+let gyroBaseline = null, gyroStartQuaternion = null, gyroInvalidCount = 0;
 const activePointers = new Map();
 let pinchDistance = 0;
 function pointerGap() {
   const points = [...activePointers.values()];
   return points.length < 2 ? 0 : Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
 }
+function syncOrbitAnglesFromCamera() {
+  const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.getWorldQuaternion(new THREE.Quaternion())).normalize();
+  const position = camera.getWorldPosition(new THREE.Vector3());
+  const horizontal = Math.hypot(forward.x, forward.z);
+  theta = Math.atan2(-forward.x, -forward.z);
+  const verticalOffset = factoryMode ? 0 : 6;
+  const distance = factoryMode ? radius :
+    -verticalOffset * forward.y + Math.sqrt(Math.max(0.01, radius * radius - verticalOffset * verticalOffset * horizontal * horizontal));
+  const cosPhi = (-forward.y * distance - verticalOffset) / Math.max(radius, 0.01);
+  phi = Math.acos(Math.max(-1, Math.min(1, cosPhi)));
+  autoPan = position.x + forward.x * distance;
+  autoPanZ = position.z + forward.z * distance;
+  targetY = position.y + forward.y * distance;
+}
+function stopGyro(message) {
+  if (!gyroActive) {
+    if (message) vrHint.textContent = message;
+    return;
+  }
+  if (!renderer.xr.isPresenting) syncOrbitAnglesFromCamera();
+  removeEventListener('deviceorientation', onDeviceOrientation);
+  removeEventListener('deviceorientationerror', onDeviceOrientationError);
+  clearTimeout(gyroTimer); gyroTimer = 0;
+  gyroBaseline = null; gyroStartQuaternion = null; gyroInvalidCount = 0;
+  gyroActive = false;
+  gyroPoseHold = true;
+  gyroButton.disabled = false;
+  gyroButton.textContent = '开启手机环视（3DoF）'; gyroButton.classList.remove('on');
+  if (message) vrHint.textContent = message;
+}
 function applyCam() {
+  if (gyroActive) stopGyro();
+  gyroPoseHold = false;
   phi = Math.max(0.5, Math.min(1.45, phi));
   radius = Math.max(factoryMode ? 2.2 : 24, Math.min(170, radius));
   const cx = autoPan;
@@ -1005,6 +1053,8 @@ function applyCam() {
   }
 }
 renderer.domElement.addEventListener('pointerdown', e => {
+  if (gyroActive) stopGyro('触控已接管场景；手机 3DoF 环视已关闭。');
+  gyroPoseHold = false;
   stopTour();
   stopFactoryTour();
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -1075,6 +1125,17 @@ const ray = new THREE.Raycaster();
 ray.params.Points.threshold = 1.6;
 const mouse = new THREE.Vector2(-9, -9);
 function esc(s) { return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function dateLabel(value, precision) {
+  const raw = String(value || '').trim();
+  const match = /^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/.exec(raw);
+  if (!match) return raw;
+  const [, year, month, day] = match;
+  const p = precision || (day ? 'day' : month ? 'month' : 'year');
+  if (p === 'year') return year + '年（整年）';
+  if (p === 'month' && month) return year + '年' + Number(month) + '月（整月范围）';
+  if (p === 'day' && month && day) return year + '年' + Number(month) + '月' + Number(day) + '日';
+  return year + (month ? '年' + Number(month) + '月' : '年') + '（日期精度缺项）';
+}
 function provBlock(p) {
   if (!p || p.depth === 'none') return '<div class="pv">检索：尚未逐条检索，此处不冒充已查</div>';
   const pr = (p.probes || []).map(b => '查「' + esc(b.q) + '」').join('；');
@@ -1102,7 +1163,7 @@ function dvBlock(e) {
   if (dvs.length < 2) return '';
   const uniq = [...new Map(dvs.map(v => [v.source + v.value, v])).values()].slice(0, 3);
   return '<div class="dv"><b>对勘</b>' + uniq.map(v =>
-    esc(v.value) + '（' + esc(v.source.split('《')[0]) + '）').join('　vs　') + '</div>';
+    esc(dateLabel(v.value, v.precision)) + '（' + esc((v.source || '来源').split('《')[0]) + '）').join('　vs　') + '</div>';
 }
 let hoverFire = -1, hoverTower = -1, hoverSite = -1;
 function pick() {
@@ -1128,7 +1189,7 @@ function showTip() {
     const m = fireMetas[hoverFire], e = m.e;
     const q = (e.sources || [])[0] || {};
     tip.innerHTML =
-      '<div class="t">' + esc(e.event_type || '记载') + ' · ' + (e.date && e.date.start ? esc(e.date.start) : '') +
+      '<div class="t">' + esc(e.event_type || '记载') + ' · ' + esc(dateLabel(e.date && e.date.start, e.date && e.date.precision)) +
       (e.place && e.place.name ? ' · ' + esc(e.place.name) : '') + '</div>' +
       esc(e.summary || '') +
       '<div class="q">「' + esc(q.quote || '') + '」<br>——' + esc(q.book || '') + '</div>' +
@@ -1313,6 +1374,7 @@ function computeDeaths() {
   return dead;
 }
 function startStorm(sourceIndex, fromTour) {
+  stopGyro('场景操作已接管；手机 3DoF 环视已关闭。');
   if (!fromTour) stopTour();
   hideStory();
   if (!towers.length) return;
@@ -1330,6 +1392,7 @@ function startStorm(sourceIndex, fromTour) {
   flowMat.opacity = 0.25;
 }
 function startEmbers() {
+  stopGyro('场景操作已接管；手机 3DoF 环视已关闭。');
   stopTour();
   if (mode !== 'calm') reset();
   hideStory();
@@ -1338,6 +1401,7 @@ function startEmbers() {
     if (yearOf(m.e) >= 1941) { dieT[i] = stormStart + 1.0 + (i % 8) * 0.12; alive[i] = false; }
   });
   autoPan = fireMetas.reduce((a, m) => a + m.x, 0) / FIRE_N - SPAN / 2 + 6;
+  gyroPoseHold = false;
   setCaption('十四年 · 余烬', '1941 年之后的条目在这一体验模式中熄灭。',
     '本库 ' + FIRE_N + ' 条记载中，' + fireMetas.filter(m => nSrc(m.e) > 1).length +
     ' 条有多家来源机构记载。机构数量不代表史源彼此独立；熄灭效果也不表示据点的实际存续时间。');
@@ -1496,6 +1560,8 @@ function renderFactoryChapter(index) {
   updateFactoryProgress();
 }
 function setFactoryChapter(index) {
+  stopGyro('章节操作已接管；手机 3DoF 环视已关闭。');
+  gyroPoseHold = false;
   const next = Math.max(0, Math.min(FACTORY_CHAPTERS.length - 1, index));
   claimsOpen = false;
   claimsResume = false;
@@ -1514,6 +1580,8 @@ function stopFactoryTour() {
 }
 function toggleFactoryTour() {
   if (!factoryMode) return;
+  stopGyro('剧情操作已接管；手机 3DoF 环视已关闭。');
+  gyroPoseHold = false;
   const now = performance.now() / 1000;
   const total = FACTORY_CHAPTERS.length * FACTORY_SECONDS;
   if (factoryTour.active) {
@@ -1548,11 +1616,12 @@ function factoryCameraStep(dt) {
 }
 function focusFactory() {
   if (factoryMode) { reset(); return; }
+  stopGyro('场景切换已接管；手机 3DoF 环视已关闭。');
   stopTour();
   if (mode !== 'calm') reset();
   hideStory();
   factoryVisibility.clear();
-  const keep = new Set([amb, moon, warmFill, factoryGroup]);
+  const keep = new Set([amb, moon, warmFill, factoryGroup, xrRig]);
   scene.children.forEach(object => {
     if (keep.has(object)) return;
     factoryVisibility.set(object, object.visible);
@@ -1573,6 +1642,7 @@ function focusFactory() {
   renderFactoryChapter(0);
 }
 function reset() {
+  stopGyro('手机 3DoF 环视已关闭。');
   if (tour.active) stopTour();
   restoreFactoryView();
   tour.elapsed = 0; tour.stage = -1; tour.goal = null;
@@ -1614,6 +1684,7 @@ function reset() {
 let chainLine = null;
 let panelShown = false;
 function showPeopleThread() {
+  stopGyro('场景操作已接管；手机 3DoF 环视已关闭。');
   stopTour();
   hideStory();
   if (mode !== 'calm') reset();
@@ -1663,7 +1734,7 @@ function maybeSettle(now) {
     '<br><span style="opacity:.6;font-size:11px">熄灭依据是支撑关系计算；来源记录数量不等于独立史源数量。</span>';
   if (renderer.xr.isPresenting) {
     xrCardText('风雪夜 · 结算', '熄灭 ' + died + ' 条 · 幸存 ' + left + ' 条',
-      removedTower.s.short || removedTower.s.full, '扣动任一扳机复原场景');
+      removedTower.s.short || removedTower.s.full, '扣动任一扳机复原场景', '操作提示');
   } else document.getElementById('panel').classList.add('on');
 }
 document.getElementById('b-storm').onclick = () => startStorm();
@@ -1681,6 +1752,8 @@ function setTourView(x, y, z, nextTheta, nextPhi, nextRadius) {
   tour.goal = { x, y, z, theta: nextTheta, phi: nextPhi, radius: nextRadius };
 }
 function jumpToChapter(index) {
+  stopGyro('剧情操作已接管；手机 3DoF 环视已关闭。');
+  gyroPoseHold = false;
   const next = Math.max(0, Math.min(STORY_CHAPTERS.length - 1, index));
   if (mode !== 'calm') reset();
   const now = performance.now() / 1000;
@@ -1725,6 +1798,8 @@ function tourStep(now, dt) {
   theta += angle * k; phi += (tour.goal.phi - phi) * k; radius += (tour.goal.radius - radius) * k;
 }
 tourButton.addEventListener('click', () => {
+  stopGyro('剧情操作已接管；手机 3DoF 环视已关闭。');
+  gyroPoseHold = false;
   if (tour.active) {
     stopTour('继续剧情');
     return;
@@ -1746,45 +1821,81 @@ storyNext.addEventListener('click', () => factoryMode
   ? setFactoryChapter(factoryTour.index + 1)
   : jumpToChapter(Math.min(STORY_CHAPTERS.length - 1, Math.floor(tour.elapsed / STORY_SECONDS)) + 1));
 
-/* 手机方向传感器环视：只提供 3DoF 朝向，不称作头显 VR。 */
-const gyroButton = document.getElementById('b-gyro');
-let gyroActive = false;
-function stopGyro() {
-  if (!gyroActive) return;
-  removeEventListener('deviceorientation', onDeviceOrientation);
-  gyroActive = false; gyroButton.textContent = '开启手机环视'; gyroButton.classList.remove('on');
-}
-function onDeviceOrientation(event) {
-  if (event.alpha == null || event.beta == null || event.gamma == null || renderer.xr.isPresenting) return;
+/* 手机方向传感器：相对启动校准只改变相机朝向，观察点位置固定。 */
+function deviceQuaternion(event) {
+  if (event.alpha == null || event.beta == null || event.gamma == null) return null;
+  const alpha = Number(event.alpha), beta = Number(event.beta), gamma = Number(event.gamma);
+  if (!Number.isFinite(alpha) || !Number.isFinite(beta) || !Number.isFinite(gamma) ||
+      alpha < 0 || alpha > 360 || Math.abs(beta) > 180 || Math.abs(gamma) > 180) return null;
   const radians = Math.PI / 180;
-  const screenAngle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
-  const euler = new THREE.Euler(event.beta * radians, event.alpha * radians, -event.gamma * radians, 'YXZ');
+  const screenAngle = screen.orientation && Number.isFinite(screen.orientation.angle)
+    ? screen.orientation.angle
+    : (Number.isFinite(window.orientation) ? window.orientation : 0);
+  const euler = new THREE.Euler(beta * radians, alpha * radians, -gamma * radians, 'YXZ');
   const orientation = new THREE.Quaternion().setFromEuler(euler)
     .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -screenAngle * radians))
     .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2));
-  const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(orientation);
-  theta = Math.atan2(-forward.x, -forward.z);
-  phi = Math.acos(Math.max(-1, Math.min(1, -forward.y)));
-  applyCam();
+  if (!Number.isFinite(orientation.x) || !Number.isFinite(orientation.y) ||
+      !Number.isFinite(orientation.z) || !Number.isFinite(orientation.w) || orientation.lengthSq() < 0.5) return null;
+  return orientation.normalize();
 }
-gyroButton.addEventListener('click', async () => {
-  if (gyroActive) { stopGyro(); return; }
-  stopTour();
-  const Orientation = window.DeviceOrientationEvent;
-  if (!Orientation || !isSecureContext) {
-    document.getElementById('vr-hint').textContent = '手机环视需要支持方向传感器的设备，并通过 HTTPS 或本机安全来源打开。';
+function armGyroTimeout() {
+  clearTimeout(gyroTimer);
+  gyroTimer = setTimeout(() => stopGyro(gyroBaseline
+    ? '方向传感器读数中断，手机 3DoF 环视已平稳关闭。'
+    : '未收到有效方向读数，手机 3DoF 环视已关闭。'), 2500);
+}
+function onDeviceOrientation(event) {
+  if (!gyroActive || document.hidden || renderer.xr.isPresenting) return;
+  const orientation = deviceQuaternion(event);
+  if (!orientation) {
+    gyroInvalidCount++;
+    if (gyroInvalidCount >= 3) stopGyro('方向读数异常，手机 3DoF 环视已关闭。');
     return;
   }
+  gyroInvalidCount = 0;
+  if (!gyroBaseline) {
+    gyroBaseline = orientation;
+    armGyroTimeout();
+    vrHint.textContent = '固定观察点 3DoF 已校准：只跟随朝向，位置固定；触控可接管。';
+    return;
+  }
+  const delta = orientation.clone().multiply(gyroBaseline.clone().invert());
+  camera.quaternion.copy(delta.multiply(gyroStartQuaternion.clone())).normalize();
+  camera.updateMatrixWorld(true);
+  armGyroTimeout();
+}
+function onDeviceOrientationError() {
+  stopGyro('方向传感器发生错误，手机 3DoF 环视已关闭。');
+}
+gyroButton.addEventListener('click', async () => {
+  if (gyroActive) { stopGyro('手机 3DoF 环视已关闭。'); return; }
+  if (gyroRequesting) return;
+  stopTour();
+  stopFactoryTour();
+  const Orientation = window.DeviceOrientationEvent;
+  if (!Orientation || !isSecureContext) {
+    vrHint.textContent = '手机 3DoF 环视需要方向传感器设备，并通过 HTTPS 或本机安全来源打开。';
+    return;
+  }
+  gyroRequesting = true; gyroButton.disabled = true;
   try {
     if (typeof Orientation.requestPermission === 'function' && await Orientation.requestPermission() !== 'granted') {
-      document.getElementById('vr-hint').textContent = '未获得方向传感器授权；可继续使用触控拖动场景。';
+      vrHint.textContent = '未获得方向传感器授权；可继续触控拖动或缩放。';
       return;
     }
+    gyroStartQuaternion = camera.quaternion.clone();
+    gyroBaseline = null; gyroInvalidCount = 0;
     addEventListener('deviceorientation', onDeviceOrientation);
-    gyroActive = true; gyroButton.textContent = '关闭手机环视'; gyroButton.classList.add('on');
-    document.getElementById('vr-hint').textContent = '手机方向环视已开启：仅跟随朝向，不提供 6DoF 位移。';
+    addEventListener('deviceorientationerror', onDeviceOrientationError);
+    gyroActive = true; gyroButton.textContent = '关闭手机环视（3DoF）'; gyroButton.classList.add('on');
+    vrHint.textContent = '固定观察点 3DoF：等待方向校准；只改变朝向，不改变位置。';
+    armGyroTimeout();
   } catch (_) {
-    document.getElementById('vr-hint').textContent = '方向传感器不可用；可继续使用触控拖动场景。';
+    vrHint.textContent = '方向传感器不可用；可继续触控拖动或缩放。';
+  } finally {
+    gyroRequesting = false;
+    gyroButton.disabled = false;
   }
 });
 if (!window.DeviceOrientationEvent) gyroButton.disabled = true;
@@ -1800,17 +1911,76 @@ const xrCard = new THREE.Mesh(new THREE.PlaneGeometry(4.0, 2.0), new THREE.MeshB
 }));
 xrCard.visible = false;
 scene.add(xrCard);
-function xrCardText(title, summary, quote, source) {
+let xrCardPages = [], xrCardPage = 0;
+function wrapXrText(text, font, maxWidth) {
+  xrContext.font = font;
+  const lines = [];
+  for (const paragraph of String(text == null ? '' : text).split('\n')) {
+    let line = '';
+    for (const character of Array.from(paragraph)) {
+      const next = line + character;
+      if (line && xrContext.measureText(next).width > maxWidth) {
+        lines.push(line); line = character;
+      } else line = next;
+    }
+    lines.push(line);
+  }
+  return lines;
+}
+function drawXrCardPage() {
   const c = xrContext;
   c.clearRect(0, 0, 1024, 512);
   c.fillStyle = 'rgba(22,7,12,.95)'; c.fillRect(0, 0, 1024, 512);
   c.strokeStyle = '#c79a6a'; c.lineWidth = 5; c.strokeRect(8, 8, 1008, 496);
-  c.fillStyle = '#e4bd78'; c.font = '600 28px serif'; c.fillText(String(title || '').slice(0, 42), 42, 64);
-  c.fillStyle = '#fff0e6'; c.font = '34px serif'; c.fillText(String(summary || '').slice(0, 44), 42, 136);
-  c.fillStyle = '#f1c58e'; c.font = '25px serif'; c.fillText(String(quote || '').slice(0, 58), 42, 244);
-  c.fillStyle = '#c9aaa0'; c.font = '20px serif'; c.fillText(String(source || '').slice(0, 72), 42, 438);
+  const titleLines = wrapXrText(xrCardPages.title, '600 25px serif', 940);
+  c.fillStyle = '#e4bd78'; c.font = '600 25px serif';
+  let y = 46;
+  titleLines.forEach(line => { c.fillText(line, 42, y); y += 31; });
+  y += 12;
+  const page = xrCardPages.pages[xrCardPage] || [];
+  page.forEach(line => {
+    c.font = line.font; c.fillStyle = line.color;
+    c.fillText(line.text, 42, y); y += line.height;
+  });
+  c.font = '18px serif'; c.fillStyle = '#c9aaa0';
+  const controls = xrCardPages.pages.length > 1
+    ? '指向卡片：右扳机下一页 / 左扳机上一页 · 指向卡片外并扣扳机：收起并选取 · 握把瞬移'
+    : '指向卡片并扣扳机：收起 · 指向场景并扣扳机：收起并选取 · 握把瞬移';
+  c.fillText('第 ' + (xrCardPage + 1) + ' / ' + xrCardPages.pages.length + ' 页 · ' + controls, 42, 472);
   xrTexture.needsUpdate = true;
+}
+function xrCardText(title, summary, quote, source, sourceLabel) {
+  const records = [];
+  const addBlock = (label, value, font, height, color) => {
+    const text = String(value == null ? '' : value).trim();
+    if (!text) return;
+    records.push({ text: label + '：', font: '600 19px serif', height: 24, color: '#e4bd78' });
+    wrapXrText(text, font, 940).forEach(line => records.push({ text: line, font, height, color }));
+    records.push({ text: '', font, height: 10, color });
+  };
+  addBlock('摘要', summary, '25px serif', 30, '#fff0e6');
+  addBlock('引文', quote, '23px serif', 28, '#f1c58e');
+  addBlock(sourceLabel || '来源', source, '19px serif', 24, '#c9aaa0');
+  const titleText = String(title == null ? '' : title);
+  const titleHeight = wrapXrText(titleText, '600 25px serif', 940).length * 31 + 12;
+  const pageHeight = Math.max(100, 420 - (46 + titleHeight));
+  const pages = [[]];
+  let used = 0;
+  records.forEach(line => {
+    if (used + line.height > pageHeight && pages[pages.length - 1].length) {
+      pages.push([]); used = 0;
+    }
+    pages[pages.length - 1].push(line); used += line.height;
+  });
+  xrCardPages = { title: titleText, pages: pages.length ? pages : [[]] };
+  xrCardPage = 0;
+  drawXrCardPage();
   xrCard.visible = renderer.xr.isPresenting;
+}
+function turnXrCardPage(direction) {
+  if (!xrCard.visible || !xrCardPages.pages || xrCardPages.pages.length < 2) return;
+  xrCardPage = (xrCardPage + direction + xrCardPages.pages.length) % xrCardPages.pages.length;
+  drawXrCardPage();
 }
 function xrCardPose() {
   if (!xrCard.visible || !renderer.xr.isPresenting) return;
@@ -1823,6 +1993,25 @@ function xrCardPose() {
   xrCard.quaternion.copy(quaternion);
 }
 const xrRay = new THREE.Raycaster();
+const xrFloorRay = new THREE.Raycaster();
+function groundHeightAt(mesh, x, z, fallbackHeight) {
+  if (!mesh) return fallbackHeight;
+  xrFloorRay.set(new THREE.Vector3(x, 100, z), new THREE.Vector3(0, -1, 0));
+  xrFloorRay.near = 0; xrFloorRay.far = 200;
+  const hit = xrFloorRay.intersectObject(mesh, false)[0];
+  return hit ? hit.point.y : fallbackHeight;
+}
+function isSceneVisible(object) {
+  for (let parent = object; parent; parent = parent.parent) if (!parent.visible) return false;
+  return true;
+}
+function visibleFactoryMeshes() {
+  const meshes = [];
+  factoryGroup.traverse(object => {
+    if (object.isMesh && isSceneVisible(object)) meshes.push(object);
+  });
+  return meshes;
+}
 function setControllerRay(controller) {
   const origin = controller.getWorldPosition(new THREE.Vector3());
   const rotation = controller.getWorldQuaternion(new THREE.Quaternion());
@@ -1830,39 +2019,70 @@ function setControllerRay(controller) {
   xrRay.ray.origin.copy(origin); xrRay.ray.direction.copy(direction);
   xrRay.near = 0.05; xrRay.far = 75;
 }
-function controllerSelect(controller) {
+function controllerSelect(controller, controllerIndex, handedness) {
+  if (xrCard.visible) {
+    setControllerRay(controller);
+    const cardHit = xrRay.intersectObject(xrCard, false)[0];
+    if (cardHit) {
+      if (xrCardPages.pages.length > 1) {
+        turnXrCardPage(handedness === 'left' ? -1 : handedness === 'right' ? 1 : controllerIndex === 0 ? -1 : 1);
+      } else {
+        xrCard.visible = false;
+      }
+      return;
+    }
+    // 卡片外扣动扳机时先收起卡片，再把本次输入交给场景选取。
+    xrCard.visible = false;
+  }
   if (panelShown) { reset(); return; }
   setControllerRay(controller);
-  const fire = xrRay.intersectObject(firePoints, false)[0];
-  if (fire && fire.index != null) {
-    const m = fireMetas[fire.index], q = (m.e.sources || [])[0] || {};
-    xrCardText((m.e.event_type || '记载') + ' · ' + (m.e.date && m.e.date.start || ''), m.e.summary, q.quote, q.book);
+  if (factoryMode) {
+    const hit = xrRay.intersectObjects(visibleFactoryMeshes(), false)[0];
+    if (!hit) return;
+    const chapter = FACTORY_CHAPTERS[Math.max(0, factoryTour.index)] || FACTORY_CHAPTERS[0];
+    const quotes = (chapter.claims || []).map(claim => claim.quote).filter(Boolean).join('\n\n');
+    const source = (STORY_SOURCE.org || '黑龙江日报转载') +
+      (STORY_SOURCE.published ? '（' + STORY_SOURCE.published + '）' : '') + ' · 本章引文';
+    xrCardText(chapter.title, chapter.body, quotes, source);
     return;
   }
-  const towerHit = xrRay.intersectObjects(towerMeshes, false)[0];
+  if (isSceneVisible(firePoints)) {
+    const fire = xrRay.intersectObject(firePoints, false)[0];
+    if (fire && fire.index != null) {
+      const m = fireMetas[fire.index], q = (m.e.sources || [])[0] || {};
+      xrCardText((m.e.event_type || '记载') + ' · ' + dateLabel(m.e.date && m.e.date.start, m.e.date && m.e.date.precision), m.e.summary, q.quote, q.book);
+      return;
+    }
+  }
+  const towerHit = xrRay.intersectObjects(towerMeshes.filter(isSceneVisible), false)[0];
   if (towerHit) {
     const index = towerMeshes.indexOf(towerHit.object), tower = towers[index];
     if (selectedSource === index && mode === 'calm') startStorm(index);
     else {
       selectedSource = index;
       xrCardText('烽燧 · ' + (tower.s.short || ''), tower.s.full,
-        '支撑 ' + tower.w + ' 条 · 单点支撑 ' + (tower.s.exclusive || 0) + ' 条', '再次扣动扳机：移除该来源');
+        '支撑 ' + tower.w + ' 条 · 单点支撑 ' + (tower.s.exclusive || 0) + ' 条', '再次扣动扳机：移除该来源', '操作提示');
     }
     return;
   }
-  const siteHit = xrRay.intersectObjects(siteMeshes, false)[0];
+  const siteHit = xrRay.intersectObjects(siteMeshes.filter(isSceneVisible), false)[0];
   if (siteHit) {
     const site = siteHit.object.userData.site;
-    xrCardText('地理锚点 · 坐标精度 ' + (site.precision || '未注明'), site.name, site.address, site.category);
+    xrCardText('地理锚点 · 坐标精度 ' + (site.precision || '未注明'), site.name, site.address, site.category, '类别');
   }
 }
 function controllerTeleport(controller) {
   setControllerRay(controller);
-  const ground = xrRay.intersectObject(terrainMesh, false)[0];
+  const groundMesh = factoryMode ? factoryGroundMesh : terrainMesh;
+  if (!groundMesh || !isSceneVisible(groundMesh)) return;
+  const ground = xrRay.intersectObject(groundMesh, false)[0];
   if (!ground) return;
   const head = renderer.xr.getCamera(camera).getWorldPosition(new THREE.Vector3());
-  camera.position.x += ground.point.x - head.x;
-  camera.position.z += ground.point.z - head.z;
+  xrRig.position.x += ground.point.x - head.x;
+  xrRig.position.z += ground.point.z - head.z;
+  xrRig.position.y = ground.point.y;
+  xrRig.updateMatrixWorld(true);
+  xrCard.visible = false;
 }
 const xrControllers = [];
 for (let i = 0; i < 2; i++) {
@@ -1874,12 +2094,11 @@ for (let i = 0; i < 2; i++) {
   pointer.scale.z = 75; pointer.frustumCulled = false;
   controller.add(pointer);
   controller.visible = false;
-  controller.addEventListener('select', () => controllerSelect(controller));
+  controller.addEventListener('select', event => controllerSelect(controller, i, event.data && event.data.handedness));
   controller.addEventListener('squeeze', () => controllerTeleport(controller));
   scene.add(controller); xrControllers.push(controller);
 }
 const vrButton = document.getElementById('b-vr');
-const vrHint = document.getElementById('vr-hint');
 let xrSession = null;
 async function detectXR() {
   if (!navigator.xr || !isSecureContext) {
@@ -1903,17 +2122,40 @@ renderer.xr.addEventListener('sessionstart', () => {
   stopTour('继续剧情');
   stopFactoryTour();
   stopGyro();
+  xrRig.position.set(0, 0, 0); xrRig.rotation.set(0, 0, 0);
+  xrRig.updateMatrixWorld(true);
+  camera.updateMatrixWorld(true);
+  const cameraPosition = camera.getWorldPosition(new THREE.Vector3());
+  const cameraForward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.getWorldQuaternion(new THREE.Quaternion()));
   for (const controller of xrControllers) controller.visible = true;
   const features = xrSession && xrSession.enabledFeatures || [];
   const floorSpace = features.includes('local-floor');
-  camera.position.set(0, floorSpace ? 0 : 1.65, 24);
-  camera.quaternion.identity(); camera.updateMatrixWorld(true);
+  if (factoryMode) {
+    const yaw = Math.atan2(-cameraForward.x, -cameraForward.z);
+    const localForward = cameraForward.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), -yaw);
+    const pitch = Math.asin(Math.max(-1, Math.min(1, localForward.y)));
+    const floorY = groundHeightAt(factoryGroundMesh, cameraPosition.x, cameraPosition.z,
+      factoryGroundHeight(cameraPosition.x, cameraPosition.z));
+    xrRig.position.set(cameraPosition.x, floorY, cameraPosition.z);
+    xrRig.rotation.y = yaw;
+    camera.rotation.set(pitch, 0, 0, 'YXZ');
+  } else {
+    xrRig.position.set(0, groundHeightAt(terrainMesh, 0, 24, terrainHeight(0, 24)), 24);
+    camera.quaternion.identity();
+  }
+  camera.position.set(0, floorSpace ? 0 : 1.65, 0);
+  xrRig.updateMatrixWorld(true); camera.updateMatrixWorld(true);
   xrCard.visible = false; vrButton.textContent = '退出沉浸式 VR';
-  vrHint.textContent = '扳机：查看 / 选取烽燧 · 再扣扳机：抽离 · 握把：地面瞬移';
+  vrHint.textContent = factoryMode
+    ? '工厂场景 · 扳机查看本章引文 · 右扳机下一页 / 左扳机上一页 · 握把在工厂地面瞬移'
+    : '雪原场景 · 扳机查看 / 选取烽燧 · 再扣扳机抽离 · 握把在雪原地面瞬移';
 });
 renderer.xr.addEventListener('sessionend', () => {
   xrSession = null; xrCard.visible = false;
   for (const controller of xrControllers) controller.visible = false;
+  xrRig.position.set(0, 0, 0); xrRig.rotation.set(0, 0, 0);
+  camera.position.set(0, 0, 0); camera.quaternion.identity();
+  xrRig.updateMatrixWorld(true);
   applyCam(); detectXR();
 });
 vrButton.addEventListener('click', async () => {
@@ -1977,8 +2219,8 @@ function loop() {
     factoryTourStep(now);
     factoryCameraStep(dt);
     tourStep(now, dt);
-    if (mode === 'embers') autoPan += dt * 1.6;
-    if (!dragging) applyCam();
+    if (mode === 'embers' && !gyroActive) autoPan += dt * 1.6;
+    if (!dragging && !gyroActive && !gyroPoseHold) applyCam();
     pick(); showTip();
   } else {
     xrCardPose();
@@ -2023,6 +2265,7 @@ addEventListener('resize', () => {
    切后台期间仍在走，不暂停的话回来会直接跳过好几幕。 */
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) return;
+  stopGyro('页面已隐藏，手机 3DoF 环视已暂停；返回后可重新开启。');
   if (tour.active) stopTour();
   if (factoryTour.active) stopFactoryTour();
 });

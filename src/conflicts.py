@@ -27,10 +27,13 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from calendar import monthrange
 from collections import defaultdict
 from datetime import date
 from itertools import combinations
 from pathlib import Path
+
+from safe_write import atomic_write_text
 
 REQUIRED = ["id", "date", "place", "event_type", "summary", "sources", "confidence"]
 EVENT_TYPES = {"战斗", "转移", "密营建立", "被捕", "牺牲", "会议", "群众工作", "其他"}
@@ -62,6 +65,16 @@ def validate(events: list[dict]) -> list[str]:
             problems.append(f"{tag}: date.precision 非法（{d.get('precision')}）")
         if not d.get("start"):
             problems.append(f"{tag}: date.start 缺失")
+        elif not parse_date(d.get("start")):
+            problems.append(f"{tag}: date.start 不是有效日历日期（{d.get('start')}）")
+        elif d.get("precision") == "day" and len(str(d["start"]).split("-")) != 3:
+            problems.append(f"{tag}: 日精度 date.start 必须包含年月日")
+        elif d.get("precision") == "month" and (
+                len(str(d["start"]).split("-")) != 3 or parse_date(d["start"]).day != 1):
+            problems.append(f"{tag}: 月精度 date.start 必须使用当月 1 日作存储占位")
+        elif d.get("precision") == "year" and (
+                len(str(d["start"]).split("-")) != 3 or str(d["start"])[5:] != "01-01"):
+            problems.append(f"{tag}: 年精度 date.start 必须使用 1 月 1 日作存储占位")
 
         p = e.get("place", {})
         if p.get("precision") not in PLACE_PRECISIONS:
@@ -84,6 +97,13 @@ def validate(events: list[dict]) -> list[str]:
                 problems.append(f"{tag}: sources[{j}] reliability 非法（{s.get('reliability')}）")
 
         books = {s.get("book") for s in srcs}
+        for j, claim in enumerate(e.get("date_variants") or []):
+            if claim.get("precision") not in PRECISIONS:
+                problems.append(f"{tag}: date_variants[{j}] precision 非法（{claim.get('precision')}）")
+            elif not date_interval(claim):
+                problems.append(f"{tag}: date_variants[{j}] 不是有效日期主张（{claim.get('value')}）")
+            if not claim.get("source"):
+                problems.append(f"{tag}: date_variants[{j}] 缺 source")
         for j, m in enumerate(e.get("measures") or []):
             if not m.get("name"):
                 problems.append(f"{tag}: measures[{j}] 缺 name")
@@ -146,14 +166,50 @@ def check_provenance(tag: str, e: dict, books: set) -> list[str]:
 
 
 def parse_date(s: str) -> date | None:
+    if not isinstance(s, str):
+        return None
+    parts = s.split("-")
+    if (not 1 <= len(parts) <= 3 or len(parts[0]) != 4 or
+            any(len(part) != 2 or not part.isdigit() for part in parts[1:]) or
+            not parts[0].isdigit()):
+        return None
     try:
-        y, m, d = (s.split("-") + ["1", "1"])[:3]
+        y, m, d = (parts + ["1", "1"])[:3]
         return date(int(y), int(m), int(d))
-    except (ValueError, AttributeError):
+    except ValueError:
         return None
 
 
+def date_interval(claim: dict) -> tuple[date, date] | None:
+    """Return the calendar interval represented by a date claim's precision."""
+    precision = claim.get("precision")
+    value = claim.get("value", "")
+    parts = value.split("-") if isinstance(value, str) else []
+    if precision == "day" and len(parts) != 3:
+        return None
+    if precision == "month" and (
+            len(parts) not in (2, 3) or (len(parts) == 3 and parts[2] != "01")):
+        return None
+    if precision == "year" and (
+            len(parts) not in (1, 3) or (len(parts) == 3 and parts[1:] != ["01", "01"])):
+        return None
+    start = parse_date(value)
+    if not start:
+        return None
+    if precision == "day":
+        return start, start
+    if precision == "month":
+        first = date(start.year, start.month, 1)
+        return first, date(start.year, start.month, monthrange(start.year, start.month)[1])
+    if precision == "year":
+        return date(start.year, 1, 1), date(start.year, 12, 31)
+    return None
+
+
 def month_gap(a: dict, b: dict) -> int | None:
+    """Return the start-month distance only when both claims share precision."""
+    if a.get("precision") != b.get("precision"):
+        return None
     da, db = parse_date(a.get("start", "")), parse_date(b.get("start", ""))
     if not da or not db:
         return None
@@ -164,16 +220,30 @@ def diff_pair(a: dict, b: dict) -> list[dict]:
     """返回两条事件记录之间的字段级差异。"""
     out: list[dict] = []
 
-    gap = month_gap(a.get("date", {}), b.get("date", {}))
-    if gap is not None and gap > 0:
-        out.append({
-            "field": "date.start",
-            "kind": "field",
-            "a": a["date"]["start"],
-            "b": b["date"]["start"],
-            "delta_months": gap,
-            "severity": "high" if gap >= 6 else "low",
-        })
+    date_a, date_b = a.get("date", {}), b.get("date", {})
+    interval_a = date_interval({"value": date_a.get("start"),
+                                "precision": date_a.get("precision")})
+    interval_b = date_interval({"value": date_b.get("start"),
+                                "precision": date_b.get("precision")})
+    if interval_a and interval_b:
+        a_start, a_end = interval_a
+        b_start, b_end = interval_b
+        overlaps = a_start <= b_end and b_start <= a_end
+        if not overlaps:
+            gap = month_gap(date_a, date_b)
+            precision_mismatch = date_a.get("precision") != date_b.get("precision")
+            date_diff = {
+                "field": "date.start",
+                "kind": "field",
+                "a": date_a["start"],
+                "b": date_b["start"],
+                "a_precision": date_a["precision"],
+                "b_precision": date_b["precision"],
+                "severity": "high" if precision_mismatch or (gap is not None and gap >= 6) else "low",
+            }
+            if gap is not None:
+                date_diff["delta_months"] = gap
+            out.append(date_diff)
 
     pa, pb = a.get("place", {}).get("modern"), b.get("place", {}).get("modern")
     if pa and pb and pa != pb:
@@ -263,8 +333,8 @@ def date_variant_diffs(events: list[dict]) -> list[dict]:
     写出不同的日子。所以日期也必须做成来源级主张（date_variants），
     与 measures 同构。
 
-    精度不同的两方要分开判：一方只到月、另一方到日，而日落在那个月里，
-    这是精度差异不是矛盾 —— 硬判成冲突，等于把"记得细"当成"记得不一样"。
+    按日期精度展开日、月、年区间：区间重叠时只记为精度差异，区间不相交
+    时才记为日期冲突，避免把月精度补位的 1 日当成史料日期计算天数。
     """
     out: list[dict] = []
     for e in events:
@@ -272,25 +342,28 @@ def date_variant_diffs(events: list[dict]) -> list[dict]:
         if len(vs) < 2:
             continue
         for a, b in combinations(vs, 2):
-            da, db = parse_date(a.get("value", "")), parse_date(b.get("value", ""))
-            if not da or not db:
+            interval_a, interval_b = date_interval(a), date_interval(b)
+            if not interval_a or not interval_b:
                 continue
-            days = abs((da - db).days)
             pa, pb = a.get("precision"), b.get("precision")
-
-            if days == 0:
-                kind = "same"
+            start_a, end_a = interval_a
+            start_b, end_b = interval_b
+            if start_a <= end_b and start_b <= end_a:
+                kind = "same" if interval_a == interval_b and pa == pb else "precision"
+                days = 0
             elif pa == pb:
                 kind = "conflict"
+                days = abs((start_a - start_b).days)
             else:
-                # 粗的一方是否覆盖细的一方（同年同月即视为覆盖）
-                coarse, fine = (a, b) if pa == "month" else (b, a)
-                dc, df = parse_date(coarse["value"]), parse_date(fine["value"])
-                kind = "precision" if (dc.year, dc.month) == (df.year, df.month) else "conflict"
+                kind = "conflict"
+                days = (start_b - end_a).days if end_a < start_b else (start_a - end_b).days
 
             if kind == "same":
                 continue
-            if days > 30:
+            if kind == "conflict" and pa != pb:
+                # The ranges themselves are incompatible; no exact day gap exists.
+                sev = "high"
+            elif days > 30:
                 sev = "high"
             elif days > 3:
                 sev = "medium"
@@ -442,15 +515,24 @@ def main() -> int:
             print(f"  {d['event_id']} [精度差异] "
                   f"{d['a']['value']}（{d['a']['precision']}，{d['a']['source']}） vs "
                   f"{d['b']['value']}（{d['b']['precision']}，{d['b']['source']}）"
-                  f" —— 一方只到月，另一方到日，日落在同月内，非矛盾")
+                  " —— 两项日期范围相容，不按精度不同判为矛盾")
+        elif d["a"].get("precision") != d["b"].get("precision"):
+            print(f"  {d['event_id']} [日期范围冲突·{d['severity']}] "
+                  f"{d['a']['value']}（{d['a']['precision']}，{d['a']['source']}） vs "
+                  f"{d['b']['value']}（{d['b']['precision']}，{d['b']['source']}）"
+                  " —— 两项日期范围不重叠，不按补位日期计算天数差")
         else:
             print(f"  {d['event_id']} [日期冲突·{d['severity']}] 差 {d['gap_days']} 天："
                   f"{d['a']['value']}（{d['a']['source']}） vs "
                   f"{d['b']['value']}（{d['b']['source']}）")
 
     if args.out:
+        if problems:
+            print("存在校验错误：冲突报告未写入，请先修复输入数据。", file=sys.stderr)
+            return 1
         args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(
+        atomic_write_text(
+            args.out,
             json.dumps(
                 {
                     "problems": problems,
@@ -461,11 +543,10 @@ def main() -> int:
                 ensure_ascii=False,
                 indent=2,
             ),
-            encoding="utf-8",
         )
         print(f"\n已写出 {args.out}")
 
-    return 0
+    return 1 if problems else 0
 
 
 if __name__ == "__main__":

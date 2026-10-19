@@ -818,6 +818,7 @@ window.__MIYING__ = {
     {
      "book": "辽宁日报《大事记》",
      "page": "2025-09-18",
+     "url": "https://epaper.lnd.com.cn/lnrbepaper/pc/con/202509/18/content_300163.html",
      "quote": "6月：抗日同盟军收复多伦等地。",
      "reliability": "B"
     },
@@ -864,7 +865,7 @@ window.__MIYING__ = {
     {
      "value": "1933-07-12",
      "precision": "day",
-     "source": "察哈尔抗战遗址展陈（经百科转引）"
+     "source": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）"
     }
    ],
    "layer": "event"
@@ -3974,7 +3975,7 @@ window.__MIYING__ = {
     {
      "value": "1934-03-21",
      "precision": "day",
-     "source": "国防部《童长荣》"
+     "source": "国防部《童长荣：白山黑水间谱写青春壮歌》"
     },
     {
      "value": "1934-03-21",
@@ -4784,7 +4785,7 @@ window.__MIYING__ = {
     {
      "value": "1938-07",
      "precision": "month",
-     "source": "百家号《当年残害杨靖宇将军的叛徒》"
+     "source": "百家号《当年残害杨靖宇将军的叛徒，潜伏北京做官多年，一场大雨露了马脚》"
     }
    ],
    "layer": "event"

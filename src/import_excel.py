@@ -2,24 +2,30 @@
 
 用法：
     python src/import_excel.py
-    python src/import_excel.py data/curated/史料录入模板.xlsx -o data/curated/events.json
+    python src/import_excel.py data/curated/史料录入模板.xlsx -o data/staging/events.from_xlsx.json
 
 规则：
 - 同一 id 的多行会合并成一条事件，多行视为多条来源。
 - 必填缺失、枚举非法、原文摘录为空的行会被拒绝，并逐条报告。
-- 任何一条没有 sources 的事件都不会写入输出。
+- 有错误的导入只允许写到 data/staging/，正式库不会被部分结果覆盖。
+- 此旧表不含完整主库字段，禁止直接覆盖 data/curated/events.json。
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
+import shutil
 import sys
 from collections import OrderedDict
+from datetime import date
 from pathlib import Path
 
 from openpyxl import load_workbook
+
+from safe_write import atomic_write_text
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -45,10 +51,18 @@ def parse_date(raw: str, prec_cn: str) -> tuple[str | None, str, str | None]:
         return None, "", f"日期格式无法解析：{raw}"
     y, mo, d = m.group(1), m.group(2), m.group(3)
     prec = DATE_PREC.get(prec_cn)
+    if prec_cn and prec is None:
+        return None, "", f"日期精度无效：{prec_cn}"
     if not prec:
         prec = "day" if d else "month" if mo else "year"
+    try:
+        # Validate every component present in the sheet before reducing it to
+        # month/year precision. date() catches month/day overflow and year 0000.
+        date(int(y), int(mo or 1), int(d or 1))
+    except ValueError:
+        return None, "", f"日期不是有效日历日期：{raw}"
     if prec == "day":
-        if not d:
+        if not (mo and d):
             return None, "", f"日期精度标为“日”但缺日：{raw}"
         start = f"{y}-{int(mo):02d}-{int(d):02d}"
     elif prec == "month":
@@ -62,7 +76,8 @@ def parse_date(raw: str, prec_cn: str) -> tuple[str | None, str, str | None]:
 
 def num(raw: str) -> float | None:
     try:
-        return round(float(raw), 5) if raw else None
+        value = float(raw) if raw else None
+        return round(value, 5) if value is not None and math.isfinite(value) else None
     except ValueError:
         return None
 
@@ -98,7 +113,7 @@ def main() -> int:
                     default=ROOT / "data" / "staging" / "events.from_xlsx.json",
                     help="默认写 data/staging/，不覆盖正式库")
     ap.add_argument("--force", action="store_true",
-                    help="允许写入 data/curated/（会先备份原文件）；否则拒绝")
+                    help="允许写入 data/curated/ 的非主库文件（会保留原文件备份）；events.json 始终禁止覆盖")
     args = ap.parse_args()
 
     if not args.xlsx.exists():
@@ -131,6 +146,14 @@ def main() -> int:
             if prob:
                 problems.append(f"第{idx}行（{eid}）：{prob}")
                 continue
+            lat_raw, lng_raw = cell(r[5]), cell(r[6])
+            lat, lng = num(lat_raw), num(lng_raw)
+            if (lat_raw and lat is None) or (lng_raw and lng is None):
+                problems.append(f"第{idx}行（{eid}）：经纬度必须是有限数字")
+            if lat is not None and not -90 <= lat <= 90:
+                problems.append(f"第{idx}行（{eid}）：纬度超出 -90 到 90 的范围")
+            if lng is not None and not -180 <= lng <= 180:
+                problems.append(f"第{idx}行（{eid}）：经度超出 -180 到 180 的范围")
             etype = cell(r[10])
             if etype not in EVENT_TYPES:
                 problems.append(f"第{idx}行（{eid}）：事件类型非法（{etype}）")
@@ -153,8 +176,8 @@ def main() -> int:
                 "place": {
                     "name": cell(r[3]),
                     "modern": cell(r[4]) or cell(r[3]),
-                    "lat": num(cell(r[5])),
-                    "lng": num(cell(r[6])),
+                    "lat": lat,
+                    "lng": lng,
                     "precision": PLACE_PREC[pprec_cn],
                 },
                 "units": units,
@@ -187,31 +210,51 @@ def main() -> int:
 
     events = list(merged.values())
 
-    # P0-10：旧录入表不能静默覆盖正式库。curated 只接受 --force，且先备份。
+    # P0-10 / P1-11：正式库只接受明确授权且无坏行的完整导入。
     out_resolved = args.out.resolve()
     curated_dir = (ROOT / "data" / "curated").resolve()
+    staging_dir = (ROOT / "data" / "staging").resolve()
+    canonical_events = (curated_dir / "events.json").resolve()
+    writes_curated = curated_dir in out_resolved.parents
+    writes_staging = staging_dir == out_resolved or staging_dir in out_resolved.parents
+    if out_resolved == canonical_events:
+        print("拒绝覆盖 data/curated/events.json：录入表是部分来源，不含完整主库字段。")
+        print("请先输出到 data/staging/，人工合并并保留 date_variants、provenance 等字段。")
+        return 2
     if curated_dir in out_resolved.parents:
         if not args.force:
             print("拒绝写入 data/curated/：该目录是正式库，须显式 --force。")
             print("默认请写到 data/staging/，人工比对后再替换。")
             return 2
-        if args.out.exists():
-            backup = args.out.with_suffix(args.out.suffix + ".bak")
-            backup.write_text(args.out.read_text(encoding="utf-8"), encoding="utf-8")
-            print(f"已备份原文件 → {backup}")
+    if not events:
+        problems.append("录入表没有可用事件，拒绝输出空库")
+    if problems and (writes_curated or not writes_staging):
+        print(f"读入 {len(rows)} 行，生成 {len(events)} 条事件，问题 {len(problems)} 条")
+        for problem in problems[:30]:
+            print("  !", problem)
+        if len(problems) > 30:
+            print(f"  ... 另有 {len(problems) - 30} 条")
+        print("存在错误：正式目录和非 staging 路径均未写入；完整问题导出请显式指定 data/staging/。")
+        return 1
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(
-        json.dumps(
-            {
-                "_note": "由 src/import_excel.py 从录入表生成，请勿手工编辑。",
-                "events": events,
-            },
-            ensure_ascii=False,
-            indent=1,
-        ),
-        encoding="utf-8",
+    payload = json.dumps(
+        {
+            "_note": "由 src/import_excel.py 从录入表生成，请勿手工编辑。",
+            "events": events,
+        },
+        ensure_ascii=False,
+        indent=1,
     )
+    if writes_curated and args.out.exists():
+        backup = args.out.with_suffix(args.out.suffix + ".bak")
+        index = 1
+        while backup.exists():
+            backup = args.out.with_suffix(args.out.suffix + f".{index}.bak")
+            index += 1
+        shutil.copy2(args.out, backup)
+        print(f"已备份原文件 → {backup}")
+    atomic_write_text(args.out, payload)
 
     print(f"读入 {len(rows)} 行，生成 {len(events)} 条事件，问题 {len(problems)} 条")
     for p in problems[:30]:

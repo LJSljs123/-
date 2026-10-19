@@ -36,6 +36,8 @@ def main() -> int:
     events = raw.get("events", []) if isinstance(raw, dict) else raw
     errors = []
     checked = 0
+    source_digest_checked = 0
+    repository_digest_checked = 0
 
     for event in events:
         for index, source in enumerate(event.get("sources") or []):
@@ -66,8 +68,13 @@ def main() -> int:
 
             content = html.read_bytes()
             digest = hashlib.sha256(content).hexdigest()
-            if digest != record.get("sha256") or len(content) != record.get("bytes"):
-                errors.append(f"{slug}: SHA256 或字节数与 manifest 不符")
+            if digest == record.get("sha256") and len(content) == record.get("bytes"):
+                digest_kind = "source"
+            elif (digest == record.get("repository_sha256") and
+                  len(content) == record.get("repository_bytes")):
+                digest_kind = "repository"
+            else:
+                errors.append(f"{slug}: 原始抓取摘要和 Git 检出副本摘要均不匹配")
                 continue
 
             body = text_path.read_text(encoding="utf-8").strip()
@@ -87,8 +94,13 @@ def main() -> int:
                 errors.append(f"{event['id']} source[{index}]: 引文片段未在本地文本中命中（{slug}）")
                 continue
             checked += 1
+            if digest_kind == "source":
+                source_digest_checked += 1
+            else:
+                repository_digest_checked += 1
 
-    print(f"引文存档核查：{checked} 条通过，{len(errors)} 条失败")
+    print(f"引文存档核查：{checked} 条通过（原始摘要 {source_digest_checked}，"
+          f"Git 检出副本摘要 {repository_digest_checked}），{len(errors)} 条失败")
     for error in errors:
         print(f"[FAIL] {error}")
 

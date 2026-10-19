@@ -70,23 +70,6 @@
   ],
   "date_variants": [
     {
-      "event_id": "evt_1933_duolun_shoufu",
-      "field": "date.start",
-      "kind": "conflict",
-      "gap_days": 41,
-      "a": {
-        "value": "1933-06-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1933-07-12",
-        "precision": "day",
-        "source": "察哈尔抗战遗址展陈（经百科转引）"
-      },
-      "severity": "high"
-    },
-    {
       "event_id": "evt_1934_tongzhangrong_xisheng",
       "field": "date.start",
       "kind": "conflict",
@@ -99,7 +82,7 @@
       "b": {
         "value": "1934-03-21",
         "precision": "day",
-        "source": "国防部《童长荣》"
+        "source": "国防部《童长荣：白山黑水间谱写青春壮歌》"
       },
       "severity": "high"
     },
@@ -121,191 +104,21 @@
       "severity": "high"
     },
     {
-      "event_id": "evt_1934_zhaoshangzhi_hadong",
+      "event_id": "evt_1933_duolun_shoufu",
       "field": "date.start",
-      "kind": "precision",
-      "gap_days": 28,
+      "kind": "conflict",
+      "gap_days": 12,
       "a": {
-        "value": "1934-06-01",
+        "value": "1933-06-01",
         "precision": "month",
         "source": "辽宁日报《大事记》"
       },
       "b": {
-        "value": "1934-06-29",
+        "value": "1933-07-12",
         "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
+        "source": "察哈尔抗战遗址展陈（国家级抗战纪念设施，多伦）"
       },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1941_wangyachen_xisheng",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 28,
-      "a": {
-        "value": "1941-01-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1941-01-29",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1936_yijun_xizheng",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 27,
-      "a": {
-        "value": "1936-06-28",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》（出发日）"
-      },
-      "b": {
-        "value": "1936-06",
-        "precision": "month",
-        "source": "中国军网《李敏焕》（6月中旬出发）"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1934_yangjingyu_zongzhihuibu",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 20,
-      "a": {
-        "value": "1934-02-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1934-02-21",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1935_zhao_yiman",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 14,
-      "a": {
-        "value": "1935-11-15",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》（被俘日）"
-      },
-      "b": {
-        "value": "1935-11",
-        "precision": "month",
-        "source": "退役军人事务部《山河坐标》（被俘月）"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1933_mgzsw_gaominzhong",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 10,
-      "a": {
-        "value": "1933-07-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1933-07-11",
-        "precision": "day",
-        "source": "中央档案馆档案文献网上展览"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1933_mgzsw_gaominzhong",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 10,
-      "a": {
-        "value": "1933-07-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1933-07-11",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗日联军1933年大事记》"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1933_zhuhe_youjidui",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 9,
-      "a": {
-        "value": "1933-10-10",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "b": {
-        "value": "1933-10",
-        "precision": "month",
-        "source": "人民网-党史频道《中共抗战英烈：赵尚志》"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1936_wangdetai_xisheng",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 6,
-      "a": {
-        "value": "1936-11",
-        "precision": "month",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "b": {
-        "value": "1936-11-07",
-        "precision": "day",
-        "source": "国家图书馆《王德泰》（引《东北抗日联军名录》）"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1937_bingtangzi",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 6,
-      "a": {
-        "value": "1937-03-07",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "b": {
-        "value": "1937-03",
-        "precision": "month",
-        "source": "北安市人民政府（3月初）"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1937_bingtangzi",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 6,
-      "a": {
-        "value": "1937-03-07",
-        "precision": "day",
-        "source": "百家号《山河铭记 抗联记忆》（战况日）"
-      },
-      "b": {
-        "value": "1937-03",
-        "precision": "month",
-        "source": "北安市人民政府（3月初）"
-      },
-      "severity": "low"
+      "severity": "high"
     },
     {
       "event_id": "evt_1932_qiangfeng_fujji",
@@ -323,40 +136,6 @@
         "source": "团结网《镜泊湖连环战的历史考证》"
       },
       "severity": "medium"
-    },
-    {
-      "event_id": "evt_1938_liujie_zhidian",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 4,
-      "a": {
-        "value": "1938-11-01",
-        "precision": "month",
-        "source": "辽宁日报《大事记》"
-      },
-      "b": {
-        "value": "1938-11-05",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "severity": "low"
-    },
-    {
-      "event_id": "evt_1932_panshi_yiyongjun",
-      "field": "date.start",
-      "kind": "precision",
-      "gap_days": 3,
-      "a": {
-        "value": "1932-05-04",
-        "precision": "day",
-        "source": "抗日战争纪念网《东北抗联大事记》"
-      },
-      "b": {
-        "value": "1932-05",
-        "precision": "month",
-        "source": "吉林省地方志编纂委员会《杨靖宇对统一战线策略的探索与实践》"
-      },
-      "severity": "low"
     },
     {
       "event_id": "evt_1932_huanren_tangjuwu",
@@ -405,9 +184,9 @@
       "b": {
         "value": "1938-07",
         "precision": "month",
-        "source": "百家号《当年残害杨靖宇将军的叛徒》"
+        "source": "百家号《当年残害杨靖宇将军的叛徒，潜伏北京做官多年，一场大雨露了马脚》"
       },
-      "severity": "low"
+      "severity": "high"
     },
     {
       "event_id": "evt_1934_tulongshan",
@@ -457,6 +236,278 @@
         "value": "1935-05-12",
         "precision": "day",
         "source": "杨靖宇烈士陵园暨东北抗日联军纪念馆《李红光》（牺牲日）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1932_panshi_yiyongjun",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1932-05-04",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1932-05",
+        "precision": "month",
+        "source": "吉林省地方志编纂委员会《杨靖宇对统一战线策略的探索与实践》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1933_mgzsw_gaominzhong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1933-07-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1933-07-11",
+        "precision": "day",
+        "source": "中央档案馆档案文献网上展览"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1933_mgzsw_gaominzhong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1933-07-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1933-07-11",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗日联军1933年大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1933_zhuhe_youjidui",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1933-10-10",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1933-10",
+        "precision": "month",
+        "source": "人民网-党史频道《中共抗战英烈：赵尚志》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_yangjingyu_zongzhihuibu",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1934-02-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1934-02-21",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1934_zhaoshangzhi_hadong",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1934-06-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1934-06-29",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1935_zhao_yiman",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1935-11-15",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》（被俘日）"
+      },
+      "b": {
+        "value": "1935-11",
+        "precision": "month",
+        "source": "退役军人事务部《山河坐标》（被俘月）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1936_wangdetai_xisheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1936-11",
+        "precision": "month",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1936-11-07",
+        "precision": "day",
+        "source": "国家图书馆《王德泰》（引《东北抗日联军名录》）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1936_yijun_xizheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1936-06-28",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》（出发日）"
+      },
+      "b": {
+        "value": "1936-06",
+        "precision": "month",
+        "source": "中国军网《李敏焕》（6月中旬出发）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1937_bingtangzi",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1937-03-07",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "b": {
+        "value": "1937-03",
+        "precision": "month",
+        "source": "北安市人民政府（3月初）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1937_bingtangzi",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1937-03-07",
+        "precision": "day",
+        "source": "百家号《山河铭记 抗联记忆》（战况日）"
+      },
+      "b": {
+        "value": "1937-03",
+        "precision": "month",
+        "source": "北安市人民政府（3月初）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1938_liujie_zhidian",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1938-11-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1938-11-05",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1939_nanman_huiyi",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1939-10-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1939-10-01",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1941_wangyachen_xisheng",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1941-01-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1941-01-29",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1942_jiaodaolv_chengli",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1942-08-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1942-08-01",
+        "precision": "day",
+        "source": "彭施鲁《东北抗日联军和苏联远东军关系回顾》（载《中共党史资料》）"
+      },
+      "severity": "low"
+    },
+    {
+      "event_id": "evt_1942_jiaodaolv_chengli",
+      "field": "date.start",
+      "kind": "precision",
+      "gap_days": 0,
+      "a": {
+        "value": "1942-08-01",
+        "precision": "month",
+        "source": "辽宁日报《大事记》"
+      },
+      "b": {
+        "value": "1942-08-01",
+        "precision": "day",
+        "source": "抗日战争纪念网《东北抗联大事记》"
       },
       "severity": "low"
     }

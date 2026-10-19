@@ -54,7 +54,7 @@
 ├─ src/             Python：校验、冲突检测、灯下案生成、承重结构分析、导出
 ├─ web/             纯静态前端；2D 可本地打开，WebXR 需 HTTPS 或 localhost
 │  ├─ index.html    承重结构（主入口）
-│  ├─ dossier.html  卷宗视图（13 个灯下案）
+│  ├─ dossier.html  卷宗视图（14 个灯下案）
 │  ├─ sanctuary.html 东北抗联 3D 史料场景、密营故事焦点、手机环视与可选 WebXR
 │  ├─ sanctuary.js  3D 场景与交互逻辑
 │  ├─ structures.js 承重结构数据（来源 → 结论的支撑图）
@@ -91,7 +91,7 @@
 | `src/make_template.py` | 重新生成录入模板 | 已跑通 |
 | `src/import_excel.py` | Excel → events.json，同 id 多行自动合并为多来源 | 已跑通 |
 | `src/conflicts.py` | 校验 + 冲突检测（字段级 + 来源级数值主张）+ 置信度计算 | 已跑通 |
-| `src/build_cases.py` | 事件库 → 灯下案轨迹（拆解/辑录/对勘/存疑四段） | 已跑通，生成 13 案 |
+| `src/build_cases.py` | 事件库 → 灯下案轨迹（拆解/辑录/对勘/存疑四段） | 已跑通，生成 14 案 |
 | `src/merge_provenance.py` | 把检索对位记录合并进事件库（补来源、记日期主张、写负证据） | 已跑通 |
 | `src/build_structures.py` | 事件库 → 承重结构（来源→结论支撑图、单点故障、崩塌率） | 已跑通 |
 | `src/build_web.py` | 打包 events + conflicts + sites → `web/data.js` | 已跑通 |
@@ -226,8 +226,11 @@
 ### 构建流程
 
 ```bash
-python src/import_excel.py                                              # Excel → events.json
-python src/merge_provenance.py                                          # 检索对位记录 → 事件库
+# Excel 只生成待审副本；旧模板不是 66 条事件的完整来源，不得直接替换 curated/events.json
+python src/import_excel.py -o data/staging/events.from_xlsx.json
+python src/conflicts.py data/staging/events.from_xlsx.json              # 校验草稿；错误时非零退出
+# 人工比较并合并通过的条目后，再对正式库运行下列构建步骤
+python src/merge_provenance.py                                          # 检索对位记录 → 正式事件库
 python src/conflicts.py data/curated/events.json -o data/curated/conflicts.json
 python src/build_cases.py                                               # → cases.json + web/cases.js
 python src/build_structures.py                                          # → web/structures.js
@@ -235,7 +238,7 @@ python src/build_web.py data/curated/events.json data/curated/conflicts.json
 # 然后双击 web/index.html（承重结构）；卷宗视图在 web/dossier.html
 ```
 
-`merge_provenance.py` 可重复执行：来源按书名去重，不会因为跑两次而入两遍。
+`import_excel.py` 将错误结果限制在 `data/staging/`，且拒绝覆盖正式事件库；空库、坏行或校验失败不能产出可发布报告。`merge_provenance.py` 可重复执行：来源按书名去重，不会因为跑两次而入两遍。
 
 数据用 `<script src="cases.js">` / `<script src="data.js">` 注入，不用 fetch，因此 `file://` 协议下也能加载，双击即可运行。
 
@@ -343,16 +346,16 @@ R4 与 R6 会同时出现且**不互相取消**——R4 展示数值差距，R6 
 
 ## 进度与剩余任务
 
-已完成：数据规范、34 处遗址入库、**66 条事件入库**、来源级数值主张模型、**负证据（provenance）模型与真实检索记录（四轮，全部 66 条覆盖，未查 0）**、**检索存档机制（39 条清单记录，其中 35 份可读本地快照；35 条实际引用的存档引文经哈希与文本核验）**、来源从 6 扩到 **33 个机构**，但目前 66 条均无 A 类一手档案支撑、多来源机构支撑 55 条（83%）、单一支撑 11 条（17%）、日期主张级冲突检测（R9，现含多伦、童长荣、墙缝等 **7 组高严重度日期分歧**）、灯下案生成引擎（**13 案：8 库内记载相合 + 2 数值悬案 + 2 日期悬案 + 1 孤证**，记载相合不代表定谳）、**数值裁决链（verdicts.json：裁决状态区分「已核」与「待核验编辑假说」，2D 浮层、卷宗页、3D 悬浮三处同源同状态）**、承重结构分析与前端、**3D 燎原（冷色林海与历史风雪模式、来源证据流、遗址坐标锚点、重复可用的风雪试验、人物记载并置、日期对勘、余烬导览、WebXR 双目与手柄查看/瞬移）**。
+已完成：数据规范、34 处遗址入库、**66 条事件入库**、来源级数值主张模型、**负证据（provenance）模型与真实检索记录（四轮，全部 66 条覆盖，未查 0）**、**检索存档机制（39 条清单记录，其中 35 份可读本地快照；35 条实际引用均通过文本与引文核验，其中 27 条匹配原始摘要、8 条匹配 Git 换行规范化后的检出副本摘要）**、来源从 6 扩到 **33 个机构**，但目前 66 条均无 A 类一手档案支撑、多来源机构支撑 55 条（83%）、单一支撑 11 条（17%）、日期主张级冲突检测（R9，26 组来源日期对比中有 10 组范围冲突、16 组精度相容；其中 **4 组高严重度冲突涉及童长荣牺牲、多伦收复、程斌投敌 3 件事**）、灯下案生成引擎（**14 案：8 库内记载相合 + 2 数值悬案 + 3 日期悬案 + 1 孤证**，记载相合不代表定谳）、**数值裁决链（verdicts.json：裁决状态区分「已核」与「待核验编辑假说」，2D 浮层、卷宗页、3D 悬浮三处同源同状态）**、承重结构分析与前端、**3D 燎原（冷色林海与历史风雪模式、来源证据流、遗址坐标锚点、重复可用的风雪试验、人物记载并置、日期对勘、余烬导览、WebXR 双目与手柄查看/瞬移）**。
 
 **2026-10-18 深审整改（P0 全关）**：
 
 - **日期支持关系按精度重算**：逐来源 × 逐动作 × 逐精度判六态（未载 / 明确相合 / 范围相容 / 范围不符 / 互斥 / 另一动作），另设「考订说明」「起始年表述」两类豁免。不再用来源条数代替比对——KL-001 的「8月1日·来源记载相合」已改为「8月（主张精度：月）→ 仅 2 家明确相合；2 家另一动作、1 家未载」。
-- **月精度不再冒充日**：KL-011 由「1933-06-01 vs 07-12 差 41 天」改为「1933年6月（月精度，原文未到日）→ 不可比（精度不同）」。
+- **月精度按整月范围对勘**：KL-011 将「1933-06-01 vs 07-12 差 41 天」改为「1933年6月（月精度）与 1933年7月12日的范围不重叠；不以补位日期计算天数差」。
 - **裁决隔离**：无原文定位的口径解释移入 `hypothesis` 字段，三视图统一标「待核验编辑假说」。
 - **被服厂主张层**：`data/curated/story_claims.json`（8 章 10 条主张，逐字引文 + 视觉边界），`src/build_story.py` 校验引文可在存档原文中逐字定位后生成 `web/story.js`；3D 不再硬编码正文。故事卡新增「本章主张与引文」面板，展开即暂停、收起续播。
-- **画布与出处**：2D 画布按内容包围盒动态计算（2060 宽），33 家来源与 66 条结论全部可达；点击/Enter 打开固定详情，出处链接可点，Escape 关闭。
-- **导入保护**：`import_excel.py` 默认写 `data/staging/`，写正式库需 `--force` 且自动备份。
+- **画布与出处**：2D 画布按内容包围盒动态计算，内容最右约 2060px、viewBox 宽 2124px；33 家来源与 66 条结论全部可达；点击/Enter 打开固定详情，出处链接可点，Escape 关闭。
+- **导入保护**：`import_excel.py` 默认写 `data/staging/`；拒绝覆盖 `data/curated/events.json`。写入其他 curated 文件须 `--force`，且每次保留独立备份。
 - **场景与字幕一致**：工人与布料独立成组，`story_claims.json` 每章带 `scene{workers,props}`；第 6 幕物资已转移、第 7/8 幕人走台空，画面状态可查（`body[data-scene-workers]`）。
 - **支撑与接触**：茶壶从桌外悬空移回台面（桌面顶面 y=1.41，壶底贴面）；布堆逐层叠放。
 - **手机让出主视觉**：正文卡改底部抽屉、正文折叠 3 行可展开，概念图手机收起。
