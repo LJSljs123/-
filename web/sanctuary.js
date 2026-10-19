@@ -880,7 +880,7 @@ function factoryGroundHeight(x, z) {
   factoryGroup.add(factoryWorkers);
   buildWorker(factoryWorkers, -0.8, 0.45, { work: true, seated: true, turn: Math.PI / 2, scale: 0.96, jacket: FM.coat });
   buildWorker(factoryWorkers, 1.5, -1.4, { turn: 0.4, scale: 0.95, jacket: FM.coatAlt });
-  /* 可被「转移」带走的布料与半成品；缝纫机、茶壶、灯台等固定陈设留在场景组 */
+  /* 可搬运的布料、半成品与储物物资；缝纫机、茶壶、灯台等固定陈设留在场景组 */
   factoryProps = new THREE.Group();
   factoryProps.name = 'props';
   factoryGroup.add(factoryProps);
@@ -926,9 +926,10 @@ function factoryGroundHeight(x, z) {
   /* P1-13 支撑检查：桌面顶面 y=1.41，x∈[-2.6,1.8]，z∈[-0.85,0.95]。
      原壶位 x=2.65 / -3.3 在桌外悬空——移回桌面内，壶底（y-0.36）落在台面上。 */
   buildKettle(factoryGroup, 1.25, 1.77, -0.25);
-  fCylinder(factoryGroup, 0.36, 0.33, 0.38, FM.woodDark, -3.1, 0.2, -0.5, 'y', 12);
-  fBox(factoryGroup, 0.78, 0.44, 0.58, FM.leather, -3.1, 0.64, -0.5, 0.04, -0.16, 0.02);
-  fBox(factoryGroup, 0.34, 0.36, 0.28, FM.iron, -3.1, 0.36, -0.5, 0.02, 0.2, 0);
+  /* 独立摆放在地面的木桶、皮箱与铁件为可搬运储物物资，随转移状态隐藏 */
+  fCylinder(factoryProps, 0.36, 0.33, 0.38, FM.woodDark, -3.1, 0.2, -0.5, 'y', 12);
+  fBox(factoryProps, 0.78, 0.44, 0.58, FM.leather, -3.1, 0.64, -0.5, 0.04, -0.16, 0.02);
+  fBox(factoryProps, 0.34, 0.36, 0.28, FM.iron, -3.1, 0.36, -0.5, 0.02, 0.2, 0);
   const lamp = new THREE.Group(); lamp.position.set(2.1, 3.25, 0.1); factoryGroup.add(lamp);
   fLink(lamp, [0, 0.18, 0], [0, -0.25, 0], 0.024, FM.ironWear);
   fCylinder(lamp, 0.12, 0.16, 0.32, FM.glow, 0, -0.47, 0, 'y', 10);
